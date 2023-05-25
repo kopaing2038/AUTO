@@ -30,14 +30,14 @@ class Config:
 
     BOT_TOKEN = get_config("BOT_TOKEN", "6008391558:AAFBRcDJvvznTbsc3eRFObWbs5LBfOJPYCM")
     API_ID = int(get_config("API_ID", "7880210"))
-    API_HASH = get_config("API_HASH", "1bb4b2ff1489cc06af37cba448c8cce9")
+    API_HASH = get_config("API_HASH", "5806016246:AAEocrUT_h8ZkM3dfqFWcNJsUk1_V_5uF9U")
 
     DATABASE_URI = get_config("DATABASE_URL", "mongodb+srv://pmbot1:pmbot1@cluster0.esuavhf.mongodb.net/?retryWrites=true&w=majority")
-    SESSION_NAME = get_config("DATABASE_NAME", "CHN_BOT")
+    SESSION_NAME = get_config("DATABASE_NAME", "CHBOT")
     COLLECTION_NAME = get_config("COLLECTION_NAME", "Movie")
 
     BOT_NAME = get_config("BOT_NAME", "FILTER_BOT")
-
+    FILE_GROUP = int(environ.get('FILE_GROUP', -1001975432612))
     LOG_CHANNEL = int(get_config("LOG_CHANNEL", "-1001254905376"))
     FORCE_SUB_CHANNEL = int(get_config("FORCE_SUB_CHANNEL", "-1001564382219"))
 
