@@ -1,0 +1,7 @@
+deploy.py
+heroku.tar.gz
+__pycache__
+bot/logs/*
+*.session
+*.log
+.env

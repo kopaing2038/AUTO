@@ -1,0 +1,43 @@
+{
+    "name": "autoFilter",
+    "env": {
+      "API_ID": {
+        "description": "api_id part of your Telegram API Key from my.telegram.org/apps",
+        "required": true
+      },
+      "API_HASH": {
+        "description": "api_hash part of your Telegram API Key from my.telegram.org/apps",
+        "required": true
+      },
+      "BOT_TOKEN": {
+        "description": "Bot token of Bot, get from @Botfather",
+        "required": true
+      },
+      "LOG_CHANNEL": {
+        "description": "Create a log channel where bot is admin and send its ID",
+        "required": true
+      },
+      "FORCE_SUB_CHANNEL": {
+        "description": "Send your main channel's ID to force members to join",
+        "required": true
+      },
+      "CHANNELS": {
+        "description": "channel ids for auto index",
+        "required": true
+      },
+      "DATABASE_URL": {
+        "description": "MongoDB database URL",
+        "required": true
+      },
+      "ADMINS": {
+        "description": "ID of Users who can use Admin commands(for multiple users separated by space)",
+        "required": true
+      }
+    },
+    "formation": {
+      "worker": {
+        "quantity": 1,
+        "size": "free"
+      }
+    }
+  }
