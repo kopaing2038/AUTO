@@ -50,7 +50,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
     key = f"{message.chat.id}-{message.id}"
 
     Cache.BUTTONS[key] = search
-    ADS = [] 
+
     if settings["IMDB"]:
         imdb = await get_poster(search, file=(files[0])["file_name"])
     else:
@@ -97,10 +97,8 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
 	
         ADS = [
             {"photo": "https://graph.org/file/00644e75f1d747f4b132c.jpg", "caption": f"""
-
 {cap}"""},		
             {"photo": "https://graph.org/file/14b989e4cb562882f28c3.jpg", "caption": f"""
-
 {cap}"""},
             
         ]
@@ -114,9 +112,9 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 reply_markup=types.InlineKeyboardMarkup(btn),
                
             )
-            ad = random.choice(ADS)
-            photo_url = ad["photo"]
-            caption = ad["caption"]
+            ad1 = random.choice(ADS)
+            photo_url = ad1["photo"]
+            caption = ad1["caption"]
             await message.reply_photo(
                 photo=photo_url,
                 caption=caption,
@@ -142,9 +140,9 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 reply_markup=types.InlineKeyboardMarkup(btn),
                 quote=True,
             )
-            ad = random.choice(ADS)
-            photo_url = ad["photo"]
-            caption = ad["caption"]
+            ad2 = random.choice(ADS)
+            photo_url = ad2["photo"]
+            caption = ad2["caption"]
             await message.reply_photo(
                 photo=photo_url,
                 caption=caption,
