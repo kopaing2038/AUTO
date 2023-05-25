@@ -295,7 +295,7 @@ async def handle_file(bot: Bot, query: types.CallbackQuery):
         )
         caption1 = f"⚠️{query.from_user.mention} \n\nအချောလေး ရှာတဲ့ဇာတ်ကား အဆင့်သင့်ပါ ⬇️ "
         settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
-        if not settings["DOWNLOAD_BUTTON"]:
+        if settings["DOWNLOAD_BUTTON"]:
             await query.message.reply_text(                
                 caption1,
                 reply_markup=types.InlineKeyboardMarkup(
