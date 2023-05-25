@@ -115,7 +115,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 caption=caption,
                 reply_markup=types.InlineKeyboardMarkup(
                     [
-                        [types.InlineKeyboardButton('Join Channel Link', url="https://t.me/+H7ERsk_04EoxOTU1")],
+                        [types.InlineKeyboardButton('Join Database link', url="https://t.me/+6Rq1ZLh5UExiNTUx")],
                         [types.InlineKeyboardButton(f'📥 {search} 📥', url=file_send.link)]
                     ]
                 ),
@@ -143,7 +143,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 caption=caption,
                 reply_markup=types.InlineKeyboardMarkup(
                     [
-                        [types.InlineKeyboardButton('Join Channel Link', url="https://t.me/+H7ERsk_04EoxOTU1")],
+                        [types.InlineKeyboardButton('Join Database link', url="https://t.me/+6Rq1ZLh5UExiNTUx")],
                         [types.InlineKeyboardButton(f'📥 {search} 📥', url=file_send2.link)]
                     ]
                 ),
