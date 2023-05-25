@@ -112,7 +112,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 photo=imdb.get("poster"),  # type: ignore
                 caption=cap[:1024],
                 reply_markup=types.InlineKeyboardMarkup(btn),
-                quote=True,
+               
             )
             ad = random.choice(ADS)
             photo_url = ad["photo"]
@@ -126,7 +126,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                         [types.InlineKeyboardButton(f'📥 {search} 📥', url=file_send.link)]
                     ]
                 ),
-                quote=True
+                quote=True,
             )
         except (
             errors.MediaEmpty,
