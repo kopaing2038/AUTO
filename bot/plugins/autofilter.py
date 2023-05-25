@@ -50,7 +50,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
     key = f"{message.chat.id}-{message.id}"
 
     Cache.BUTTONS[key] = search
-    
+    ADS = [] 
     if settings["IMDB"]:
         imdb = await get_poster(search, file=(files[0])["file_name"])
     else:
