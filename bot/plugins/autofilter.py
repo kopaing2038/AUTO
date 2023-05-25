@@ -27,8 +27,6 @@ async def auto_filter(bot: Bot, message: types.Message, text=True):
         
 
 
-
-
 async def ch1_give_filter(bot: Bot, message: types.Message):
 
     if message.text.startswith("/"):
@@ -94,69 +92,41 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
             **locals(),
         )
     else:
-        cap2 = f"""────── • ADS • ──────
-အပျင်းပြေ အရင်းကြေ ပလေးဖိုအတွက် RBY99 မှ 
-မန်ဘာဝင်သူတွေအတွက် (3)ရက်တစ်ကြိမ် 
-Free-10000 ပေးနေပါပြီ
 
-RBY99 မှာဆိုရင် 
--စလော့၊ငါးပစ်၊ဘင်းဂိုး ဂိမ်းများစွာနဲ့
--ရှမ်းကိုးမီး
--Sexy Girl လေးတွေရဲ့တိုက်ရိုက်လွှင့်အွန်လိုင်းကာစီနိုတွေအပြင်
--ဘောလုံးပါလောင်းနိုင်လို ဂိမ်းအကောင့်တစ်ခုဖွင့်ရုံနဲ့တစ်နေရာတည်းမှာစုံစုံလင်လင်ကစားလိုရနေပြီနော်
-
-Viber-09 459666076
-Viber Link 👉 https://jdb.link/rby99viber
-Telegram Link 👉 https://jdb.link/RBY99
-Website Link 👉 https://www.rby999.com/?pid=KP
-────── • ◆ • ──────
-"""
         cap = f"𝗤𝘂𝗲𝗿𝘆   : {search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"
 	
         ADS = [
-            {"photo": "https://graph.org/file/00644e75f1d747f4b132c.jpg", "caption": f"""{cap2}
+            {"photo": "https://graph.org/file/00644e75f1d747f4b132c.jpg", "caption": f"""
 
 {cap}"""},		
-            {"photo": "https://graph.org/file/14b989e4cb562882f28c3.jpg", "caption": f"""{cap2}
+            {"photo": "https://graph.org/file/14b989e4cb562882f28c3.jpg", "caption": f"""
 
 {cap}"""},
-            {"photo": "https://graph.org/file/d1215889dbfba6faa8d03.jpg", "caption": f"""{cap2}
-
-{cap}"""},
-            {"photo": "https://graph.org/file/c177d882351c729ac7e8e.jpg", "caption": f"""{cap2}
-
-{cap}"""},	
-            {"photo": "https://graph.org/file/9f324e79d00f2ec0bcafa.jpg", "caption": f"""{cap2}
-
-{cap}"""},
-            {"photo": "https://graph.org/file/847d183ba402a64a7ba49.jpg", "caption": f"""{cap2}
-
-{cap}"""},
-            {"photo": "https://graph.org/file/55b79812324eb343d3558.jpg", "caption": f"""{cap2}
-
-{cap}"""},
-            {"photo": "https://graph.org/file/820906d948015cf87296c.jpg", "caption": f"""{cap2}
-
-{cap}"""},
-            {"photo": "https://graph.org/file/b5ce464f5d8a614e1429e.jpg", "caption": f"""{cap2}
-
-{cap}"""},
-            {"photo": "https://graph.org/file/417ce1b6dd431b931f134.jpg", "caption": f"""{cap2}
-
-{cap}"""},
-            {"photo": "https://graph.org/file/8157c2d8dcf36c990bb1e.jpg", "caption": f"""{cap2}
-
-{cap}"""},
-		
+            
         ]
 
     if imdb and imdb.get("poster") and settings["IMDB_POSTER"]:  # type: ignore
         try:
-            await message.reply_photo(
+            file_send = await bot.send_cached_media(
+                chat_id=Config.FILE_GROUP,
                 photo=imdb.get("poster"),  # type: ignore
                 caption=cap[:1024],
                 reply_markup=types.InlineKeyboardMarkup(btn),
                 quote=True,
+            )
+            ad = random.choice(ADS)
+            photo_url = ad["photo"]
+            caption = ad["caption"]
+            await message.reply_photo(
+                photo=photo_url,
+                caption=caption,
+                reply_markup=types.InlineKeyboardMarkup(
+                    [
+                        [types.InlineKeyboardButton('Join Channel Link', url="https://t.me/+H7ERsk_04EoxOTU1")],
+                        [types.InlineKeyboardButton(f'📥 {search} 📥', url=file_send.link)]
+                    ]
+                ),
+                quote=True
             )
         except (
             errors.MediaEmpty,
@@ -165,11 +135,26 @@ Website Link 👉 https://www.rby999.com/?pid=KP
         ):
             pic = imdb.get("poster")
             poster = pic.replace(".jpg", "._V1_UX360.jpg")
-            await message.reply_photo(
+            file_send2 = await bot.send_cached_media(
+                chat_id=Config.FILE_GROUP,
                 photo=poster,
                 caption=cap[:1024],
                 reply_markup=types.InlineKeyboardMarkup(btn),
                 quote=True,
+            )
+            ad = random.choice(ADS)
+            photo_url = ad["photo"]
+            caption = ad["caption"]
+            await message.reply_photo(
+                photo=photo_url,
+                caption=caption,
+                reply_markup=types.InlineKeyboardMarkup(
+                    [
+                        [types.InlineKeyboardButton('Join Channel Link', url="https://t.me/+H7ERsk_04EoxOTU1")],
+                        [types.InlineKeyboardButton(f'📥 {search} 📥', url=file_send2.link)]
+                    ]
+                ),
+                quote=True
             )
         except Exception as e:
             log.exception(e)
@@ -185,6 +170,17 @@ Website Link 👉 https://www.rby999.com/?pid=KP
             caption=caption,
             reply_markup=types.InlineKeyboardMarkup(btn),
             quote=True)
+        await message.reply_photo(
+            photo=photo_url,
+            caption=caption,
+            reply_markup=types.InlineKeyboardMarkup(
+                [
+                    [types.InlineKeyboardButton('Join Channel Link', url="https://t.me/+H7ERsk_04EoxOTU1")],
+                    [types.InlineKeyboardButton(f'📥 {search} 📥', url=file_send2.link)]
+                ]
+            ),
+            quote=True
+        )
 
 
 @Bot.on_callback_query(filters.regex(r"^next"))  # type: ignore
