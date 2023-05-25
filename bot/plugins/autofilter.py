@@ -27,28 +27,28 @@ async def auto_filter(bot: Bot, message: types.Message, text=True):
         
 
 
+
 async def ch1_give_filter(bot: Bot, message: types.Message):
 
     if message.text.startswith("/"):
         return  # ignore commands
 
-    
     if re.findall(r"((^\/|^,|^!|^\.|^[\U0001F600-\U000E007F()]).*)", str(message.text), re.UNICODE):
-    #if re.findall("((^\/|^,|^!|^\.|^[\U0001F600-\U000E007F\u1000-\u109F()\d]).*)", message.text, re.UNICODE):
         return
 
-    if 2 < len(message.text) < 150:
-        settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
-        search = message.text
-        files, offset, total_results = await a_filter.get_search_results(
-            search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER']
-        )
-        if not files:
-            return
-    else:
+    if not (2 < len(message.text) < 150):
         return
+
+    settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
+    search = message.text
+    files, offset, total_results = await a_filter.get_search_results(
+        search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER']
+    )
+
+    if not files:
+        return
+
     key = f"{message.chat.id}-{message.id}"
-
     Cache.BUTTONS[key] = search
 
     if settings["IMDB"]:
@@ -57,8 +57,10 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         imdb = {}
 
     Cache.SEARCH_DATA[key] = files, offset, total_results, imdb, settings
-    if not settings.get("DOWNLOAD_BUTTON"):  # type: ignore
-        btn = await format_buttons(files, settings["CHANNEL"])  # type: ignore
+
+    btn = None
+    if not settings.get("DOWNLOAD_BUTTON"):
+        btn = await format_buttons(files, settings["CHANNEL"])
         if offset != "":
             req = message.from_user.id if message.from_user else 0
             btn.append(
@@ -80,51 +82,34 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         btn = [
             [
                 types.InlineKeyboardButton(
-                    f"📥  {search}  📥", url=f"https://t.me/{bot.me.username}?start=filter{key}"
+                    f"📥  {search}  📥",
+                    url=f"https://t.me/{bot.me.username}?start=filter{key}"
                 )
             ]
         ]
 
+    cap = ""
     if imdb:
-        cap = Config.TEMPLATE.format(  # type: ignore
+        cap = Config.TEMPLATE.format(
             query=search,
             **imdb,
             **locals(),
         )
     else:
-
         cap = f"𝗤𝘂𝗲𝗿𝘆   : {search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"
-	
-        ADS = [
-            {"photo": "https://graph.org/file/00644e75f1d747f4b132c.jpg", "caption": f"""
-{cap}"""},		
-            {"photo": "https://graph.org/file/14b989e4cb562882f28c3.jpg", "caption": f"""
-{cap}"""},
-            
-        ]
 
-    if imdb and imdb.get("poster") and settings["IMDB_POSTER"]:  # type: ignore
+    ADS = [
+        {"photo": "https://graph.org/file/00644e75f1d747f4b132c.jpg", "caption": cap},
+        {"photo": "https://graph.org/file/14b989e4cb562882f28c3.jpg", "caption": cap},
+    ]
+
+    if imdb and imdb.get("poster") and settings["IMDB_POSTER"]:
         try:
             file_send = await bot.send_photo(
                 chat_id=Config.FILE_GROUP,
-                photo=imdb.get("poster"),  # type: ignore
+                photo=imdb.get("poster"),
                 caption=cap[:1024],
                 reply_markup=types.InlineKeyboardMarkup(btn),
-               
-            )
-            ad1 = random.choice(ADS)
-            photo_url = ad1["photo"]
-            caption = ad1["caption"]
-            await message.reply_photo(
-                photo=photo_url,
-                caption=caption,
-                reply_markup=types.InlineKeyboardMarkup(
-                    [
-                        [types.InlineKeyboardButton('Join Channel Link', url="https://t.me/+H7ERsk_04EoxOTU1")],
-                        [types.InlineKeyboardButton(f'📥 {search} 📥', url=file_send.link)]
-                    ]
-                ),
-                quote=True,
             )
         except (
             errors.MediaEmpty,
@@ -133,32 +118,34 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         ):
             pic = imdb.get("poster")
             poster = pic.replace(".jpg", "._V1_UX360.jpg")
-            file_send2 = await bot.send_photo(
+            file_send = await bot.send_photo(
                 chat_id=Config.FILE_GROUP,
                 photo=poster,
                 caption=cap[:1024],
                 reply_markup=types.InlineKeyboardMarkup(btn),
-                quote=True,
-            )
-            ad2 = random.choice(ADS)
-            photo_url = ad2["photo"]
-            caption = ad2["caption"]
-            await message.reply_photo(
-                photo=photo_url,
-                caption=caption,
-                reply_markup=types.InlineKeyboardMarkup(
-                    [
-                        [types.InlineKeyboardButton('Join Channel Link', url="https://t.me/+H7ERsk_04EoxOTU1")],
-                        [types.InlineKeyboardButton(f'📥 {search} 📥', url=file_send2.link)]
-                    ]
-                ),
-                quote=True
             )
         except Exception as e:
             log.exception(e)
             await message.reply_text(
                 cap, reply_markup=types.InlineKeyboardMarkup(btn), quote=True
             )
+            return
+
+        ad = random.choice(ADS)
+        photo_url = ad["photo"]
+        caption = ad["caption"]
+        await message.reply_photo(
+            photo=photo_url,
+            caption=caption,
+            reply_markup=types.InlineKeyboardMarkup(
+                [
+                    [types.InlineKeyboardButton('Join Channel Link', url="https://t.me/+H7ERsk_04EoxOTU1")],
+                    [types.InlineKeyboardButton(f'📥 {search} 📥', url=file_send.link)]
+                ]
+            ),
+            quote=True
+        )
+
     else:
         ad = random.choice(ADS)
         photo_url = ad["photo"]
@@ -167,19 +154,8 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
             photo=photo_url,
             caption=caption,
             reply_markup=types.InlineKeyboardMarkup(btn),
-            quote=True)
-        await message.reply_photo(
-            photo=photo_url,
-            caption=caption,
-            reply_markup=types.InlineKeyboardMarkup(
-                [
-                    [types.InlineKeyboardButton('Join Channel Link', url="https://t.me/+H7ERsk_04EoxOTU1")],
-                    [types.InlineKeyboardButton(f'📥 {search} 📥', url=file_send2.link)]
-                ]
-            ),
             quote=True
         )
-
 
 @Bot.on_callback_query(filters.regex(r"^next"))  # type: ignore
 async def next_page(bot: Bot, query: types.CallbackQuery):
