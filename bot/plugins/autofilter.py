@@ -107,7 +107,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
 
     if imdb and imdb.get("poster") and settings["IMDB_POSTER"]:  # type: ignore
         try:
-            file_send = await bot.send_cached_media(
+            file_send = await bot.send_photo(
                 chat_id=Config.FILE_GROUP,
                 photo=imdb.get("poster"),  # type: ignore
                 caption=cap[:1024],
@@ -135,7 +135,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         ):
             pic = imdb.get("poster")
             poster = pic.replace(".jpg", "._V1_UX360.jpg")
-            file_send2 = await bot.send_cached_media(
+            file_send2 = await bot.send_photo(
                 chat_id=Config.FILE_GROUP,
                 photo=poster,
                 caption=cap[:1024],
