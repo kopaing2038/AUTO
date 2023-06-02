@@ -100,7 +100,6 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
     ]
 
     if imdb and imdb.get("poster") and settings["IMDB_POSTER"]:
-    if imdb and imdb.get("poster") and settings["IMDB_POSTER"]:
         if settings["TEXT_LINK"]:
             try:
                 await message.reply_photo(
