@@ -100,7 +100,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
     ]
 
     if imdb and imdb.get("poster") and settings["IMDB_POSTER"]:
-        if settings["TEXT_LINK"]:
+        if not settings["TEXT_LINK"]:
             try:
                 await message.reply_photo(
                     photo=imdb.get("poster"),  # type: ignore
@@ -139,26 +139,37 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 quote=True,
             )
     else:
-        ad = random.choice(ADS)
-        photo_url = ad["photo"]
-        caption = ad["caption"]
-        file_send3 = await message.reply_photo(
-            photo=photo_url,
-            caption=caption,
-            reply_markup=types.InlineKeyboardMarkup(btn),
-            quote=True
-        )
-        await message.reply_photo(
-            photo=photo_url,
-            caption=caption,
-            reply_markup=types.InlineKeyboardMarkup(
-                [
-                    [types.InlineKeyboardButton('ဝင်မရရင်ဒီကိုအရင်နှိပ် Join ပေးပါ', url="https://t.me/+AGntow9MZbs2MjRh")],
-                    [types.InlineKeyboardButton(f'📥 {search} 📥', url=file_send3.link)]
-                ]
-            ),
-            quote=True
-        )
+        if not settings["TEXT_LINK"]:
+            ad = random.choice(ADS)
+            photo_url = ad["photo"]
+            caption = ad["caption"]
+            await message.reply_photo(
+                photo=photo_url,
+                caption=caption,
+                reply_markup=types.InlineKeyboardMarkup(btn),
+                quote=True
+            )
+        else:
+            ad = random.choice(ADS)
+            photo_url = ad["photo"]
+            caption = ad["caption"]
+            file_send3 = await message.reply_photo(
+                photo=photo_url,
+                caption=caption,
+                reply_markup=types.InlineKeyboardMarkup(btn),
+                quote=True
+            )
+            await message.reply_photo(
+                photo=photo_url,
+                caption=caption,
+                reply_markup=types.InlineKeyboardMarkup(
+                    [
+                        [types.InlineKeyboardButton('ဝင်မရရင်ဒီကိုအရင်နှိပ် Join ပေးပါ', url="https://t.me/+AGntow9MZbs2MjRh")],
+                        [types.InlineKeyboardButton(f'📥 {search} 📥', url=file_send3.link)]
+                    ]
+                ),
+                quote=True
+            )
 
 
 
