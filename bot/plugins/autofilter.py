@@ -66,7 +66,8 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
 
     # Retrieve the files for the current page
     files_for_page = files[start_index:end_index]
-
+    cap = " "
+    btn = []
     # Generate captions and buttons for the files on the current page
     if not settings["TEXT_LINK"]:
         for i, file in enumerate(files_for_page):
