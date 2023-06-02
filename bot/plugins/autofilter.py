@@ -163,7 +163,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         ad = random.choice(ADS)
         photo_url = ad["photo"]
         caption = ad["caption"]
-        await message.reply_photo(
+        file_send2 = await message.reply_photo(
             photo=photo_url,
             caption=caption,
             reply_markup=types.InlineKeyboardMarkup(btn),
