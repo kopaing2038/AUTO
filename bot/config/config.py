@@ -132,7 +132,7 @@ class Config:
     PM_IMDB_POSTER = True
     PHOTO_FILTER = True
     CH_POST = False
-
+    TEXT_LINK = False
 
     USE_CAPTION_FILTER = get_config("USE_CAPTION_FILTER", True, True)  # type: ignore
     FILE_CHANNEL = int(get_config("FILE_CHANNEL" , "-1001615715585"))
