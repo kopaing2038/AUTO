@@ -64,7 +64,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
             cap += f"[ဇာတ်ကားကြည့်ရန် ဤနေရာကိုနှိပ်ပါ Link {i+1}]({await parse_link(file['chat_id'], file['message_id'])})\n\n"
         else:
             if not settings.get("DOWNLOAD_BUTTON"):        
-                btn = await format_buttons(files, settings["CHANNEL"]:
+                btn = await format_buttons(files, settings["CHANNEL"]
                 if offset != "":
                     req = message.from_user.id if message.from_user else 0
                     btn.append(
