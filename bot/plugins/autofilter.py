@@ -47,8 +47,8 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
             return
     else:
         return
-    key = f"{message.chat.id}-{message.id}"
 
+    key = f"{message.chat.id}-{message.id}"
     Cache.BUTTONS[key] = search
 
     if settings["IMDB"]:
@@ -57,11 +57,16 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         imdb = {}
 
     Cache.SEARCH_DATA[key] = files, offset, total_results, imdb, settings
-    if not settings.get("DOWNLOAD_BUTTON"):
+
+    if not settings["TEXT_LINK"] and not settings.get("DOWNLOAD_BUTTON"):
         btn = await format_buttons(files, settings["CHANNEL"])
+    elif not settings.get("DOWNLOAD_BUTTON") and settings["TEXT_LINK"]:
+        cap = ""
+        for i, file in enumerate(files):
+            cap += f"[ဇာတ်ကားကြည့်ရန် ဤနေရာကိုနှိပ်ပါ Link {i+1}]({await parse_link(file['chat_id'], file['message_id'])})\n\n"
         if offset != "":
             req = message.from_user.id if message.from_user else 0
-            btn.append(
+            btn = [
                 [
                     types.InlineKeyboardButton(
                         text=f"🗓 1/{math.ceil(int(total_results) / 5)}",
@@ -71,11 +76,11 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                         text="NEXT ⏩", callback_data=f"next_{req}_{key}_{offset}"
                     ),
                 ]
-            )
+            ]
         else:
-            btn.append(
+            btn = [
                 [types.InlineKeyboardButton(text="🗓 1/1", callback_data="pages")]
-            )
+            ]
     else:
         btn = [
             [
