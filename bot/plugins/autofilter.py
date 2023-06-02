@@ -47,8 +47,8 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
             return
     else:
         return
-
     key = f"{message.chat.id}-{message.id}"
+
     Cache.BUTTONS[key] = search
 
     if settings["IMDB"]:
@@ -57,47 +57,42 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         imdb = {}
 
     Cache.SEARCH_DATA[key] = files, offset, total_results, imdb, settings
-    cap = ""
-    if not settings["TEXT_LINK"] and not settings.get("DOWNLOAD_BUTTON"):
+    if not settings.get("DOWNLOAD_BUTTON"):
         btn = await format_buttons(files, settings["CHANNEL"])
-    elif not settings.get("DOWNLOAD_BUTTON") and settings["TEXT_LINK"]:
-        cap = ""
-        for i, file in enumerate(files):
-            cap += f"[ဇာတ်ကားကြည့်ရန် ဤနေရာကိုနှိပ်ပါ Link {i+1}]({await parse_link(file['chat_id'], file['message_id'])})\n\n"
-            if offset != "":
-                req = message.from_user.id if message.from_user else 0
-                btn = [
-                    [
-                        types.InlineKeyboardButton(
-                            text=f"🗓 1/{math.ceil(int(total_results) / 5)}",
-                            callback_data="pages",
-                        ),
-                        types.InlineKeyboardButton(
-                            text="NEXT ⏩", callback_data=f"next_{req}_{key}_{offset}"
-                        ),
-                    ]
-                ]
-            else:
-                btn = [
-                    [types.InlineKeyboardButton(text="🗓 1/1", callback_data="pages")]
-                ]
-        else:
-            btn = [
+        if offset != "":
+            req = message.from_user.id if message.from_user else 0
+            btn.append(
                 [
                     types.InlineKeyboardButton(
-                        f"📥  {search}  📥", url=f"https://t.me/{bot.me.username}?start=filter{key}"
-                    )
+                        text=f"🗓 1/{math.ceil(int(total_results) / 5)}",
+                        callback_data="pages",
+                    ),
+                    types.InlineKeyboardButton(
+                        text="NEXT ⏩", callback_data=f"next_{req}_{key}_{offset}"
+                    ),
                 ]
+            )
+        else:
+            btn.append(
+                [types.InlineKeyboardButton(text="🗓 1/1", callback_data="pages")]
+            )
+    else:
+        btn = [
+            [
+                types.InlineKeyboardButton(
+                    f"📥  {search}  📥", url=f"https://t.me/{bot.me.username}?start=filter{key}"
+                )
             ]
+        ]
 
     if imdb:
-        cap += Config.TEMPLATE.format(
+        cap = Config.TEMPLATE.format(
             query=search,
             **imdb,
             **locals(),
         )
     else:
-        cap += f"𝗤𝘂𝗲𝗿𝘆   : {search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"
+        cap = f"𝗤𝘂𝗲𝗿𝘆   : {search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"
     cap2 = f"𝗤𝘂𝗲𝗿𝘆   : {search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"	
     ADS = [
         {"photo": "https://graph.org/file/00644e75f1d747f4b132c.jpg", "caption": cap2},
@@ -107,7 +102,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
     if imdb and imdb.get("poster") and settings["IMDB_POSTER"]:
         try:
             file_send = await bot.send_photo(
-                chat_id=Config.FILE_GROUP,
+                chat_id=Config.FILE_GROUP2,
                 photo=imdb.get("poster"),
                 caption=cap[:1024],
                 reply_markup=types.InlineKeyboardMarkup(btn),
@@ -120,7 +115,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 caption=caption,
                 reply_markup=types.InlineKeyboardMarkup(
                     [
-                        [types.InlineKeyboardButton('Join Database link', url="https://t.me/+6Rq1ZLh5UExiNTUx")],
+                        [types.InlineKeyboardButton('ဝင်မရရင်ဒီကိုအရင်နှိပ် Join ပေးပါ', url="https://t.me/+AGntow9MZbs2MjRh")],
                         [types.InlineKeyboardButton(f'📥 {search} 📥', url=file_send.link)]
                     ]
                 ),
@@ -134,11 +129,10 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
             pic = imdb.get("poster")
             poster = pic.replace(".jpg", "._V1_UX360.jpg")
             file_send2 = await bot.send_photo(
-                chat_id=Config.FILE_GROUP,
+                chat_id=Config.FILE_GROUP2,
                 photo=poster,
                 caption=cap[:1024],
-                reply_markup=types.InlineKeyboardMarkup(btn),
-                quote=True,
+                reply_markup=types.InlineKeyboardMarkup(btn),                
             )
             ad2 = random.choice(ADS)
             photo_url = ad2["photo"]
@@ -148,7 +142,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 caption=caption,
                 reply_markup=types.InlineKeyboardMarkup(
                     [
-                        [types.InlineKeyboardButton('Join Database link', url="https://t.me/+6Rq1ZLh5UExiNTUx")],
+                        [types.InlineKeyboardButton('ဝင်မရရင်ဒီကိုအရင်နှိပ် Join ပေးပါ', url="https://t.me/+AGntow9MZbs2MjRh")],
                         [types.InlineKeyboardButton(f'📥 {search} 📥', url=file_send2.link)]
                     ]
                 ),
@@ -163,7 +157,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         ad = random.choice(ADS)
         photo_url = ad["photo"]
         caption = ad["caption"]
-        file_send2 = await message.reply_photo(
+        file_send3 = await message.reply_photo(
             photo=photo_url,
             caption=caption,
             reply_markup=types.InlineKeyboardMarkup(btn),
@@ -174,8 +168,8 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
             caption=caption,
             reply_markup=types.InlineKeyboardMarkup(
                 [
-                    [types.InlineKeyboardButton('Join Channel Link', url="https://t.me/+H7ERsk_04EoxOTU1")],
-                    [types.InlineKeyboardButton(f'📥 {search} 📥', url=file_send2.link)]
+                    [types.InlineKeyboardButton('ဝင်မရရင်ဒီကိုအရင်နှိပ် Join ပေးပါ', url="https://t.me/+AGntow9MZbs2MjRh")],
+                    [types.InlineKeyboardButton(f'📥 {search} 📥', url=file_send3.link)]
                 ]
             ),
             quote=True
