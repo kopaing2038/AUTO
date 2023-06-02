@@ -38,6 +38,7 @@ class Config:
 
     BOT_NAME = get_config("BOT_NAME", "FILTER_BOT")
     FILE_GROUP = int(environ.get('FILE_GROUP', -1001975432612))
+    FILE_GROUP2 = int(environ.get('FILE_GROUP', "-1001804560420"))
     LOG_CHANNEL = int(get_config("LOG_CHANNEL", "-1001254905376"))
     FORCE_SUB_CHANNEL = int(get_config("FORCE_SUB_CHANNEL", "-1001564382219"))
 
@@ -138,3 +139,4 @@ class Config:
     FILE_CHANNEL = int(get_config("FILE_CHANNEL" , "-1001615715585"))
     FILE_CHANNEL2 = int(get_config("FILE_CHANNEL2" , "-1001967826659"))
     FILE_CHANNEL3 = int(get_config("FILE_CHANNEL3" , "-1001564382219"))
+  
