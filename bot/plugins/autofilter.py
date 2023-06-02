@@ -59,38 +59,37 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
     Cache.SEARCH_DATA[key] = files, offset, total_results, imdb, settings
     cap = " Text "
     btn = []
-    if not settings.get("DOWNLOAD_BUTTON"):
-        if not settings["TEXT_LINK"]:
-            btn = await format_buttons(files, settings["CHANNEL"])
+    if settings["TEXT_LINK"]:
+        for i, file in enumerate(files):
+            cap += f"[ဇာတ်ကားကြည့်ရန် ဤနေရာကိုနှိပ်ပါ Link {i+1}]({await parse_link(file['chat_id'], file['message_id'])})\n\n"
         else:
-            for i, file in enumerate(files):
-                cap += f"[ဇာတ်ကားကြည့်ရန် ဤနေရာကိုနှိပ်ပါ Link {i+1}]({await parse_link(file['chat_id'], file['message_id'])})\n\n"
-
-        if offset != "":
-            req = message.from_user.id if message.from_user else 0
-            btn.append(
-                [
-                    types.InlineKeyboardButton(
-                        text=f"🗓 1/{math.ceil(int(total_results) / 5)}",
-                        callback_data="pages",
-                    ),
-                    types.InlineKeyboardButton(
-                        text="NEXT ⏩", callback_data=f"next_{req}_{key}_{offset}"
-                    ),
+            if not settings.get("DOWNLOAD_BUTTON"):        
+                btn = await format_buttons(files, settings["CHANNEL"]:
+                if offset != "":
+                    req = message.from_user.id if message.from_user else 0
+                    btn.append(
+                        [
+                            types.InlineKeyboardButton(
+                                text=f"🗓 1/{math.ceil(int(total_results) / 5)}",
+                                callback_data="pages",
+                            ),
+                            types.InlineKeyboardButton(
+                                text="NEXT ⏩", callback_data=f"next_{req}_{key}_{offset}"
+                            ),
+                        ]
+                    )
+                else:
+                    btn.append(
+                        [types.InlineKeyboardButton(text="🗓 1/1", callback_data="pages")]
+                    )
+            else:
+                btn = [
+                    [
+                        types.InlineKeyboardButton(
+                            f"📥  {search}  📥", url=f"https://t.me/{bot.me.username}?start=filter{key}"
+                       )
+                    ]
                 ]
-            )
-        else:
-            btn.append(
-                [types.InlineKeyboardButton(text="🗓 1/1", callback_data="pages")]
-            )
-    else:
-        btn = [
-            [
-                types.InlineKeyboardButton(
-                    f"📥  {search}  📥", url=f"https://t.me/{bot.me.username}?start=filter{key}"
-                )
-            ]
-        ]
 
     if imdb:
         cap = Config.TEMPLATE.format(
