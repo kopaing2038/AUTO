@@ -57,8 +57,14 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         imdb = {}
 
     Cache.SEARCH_DATA[key] = files, offset, total_results, imdb, settings
+    cap = " Text "
     if not settings.get("DOWNLOAD_BUTTON"):
-        btn = await format_buttons(files, settings["CHANNEL"])
+        if not settings["TEXT_LINK"]:
+            btn = await format_buttons(files, settings["CHANNEL"])
+        else:
+            for i, file in enumerate(files):
+                cap += f"[ဇာတ်ကားကြည့်ရန် ဤနေရာကိုနှိပ်ပါ Link {i+1}]({await parse_link(file['chat_id'], file['message_id'])})\n\n"
+
         if offset != "":
             req = message.from_user.id if message.from_user else 0
             btn.append(
