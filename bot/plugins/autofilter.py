@@ -100,7 +100,25 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
     ]
 
     if imdb and imdb.get("poster") and settings["IMDB_POSTER"]:
-        try:
+    if imdb and imdb.get("poster") and settings["IMDB_POSTER"]:
+        if settings["TEXT_LINK"]:
+            try:
+                await message.reply_photo(
+                    photo=imdb.get("poster"),  # type: ignore
+                    caption=cap[:1024],
+                    reply_markup=types.InlineKeyboardMarkup(btn),
+                    quote=True,
+                )
+            except (errors.MediaEmpty, errors.PhotoInvalidDimensions, errors.WebpageMediaEmpty):
+                pic = imdb.get("poster")
+                poster = pic.replace(".jpg", "._V1_UX360.jpg")
+                await message.reply_photo(
+                    photo=poster,
+                    caption=cap[:1024],
+                    reply_markup=types.InlineKeyboardMarkup(btn),
+                    quote=True,
+                )
+        else:
             file_send = await bot.send_photo(
                 chat_id=Config.FILE_GROUP2,
                 photo=imdb.get("poster"),
@@ -120,38 +138,6 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                     ]
                 ),
                 quote=True,
-            )
-        except (
-            errors.MediaEmpty,
-            errors.PhotoInvalidDimensions,
-            errors.WebpageMediaEmpty,
-        ):
-            pic = imdb.get("poster")
-            poster = pic.replace(".jpg", "._V1_UX360.jpg")
-            file_send2 = await bot.send_photo(
-                chat_id=Config.FILE_GROUP2,
-                photo=poster,
-                caption=cap[:1024],
-                reply_markup=types.InlineKeyboardMarkup(btn),                
-            )
-            ad2 = random.choice(ADS)
-            photo_url = ad2["photo"]
-            caption = ad2["caption"]
-            await message.reply_photo(
-                photo=photo_url,
-                caption=caption,
-                reply_markup=types.InlineKeyboardMarkup(
-                    [
-                        [types.InlineKeyboardButton('ဝင်မရရင်ဒီကိုအရင်နှိပ် Join ပေးပါ', url="https://t.me/+AGntow9MZbs2MjRh")],
-                        [types.InlineKeyboardButton(f'📥 {search} 📥', url=file_send2.link)]
-                    ]
-                ),
-                quote=True
-            )
-        except Exception as e:
-            log.exception(e)
-            await message.reply_text(
-                cap, reply_markup=types.InlineKeyboardMarkup(btn), quote=True
             )
     else:
         ad = random.choice(ADS)
@@ -174,6 +160,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
             ),
             quote=True
         )
+
 
 
 @Bot.on_callback_query(filters.regex(r"^next"))  # type: ignore
