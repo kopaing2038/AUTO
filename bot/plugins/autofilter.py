@@ -58,6 +58,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
 
     Cache.SEARCH_DATA[key] = files, offset, total_results, imdb, settings
     cap = " Text "
+    btn = []
     if not settings.get("DOWNLOAD_BUTTON"):
         if not settings["TEXT_LINK"]:
             btn = await format_buttons(files, settings["CHANNEL"])
