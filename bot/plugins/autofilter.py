@@ -60,28 +60,28 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
     cap = "  "
     
 
-
+    btn = []
     if not settings["TEXT_LINK"]:
-        btn = []
+        btn1 = []
         for i, file in enumerate(files):
             cap += f"[{i+1} {file['file_name']} ]({await parse_link(file['chat_id'], file['message_id'])})\n\n"
 
             if offset != "":
                 req = message.from_user.id if message.from_user else 0
-                btn.append([
+                btn1.append([
                     types.InlineKeyboardButton(text=f"🗓 1/{math.ceil(int(total_results) / 5)}", callback_data="pages"),
                     types.InlineKeyboardButton(text="NEXT ⏩", callback_data=f"next_{req}_{key}_{offset}")
                 ])
             else:
-                btn.append([types.InlineKeyboardButton(text="🗓 1/1", callback_data="pages")])
+                btn1.append([types.InlineKeyboardButton(text="🗓 1/1", callback_data="pages")])
 
         else:
-            btn = []
+            btn2 = []
             if not settings.get("DOWNLOAD_BUTTON"):
-                btn = await format_buttons(files, settings["CHANNEL"])
+                btn2 = await format_buttons(files, settings["CHANNEL"])
                 if offset != "":
                     req = message.from_user.id if message.from_user else 0
-                    btn.append(
+                    btn2.append(
                         [
                             types.InlineKeyboardButton(
                                 text=f"🗓 1/{math.ceil(int(total_results) / 5)}",
@@ -93,11 +93,11 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                         ]
                     )
                 else:
-                    btn.append(
+                    btn2.append(
                         [types.InlineKeyboardButton(text="🗓 1/1", callback_data="pages")]
                     )
             else:
-                btn = [
+                btn2 = [
                     [
                         types.InlineKeyboardButton(
                             f"📥  {search}  📥", url=f"https://t.me/{bot.me.username}?start=filter{key}"
@@ -117,7 +117,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         {"photo": "https://graph.org/file/00644e75f1d747f4b132c.jpg", "caption": cap2},
         {"photo": "https://graph.org/file/14b989e4cb562882f28c3.jpg", "caption": cap2},
     ]
-
+    btn = btn1 + btn2
     if imdb and imdb.get("poster") and settings["IMDB_POSTER"]:
         if not settings["TEXT_LINK"]:
             try:
