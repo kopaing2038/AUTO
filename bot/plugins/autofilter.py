@@ -57,47 +57,47 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         imdb = {}
 
     Cache.SEARCH_DATA[key] = files, offset, total_results, imdb, settings
-
+    cap = ""
     if not settings["TEXT_LINK"] and not settings.get("DOWNLOAD_BUTTON"):
         btn = await format_buttons(files, settings["CHANNEL"])
     elif not settings.get("DOWNLOAD_BUTTON") and settings["TEXT_LINK"]:
         cap = ""
         for i, file in enumerate(files):
             cap += f"[ဇာတ်ကားကြည့်ရန် ဤနေရာကိုနှိပ်ပါ Link {i+1}]({await parse_link(file['chat_id'], file['message_id'])})\n\n"
-        if offset != "":
-            req = message.from_user.id if message.from_user else 0
+            if offset != "":
+                req = message.from_user.id if message.from_user else 0
+                btn = [
+                    [
+                        types.InlineKeyboardButton(
+                            text=f"🗓 1/{math.ceil(int(total_results) / 5)}",
+                            callback_data="pages",
+                        ),
+                        types.InlineKeyboardButton(
+                            text="NEXT ⏩", callback_data=f"next_{req}_{key}_{offset}"
+                        ),
+                    ]
+                ]
+            else:
+                btn = [
+                    [types.InlineKeyboardButton(text="🗓 1/1", callback_data="pages")]
+                ]
+        else:
             btn = [
                 [
                     types.InlineKeyboardButton(
-                        text=f"🗓 1/{math.ceil(int(total_results) / 5)}",
-                        callback_data="pages",
-                    ),
-                    types.InlineKeyboardButton(
-                        text="NEXT ⏩", callback_data=f"next_{req}_{key}_{offset}"
-                    ),
+                        f"📥  {search}  📥", url=f"https://t.me/{bot.me.username}?start=filter{key}"
+                    )
                 ]
             ]
-        else:
-            btn = [
-                [types.InlineKeyboardButton(text="🗓 1/1", callback_data="pages")]
-            ]
-    else:
-        btn = [
-            [
-                types.InlineKeyboardButton(
-                    f"📥  {search}  📥", url=f"https://t.me/{bot.me.username}?start=filter{key}"
-                )
-            ]
-        ]
 
     if imdb:
-        cap = Config.TEMPLATE.format(
+        cap += Config.TEMPLATE.format(
             query=search,
             **imdb,
             **locals(),
         )
     else:
-        cap = f"𝗤𝘂𝗲𝗿𝘆   : {search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"
+        cap += f"𝗤𝘂𝗲𝗿𝘆   : {search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"
     cap2 = f"𝗤𝘂𝗲𝗿𝘆   : {search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"	
     ADS = [
         {"photo": "https://graph.org/file/00644e75f1d747f4b132c.jpg", "caption": cap2},
