@@ -59,6 +59,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
     Cache.SEARCH_DATA[key] = files, offset, total_results, imdb, settings
     cap = "  "
     btn = []
+
     if not settings["TEXT_LINK"]:
         for i, file in enumerate(files):
             cap += f"[{i+1} {file['file_name']} ]({await parse_link(file['chat_id'], file['message_id'])})\n\n"
