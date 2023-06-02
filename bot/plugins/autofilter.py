@@ -57,29 +57,30 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         imdb = {}
 
     Cache.SEARCH_DATA[key] = files, offset, total_results, imdb, settings
-    page_number = 1  # Current page number
-    files_per_page = 10  # Number of files to display per page
+    files_per_page = 10
+    page_number = 1
 
+    # Calculate start and end indices for the current page
     start_index = (page_number - 1) * files_per_page
     end_index = start_index + files_per_page
-    display_files = files[start_index:end_index]
 
-    cap = "  "
-    btn = []
+    # Retrieve the files for the current page
+    files_for_page = files[start_index:end_index]
 
+    # Generate captions and buttons for the files on the current page
     if not settings["TEXT_LINK"]:
-        for i, file in enumerate(display_files):
-            cap += f"[ဇာတ်ကားကြည့်ရန် ဤနေရာကိုနှိပ်ပါ Link {i+1}]({await parse_link(file['chat_id'], file['message_id'])})\n\n"
+        for i, file in enumerate(files_for_page):
+            cap += f"[{i+1} {file['file_name']}]({await parse_link(file['chat_id'], file['message_id'])})\n\n"
 
     if not settings.get("DOWNLOAD_BUTTON"):
         if offset != "":
             req = message.from_user.id if message.from_user else 0
             btn.append([
-                types.InlineKeyboardButton(text=f"🗓 1/{math.ceil(int(total_results) / files_per_page)}", callback_data="pages"),
+                types.InlineKeyboardButton(text=f"🗓 {page_number}/{total_pages}", callback_data="pages"),
                 types.InlineKeyboardButton(text="NEXT ⏩", callback_data=f"next_{req}_{key}_{offset}")
             ])
         else:
-            btn.append([types.InlineKeyboardButton(text="🗓 1/1", callback_data="pages")])
+            btn.append([types.InlineKeyboardButton(text=f"🗓 {page_number}/{total_pages}", callback_data="pages")])
     else:
         btn = [
             [
@@ -89,6 +90,8 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 )
             ]
         ]
+
+
     if imdb:
         cap += Config.TEMPLATE.format(
             query=search,
