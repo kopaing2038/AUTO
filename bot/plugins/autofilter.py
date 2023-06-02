@@ -55,52 +55,43 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         imdb = await get_poster(search, file=(files[0])["file_name"])
     else:
         imdb = {}
-
     Cache.SEARCH_DATA[key] = files, offset, total_results, imdb, settings
-    files_per_page = 10
-    page_number = 1
-
-    # Calculate start and end indices for the current page
-    start_index = (page_number - 1) * files_per_page
-    end_index = start_index + files_per_page
-
-    # Retrieve the files for the current page
-    files_for_page = files[start_index:end_index]
-    cap = " "
-    btn = []
-    # Generate captions and buttons for the files on the current page
-    if not settings["TEXT_LINK"]:
-        for i, file in enumerate(files_for_page):
-            cap += f"[{i+1} {file['file_name']}]({await parse_link(file['chat_id'], file['message_id'])})\n\n"
-
     if not settings.get("DOWNLOAD_BUTTON"):
+        btn = await format_buttons(files, settings["CHANNEL"])
         if offset != "":
             req = message.from_user.id if message.from_user else 0
-            btn.append([
-                types.InlineKeyboardButton(text=f"🗓 {page_number}/{total_pages}", callback_data="pages"),
-                types.InlineKeyboardButton(text="NEXT ⏩", callback_data=f"next_{req}_{key}_{offset}")
-            ])
+            btn.append(
+                [
+                    types.InlineKeyboardButton(
+                        text=f"🗓 1/{math.ceil(int(total_results) / 5)}",
+                        callback_data="pages",
+                    ),
+                    types.InlineKeyboardButton(
+                        text="NEXT ⏩", callback_data=f"next_{req}_{key}_{offset}"
+                    ),
+                ]
+            )
         else:
-            btn.append([types.InlineKeyboardButton(text=f"🗓 {page_number}/{total_pages}", callback_data="pages")])
+            btn.append(
+                [types.InlineKeyboardButton(text="🗓 1/1", callback_data="pages")]
+            )
     else:
         btn = [
             [
                 types.InlineKeyboardButton(
-                    f"📥  {search}  📥",
-                    url=f"https://t.me/{bot.me.username}?start=filter{key}"
+                    f"📥  {search}  📥", url=f"https://t.me/{bot.me.username}?start=filter{key}"
                 )
             ]
         ]
 
-
     if imdb:
-        cap += Config.TEMPLATE.format(
+        cap = Config.TEMPLATE.format(
             query=search,
             **imdb,
             **locals(),
         )
     else:
-        cap += f"𝗤𝘂𝗲𝗿𝘆   : {search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"
+        cap = f"𝗤𝘂𝗲𝗿𝘆   : {search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"
     cap2 = f"𝗤𝘂𝗲𝗿𝘆   : {search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"	
     ADS = [
         {"photo": "https://graph.org/file/00644e75f1d747f4b132c.jpg", "caption": cap2},
