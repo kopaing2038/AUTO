@@ -45,7 +45,8 @@ async def language_check(bot, query):
         return await query.answer("Sᴇʟᴇᴄᴛ ᴀɴʏ ʟᴀɴɢᴜᴀɢᴇ ғʀᴏᴍ ᴛʜᴇ ʙᴇʟᴏᴡ ʙᴜᴛᴛᴏɴs !", show_alert=True)
     movie = Cache.KEYWORD.get(query.from_user.id)
     if not movie:
-        return await query.answer(OLD_ALRT_TXT.format(query.from_user.first_name), show_alert=True)
+        await query.answer(OLD_ALRT_TXT.format(query.from_user.first_name), show_alert=True)
+        return 
     if language != "home":
         search = f"{movie} {language}"
 
