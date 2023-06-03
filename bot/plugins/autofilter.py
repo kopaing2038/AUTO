@@ -30,11 +30,11 @@ async def auto_filter(bot: Bot, message: types.Message, text=True):
         
 @Bot.on_callback_query(filters.regex(r"^select"))
 async def select(bot, query):
-    data_parts = query.data.split("#")
+    data_parts = query.data.replace("CM", "GC").split("#")
     if len(data_parts) < 2:
         return await query.answer("Invalid data format.", show_alert=True)
     req = query.from_user.id if query.from_user else 0
-    _, search = [part.replace("CM", "new_word") for part in data_parts]
+    _, search = data_parts
 
     btn = [
         [
