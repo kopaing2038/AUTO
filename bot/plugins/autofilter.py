@@ -51,7 +51,7 @@ async def language_check(bot, query):
     if not search:
         await query.answer(OLD_ALRT_TXT.format(query.from_user.first_name), show_alert=True)
         return 
-    if language != "home":
+    if search != "home":
         search = f"{search} {language}"
     if 2 < len(search) < 150:
         settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
