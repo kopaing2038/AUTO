@@ -12,3 +12,4 @@ class Cache:
     CURRENT = 0
     SEARCH_DATA = {}
     SETTINGS_CACHE = {}
+    KEYWORD = {}
