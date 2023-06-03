@@ -91,14 +91,14 @@ async def language_check(bot, query):
                 ]
             )
             btn.insert(0,
-                [types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"lang#{search}#home")]
+                [types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}#home")]
             )
         else:
             btn.append(
                 [types.InlineKeyboardButton(text="🗓 1/1", callback_data="pages")]
             )
             btn.insert(0,
-                [types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"lang#{search}#home")]
+                [types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}#home")]
             )
 
 
