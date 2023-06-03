@@ -140,6 +140,9 @@ async def select_language(bot, query):
             types.InlineKeyboardButton("480P", callback_data=f"lang#{search}#480"),
             types.InlineKeyboardButton("720P", callback_data=f"lang#{search}#720"),
             types.InlineKeyboardButton("1080P", callback_data=f"lang#{search}#1080")
+        ],
+        [
+            types.InlineKeyboardButton("Gᴏ Bᴀᴄᴋ", callback_data=f"lang#{search}#home")
         ]
     ]
 
