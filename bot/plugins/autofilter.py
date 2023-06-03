@@ -30,12 +30,22 @@ async def auto_filter(bot: Bot, message: types.Message, text=True):
 
 @Bot.on_callback_query(filters.regex(r"^lang"))
 async def language_check(bot, query):
-    _, userid, language = query.data.split("#")
-    if int(userid) in [query.from_user.id, 0]:
-        return await query.answer(ALRT_TXT.format(query.from_user.first_name), show_alert=True)
+    data_parts = query.data.split("#")
+
+    if len(data_parts) < 2:
+        return await query.answer("Invalid data format.", show_alert=True)
+
+    _, search, language = data_parts + [""] * (3 - len(data_parts))
+    req = query.from_user.id if query.from_user else 0
+
+    if search in [str(query.from_user.id), "0"]:
+        await query.answer(f"No {search.upper()} found!", show_alert=True)
+        return
+
+
     if language == "unknown":
-        return await query.answer("↓ Channel နဲ့ Video Quality ရွေးချယ်ပါ။ ↓", show_alert=True)
-    movie = Cache.KEYWORD.get(query.from_user.id)
+        return await query.answer("Please select the language and video quality channel!", show_alert=True)
+
     if not movie:
         await query.answer(OLD_ALRT_TXT.format(query.from_user.first_name), show_alert=True)
         return 
