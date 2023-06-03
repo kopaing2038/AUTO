@@ -28,44 +28,7 @@ async def auto_filter(bot: Bot, message: types.Message, text=True):
     if settings['CH_POST']:
         kt = await ch9_imdb(bot, message)
         
-@Bot.on_callback_query(filters.regex(r"^select"))
-async def select(bot, query):
-    data_parts = query.data.replace("CM", "GC").split("#")
-    if len(data_parts) < 2:
-        return await query.answer("Invalid data format.", show_alert=True)
-    req = query.from_user.id if query.from_user else 0
-    _, search = data_parts
 
-    btn = [
-        [
-            types.InlineKeyboardButton("↓ Channel နဲ့ Video Quality ရွေးချယ်ပါ။ ↓", callback_data=f"lang#{search}#unknown")
-        ],
-        [
-            types.InlineKeyboardButton("Channel Myanmar", callback_data=f"lang#{search}#cm"),
-            types.InlineKeyboardButton("Gold Channel", callback_data=f"lang#{search}#gc"),
-        ],
-        [
-            types.InlineKeyboardButton("One Channel", callback_data=f"lang#{search}#one"),
-            types.InlineKeyboardButton("Happy Channel", callback_data=f"lang#{search}#hc"),
-        ],
-        [
-            types.InlineKeyboardButton("360P", callback_data=f"lang#{search}#360"),
-            types.InlineKeyboardButton("480P", callback_data=f"lang#{search}#480"),
-            types.InlineKeyboardButton("720P", callback_data=f"lang#{search}#720"),
-            types.InlineKeyboardButton("1080P", callback_data=f"lang#{search}#1080")
-        ]
-    ]
-
-
-    try:
-        await query.edit_message_reply_markup(
-            reply_markup=types.InlineKeyboardMarkup(btn)
-        )
-    except MessageNotModified:
-        pass
-    
-    # Show an alert message
-    await query.answer()
 
 @Bot.on_callback_query(filters.regex(r"^lang"))
 async def language_check(bot, query):
@@ -128,14 +91,14 @@ async def language_check(bot, query):
                 ]
             )
             btn.insert(0,
-                [types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select#{search}")]
+                [types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")]
             )
         else:
             btn.append(
                 [types.InlineKeyboardButton(text="🗓 1/1", callback_data="pages")]
             )
             btn.insert(0,
-                [types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select#{search}")]
+                [types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")]
             )
 
 
@@ -162,7 +125,7 @@ async def language_check(bot, query):
 
 @Bot.on_callback_query(filters.regex(r"^select_lang"))
 async def select_language(bot, query):
-    data_parts = query.data.split("#")
+    data_parts = query.data.replace("CM", "GC").split("#")
     if len(data_parts) < 2:
         return await query.answer("Invalid data format.", show_alert=True)
     req = query.from_user.id if query.from_user else 0
