@@ -194,21 +194,21 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
 
             btn.append(
                 [
-                    types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။ !", callback_data=f"select_lang#{message.from_user.id}")
+                    types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။ !", callback_data=f"select_lang#{search}")
                 ]
             )
 
         else:
             btn.append(
                 [
-                    types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{message.from_user.id}") 
+                    types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}") 
                 ]
             )
     else:
         btn = [
             [
                 types.InlineKeyboardButton(
-                    "! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{message.from_user.id}"
+                    "! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}"
                 )
             ]
         ]
