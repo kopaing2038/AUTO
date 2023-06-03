@@ -79,14 +79,14 @@ async def language_check(bot, query):
                 ]
             )
             btn.insert(0,
-                [InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။ !", callback_data=f"lang#{search}#home")]
+                [types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။ !", callback_data=f"lang#{search}#home")]
             )
         else:
             btn.append(
                 [types.InlineKeyboardButton(text="🗓 1/1", callback_data="pages")]
             )
             btn.insert(0,
-                [InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။ !", callback_data=f"lang#{search}#home")]
+                [types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။ !", callback_data=f"lang#{search}#home")]
             )
 
 
@@ -121,21 +121,21 @@ async def select_language(bot, query):
 
     btn = [
         [
-            InlineKeyboardButton("↓ Channel နဲ့ Video Quality ရွေးချယ်ပါ။ ↓", callback_data=f"lang#{search}#unknown")
+            types.InlineKeyboardButton("↓ Channel နဲ့ Video Quality ရွေးချယ်ပါ။ ↓", callback_data=f"lang#{search}#unknown")
         ],
         [
-            InlineKeyboardButton("Channel Myanmar", callback_data=f"lang#{search}#cm"),
-            InlineKeyboardButton("Gold Channel", callback_data=f"lang#{search}#gc"),
+            types.InlineKeyboardButton("Channel Myanmar", callback_data=f"lang#{search}#cm"),
+            types.InlineKeyboardButton("Gold Channel", callback_data=f"lang#{search}#gc"),
         ],
         [
-            InlineKeyboardButton("One Channel", callback_data=f"lang#{search}#one"),
-            InlineKeyboardButton("Happy Channel", callback_data=f"lang#{search}#hc"),
+            types.InlineKeyboardButton("One Channel", callback_data=f"lang#{search}#one"),
+            types.InlineKeyboardButton("Happy Channel", callback_data=f"lang#{search}#hc"),
         ],
         [
-            InlineKeyboardButton("360P", callback_data=f"lang#{search}#360"),
-            InlineKeyboardButton("480P", callback_data=f"lang#{search}#480"),
-            InlineKeyboardButton("720P", callback_data=f"lang#{search}#720"),
-            InlineKeyboardButton("1080P", callback_data=f"lang#{search}#1080")
+            types.InlineKeyboardButton("360P", callback_data=f"lang#{search}#360"),
+            types.InlineKeyboardButton("480P", callback_data=f"lang#{search}#480"),
+            types.InlineKeyboardButton("720P", callback_data=f"lang#{search}#720"),
+            types.InlineKeyboardButton("1080P", callback_data=f"lang#{search}#1080")
         ]
     ]
 
