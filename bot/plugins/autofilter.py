@@ -91,14 +91,14 @@ async def language_check(bot, query):
                 ]
             )
             btn.insert(0,
-                [types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}#home")]
+                [types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")]
             )
         else:
             btn.append(
                 [types.InlineKeyboardButton(text="🗓 1/1", callback_data="pages")]
             )
             btn.insert(0,
-                [types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}#home")]
+                [types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")]
             )
 
 
@@ -126,10 +126,10 @@ async def language_check(bot, query):
 @Bot.on_callback_query(filters.regex(r"^select_lang"))
 async def select_language(bot, query):
     data_parts = query.data.split("#")
-    if len(data_parts) < 3:
+    if len(data_parts) < 2:
         return await query.answer("Invalid data format.", show_alert=True)
     req = query.from_user.id if query.from_user else 0
-    _, search, home = data_parts
+    _, search = data_parts
 
     btn = [
         [
