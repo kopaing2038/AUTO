@@ -44,13 +44,12 @@ async def language_check(bot, query):
         await query.answer(f"No {search.upper()} found!", show_alert=True)
         return
 
-
     if language == "unknown":
         return await query.answer("Please select the language and video quality channel!", show_alert=True)
 
     if not search:
         await query.answer(OLD_ALRT_TXT.format(query.from_user.first_name), show_alert=True)
-        return 
+        return
     if search != "home":
         search = f"{search} {language}"
     if 2 < len(search) < 150:
@@ -64,7 +63,6 @@ async def language_check(bot, query):
     else:
         return
 
-
     key = f"{query.message.chat.id}-{query.message.id}"
     Cache.BUTTONS[key] = search
     settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
@@ -74,7 +72,6 @@ async def language_check(bot, query):
         imdb = {}
     Cache.SEARCH_DATA[key] = files, offset, total_results, imdb, settings
     btn = await format_buttons(files, settings["CHANNEL"])
-    # btn = []
     settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
     if not settings.get("DOWNLOAD_BUTTON"):
         if offset != "":
@@ -90,25 +87,24 @@ async def language_check(bot, query):
                     ),
                 ]
             )
-            btn.insert(0,
-                [types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")]
-            )
+            btn.insert(0, [
+                types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")
+            ])
         else:
-            btn.append(
-                [types.InlineKeyboardButton(text="🗓 1/1", callback_data="pages")]
-            )
-            btn.insert(0,
-                [types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")]
-            )
-
-
+            btn.append([
+                types.InlineKeyboardButton(text="🗓 1/1", callback_data="pages")
+            ])
+            btn.insert(0, [
+                types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")
+            ])
     else:
         btn = [
             [
                 types.InlineKeyboardButton(
                     f"↓↓ {search}  ↓↓", url=f"https://t.me/{bot.me.username}?start=filter{key}"
                 )
-            ],[
+            ],
+            [
                 types.InlineKeyboardButton(
                     f"📥  Download 📥", url=f"https://t.me/{bot.me.username}?start=filter{key}"
                 )
@@ -116,9 +112,7 @@ async def language_check(bot, query):
         ]
 
     try:
-        await query.edit_message_reply_markup(
-            reply_markup=types.InlineKeyboardMarkup(btn)
-        )
+        await query.edit_message_reply_markup(reply_markup=types.InlineKeyboardMarkup(btn))
     except MessageNotModified:
         pass
     await query.answer()
@@ -151,11 +145,8 @@ async def select_language(bot, query):
         ]
     ]
 
-
     try:
-        await query.edit_message_reply_markup(
-            reply_markup=types.InlineKeyboardMarkup(btn)
-        )
+        await query.edit_message_reply_markup(reply_markup=types.InlineKeyboardMarkup(btn))
     except MessageNotModified:
         pass
     
@@ -194,24 +185,17 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         if offset != "":
             req = message.from_user.id if message.from_user else 0
 
-            btn.append(
-                [
-                    types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။ !", callback_data=f"select_lang#{search}")
-                ]
-            )
-
+            btn.append([
+                types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")
+            ])
         else:
-            btn.append(
-                [
-                    types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}") 
-                ]
-            )
+            btn.append([
+                types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")
+            ])
     else:
         btn = [
             [
-                types.InlineKeyboardButton(
-                    "! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}"
-                )
+                types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")
             ]
         ]
 
