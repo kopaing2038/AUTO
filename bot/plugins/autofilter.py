@@ -36,9 +36,9 @@ async def language_check(bot, query):
     if language == "unknown":
         return await query.answer("↓ Channel နဲ့ Video Quality ရွေးချယ်ပါ။ ↓", show_alert=True)
     movie = Cache.KEYWORD.get(query.from_user.id)
-    if not movie:
-        await query.answer(OLD_ALRT_TXT.format(query.from_user.first_name), show_alert=True)
-        return 
+    #if not movie:
+        #await query.answer(OLD_ALRT_TXT.format(query.from_user.first_name), show_alert=True)
+        #return 
     if language != "home":
         search = f"{movie} {language}"
     if 2 < len(search) < 150:
