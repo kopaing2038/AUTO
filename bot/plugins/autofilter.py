@@ -29,7 +29,7 @@ async def auto_filter(bot: Bot, message: types.Message, text=True):
         kt = await ch9_imdb(bot, message)
         
 @Bot.on_callback_query(filters.regex(r"^select"))
-async def select_language(bot, query):
+async def select(bot, query):
     data_parts = query.data.split("#")
     if len(data_parts) < 2:
         return await query.answer("Invalid data format.", show_alert=True)
