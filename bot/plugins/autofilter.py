@@ -4,6 +4,7 @@ import random
 import asyncio
 from bot import Bot
 from pyrogram import enums, errors, filters, types
+from pyrogram.errors import MessageNotModified
 
 from ..config import Config
 from ..database import a_filter
