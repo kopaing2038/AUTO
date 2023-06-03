@@ -14,9 +14,9 @@ from ..utils.imdbHelpers import get_poster, get_photo
 from ..utils.logger import LOGGER
 
 log = LOGGER(__name__)
-
 ALRT_TXT = "test1"
-OLD_ALRT_TXT = "test2"
+ALRT_TXT2 = "test2"
+OLD_ALRT_TXT = "test3"
 
 @Bot.on_message(filters.group & filters.text & filters.incoming, group=-1)
 async def auto_filter(bot: Bot, message: types.Message, text=True):
@@ -31,14 +31,14 @@ async def auto_filter(bot: Bot, message: types.Message, text=True):
 @Bot.on_callback_query(filters.regex(r"^lang"))
 async def language_check(bot, query):
     _, userid, language = query.data.split("#")
-    #if int(userid) in [query.from_user.id, 0]:
-        #return #await query.answer(ALRT_TXT.format(query.from_user.first_name), show_alert=True)
+    if int(userid) in [query.from_user.id, 0]:
+        return await query.answer(ALRT_TXT.format(query.from_user.first_name), show_alert=True)
     if language == "unknown":
         return await query.answer("↓ Channel နဲ့ Video Quality ရွေးချယ်ပါ။ ↓", show_alert=True)
     movie = Cache.KEYWORD.get(query.from_user.id)
-    #if not movie:
-        #await query.answer(OLD_ALRT_TXT.format(query.from_user.first_name), show_alert=True)
-        #return 
+    if not movie:
+        await query.answer(OLD_ALRT_TXT.format(query.from_user.first_name), show_alert=True)
+        return 
     if language != "home":
         search = f"{movie} {language}"
     if 2 < len(search) < 150:
@@ -115,7 +115,7 @@ async def language_check(bot, query):
 async def select_language(bot, query):
     _, userid = query.data.split("#")
     if int(userid) not in [query.from_user.id, 0]:
-        return await query.answer(ALRT_TXT.format(query.from_user.first_name), show_alert=True)
+        return await query.answer(ALRT_TXT2.format(query.from_user.first_name), show_alert=True)
 
     btn = [
         [
