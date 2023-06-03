@@ -113,29 +113,32 @@ async def language_check(bot, query):
 
 @Bot.on_callback_query(filters.regex(r"^select_lang"))
 async def select_language(bot, query):
-    _, userid = query.data.split("#")
-    if int(userid) not in [query.from_user.id, 0]:
-        return await query.answer(ALRT_TXT2.format(query.from_user.first_name), show_alert=True)
+    data_parts = query.data.split("#")
+    if len(data_parts) < 2:
+        return await query.answer("Invalid data format.", show_alert=True)
+    req = query.from_user.id if query.from_user else 0
+    _, search = data_parts
 
     btn = [
         [
-            types.InlineKeyboardButton("↓ Channel နဲ့ Video Quality ရွေးချယ်ပါ။ ↓", callback_data=f"lang#{userid}#unknown")
+            InlineKeyboardButton("↓ Channel နဲ့ Video Quality ရွေးချယ်ပါ။ ↓", callback_data=f"lang#{search}#unknown")
         ],
         [
-            types.InlineKeyboardButton("Channel Myanmar", callback_data=f"lang#{userid}#cm"),
-            types.InlineKeyboardButton("Gold Channel", callback_data=f"lang#{userid}#gc"),
+            InlineKeyboardButton("Channel Myanmar", callback_data=f"lang#{search}#cm"),
+            InlineKeyboardButton("Gold Channel", callback_data=f"lang#{search}#gc"),
         ],
         [
-            types.InlineKeyboardButton("One Channel", callback_data=f"lang#{userid}#one"),
-            types.InlineKeyboardButton("Happy Channel", callback_data=f"lang#{userid}#hc"),
+            InlineKeyboardButton("One Channel", callback_data=f"lang#{search}#one"),
+            InlineKeyboardButton("Happy Channel", callback_data=f"lang#{search}#hc"),
         ],
         [
-            types.InlineKeyboardButton("360P", callback_data=f"lang#{userid}#360"),
-            types.InlineKeyboardButton("480P", callback_data=f"lang#{userid}#480"),
-            types.InlineKeyboardButton("720P", callback_data=f"lang#{userid}#720"),
-            types.InlineKeyboardButton("1080P", callback_data=f"lang#{userid}#1080")
+            InlineKeyboardButton("360P", callback_data=f"lang#{search}#360"),
+            InlineKeyboardButton("480P", callback_data=f"lang#{search}#480"),
+            InlineKeyboardButton("720P", callback_data=f"lang#{search}#720"),
+            InlineKeyboardButton("1080P", callback_data=f"lang#{search}#1080")
         ]
     ]
+
 
     try:
         await query.edit_message_reply_markup(
