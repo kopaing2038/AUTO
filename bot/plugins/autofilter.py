@@ -19,17 +19,6 @@ ALRT_TXT = "test1"
 ALRT_TXT2 = "test2"
 OLD_ALRT_TXT = "test3"
 
-@Bot.on_message(filters.group & filters.text & filters.incoming, group=-1)
-async def auto_filter(bot: Bot, message: types.Message, text=True):
-    #if not await check_fsub(bot, message):
-        #return 
-    a = await ch1_give_filter(bot, message)
-    settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
-    if settings['CH_POST']:
-        kt = await ch9_imdb(bot, message)
-        
-
-
 @Bot.on_callback_query(filters.regex(r"^lang"))
 async def language_check(bot, query):
     data_parts = query.data.split("#")
@@ -88,14 +77,14 @@ async def language_check(bot, query):
                 ]
             )
             btn.insert(0, [
-                types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")
+                types.InlineKeyboardButton("! Data ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")
             ])
         else:
             btn.append([
                 types.InlineKeyboardButton(text="🗓 1/1", callback_data="pages")
             ])
             btn.insert(0, [
-                types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")
+                types.InlineKeyboardButton("! Data  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")
             ])
     else:
         btn = [
