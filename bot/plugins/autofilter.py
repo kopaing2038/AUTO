@@ -71,10 +71,10 @@ async def language_check(bot, query):
     else:
         imdb = {}
     Cache.SEARCH_DATA[key] = files, offset, total_results, imdb, settings
-    btn = await format_buttons8(files, settings["CHANNEL8"])
+    btn = await format_buttons(files, settings["CHANNEL"])
     # btn = []
     settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
-    if not settings.get("DOWNLOAD_BUTTON8"):
+    if not settings.get("DOWNLOAD_BUTTON"):
         if offset != "":
             req = query.from_user.id if query.from_user else 0
             btn.append(
