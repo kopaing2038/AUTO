@@ -44,7 +44,7 @@ async def language_check(bot, query):
     if language == "unknown":
         return await query.answer("Sᴇʟᴇᴄᴛ ᴀɴʏ ʟᴀɴɢᴜᴀɢᴇ ғʀᴏᴍ ᴛʜᴇ ʙᴇʟᴏᴡ ʙᴜᴛᴛᴏɴs !", show_alert=True)
 
-    search = Cache.KEYWORD.get(query.from_user.id)
+    #search = Cache.KEYWORD.get(query.from_user.id)
 
     if language != "home":
         search = f"{search} {language}"
