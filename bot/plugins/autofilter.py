@@ -19,6 +19,15 @@ ALRT_TXT = "test1"
 ALRT_TXT2 = "test2"
 OLD_ALRT_TXT = "test3"
 
+@Bot.on_message(filters.group & filters.text & filters.incoming, group=-1)
+async def auto_filter(bot: Bot, message: types.Message, text=True):
+    #if not await check_fsub(bot, message):
+        #return 
+    a = await ch1_give_filter(bot, message)
+    settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
+    if settings['CH_POST']:
+        kt = await ch9_imdb(bot, message)
+
 @Bot.on_callback_query(filters.regex(r"^lang"))
 async def language_check(bot, query):
     data_parts = query.data.split("#")
