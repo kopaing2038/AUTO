@@ -35,14 +35,14 @@ async def language_check(bot, query):
         return await query.answer(ALRT_TXT.format(query.from_user.first_name), show_alert=True)
     if language == "unknown":
         return await query.answer("↓ Channel နဲ့ Video Quality ရွေးချယ်ပါ။ ↓", show_alert=True)
-    movie = temp.KEYWORD.get(query.from_user.id)
+    movie = Cache.KEYWORD.get(query.from_user.id)
     if not movie:
         return await query.answer(OLD_ALRT_TXT.format(query.from_user.first_name), show_alert=True)
     if language != "home":
         search = f"{movie} {language}"
     if 2 < len(search) < 150:
         settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
-        files, offset, total_results = await e_filter.get_search_results(
+        files, offset, total_results = await a_filter.get_search_results(
             search.lower(), offset=0, filter=True
         )
 
@@ -56,11 +56,11 @@ async def language_check(bot, query):
     Cache.BUTTONS[key] = search
     settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
     if settings["IMDB"]:
-        imdb = await get_poster(search, file=files_a[0]["file_name"])
+        imdb = await get_poster(search, file=files[0]["file_name"])
     else:
         imdb = {}
-    Cache.SEARCH_DATA[key] = files_a, offset, total_results, imdb, settings
-    btn = await format_buttons8(files_a, settings["CHANNEL8"])
+    Cache.SEARCH_DATA[key] = files, offset, total_results, imdb, settings
+    btn = await format_buttons8(files, settings["CHANNEL8"])
     # btn = []
     settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
     if not settings.get("DOWNLOAD_BUTTON8"):
