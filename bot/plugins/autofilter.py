@@ -46,11 +46,11 @@ async def language_check(bot, query):
     if language == "unknown":
         return await query.answer("Please select the language and video quality channel!", show_alert=True)
 
-    if not movie:
+    if not search:
         await query.answer(OLD_ALRT_TXT.format(query.from_user.first_name), show_alert=True)
         return 
     if language != "home":
-        search = f"{movie} {language}"
+        search = f"{search} {language}"
     if 2 < len(search) < 150:
         settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
         files, offset, total_results = await a_filter.get_search_results(
