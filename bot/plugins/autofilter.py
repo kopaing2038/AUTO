@@ -38,12 +38,10 @@ async def language_check(bot, query):
     _, search, language = data_parts + [""] * (3 - len(data_parts))
     req = query.from_user.id if query.from_user else 0
 
-
-    search = search.replace("CM", "720")
-
     if search in [str(query.from_user.id), "0"]:
         await query.answer(f"No {search.upper()} found!", show_alert=True)
         return
+
     if language == "unknown":
         return await query.answer("Sᴇʟᴇᴄᴛ ᴀɴʏ ʟᴀɴɢᴜᴀɢᴇ ғʀᴏᴍ ᴛʜᴇ ʙᴇʟᴏᴡ ʙᴜᴛᴛᴏɴs !", show_alert=True)
 
@@ -123,7 +121,10 @@ async def select_language(bot, query):
     if len(data_parts) < 2:
         return await query.answer("Invalid data format.", show_alert=True)
     req = query.from_user.id if query.from_user else 0
-    _, search = data_parts
+    
+    # Exclude "CM" from data_parts and use other search data_parts only
+    search_parts = [part for part in data_parts[1:] if part != "CM"]
+    search = "".join(search_parts)
 
     btn = [
         [
