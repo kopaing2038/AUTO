@@ -38,6 +38,9 @@ async def language_check(bot, query):
     _, search, language = data_parts + [""] * (3 - len(data_parts))
     req = query.from_user.id if query.from_user else 0
 
+
+    search = search.replace("CM", "720")
+
     if search in [str(query.from_user.id), "0"]:
         await query.answer(f"No {search.upper()} found!", show_alert=True)
         return
@@ -46,7 +49,7 @@ async def language_check(bot, query):
 
     #search = Cache.KEYWORD.get(query.from_user.id)
 
-    if not language != "home":
+    if language != "home":
         search = f"{search} {language}"
 
     if 2 < len(search) < 150:
