@@ -121,10 +121,12 @@ async def select_language(bot, query):
     if len(data_parts) < 2:
         return await query.answer("Invalid data format.", show_alert=True)
     req = query.from_user.id if query.from_user else 0
-    
-    # Exclude "CM" from data_parts and use other search data_parts only
-    search_parts = [part for part in data_parts[1:] if part != "CM"]
-    search = "".join(search_parts)
+
+    # Exclude "CM" from data_parts and use the remaining parts as the search term
+    search = ""
+    for part in data_parts:
+        if part != "CM":
+            search += part
 
     btn = [
         [
