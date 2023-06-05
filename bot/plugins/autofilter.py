@@ -46,7 +46,7 @@ async def language_check(bot, query):
 
     #search = Cache.KEYWORD.get(query.from_user.id)
 
-    if language != "home":
+    if not language != "home":
         search = f"{search} {language}"
 
     if 2 < len(search) < 150:
