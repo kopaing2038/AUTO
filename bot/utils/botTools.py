@@ -155,7 +155,7 @@ async def format_buttons(files: list, channel: bool):
     # Convert caption text to small caps
     for row in btn:
         for button in row:
-            button.text = button.text.translate(str.maketrans("abcdefghijklmnopgrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890[]{}()&", "𝘢𝘣𝘤𝘥𝘦𝘧𝘨𝘩𝘪𝘫𝘬𝘭𝘮𝘯𝘰𝘱𝘨𝘳𝘴𝘵𝘶𝘷𝘸𝘹𝘺𝘻ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘǫʀꜱᴛᴜᴠᴡxʏᴢ1234567890[]{}()&"))
+            button.text = button.text.translate(str.maketrans("abcdefghijklmnopgrstuvwxyz1234567890[]{}()&", "𝘢𝘣𝘤𝘥𝘦𝘧𝘨𝘩𝘪𝘫𝘬𝘭𝘮𝘯𝘰𝘱𝘨𝘳𝘴𝘵𝘶𝘷𝘸𝘹𝘺𝘻1234567890[]{}()&"))
 
     return btn
 
