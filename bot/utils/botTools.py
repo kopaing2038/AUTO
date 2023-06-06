@@ -128,6 +128,8 @@ async def update_config():
         value = await config_db.get_settings(config)
         if value is not None:
             setattr(Config, config, value)
+
+
 async def format_buttons(files: list, channel: bool):
     if channel:
         btn = [
@@ -155,9 +157,10 @@ async def format_buttons(files: list, channel: bool):
         for button in row:
             caption = button.text
             caption = caption.translate(str.maketrans(
-                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@[]{}().:&",
-                "ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖqʳˢᵗᵘᵛʷˣʸᶻᴬᴮᶜᴰᴱᶠᴳᴴᴵᴶᴷᴸᴹᴺᴼᴾQᴿˢᵀᵁⱽᵂˣʸᶻ⁰¹²³⁴⁵⁶⁷⁸⁹@[]{}().:&"
+                "abcdefghijklmnopqrstuvwxyz0123456789",
+                "ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖqʳˢᵗᵘᵛʷˣʸᶻ⁰¹²³⁴⁵⁶⁷⁸⁹"
             ))
+            caption = caption.replace("[]{}():", "your_word_here")  # Replace characters with your word
             button.text = caption
 
     return btn
