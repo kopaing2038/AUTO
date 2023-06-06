@@ -135,7 +135,7 @@ async def format_buttons(files: list, channel: bool):
         btn = [
             [
                 types.InlineKeyboardButton(
-                    text=f"{file['file_name']} [{get_size(file['file_size'])}] ",
+                    text=f"{file['file_name']} [{get_size(file['file_size'])}]",
                     url=f'{(await parse_link(file["chat_id"], file["message_id"]))}',
                 ),
             ]
@@ -145,18 +145,20 @@ async def format_buttons(files: list, channel: bool):
         btn = [
             [
                 types.InlineKeyboardButton(
-                    text=f"{file['file_name']} [{get_size(file['file_size'])}] ",
+                    text=f"{file['file_name']} [{get_size(file['file_size'])}]",
                     callback_data=f"file {file['_id']}",
                 ),
             ]
             for file in files
         ]
+
     for row in btn:
         for button in row:
             caption = button.text.split(' ')
             caption = [c.upper() if c.islower() else c for c in caption]
             caption = ' '.join(caption)
             button.text = caption.translate(str.maketrans("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘǫʀꜱᴛᴜᴠᴡxʏᴢ"))
+            button.text = button.text[:8]  # Limit the text to the first 8 characters
 
     return btn
 
