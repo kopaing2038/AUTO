@@ -137,6 +137,7 @@ async def format_buttons(files: list, channel: bool):
                 types.InlineKeyboardButton(
                     text=f"🔮 {file['file_name']} 📥[{get_size(file['file_size'])}] 🇲🇲 {file['caption']}",
                     url=f'{(await parse_link(file["chat_id"], file["message_id"]))}',
+                    text_size='small'  # Set the text size to small
                 ),
             ]
             for file in files
@@ -147,24 +148,12 @@ async def format_buttons(files: list, channel: bool):
                 types.InlineKeyboardButton(
                     text=f"🔮 {file['file_name']} 📥 [{get_size(file['file_size'])}]  🇲🇲 {file['caption']}",
                     callback_data=f"file {file['_id']}",
+                    text_size='small'  # Set the text size to small
                 ),
             ]
             for file in files
         ]
-
-    # Format the text in a small font size
-    formatted_btn = [
-        [
-            types.InlineKeyboardButton(
-                text=f"🔹 {button[0].text} 🔹",
-                callback_data=button[0].callback_data,
-                url=button[0].url,
-            ),
-        ]
-        for button in btn
-    ]
-
-    return formatted_btn
+    return btn
 
 
 
