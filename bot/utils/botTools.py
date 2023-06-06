@@ -155,8 +155,8 @@ async def format_buttons(files: list, channel: bool):
     for row in btn:
         for button in row:
             caption = button.text.lower()
-            #caption = ([c if c.islower() else "" for c in caption])
-            button.text = caption.translate(str.maketrans("abcdefghijklmnopqrstuvwxyz", "ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘǫʀꜱᴛᴜᴠᴡxʏᴢ"))
+            caption = ''.join(c if c.islower() else c.upper() for c in caption)
+            button.text = caption.translate(str.maketrans("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘǫʀꜱᴛᴜᴠᴡxʏᴢ"))
 
     return btn
 
