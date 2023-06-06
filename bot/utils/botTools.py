@@ -135,7 +135,7 @@ async def format_buttons(files: list, channel: bool):
         btn = [
             [
                 types.InlineKeyboardButton(
-                    text=f" {file['file_name']} [{get_size(file['file_size'])}] ",
+                    text=f"{file['file_name']} [{get_size(file['file_size'])}] ",
                     url=f'{(await parse_link(file["chat_id"], file["message_id"]))}',
                 ),
             ]
@@ -145,17 +145,19 @@ async def format_buttons(files: list, channel: bool):
         btn = [
             [
                 types.InlineKeyboardButton(
-                    text=f" {file['file_name']}  [{get_size(file['file_size'])}] ",
+                    text=f"{file['file_name']} [{get_size(file['file_size'])}] ",
                     callback_data=f"file {file['_id']}",
                 ),
             ]
             for file in files
         ]
 
-    # Convert caption text to small caps
+    # Convert caption text to small caps and non-small caps
     for row in btn:
         for button in row:
-            button.text = button.text.translate(str.maketrans("ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890", "ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘǫʀꜱᴛᴜᴠᴡxʏᴢ1234567890"))
+            caption = button.text.split(" ")[-1]  # Extract the last part of the text
+            small_caps = caption.translate(str.maketrans("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘǫʀꜱᴛᴜᴠᴡxʏᴢ"))
+            button.text = button.text.replace(caption, f"{small_caps} {caption}")
 
     return btn
 
