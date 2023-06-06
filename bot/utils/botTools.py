@@ -1,6 +1,6 @@
 import base64
 from struct import pack
-
+import string
 from bot import bot
 from pyrogram import Client, enums, errors, types
 from pyrogram.file_id import FileId
@@ -152,15 +152,12 @@ async def format_buttons(files: list, channel: bool):
             for file in files
         ]
 
-    # Convert caption text to small caps
+    small_caps_mapping = str.maketrans(string.ascii_lowercase + string.digits,
+                                       'ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖᵠʳˢᵗᵘᵛʷˣʸᶻ⁰¹²³⁴⁵⁶⁷⁸⁹')
     for row in btn:
         for button in row:
             caption = button.text.lower()
-            caption = caption.translate(str.maketrans(
-                "abcdefghijklmnopqrstuvwxyz0123456789",
-                "ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖᵠʳˢᵗᵘᵛʷˣʸᶻ⁰¹²³⁴⁵⁶⁷⁸⁹"
-            ))
-            caption = caption.replace("[]{}():", "your_word_here")
+            caption = caption.translate(small_caps_mapping)
             button.text = caption
 
     return btn
