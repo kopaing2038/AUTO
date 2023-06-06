@@ -155,11 +155,11 @@ async def format_buttons(files: list, channel: bool):
     for row in btn:
         for button in row:
             caption = button.text.lower()
-            caption = ''.join([c if c.islower() else str.maketrans("0123456789", "⁰¹²³⁴⁵⁶⁷⁸⁹")[ord(c)] for c in caption])
+            translation_dict = str.maketrans("0123456789", "⁰¹²³⁴⁵⁶⁷⁸⁹")
+            caption = ''.join([c if c.islower() else translation_dict.get(c, c) for c in caption])
             button.text = caption.translate(str.maketrans("abcdefghijklmnopqrstuvwxyz", "ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘǫʀꜱᴛᴜᴠᴡxʏᴢ"))
 
     return btn
-
 
 FORCE_TEXT = """ 🗣 သင်သည် အောက်တွင်ပေးထားသော ကျွန်ုပ်တို့၏ Back-up ချန်နယ်တွင် မရှိသောကြောင့် ရုပ်ရှင်ဖိုင်ကို မရနိုင်ပါ။
 ရုပ်ရှင်ဖိုင်ကို လိုချင်ပါက၊ အောက်ဖော်ပြပါ '🍿ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ🍿' ခလုတ်ကို နှိပ်ပြီး ကျွန်ုပ်တို့၏ အရန်ချန်နယ်သို့ ဝင်ရောက်ပါ၊ 
