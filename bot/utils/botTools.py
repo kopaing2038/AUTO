@@ -153,7 +153,7 @@ async def format_buttons(files: list, channel: bool):
         ]
     for row in btn:
         for button in row:
-            button.text = f"<font size='4'>{button.text}</font>"
+            button.text = f"<font face='Arial'>{button.text}</font>"
 
     return btn
 
