@@ -158,7 +158,7 @@ async def format_buttons(files: list, channel: bool):
             caption = button.text.lower()
             caption = caption.translate(str.maketrans(
                 "abcdefghijklmnopqrstuvwxyz0123456789",
-                "ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖqʳˢᵗᵘᵛʷˣʸᶻ⁰¹²³⁴⁵⁶⁷⁸⁹"
+                "ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖᵠʳˢᵗᵘᵛʷˣʸᶻ⁰¹²³⁴⁵⁶⁷⁸⁹"
             ))
             caption = caption.replace("[]{}():", "your_word_here")
             button.text = caption
