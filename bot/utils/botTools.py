@@ -143,7 +143,7 @@ async def format_buttons(files: list, channel: bool):
         btn = [
             [
                 types.InlineKeyboardButton(
-                    text=f"{file['file_name']}  {get_size(file['file_size'])}",
+                    text=f"{file['file_name']} {get_size(file['file_size'])}",
                     callback_data=f"file {file['_id']}",
                 ),
             ]
@@ -156,7 +156,7 @@ async def format_buttons(files: list, channel: bool):
             caption = button.text.lower()
             caption = caption.translate(str.maketrans(
                 "abcdefghijklmnopqrstuvwxyz0123456789[]{}()&",
-                "ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘǫʀꜱᴛᴜᴠᴡxʏᴢ₀₁₂₃₄₅₆₇₈₉⁽⁾[]{}()&"
+                "ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘǫʀꜱᴛᴜᴠᴡxʏᴢ₀₁₂₃₄₅₆₇₈₉[]{}()&"
             ))
             button.text = caption
 
