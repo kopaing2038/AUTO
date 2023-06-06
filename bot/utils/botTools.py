@@ -151,12 +151,9 @@ async def format_buttons(files: list, channel: bool):
             ]
             for file in files
         ]
-
     for row in btn:
         for button in row:
-            caption = button.text.lower()
-            caption = "".join([c if c.islower() else "" for c in caption])
-            button.text = caption.translate(str.maketrans("abcdefghijklmnopqrstuvwxyz", "ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘǫʀꜱᴛᴜᴠᴡxʏᴢ"))
+            button.text = f"<font size='4'>{button.text}</font>"
 
     return btn
 
