@@ -152,14 +152,15 @@ async def format_buttons(files: list, channel: bool):
             for file in files
         ]
 
-    # Convert caption text to small caps and non-small caps
+    # Convert caption text to small caps and no small caps
     for row in btn:
         for button in row:
-            caption = button.text.split(" ")[-1]  # Extract the last part of the text
-            small_caps = caption.translate(str.maketrans("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘǫʀꜱᴛᴜᴠᴡxʏᴢ"))
-            button.text = button.text.replace(caption, f"{small_caps} {caption}")
+            caption = button.text
+            small_caps_caption = caption.translate(str.maketrans("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘǫʀꜱᴛᴜᴠᴡxʏᴢ"))
+            button.text = f"{caption}\n{small_caps_caption}"
 
     return btn
+
 
 
 
