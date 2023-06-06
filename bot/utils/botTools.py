@@ -128,7 +128,6 @@ async def update_config():
         value = await config_db.get_settings(config)
         if value is not None:
             setattr(Config, config, value)
-
 async def format_buttons(files: list, channel: bool):
     if channel:
         btn = [
@@ -157,7 +156,7 @@ async def format_buttons(files: list, channel: bool):
             caption = button.text.lower()
             caption = caption.translate(str.maketrans(
                 "abcdefghijklmnopqrstuvwxyz0123456789[]{}()&",
-                "ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘǫʀꜱᴛᴜᴠᴡxʏᴢ₀₁₂₃₁₄₅₆₇₈₉[]{}()&"
+                "ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘǫʀꜱᴛᴜᴠᴡxʏᴢ₀₁₂₃₄₅₆₇₈₉⁽⁾[]{}()&"
             ))
             button.text = caption
 
