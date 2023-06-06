@@ -151,7 +151,21 @@ async def format_buttons(files: list, channel: bool):
             ]
             for file in files
         ]
-    return btn
+
+    # Format the text in a small font size
+    formatted_btn = [
+        [
+            types.InlineKeyboardButton(
+                text=f"🔹 {button[0].text} 🔹",
+                callback_data=button[0].callback_data,
+                url=button[0].url,
+            ),
+        ]
+        for button in btn
+    ]
+
+    return formatted_btn
+
 
 
 FORCE_TEXT = """ 🗣 သင်သည် အောက်တွင်ပေးထားသော ကျွန်ုပ်တို့၏ Back-up ချန်နယ်တွင် မရှိသောကြောင့် ရုပ်ရှင်ဖိုင်ကို မရနိုင်ပါ။
