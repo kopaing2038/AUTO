@@ -168,6 +168,9 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         files, offset, total_results = await a_filter.get_search_results(
             search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER']
         )
+        files, offset, total_results = await b_filter.get_search_results(
+            search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER']
+        )
         if not files:
             return
     else:
@@ -201,10 +204,11 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         ]
 
     if imdb:
-        cap = Config.TEMPLATE.format(
+        cap += f"""<small>{Config.TEMPLATE.format(  # type: ignore
             query=search,
             **imdb,
             **locals(),
+        )}</small>"""
         )
     else:
         cap = f"𝗤𝘂𝗲𝗿𝘆   : {search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"
