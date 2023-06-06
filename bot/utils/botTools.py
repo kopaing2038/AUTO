@@ -131,34 +131,35 @@ async def update_config():
 
 
 async def format_buttons(files: list, channel: bool):
-    if channel:
-        btn = [
-            [
+    btn = []
+    for file in files:
+        if channel:
+            button_text = f"{file['file_name']} [{get_size(file['file_size'])}]"
+            button_url = await parse_link(file["chat_id"], file["message_id"])
+            btn.append([
                 types.InlineKeyboardButton(
-                    text=f"<code><small>{file['file_name']}</small> [{get_size(file['file_size'])}]</code>",
-                    url=f'{(await parse_link(file["chat_id"], file["message_id"]))}',
-                ),
-            ]
-            for file in files
-        ]
-    else:
-        btn = [
-            [
+                    text=f"<code>{button_text}</code>",
+                    url=button_url,
+                )
+            ])
+        else:
+            button_text = f"{file['file_name']} [{get_size(file['file_size'])}]"
+            button_callback_data = f"file {file['_id']}"
+            btn.append([
                 types.InlineKeyboardButton(
-                    text=f"<code><small>{file['file_name']}</small> [{get_size(file['file_size'])}]</code>",
-                    callback_data=f"file {file['_id']}",
-                ),
-            ]
-            for file in files
-        ]
+                    text=f"<code>{button_text}</code>",
+                    callback_data=button_callback_data,
+                )
+            ])
     for row in btn:
         for button in row:
             caption = button.text.split(' ')
             caption = [c.upper() if c.islower() else c for c in caption]
             caption = ' '.join(caption)
             button.text = caption.translate(str.maketrans("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘǫʀꜱᴛᴜᴠᴡxʏᴢ"))
-
+            button.text = f"<code><small>{button.text}</small></code>"
     return btn
+
 
 
 FORCE_TEXT = """ 🗣 သင်သည် အောက်တွင်ပေးထားသော ကျွန်ုပ်တို့၏ Back-up ချန်နယ်တွင် မရှိသောကြောင့် ရုပ်ရှင်ဖိုင်ကို မရနိုင်ပါ။
