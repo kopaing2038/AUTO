@@ -135,9 +135,9 @@ async def format_buttons(files: list, channel: bool):
         btn = [
             [
                 types.InlineKeyboardButton(
-                    text=f"🔮 {file['file_name']} 📥[{get_size(file['file_size'])}] 🇲🇲 {file['caption']}",
+                    text=f"🔮 {file['file_name']} 📥[{get_size(file['file_size'])}] 🇲🇲 <code>{file['caption']}</code>",
                     url=f'{(await parse_link(file["chat_id"], file["message_id"]))}',
-                    text_size='small'  # Set the text size to small
+                    parse_mode='HTML'  # Enable HTML parsing for the button text
                 ),
             ]
             for file in files
@@ -146,15 +146,14 @@ async def format_buttons(files: list, channel: bool):
         btn = [
             [
                 types.InlineKeyboardButton(
-                    text=f"🔮 {file['file_name']} 📥 [{get_size(file['file_size'])}]  🇲🇲 {file['caption']}",
+                    text=f"🔮 {file['file_name']} 📥 [{get_size(file['file_size'])}]  🇲🇲 <code>{file['caption']}</code>",
                     callback_data=f"file {file['_id']}",
-                    text_size='small'  # Set the text size to small
+                    parse_mode='HTML'  # Enable HTML parsing for the button text
                 ),
             ]
             for file in files
         ]
     return btn
-
 
 
 FORCE_TEXT = """ 🗣 သင်သည် အောက်တွင်ပေးထားသော ကျွန်ုပ်တို့၏ Back-up ချန်နယ်တွင် မရှိသောကြောင့် ရုပ်ရှင်ဖိုင်ကို မရနိုင်ပါ။
