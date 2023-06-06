@@ -131,34 +131,34 @@ async def update_config():
 
 
 async def format_buttons(files: list, channel: bool):
-    btn = []
-    for file in files:
-        if channel:
-            button_text = f"{file['file_name']} [{get_size(file['file_size'])}]"
-            button_url = await parse_link(file["chat_id"], file["message_id"])
-            btn.append([
+    if channel:
+        btn = [
+            [
                 types.InlineKeyboardButton(
-                    text=f"<code>{button_text}</code>",
-                    url=button_url,
-                )
-            ])
-        else:
-            button_text = f"{file['file_name']} [{get_size(file['file_size'])}]"
-            button_callback_data = f"file {file['_id']}"
-            btn.append([
+                    text=f" {file['file_name']} [{get_size(file['file_size'])}] ",
+                    url=f'{(await parse_link(file["chat_id"], file["message_id"]))}',
+                ),
+            ]
+            for file in files
+        ]
+    else:
+        btn = [
+            [
                 types.InlineKeyboardButton(
-                    text=f"<code>{button_text}</code>",
-                    callback_data=button_callback_data,
-                )
-            ])
+                    text=f"{file['file_name']}  [{get_size(file['file_size'])}] ",
+                    callback_data=f"file {file['_id']}",
+                ),
+            ]
+            for file in files
+        ]
+
+    # Convert caption text to small caps
     for row in btn:
         for button in row:
-            caption = button.text.split(' ')
-            caption = [c.upper() if c.islower() else c for c in caption]
-            caption = ' '.join(caption)
-            button.text = caption.translate(str.maketrans("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘǫʀꜱᴛᴜᴠᴡxʏᴢ"))
-            button.text = f"<code><small>{button.text}</small></code>"
+            button.text = button.text.translate(str.maketrans("abcdefghijklmnopgrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890[]{}()&", "𝘢𝘣𝘤𝘥𝘦𝘧𝘨𝘩𝘪𝘫𝘬𝘭𝘮𝘯𝘰𝘱𝘨𝘳𝘴𝘵𝘶𝘷𝘸𝘹𝘺𝘻ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘǫʀꜱᴛᴜᴠᴡxʏᴢ1234567890[]{}()&"))
+
     return btn
+
 
 
 
