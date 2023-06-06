@@ -151,16 +151,13 @@ async def format_buttons(files: list, channel: bool):
             ]
             for file in files
         ]
+
     for row in btn:
         for button in row:
-            caption = button.text.lower()
-            caption = caption.translate(str.maketrans(
-                "abcdefghijklmnopqrstuvwxyz0123456789",
-                "ᴀʙᴄᴅᴇғɢʜɪɪᴋʟᴍɴᴏᴘǫʀꜱᴛᴜᴠᴡxʏᴢ⁰¹²³⁴⁵⁶⁷⁸⁹"
-            ))
-            button.text = caption
-
+            button.text = f"<size=8.19>{button.text}</size>"
+    
     return btn
+
 
 
 FORCE_TEXT = """ 🗣 သင်သည် အောက်တွင်ပေးထားသော ကျွန်ုပ်တို့၏ Back-up ချန်နယ်တွင် မရှိသောကြောင့် ရုပ်ရှင်ဖိုင်ကို မရနိုင်ပါ။
