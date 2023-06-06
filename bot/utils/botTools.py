@@ -151,16 +151,17 @@ async def format_buttons(files: list, channel: bool):
             ]
             for file in files
         ]
-
-    small_caps_mapping = str.maketrans(string.ascii_lowercase + string.digits,
-                                       'ᴀʙᴄᴅᴇғɢʜɪɪᴋʟᴍɴᴏᴘǫʀꜱᴛᴜᴠᴡxʏᴢ⁰¹²³⁴⁵⁶⁷⁸⁹')
     for row in btn:
         for button in row:
             caption = button.text.lower()
-            caption = caption.translate(small_caps_mapping)
+            caption = caption.translate(str.maketrans(
+                "abcdefghijklmnopqrstuvwxyz0123456789",
+                "ᴀʙᴄᴅᴇғɢʜɪɪᴋʟᴍɴᴏᴘǫʀꜱᴛᴜᴠᴡxʏᴢ⁰¹²³⁴⁵⁶⁷⁸⁹"
+            ))
             button.text = caption
 
     return btn
+
 
 FORCE_TEXT = """ 🗣 သင်သည် အောက်တွင်ပေးထားသော ကျွန်ုပ်တို့၏ Back-up ချန်နယ်တွင် မရှိသောကြောင့် ရုပ်ရှင်ဖိုင်ကို မရနိုင်ပါ။
 ရုပ်ရှင်ဖိုင်ကို လိုချင်ပါက၊ အောက်ဖော်ပြပါ '🍿ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ🍿' ခလုတ်ကို နှိပ်ပြီး ကျွန်ုပ်တို့၏ အရန်ချန်နယ်သို့ ဝင်ရောက်ပါ၊ 
