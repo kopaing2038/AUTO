@@ -129,7 +129,6 @@ async def update_config():
         if value is not None:
             setattr(Config, config, value)
 
-
 async def format_buttons(files: list, channel: bool):
     if channel:
         btn = [
@@ -137,7 +136,6 @@ async def format_buttons(files: list, channel: bool):
                 types.InlineKeyboardButton(
                     text=f" {file['file_name']} [{get_size(file['file_size'])}] ",
                     url=f'{(await parse_link(file["chat_id"], file["message_id"]))}',
-                    small=True,  # Display text in smallest font style
                 ),
             ]
             for file in files
@@ -148,14 +146,19 @@ async def format_buttons(files: list, channel: bool):
                 types.InlineKeyboardButton(
                     text=f"{file['file_name']}  [{get_size(file['file_size'])}] ",
                     callback_data=f"file {file['_id']}",
-                    small=True,  # Display text in smallest font style
                 ),
             ]
             for file in files
         ]
+
+    # Convert caption text to small caps
+    for row in btn:
+        for button in row:
+            caption = button.text.lower()
+            caption = "".join([c if c.islower() else "" for c in caption])
+            button.text = caption.translate(str.maketrans("abcdefghijklmnopqrstuvwxyz", "ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘǫʀꜱᴛᴜᴠᴡxʏᴢ"))
+
     return btn
-
-
 
 FORCE_TEXT = """ 🗣 သင်သည် အောက်တွင်ပေးထားသော ကျွန်ုပ်တို့၏ Back-up ချန်နယ်တွင် မရှိသောကြောင့် ရုပ်ရှင်ဖိုင်ကို မရနိုင်ပါ။
 ရုပ်ရှင်ဖိုင်ကို လိုချင်ပါက၊ အောက်ဖော်ပြပါ '🍿ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ🍿' ခလုတ်ကို နှိပ်ပြီး ကျွန်ုပ်တို့၏ အရန်ချန်နယ်သို့ ဝင်ရောက်ပါ၊ 
