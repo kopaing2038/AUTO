@@ -153,7 +153,7 @@ async def format_buttons(files: list, channel: bool):
         ]
 
     small_caps_mapping = str.maketrans(string.ascii_lowercase + string.digits,
-                                       'ᴀʙᴄᴅᴇғɢʜɪɪᴋʟᴍɴᴏᴘǫʀꜱᴛᴜᴠᴡxʏᴢ₀₁₂₃₄₅₆₇₈₉')
+                                       'ᴀʙᴄᴅᴇғɢʜɪɪᴋʟᴍɴᴏᴘǫʀꜱᴛᴜᴠᴡxʏᴢ⁰¹²³⁴⁵⁶⁷⁸⁹')
     for row in btn:
         for button in row:
             caption = button.text.lower()
