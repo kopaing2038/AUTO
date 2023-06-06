@@ -160,6 +160,7 @@ async def format_buttons(files: list, channel: bool):
                 "abcdefghijklmnopqrstuvwxyz0123456789",
                 "ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖqʳˢᵗᵘᵛʷˣʸᶻ⁰¹²³⁴⁵⁶⁷⁸⁹"
             ))
+            caption = caption.replace("[]{}():", "your_word_here")
             button.text = caption
 
     return btn
