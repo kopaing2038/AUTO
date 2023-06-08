@@ -50,7 +50,7 @@ async def language_check(bot, query):
     if language != "home":
         search = f"{search} {language}"
 
-    if 2 < len(search) < 150:
+    if 3 < len(search) < 150:
         settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
         files, offset, total_results = await a_filter.get_search_results(
             search.lower(), offset=0, filter=True
@@ -70,6 +70,7 @@ async def language_check(bot, query):
     else:
         imdb = {}
     Cache.SEARCH_DATA[key] = files, offset, total_results, imdb, settings
+
     btn = await format_buttons(files, settings["CHANNEL"])
     settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
     if not settings.get("DOWNLOAD_BUTTON"):
@@ -155,7 +156,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
     if message.text.startswith("/"):
         return  # ignore commands
 
-    if re.findall(r"((^\/|^,|^!|^\.|^[\U0001F600-\U000E007F()]).*)", str(message.text), re.UNICODE):
+    if re.findall(r"((^\/|^,|^!|^\.|^[\U0001F600-\U000E007F]).*)", str(message.text), re.UNICODE):
         return
 
     if 2 < len(message.text) < 150:
