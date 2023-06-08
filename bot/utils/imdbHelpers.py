@@ -188,10 +188,23 @@ class IMDB(Imdb):
         _res = _REGEX_POSTER.search(posterURL)
         if not _res:
             return ""
-        aspect_ratio = _res.group("aspectRatio")
-        if aspect_ratio != "SY1000":
+
+        image_url = f'https://m.media-amazon.com/images/M/{_res.group("posterID")}._V1_UX{quality}.{_res.group("ext")}'
+        aspect_ratio = self._get_image_aspect_ratio(image_url)
+        if aspect_ratio != 16 / 9:
             return ""
-        return f'https://m.media-amazon.com/images/M/{_res.group("posterID")}._V1_UX{quality}.{_res.group("ext")}'
+
+        return image_url
+
+    def _get_image_aspect_ratio(self, image_url: str) -> float:
+        response = requests.get(image_url, stream=True)
+        response.raw.decode_content = True
+
+        with Image.open(response.raw) as image:
+            width, height = image.size
+            aspect_ratio = width / height
+
+        return aspect_ratio
 
 
 
