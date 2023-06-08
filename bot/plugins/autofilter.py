@@ -57,7 +57,7 @@ async def language_check(bot, query):
         )
 
         if not files:
-            await query.answer("The file does not exist.")
+            await query.answer(f"The {search} file does not exist.", show_alert=True)
             return
     else:
         return
