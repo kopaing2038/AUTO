@@ -166,7 +166,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         files_a, offset, total_results_a = await a_filter.get_search_results(
             search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER']
         )
-        files_b, offset, total_results_b = await a_filter.get_search_results(
+        files_b, offset, total_results_b = await b_filter.get_search_results(
             search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER']
         )
         files = files_a + files_b  # Combine the files from both filters
