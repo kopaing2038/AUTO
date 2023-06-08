@@ -224,16 +224,9 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         else:
             btn_a = [
                 [
-                    types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")
-                    )
+                    types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")                    
                 ]
             ]
-
-
-        btn_a.append([
-            
-        
-        ])
 
     if files_b:
         if not settings.get("DOWNLOAD_BUTTON"):
