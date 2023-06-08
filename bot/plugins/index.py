@@ -212,10 +212,15 @@ async def index_files_to_db(lst_msg_id: int, chat: int, msg: types.Message, bot:
                     continue
                 media.file_type = message.media.value
                 if media.file_type == "photo":
-                    media.file_name = message.caption
+                    media.file_name = message.caption.split('\n')[0] if message.caption else ""
                     media.mime_type = "image/jpg"
+                elif media.file_type == "document" and message.document is not None:
+                    media.file_name = message.document.file_name if message.document.file_name else ""
+                    media.mime_type = message.document.mime_type if message.document.mime_type else ""
+                media.caption = message.caption if message.caption else ""
                 media.caption = message.caption
                 media.chat_id = message.chat.id
+                media.channel_name = message.chat.username or message.chat.title
                 media.message_id = message.id
                 inserted, errored = await a_filter.insert_many(media)
                 if inserted:
@@ -286,10 +291,15 @@ async def index_files_to_chdb(lst_msg_id: int, chat: int, msg: types.Message, bo
                     continue
                 media.file_type = message.media.value
                 if media.file_type == "photo":
-                    media.file_name = message.caption
+                    media.file_name = message.caption.split('\n')[0] if message.caption else ""
                     media.mime_type = "image/jpg"
+                elif media.file_type == "document" and message.document is not None:
+                    media.file_name = message.document.file_name if message.document.file_name else ""
+                    media.mime_type = message.document.mime_type if message.document.mime_type else ""
+                media.caption = message.caption if message.caption else ""
                 media.caption = message.caption
                 media.chat_id = message.chat.id
+                media.channel_name = message.chat.username or message.chat.title
                 media.message_id = message.id
                 inserted, errored = await b_filter.insert_many(media)
                 if inserted:
