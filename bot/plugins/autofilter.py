@@ -28,6 +28,7 @@ async def auto_filter(bot: Bot, message: types.Message, text=True):
     if settings['CH_POST']:
         kt = await ch9_imdb(bot, message)
 
+
 @Bot.on_callback_query(filters.regex(r"^lang"))
 async def language_check(bot, query):
     data_parts = query.data.split("#")
@@ -45,7 +46,6 @@ async def language_check(bot, query):
     if language == "unknown":
         return await query.answer("Sᴇʟᴇᴄᴛ ᴀɴʏ ʟᴀɴɢᴜᴀɢᴇ ғʀᴏᴍ ᴛʜᴇ ʙᴇʟᴏᴡ ʙᴜᴛᴛᴏɴs !", show_alert=True)
 
-    #search = Cache.KEYWORD.get(query.from_user.id)
 
     if language != "home":
         search = f"{search} {language}"
@@ -57,6 +57,7 @@ async def language_check(bot, query):
         )
 
         if not files:
+            await query.answer("The file does not exist.")
             return
     else:
         return
@@ -85,15 +86,9 @@ async def language_check(bot, query):
                     ),
                 ]
             )
-            btn.insert(0, [
-                types.InlineKeyboardButton("! Data ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")
-            ])
         else:
             btn.append([
                 types.InlineKeyboardButton(text="🗓 1/1", callback_data="pages")
-            ])
-            btn.insert(0, [
-                types.InlineKeyboardButton("! Data  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")
             ])
     else:
         btn = [
@@ -128,6 +123,7 @@ async def select_language(bot, query):
             types.InlineKeyboardButton("↓ Channel နဲ့ Video Quality ရွေးချယ်ပါ။ ↓", callback_data=f"lang#{search}#unknown")
         ],
         [
+            types.InlineKeyboardButton("Eɴɢʟɪꜱʜ", callback_data=f"lang#{search}#eng"),
             types.InlineKeyboardButton("Channel Myanmar", callback_data=f"lang#{search}#cm"),
             types.InlineKeyboardButton("Gold Channel", callback_data=f"lang#{search}#gc"),
         ],
