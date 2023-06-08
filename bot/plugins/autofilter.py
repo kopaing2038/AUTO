@@ -118,12 +118,12 @@ async def language_check(bot, query):
 @Bot.on_callback_query(filters.regex(r"^select_lang"))
 async def select_language(bot, query):
     data_parts = query.data.split("#")
-    if len(data_parts) < 3:
+    if len(data_parts) < 2:
         return await query.answer("Invalid data format.", show_alert=True)
     req = query.from_user.id if query.from_user else 0
 
-    _, search, req = data_parts
-    if int(req) not in [query.from_user.id, 0]:
+    _, search = data_parts
+    if int(search) not in [query.from_user.id, 0]:
         return await query.answer("This is not for you", show_alert=True)
 
     btn = [
