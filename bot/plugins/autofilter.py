@@ -156,7 +156,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
     if message.text.startswith("/"):
         return  # ignore commands
 
-    if re.findall(r"^(\/|,|!|\.|[\U0001F600-\U000E007F\[\]])", str(message.text), re.UNICODE):
+    if re.findall(r"^[(\/|,|!|\.|[\U0001F600-\U000E007F])]", str(message.text), re.UNICODE):
         return
 
     if 2 < len(message.text) < 150:
