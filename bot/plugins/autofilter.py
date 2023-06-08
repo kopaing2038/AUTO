@@ -125,18 +125,18 @@ async def select_language(bot, query):
         ],
         [
             types.InlineKeyboardButton("Eɴɢʟɪꜱʜ", callback_data=f"lang#{search}#eng"),
-            types.InlineKeyboardButton("Channel Myanmar", callback_data=f"lang#{search}#cm"),
-            types.InlineKeyboardButton("Gold Channel", callback_data=f"lang#{search}#gc"),
+            types.InlineKeyboardButton("Channel Myanmar", callback_data=f"lang#{search}#cm_or\\[cm\\]"),
+            types.InlineKeyboardButton("Gold Channel", callback_data=f"lang#{search}#gc_or\\[gc\\]"),
         ],
         [
-            types.InlineKeyboardButton("One Channel", callback_data=f"lang#{search}#one"),
-            types.InlineKeyboardButton("Happy Channel", callback_data=f"lang#{search}#hc"),
+            types.InlineKeyboardButton("One Channel", callback_data=f"lang#{search}#one_or\\[one\\]"),
+            types.InlineKeyboardButton("Happy Channel", callback_data=f"lang#{search}#hc_or\\[hc\\]"),
         ],
         [
-            types.InlineKeyboardButton("360P", callback_data=f"lang#{search}#360"),
-            types.InlineKeyboardButton("480P", callback_data=f"lang#{search}#480"),
-            types.InlineKeyboardButton("720P", callback_data=f"lang#{search}#720"),
-            types.InlineKeyboardButton("1080P", callback_data=f"lang#{search}#1080")
+            types.InlineKeyboardButton("360P", callback_data=f"lang#{search}#360_or\\[360p\\]"),
+            types.InlineKeyboardButton("480P", callback_data=f"lang#{search}#480_or\\[480p\\]"),
+            types.InlineKeyboardButton("720P", callback_data=f"lang#{search}#720_or\\[720p\\]"),
+            types.InlineKeyboardButton("1080P", callback_data=f"lang#{search}#1080_or\\[1080p\\]")
         ],
         [
             types.InlineKeyboardButton("Gᴏ Bᴀᴄᴋ", callback_data=f"lang#{search}#home")
