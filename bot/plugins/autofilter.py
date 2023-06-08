@@ -176,9 +176,9 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
     else:
         return
 
-    key = f"{message.chat.id}-{message.id}"
+    #key = f"{message.chat.id}-{message.id}"
 
-    Cache.BUTTONS[key] = search
+   # Cache.BUTTONS[key] = search
 
     btn_a = []
     btn_b = []
@@ -193,10 +193,6 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
             imdb = {}
         Cache.SEARCH_DATA[key] = files_a, offset, total_results_a, imdb, settings
 
-        req = message.from_user.id if message.from_user else 0
-        if not req:
-            await query.answer("no", show_alert=True)
-            return
         btn_a.append([
             types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")
         
