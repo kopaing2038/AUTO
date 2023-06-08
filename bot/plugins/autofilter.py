@@ -29,16 +29,16 @@ async def auto_filter(bot: Bot, message: types.Message, text=True):
         kt = await ch9_imdb(bot, message)
 
 
+
 @Bot.on_callback_query(filters.regex(r"^lang"))
 async def language_check(bot, query):
-    data_parts = query.data.split("#")
+    data_parts = re.split(r"#(?!\[)", query.data)  # Split on '#' but exclude '#' within square brackets
 
     if len(data_parts) < 2:
         return await query.answer("Invalid data format.", show_alert=True)
 
-    _, search, language = data_parts[:3] + [""] * (3 - len(data_parts))
+    _, search, language = data_parts + [""] * (3 - len(data_parts))
     req = query.from_user.id if query.from_user else 0
-
 
     if search in [str(query.from_user.id), "0"]:
         await query.answer(f"No {search.upper()} found!", show_alert=True)
