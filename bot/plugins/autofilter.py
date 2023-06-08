@@ -169,8 +169,8 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         files_b, offset, total_results_b = await b_filter.get_search_results(
             search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER']
         )
-        #files = files_a + files_b  # Combine the files from both filters
-        #total_results = total_results_a + total_results_b  # Combine the total results from both filters
+        # files = files_a + files_b  # Combine the files from both filters
+        # total_results = total_results_a + total_results_b  # Combine the total results from both filters
         if not files_b:
             return
     else:
@@ -180,22 +180,21 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
 
     Cache.BUTTONS[key] = search
 
-
     btn_a = []
     btn_b = []
+
     if files_a:
-        key = f"{message.chat.id}-{message.id}"    
+        key = f"{message.chat.id}-{message.id}"
         Cache.BUTTONS[key] = search
         settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
         if settings["IMDB"]:  # type: ignore
-           imdb = await get_poster(search, file=(files_a[0])["file_name"])
+            imdb = await get_poster(search, file=(files_a[0])["file_name"])
         else:
             imdb = {}
         Cache.SEARCH_DATA[key] = files_a, offset, total_results_a, imdb, settings
         btn_a.append([
             types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")
         ])
-
 
     elif files_b:
         key = f"{message.chat.id}-{message.id}"
@@ -204,7 +203,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         if settings["IMDB"]:  # type: ignore
             imdb = await get_poster(search, file=(files_b[0])["file_name"])
         else:
-           imdb = {}
+            imdb = {}
         Cache.SEARCH_DATA[key] = files_b, offset, total_results_b, imdb, settings
         btn_b = await format_buttons(files_b, settings["CHANNEL"])
     else:
@@ -233,7 +232,9 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         else:
             btn_b = [
                 [
-                    types.InlineKeyboardButton(f"📥  {search}  📥", url=f"https://t.me/{bot.me.username}?start=filter{key}")
+                    types.InlineKeyboardButton(
+                        f"📥  {search}  📥", url=f"https://t.me/{bot.me.username}?start=filter{key}"
+                    )
                 ]
             ]
 
@@ -243,6 +244,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
             **imdb,
             **locals(),
         )
+
     else:
         cap = f"𝗤𝘂𝗲𝗿𝘆   :{search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results_a}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"
     cap2 = f"𝗤𝘂𝗲𝗿𝘆   : {search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results_b}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"	
