@@ -121,9 +121,10 @@ async def select_language(bot, query):
     if len(data_parts) < 3:
         return await query.answer("Invalid data format.", show_alert=True)
     req = query.from_user.id if query.from_user else 0
-    if int(data_parts) not in [query.from_user.id, 0]:
+
+    _, search, req = data_parts
+    if int(req) not in [query.from_user.id, 0]:
         return await query.answer("This is not for you", show_alert=True)
-    _, search = data_parts
 
     btn = [
         [
