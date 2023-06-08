@@ -192,9 +192,12 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         else:
             imdb = {}
         Cache.SEARCH_DATA[key] = files_a, offset, total_results_a, imdb, settings
-        user_id = message.from_user.id if message.from_user else 0
+
+        req = message.from_user.id if message.from_user else 0
+        if int(req) not in [message.from_user.id, 0]:
+            return await message.answer("This is not for you")
         btn_a.append([
-            types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}_{user_id}")
+            types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")
         ])
 
     elif files_b:
