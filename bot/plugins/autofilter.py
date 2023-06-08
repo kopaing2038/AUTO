@@ -166,14 +166,13 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         files_a, offset, total_results_a = await a_filter.get_search_results(
             search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER']
         )
-        if not files_a:
-            files_b, offset, total_results_b = await b_filter.get_search_results(
-                search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER']
-            )
+        files_b, offset, total_results_b = await b_filter.get_search_results(
+            search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER']
+        )
         # files = files_a + files_b  # Combine the files from both filters
         # total_results = total_results_a + total_results_b  # Combine the total results from both filters
-            if not files_b:
-                return
+        if not files_b:
+            return
     else:
         return
 
@@ -194,10 +193,6 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
             imdb = {}
         Cache.SEARCH_DATA[key] = files_a, offset, total_results_a, imdb, settings
 
-        btn_a.append([
-            types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")
-        
-        ])
 
     elif files_b:
         key = f"{message.chat.id}-{message.id}"
@@ -211,6 +206,36 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         btn_b = await format_buttons(files_b, settings["CHANNEL"])
     else:
         return
+
+    if files_a:
+        if not settings.get("DOWNLOAD_BUTTON"):            
+            if offset != "":
+                req = message.from_user.id if message.from_user else 0
+                btn_a.append(
+                    [
+                        types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")
+                        ),
+                        types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")
+                        ),
+                    ]
+                )
+            else:
+                btn_a.append(
+                    [types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")]
+                )
+        else:
+            btn_a = [
+                [
+                    types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")
+                    )
+                ]
+            ]
+
+
+        btn_a.append([
+            
+        
+        ])
 
     if files_b:
         if not settings.get("DOWNLOAD_BUTTON"):
