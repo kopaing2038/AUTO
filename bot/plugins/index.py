@@ -52,8 +52,8 @@ async def index_files(bot: Bot, query: types.CallbackQuery):
         chat = chat
     await index_files_to_db(int(lst_msg_id), chat, msg, bot)  # type: ignore
 
-@Bot.on_callback_query(filters.regex(r"^index2"))  # type: ignore
-async def index_files2(bot: Bot, query: types.CallbackQuery):
+@Bot.on_callback_query(filters.regex(r"^indexch2"))  # type: ignore
+async def index_filesch2(bot: Bot, query: types.CallbackQuery):
     if query.data.startswith("index_cancel 2"):  # type: ignore
         Cache.CANCEL = True  # type: ignore
         return await query.answer("Cancelling Indexing 2")
@@ -83,7 +83,7 @@ async def index_files2(bot: Bot, query: types.CallbackQuery):
         chat = int(chat)
     except:
         chat = chat
-    await index_files_to_db2(int(lst_msg_id), chat, msg, bot)  # type: ignore
+    await index_files_to_ch2db(int(lst_msg_id), chat, msg, bot)  # type: ignore
 
 
 
@@ -134,7 +134,7 @@ async def send_for_index(bot: Bot, message: types.Message):
             [
                 InlineKeyboardButton(
                     "Yes2",
-                    callback_data=f"index2#accept#{chat_id}#{last_msg_id}#{message.from_user.id}",
+                    callback_data=f"indexch2#accept#{chat_id}#{last_msg_id}#{message.from_user.id}",
                 )
             ],
             [
@@ -236,7 +236,7 @@ async def index_files_to_db(lst_msg_id: int, chat: int, msg: types.Message, bot:
                 f"Successfully saved <code>{total_files} / {current}</code> to dataBase!\nDuplicate Files Skipped: <code>{duplicate}</code>\nDeleted Messages Skipped: <code>{deleted}</code>\nNon-Media messages skipped: <code>{no_media + unsupported}</code>(Unsupported Media - `{unsupported}` )\nErrors Occurred: <code>{errors}</code>"
             )
 
-async def index_files_to_db2(lst_msg_id: int, chat: int, msg: types.Message, bot: Bot):
+async def index_files_to_dbch2(lst_msg_id: int, chat: int, msg: types.Message, bot: Bot):
     total_files = 0
     duplicate = 0
     errors = 0
