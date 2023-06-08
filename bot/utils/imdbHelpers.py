@@ -1,3 +1,4 @@
+
 import asyncio
 import re
 import time
@@ -35,7 +36,7 @@ _PREFERRED_QUALITY = 320
 
 
 _REGEX_POSTER = re.compile(
-    r"https:\/\/m.media-amazon.com\/images\/M\/(?P<posterID>[a-zA-Z0-9_\-@]*)\._V1_(?P<aspectRatio>.*?)\.(?P<ext>\w+)",
+    r"https:\/\/m.media-amazon.com\/images\/M\/(?P<posterID>[a-zA-Z0-9_\-@]*)\._V1_(?P<ext>\w+)",
     re.IGNORECASE,
 )
 
@@ -172,11 +173,16 @@ class IMDB(Imdb):
                 self.titleCache[imdbID] = {"time": time.time(), "data": info}
         return self.titleCache.get(imdbID, {}).get("data")  # type: ignore
 
+
     def parsePoster(self, posterURL: str, quality: int = _PREFERRED_QUALITY) -> str:
         _res = _REGEX_POSTER.search(posterURL)
         if not _res:
             return ""
-        return f'https://m.media-amazon.com/images/M/{_res.group("posterID")}._V1_UX{quality}.{_res.group("ext")}'
+
+        poster_id = _res.group("posterID")
+        ext = _res.group("ext")
+
+        return f'https://m.media-amazon.com/images/M/{poster_id}._V1_UX{quality}_CR0,0,16,9_{ext}'
 
     def parseTemplate(self, template: str, data: dict) -> str:
         try:
@@ -184,28 +190,11 @@ class IMDB(Imdb):
         except Exception:
             return _DEFAULT_TEMPLATE.format(**data)
 
-    def parsePoster(self, posterURL: str, quality: int = _PREFERRED_QUALITY) -> str:
-        _res = _REGEX_POSTER.search(posterURL)
-        if not _res:
+    async def parsedText(self, imdbID, template: str):
+        imdbInfo = await self.getInfo(imdbID)
+        if not imdbInfo:
             return ""
-
-        image_url = f'https://m.media-amazon.com/images/M/{_res.group("posterID")}._V1_UX{quality}.{_res.group("ext")}'
-        aspect_ratio = self._get_image_aspect_ratio(image_url)
-        if aspect_ratio != 16 / 9:
-            return ""
-
-        return image_url
-
-    def _get_image_aspect_ratio(self, image_url: str) -> float:
-        response = requests.get(image_url, stream=True)
-        response.raw.decode_content = True
-
-        with Image.open(response.raw) as image:
-            width, height = image.size
-            aspect_ratio = width / height
-
-        return aspect_ratio
-
+        return self.parseTemplate(template, imdbInfo)
 
 
 IMDb = IMDB()
@@ -277,4 +266,3 @@ async def get_photo(query: str, file: str = None) -> dict:
     except Exception as e:
         log.exception(e)
         return {}
-
