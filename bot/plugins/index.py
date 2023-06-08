@@ -52,7 +52,7 @@ async def index_files(bot: Bot, query: types.CallbackQuery):
         chat = chat
     await index_files_to_db(int(lst_msg_id), chat, msg, bot)  # type: ignore
 
-@Bot.on_callback_query(filters.regex(r"^indexch2"))  # type: ignore
+@Bot.on_callback_query(filters.regex(r"^ch2index"))  # type: ignore
 async def index_filesch2(bot: Bot, query: types.CallbackQuery):
     if query.data.startswith("index_cancel 2"):  # type: ignore
         Cache.CANCEL = True  # type: ignore
@@ -134,7 +134,7 @@ async def send_for_index(bot: Bot, message: types.Message):
             [
                 InlineKeyboardButton(
                     "Yes2",
-                    callback_data=f"indexch2#accept#{chat_id}#{last_msg_id}#{message.from_user.id}",
+                    callback_data=f"ch2index#accept#{chat_id}#{last_msg_id}#{message.from_user.id}",
                 )
             ],
             [
