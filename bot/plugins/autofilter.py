@@ -168,9 +168,6 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         files, offset, total_results = await a_filter.get_search_results(
             search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER']
         )
-        files, offset, total_results = await b_filter.get_search_results(
-            search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER']
-        )
         if not files:
             return
     else:
