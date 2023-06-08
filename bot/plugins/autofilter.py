@@ -32,7 +32,7 @@ async def auto_filter(bot: Bot, message: types.Message, text=True):
 
 @Bot.on_callback_query(filters.regex(r"^lang"))
 async def language_check(bot, query):
-    data_parts = re.split(r"#(?!\[)", query.data)  # Split on '#' but exclude '#' within square brackets
+    data_parts = re.split(r"#|\[|\]", query.data)  # Split on '#' but exclude '#' within square brackets
 
     if len(data_parts) < 2:
         return await query.answer("Invalid data format.", show_alert=True)
