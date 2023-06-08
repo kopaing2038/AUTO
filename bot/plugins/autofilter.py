@@ -222,7 +222,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                             callback_data="pages",
                         ),
                         types.InlineKeyboardButton(
-                            text="NEXT ⏩", callback_data=f"next_{req}_{key}_{offset}"
+                            text="NEXT ⏩", callback_data=f"ch2next_{req}_{key}_{offset}"
                         ),
                     ]
                 )
@@ -549,6 +549,89 @@ async def next_page(bot: Bot, query: types.CallbackQuery):
         pass
     await query.answer()
 
+@Bot.on_callback_query(filters.regex(r"^ch2next"))  # type: ignore
+async def ch2next_page(bot: Bot, query: types.CallbackQuery):
+    _, req, key, offset = query.data.split("_")  # type: ignore
+    if int(req) not in [query.from_user.id, 0]:
+        return await query.answer("This is not for you", show_alert=True)
+    try:
+        offset = int(offset)
+    except:
+        offset = 0
+    search = Cache.BUTTONS.get(key)
+    if not search:
+        await query.answer(
+            "You are using one of my old messages, please send the request again.",
+            show_alert=True,
+        )
+        return
+
+    files, n_offset, total = await b_filter.get_search_results(
+        search, offset=offset, filter=True
+    )
+    try:
+        n_offset = int(n_offset)
+    except:
+        n_offset = 0
+
+    if not files:
+        return
+    settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
+
+    btn = await format_buttons(files, settings["CHANNEL"])  # type: ignore
+
+    if 0 < offset <= 10:
+        off_set = 0
+    elif offset == 0:
+        off_set = None
+    else:
+        off_set = offset - 10
+    if n_offset == 0:
+        btn.append(
+            [
+                types.InlineKeyboardButton(
+                    "⏪ BACK", callback_data=f"ch2next_{req}_{key}_{off_set}"
+                ),
+                types.InlineKeyboardButton(
+                    f"📃 Pages {math.ceil(int(offset) / 5) + 1} / {math.ceil(total / 5)}",
+                    callback_data="pages",
+                ),
+            ]
+        )
+    elif off_set is None:
+        btn.append(
+            [
+                types.InlineKeyboardButton(
+                    f"🗓 {math.ceil(int(offset) / 5) + 1} / {math.ceil(total / 5)}",
+                    callback_data="pages",
+                ),
+                types.InlineKeyboardButton(
+                    "NEXT ⏩", callback_data=f"ch2next_{req}_{key}_{n_offset}"
+                ),
+            ]
+        )
+    else:
+        btn.append(
+            [
+                types.InlineKeyboardButton(
+                    "⏪ BACK", callback_data=f"ch2next_{req}_{key}_{off_set}"
+                ),
+                types.InlineKeyboardButton(
+                    f"🗓 {math.ceil(int(offset) / 5) + 1} / {math.ceil(total / 5)}",
+                    callback_data="pages",
+                ),
+                types.InlineKeyboardButton(
+                    "NEXT ⏩", callback_data=f"ch2next_{req}_{key}_{n_offset}"
+                ),
+            ],
+        )
+    try:
+        await query.edit_message_reply_markup(
+            reply_markup=types.InlineKeyboardMarkup(btn)
+        )
+    except errors.MessageNotModified:
+        pass
+    await query.answer()
 
 @Bot.on_callback_query(filters.regex("^file"))  # type: ignore
 async def handle_file(bot: Bot, query: types.CallbackQuery):
