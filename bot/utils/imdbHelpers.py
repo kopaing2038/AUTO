@@ -34,8 +34,13 @@ _PREFERRED_QUALITY = 320
 _PREFERRED_QUALITY = 320
 
 
-_REGEX_POSTER = re.compile(
-    r"https:\/\/m.media-amazon.com\/images\/M\/(?P<posterID>[a-zA-Z0-9_\-@]*)\._V1_(?:[a-zA-Z0-9_\-,]*)\.(?P<ext>\w+)",
+#_REGEX_POSTER = re.compile(
+   # r"https:\/\/m.media-amazon.com\/images\/M\/(?P<posterID>[a-zA-Z0-9_\-@]*)\._V1_(?:[a-zA-Z0-9_\-,]*)\.(?P<ext>\w+)",
+   # re.IGNORECASE,
+#)
+
+_REGEX_COVER = re.compile(
+    r"https:\/\/m.media-amazon.com\/images\/M\/(?P<coverID>[a-zA-Z0-9_\-@]*)\._V1_(?:[a-zA-Z0-9_\-,]*)\.(?P<ext>\w+)",
     re.IGNORECASE,
 )
 
@@ -172,11 +177,18 @@ class IMDB(Imdb):
                 self.titleCache[imdbID] = {"time": time.time(), "data": info}
         return self.titleCache.get(imdbID, {}).get("data")  # type: ignore
 
-    def parsePoster(self, posterURL: str, quality: int = _PREFERRED_QUALITY) -> str:
-        _res = _REGEX_POSTER.search(posterURL)
+    #def parsePoster(self, posterURL: str, quality: int = _PREFERRED_QUALITY) -> str:
+        #_res = _REGEX_POSTER.search(posterURL)
+        #if not _res:
+            #return ""
+        #return f'https://m.media-amazon.com/images/M/{_res.group("posterID")}._V1_UX{quality}.{_res.group("ext")}'
+
+    def parseCover(self, coverURL: str, quality: int = _PREFERRED_QUALITY) -> str:
+        _res = _REGEX_COVER.search(coverURL)
         if not _res:
             return ""
-        return f'https://m.media-amazon.com/images/M/{_res.group("posterID")}._V1_UX{quality}.{_res.group("ext")}'
+        return f'https://m.media-amazon.com/images/M/{_res.group("coverID")}._V1_UX{quality}.{_res.group("ext")}'
+
 
     def parseTemplate(self, template: str, data: dict) -> str:
         try:
@@ -184,11 +196,19 @@ class IMDB(Imdb):
         except Exception:
             return _DEFAULT_TEMPLATE.format(**data)
 
+    #async def parsedText(self, imdbID, template: str):
+        #imdbInfo = await self.getInfo(imdbID)
+        #if not imdbInfo:
+           # return ""
+       # return self.parseTemplate(template, imdbInfo)
+
     async def parsedText(self, imdbID, template: str):
         imdbInfo = await self.getInfo(imdbID)
         if not imdbInfo:
             return ""
+        imdbInfo["cover"] = self.parseCover(imdbInfo["poster"])
         return self.parseTemplate(template, imdbInfo)
+
 
 
 IMDb = IMDB()
