@@ -163,9 +163,14 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
     if 2 < len(message.text) < 150:
         settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
         search = message.text
-        files, offset, total_results = await a_filter.get_search_results(
+        files_a, offset, total_results_a = await a_filter.get_search_results(
             search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER']
         )
+        files_b, offset, total_results_b = await a_filter.get_search_results(
+            search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER']
+        )
+        files = files_a + files_b  # Combine the files from both filters
+        total_results = total_results_a + total_results_b  # Combine the total results from both filters
         if not files:
             return
     else:
@@ -179,24 +184,41 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
     else:
         imdb = {}
     Cache.SEARCH_DATA[key] = files, offset, total_results, imdb, settings
-    if not settings.get("DOWNLOAD_BUTTON"):
-        btn = await format_buttons(files, settings["CHANNEL"])
-        if offset != "":
-            req = message.from_user.id if message.from_user else 0
 
-            btn.append([
-                types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")
-            ])
+    btn_a = []
+    btn_b = []
+
+    if files_a:
+        btn_a.append([
+            types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")
+        ])
+
+    if files_b:
+        if not settings.get("DOWNLOAD_BUTTON"):
+            btn_b = await format_buttons(files, settings["CHANNEL"])
+            if offset != "":
+                req = message.from_user.id if message.from_user else 0
+                btn_b.append(
+                    [
+                        types.InlineKeyboardButton(
+                            text=f"🗓 1/{math.ceil(int(total_results) / 5)}",
+                            callback_data="pages",
+                        ),
+                        types.InlineKeyboardButton(
+                            text="NEXT ⏩", callback_data=f"next_{req}_{key}_{offset}"
+                        ),
+                    ]
+                )
+            else:
+                btn_b.append(
+                    [types.InlineKeyboardButton(text="🗓 1/1", callback_data="pages")]
+                )
         else:
-            btn.append([
-                types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")
-            ])
-    else:
-        btn = [
-            [
-                types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")
+            btn_b = [
+                [
+                    types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")
+                ]
             ]
-        ]
 
     if imdb:
         cap = Config.TEMPLATE.format(
@@ -205,12 +227,13 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
             **locals(),
         )
     else:
-        cap = f"𝗤𝘂𝗲𝗿𝘆   : {search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"
+        cap = f"𝗤𝘂𝗲𝗿𝘆   :{search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"
     cap2 = f"𝗤𝘂𝗲𝗿𝘆   : {search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"	
     ADS = [
         {"photo": "https://graph.org/file/00644e75f1d747f4b132c.jpg", "caption": cap2},
         {"photo": "https://graph.org/file/14b989e4cb562882f28c3.jpg", "caption": cap2},
     ]
+    btn = btn_a + btn_b
     if imdb and imdb.get("poster") and settings["IMDB_POSTER"]:
         if not settings["TEXT_LINK"]:
             try:
