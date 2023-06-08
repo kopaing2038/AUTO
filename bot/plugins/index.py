@@ -236,7 +236,7 @@ async def index_files_to_db(lst_msg_id: int, chat: int, msg: types.Message, bot:
                 f"Successfully saved <code>{total_files} / {current}</code> to dataBase!\nDuplicate Files Skipped: <code>{duplicate}</code>\nDeleted Messages Skipped: <code>{deleted}</code>\nNon-Media messages skipped: <code>{no_media + unsupported}</code>(Unsupported Media - `{unsupported}` )\nErrors Occurred: <code>{errors}</code>"
             )
 
-async def index_files_to_dbch2(lst_msg_id: int, chat: int, msg: types.Message, bot: Bot):
+async def index_files_to_ch2db(lst_msg_id: int, chat: int, msg: types.Message, bot: Bot):
     total_files = 0
     duplicate = 0
     errors = 0
