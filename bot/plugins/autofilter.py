@@ -171,7 +171,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         )
         #files = files_a + files_b  # Combine the files from both filters
         #total_results = total_results_a + total_results_b  # Combine the total results from both filters
-        if not files_a and files_b:
+        if not files_b:
             return
     else:
         return
