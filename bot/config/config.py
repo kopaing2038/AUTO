@@ -140,10 +140,12 @@ class Config:
     PHOTO_FILTER2 = False
     PHOTO_FILTER3 = False
     PHOTO_FILTER4 = False
+    PHOTO_FILTER5 = False
     V_FILTER = False
     V_FILTER2 = False
     V_FILTER3 = False
     V_FILTER4 = False
+    V_FILTER5 = False
     CH_POST = False
     TEXT_LINK = False
 
