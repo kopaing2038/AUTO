@@ -791,12 +791,14 @@ async def ch2next_page(bot: Bot, query: types.CallbackQuery):
 @Bot.on_callback_query(filters.regex("^file"))  # type: ignore
 async def handle_file(bot: Bot, query: types.CallbackQuery):
     _, file_id = query.data.split()
-    file_info_a = await a_filter.get_file_details(file_id)  # type: ignore
-    file_info_b = await b_filter.get_file_details(file_id)
-    file_info_c = await c_filter.get_file_details(file_id)   # type: ignore
+    file_info_a = await a_filter.get_file_details(file_id) or {}
+    file_info_b = await b_filter.get_file_details(file_id) or {}
+    file_info_c = await c_filter.get_file_details(file_id) or {}
+
     file_info = file_info_a + file_info_b + file_info_c
     if not file_info:
         return await query.answer("FileNotFoundError", True)
+
     if file_info["file_type"] == "photo":
         file_id = file_info["file_ref"]
     query.message.from_user = query.from_user
