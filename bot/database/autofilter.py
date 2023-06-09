@@ -285,18 +285,23 @@ class FiltersDb3(MongoDb):
         if media.file_type == "photo":
             file_ref = media.file_id
         file_name = re.sub(r"(_|\-|\.|\+)", " ", str(media.file_name))
+    
+        channel_name = None
+        if hasattr(media, 'channel_name'):
+            channel_name = media.channel_name
+    
         return dict(
             _id=file_id,
             file_ref=file_ref,
             file_name=file_name,
             file_size=media.file_size,
             chat_id=media.chat_id,
+            channel_name=channel_name,
             message_id=media.message_id,
             file_type=media.file_type,
             mime_type=media.mime_type,
             caption=media.caption.html if media.caption else None,
-        )
-
+       )
     async def save_file(self, media):
         """Save file in database"""
         file = await self.file_dict(media)
