@@ -807,43 +807,30 @@ async def handle_file(bot: Bot, query: types.CallbackQuery):
         file_info.update(file_info_c)
 
     if not file_info:
-        return await query.answer("FileNotFoundError", show_alert=True)
+        return await query.answer("ဖိုင်ကို ရှာမတွေ့သော အမှား ", True)
 
     if file_info["file_type"] == "photo":
         file_id = file_info["file_ref"]
 
     query.message.from_user = query.from_user
     isMsg = query.message.chat.type == enums.ChatType.PRIVATE
+    query.message.from_user = query.from_user
+    isMsg = query.message.chat.type == enums.ChatType.PRIVATE
     if not await check_fsub(bot, query.message, sendMsg=isMsg):
         if not isMsg:
             return await query.answer(url=f"https://t.me/{bot.me.username}?start=fsub")
-        return await query.answer("Please Join My Update Channel and click again")
-    try:         
-        file_send = await bot.send_cached_media(
-                chat_id=Config.FILE_CHANNEL2,
-                file_id=file_id,
-                caption=Config.CUSTOM_FILE_CAPTION2.format(
-                file_name=file_info["file_name"],
-                file_size=get_size(file_info["file_size"]),
-                caption=file_info["caption"],
-            ),
-                reply_markup=types.InlineKeyboardMarkup(
-                    [
-                        [types.InlineKeyboardButton("Join Channel", url="https://t.me/+6lHs-byrjxczY2U1")],
-                        [types.InlineKeyboardButton("Group Link ", url="https://t.me/+X7DNvf9iCy5jOGJl")]
-                    ]
-            ),
-                reply_to_message_id=query.message.id,
-        )
-        caption1 = f"⚠️{query.from_user.mention} \n\nအချောလေး ရှာတဲ့ဇာတ်ကား အဆင့်သင့်ပါ ⬇️ "
+        return await query.answer("Please Join My Main Channel and click again\n\nကျေးဇူးပြု၍ ကျွန်ုပ်၏ ပင်မချန်နယ်သို့ ဝင်ရောက်ပြီး ထပ်မံနှိပ်ပါ။")
+    try:
         settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
+        invite_link = await bot.create_chat_invite_link(file_info["chat_id"])
+        caption1 = f"Hi {query.from_user.mention} \n\nအချောလေး ရှာတဲ့ [{file_info['file_name']}]({await parse_link(file_info['chat_id'], file_info['message_id'])}) ဇာတ်ကား အဆင့်သင့်ပါ ⬇️\n\nဝင်မရရင် <a href='{invite_link.invite_link}'>🍿 ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ🍿</a> ကို Join ပါ \n\n"
         if settings["DOWNLOAD_BUTTON"]:
             await query.message.reply_text(                
                 caption1,
                 reply_markup=types.InlineKeyboardMarkup(
                     [
-                        [types.InlineKeyboardButton('Join Channel Link', url="https://t.me/+H7ERsk_04EoxOTU1")],
-                        [types.InlineKeyboardButton(f'📥 {file_info["file_name"]} {file_info["caption"]}📥', url=file_send.link)]
+                        [types.InlineKeyboardButton("🍿ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ🍿", url=invite_link.invite_link)],  
+                        [types.InlineKeyboardButton(f'📥 {file_info["file_name"]} {file_info["caption"]}📥', url=f'{(await parse_link(file_info["chat_id"], file_info["message_id"]))}')]
                     ]
                 ),
                 quote=True,
@@ -855,14 +842,14 @@ async def handle_file(bot: Bot, query: types.CallbackQuery):
                 text=caption1,
                 reply_markup=types.InlineKeyboardMarkup(
                     [
-                        [types.InlineKeyboardButton( 'Join Channel link', url="https://t.me/+H7ERsk_04EoxOTU1")],
-                        [types.InlineKeyboardButton(f'📥 {file_info["file_name"]} {file_info["caption"]} 📥', url=file_send.link)]
+                        [types.InlineKeyboardButton("🍿ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ🍿", url=invite_link.invite_link)],  
+                        [types.InlineKeyboardButton(f'📥 {file_info["file_name"]} {file_info["caption"]} 📥', url=f'{(await parse_link(file_info["chat_id"], file_info["message_id"]))}')]
                     ]
                 )
-            )
+	    )
     except errors.PeerIdInvalid:
         return await query.answer(f"https://t.me/{bot.me.username}?start=okok")
-    await query.answer(f'Sending : သင်နှိပ်လိုက်တဲ့ ဇာတ်ကားအား Bot Direct Message သို့ပေးပို့လိုက်ပါပြီ \n\nCheck bot Direct Message \n\n {file_info["file_name"]}')	
+    await query.answer(f'Sending: သင်နှိပ်လိုက်တဲ့ ဇာတ်ကားအား Channel သို့ပေးပို့လိုက်ပါပြီ \n\nCheck Channel Message \n\n {file_info["file_name"]}')
 
 
 
