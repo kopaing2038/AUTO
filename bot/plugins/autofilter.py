@@ -7,7 +7,7 @@ from pyrogram import enums, errors, filters, types
 from pyrogram.errors import MessageNotModified
 
 from ..config import Config
-from ..script import Script
+
 from ..database import a_filter, b_filter, c_filter
 from ..database import configDB as config_db
 from ..utils.botTools import check_fsub, format_buttons, get_size, parse_link
