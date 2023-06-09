@@ -28,7 +28,7 @@ def get_config(key: str, default: str = None, is_bool: bool = False) -> Union[st
 class Config:
 
 
-    BOT_TOKEN = get_config("BOT_TOKEN", "5806016246:AAEocrUT_h8ZkM3dfqFWcNJsUk1_V_5uF9U")
+    BOT_TOKEN = get_config("BOT_TOKEN", "5482704567:AAH4hOppkPz71lO4MePmSw5kbkHGkWYzVKE")
     API_ID = int(get_config("API_ID", "7880210"))
     API_HASH = get_config("API_HASH", "1bb4b2ff1489cc06af37cba448c8cce9")
 
