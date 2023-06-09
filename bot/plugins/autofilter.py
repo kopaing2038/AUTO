@@ -289,7 +289,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                             callback_data="pages",
                         ),
                         types.InlineKeyboardButton(
-                            text="NEXT ⏩", callback_data=f"ch3next_{req}_{key}_{offset}"
+                            text="𝐍𝐄𝐗𝐓 ➪", callback_data=f"ch3next_{req}_{key}_{offset}"
                         ),
                     ]
                 )
@@ -745,7 +745,7 @@ async def ch2next_page(bot: Bot, query: types.CallbackQuery):
         btn.append(
             [
                 types.InlineKeyboardButton(
-                    "⏪ BACK", callback_data=f"ch3next_{req}_{key}_{off_set}"
+                    "⌫ 𝐁𝐀𝐂𝐊", callback_data=f"ch3next_{req}_{key}_{off_set}"
                 ),
                 types.InlineKeyboardButton(
                     f"📃 Pages {math.ceil(int(offset) / 5) + 1} / {math.ceil(total / 5)}",
@@ -761,7 +761,7 @@ async def ch2next_page(bot: Bot, query: types.CallbackQuery):
                     callback_data="pages",
                 ),
                 types.InlineKeyboardButton(
-                    "NEXT ⏩", callback_data=f"ch3next_{req}_{key}_{n_offset}"
+                    "𝐍𝐄𝐗𝐓 ➪", callback_data=f"ch3next_{req}_{key}_{n_offset}"
                 ),
             ]
         )
@@ -769,14 +769,14 @@ async def ch2next_page(bot: Bot, query: types.CallbackQuery):
         btn.append(
             [
                 types.InlineKeyboardButton(
-                    "⏪ BACK", callback_data=f"ch3next_{req}_{key}_{off_set}"
+                    "⌫ 𝐁𝐀𝐂𝐊", callback_data=f"ch3next_{req}_{key}_{off_set}"
                 ),
                 types.InlineKeyboardButton(
                     f"🗓 {math.ceil(int(offset) / 5) + 1} / {math.ceil(total / 5)}",
                     callback_data="pages",
                 ),
                 types.InlineKeyboardButton(
-                    "NEXT ⏩", callback_data=f"ch3next_{req}_{key}_{n_offset}"
+                    "𝐍𝐄𝐗𝐓 ➪", callback_data=f"ch3next_{req}_{key}_{n_offset}"
                 ),
             ],
         )
