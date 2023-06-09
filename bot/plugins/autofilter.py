@@ -195,7 +195,9 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         else:
             imdb = {}
         Cache.SEARCH_DATA[key] = files_a, offset, total_results_a, imdb, settings
-
+        btn_a.append([
+            types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")
+        ])
 
     elif files_b:
         key = f"{message.chat.id}-{message.id}"
