@@ -31,8 +31,8 @@ async def auto_filter(bot: Bot, message: types.Message, text=True):
 
 @Bot.on_callback_query(filters.regex(r"^lang"))
 async def language_check(bot, query):
-    _, req, key, search, language,*_ = query.data.split("_")
-    #_, search, language, *_ = query.data.split("_")
+    #_, req, key, search, language,*_ = query.data.split("_")
+    _, search, language = query.data.split("_")
 
     #if str(search) not in [str(query.from_user.id), "0"]:
        # return await query.answer("This is not for you", show_alert=True)
@@ -47,7 +47,7 @@ async def language_check(bot, query):
     if language != "home":
         search = f"{search} {language}"
 
-    if 1 < len(search) < 150:
+    if 2 < len(search) < 150:
         settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
         files, offset, total_results = await a_filter.get_search_results(
             search.lower(), offset=0, filter=True
@@ -123,7 +123,7 @@ async def select_language(bot, query):
         ],
         [
             types.InlineKeyboardButton("Eɴɢʟɪꜱʜ", callback_data=f"lang_{search}_eng"),
-            types.InlineKeyboardButton("Channel Myanmar", callback_data=f"lang_{req}_{key}_{search}_cm"),
+            types.InlineKeyboardButton("Channel Myanmar", callback_data=f"lang_{search}_cm"),
             types.InlineKeyboardButton("Gold Channel", callback_data=f"lang_{search}_gc"),
         ],
         [
