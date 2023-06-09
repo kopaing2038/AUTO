@@ -112,8 +112,8 @@ async def language_check(bot, query):
 async def select_language(bot, query):
     _, req, search, *_ = query.data.split("_")
     
-    if str(req) not in [str(query.from_user.id), "0"]:        
-        return await query.answer("This is not for you", show_alert=True)
+    #if str(req) not in [str(query.from_user.id), "0"]:        
+       # return await query.answer("This is not for you", show_alert=True)
 
 
     search = Cache.BUTTONS.get(key)
