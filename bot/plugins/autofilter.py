@@ -822,7 +822,7 @@ async def handle_file(bot: Bot, query: types.CallbackQuery):
         imdb = await get_poster(file_name, file=file_name)
 
     is_msg = query.message.chat.type == enums.ChatType.PRIVATE
-    if not await check_fsub(bot, query.message, send_msg=is_msg):
+    if not await check_fsub(bot, query.message):
         if not is_msg:
             return await query.answer(url=f"https://t.me/{bot.me.username}?start=fsub")
         return await query.answer("Please join my update channel and click again")
@@ -842,7 +842,7 @@ async def handle_file(bot: Bot, query: types.CallbackQuery):
                     [types.InlineKeyboardButton("Group Link ", url="https://t.me/+X7DNvf9iCy5jOGJl")]
                 ]
             ),
-            reply_to_message_id=query.message.message_id,
+            reply_to_message_id=query.message.id,
         )
         caption1 = f"⚠️{query.from_user.mention}\n\nအချောလေး ရှာတဲ့ဇာတ်ကား အဆင့်သင့်ပါ ⬇️"
         if settings.get("DOWNLOAD_BUTTON"):
@@ -879,6 +879,7 @@ async def handle_file(bot: Bot, query: types.CallbackQuery):
     except errors.PeerIdInvalid:
         return await query.answer(f"https://t.me/{bot.me.username}?start=okok")
     await query.answer(f'Sending: သင်နှိပ်လိုက်တဲ့ ဇာတ်ကားအား Bot Direct Message သို့ပေးပို့လိုက်ပါပြီ \n\nCheck bot Direct Message\n\n{file_info["file_name"]}')
+
 
 
 async def ch9_imdb(bot: Bot, message: types.Message, text=True):
