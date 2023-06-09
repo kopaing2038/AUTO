@@ -815,7 +815,7 @@ async def handle_file(bot: Bot, query: types.CallbackQuery):
     Cache.BUTTONS[key] = file_info
     settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
     if settings["IMDB"]:
-        imdb = await get_poster(file_info, file=(files[0])["file_name"])
+        imdb = await get_poster(file_info, file=(file_info[0])["file_name"])
     else:
         imdb = {}
         offset = 0  # Placeholder value, replace with the appropriate offset value
