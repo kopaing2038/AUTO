@@ -33,8 +33,8 @@ async def auto_filter(bot: Bot, message: types.Message, text=True):
 async def language_check(bot, query):
     _, req, key, search, language, *_ = query.data.split("_")
 
-    if str(req) not in [str(query.from_user.id), "0"]:
-        return await query.answer("This is not for you", show_alert=True)
+    #if str(req) not in [str(query.from_user.id), "0"]:
+       # return await query.answer("This is not for you", show_alert=True)
 
     if search in [str(query.from_user.id), "0"]:
         await query.answer(f"No {search.upper()} found!", show_alert=True)
