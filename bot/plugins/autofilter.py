@@ -790,6 +790,8 @@ async def ch2next_page(bot: Bot, query: types.CallbackQuery):
 
 
 
+from pyrogram import errors
+
 @Bot.on_callback_query(filters.regex("^file"))
 async def handle_file(bot: Bot, query: types.CallbackQuery):
     _, file_id = query.data.split()
@@ -844,6 +846,7 @@ async def handle_file(bot: Bot, query: types.CallbackQuery):
         )
         caption1 = f"⚠️{query.from_user.mention} \n\nအချောလေး ရှာတဲ့ဇာတ်ကား အဆင့်သင့်ပါ ⬇️ "
         settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
+
         if imdb and imdb.get("poster") and settings["IMDB_POSTER"]:
             if settings["DOWNLOAD_BUTTON"]:
                 await query.message.reply_photo(
@@ -875,7 +878,6 @@ async def handle_file(bot: Bot, query: types.CallbackQuery):
     except errors.PeerIdInvalid:
         return await query.answer(f"https://t.me/{bot.me.username}?start=okok")
     await query.answer(f'Sending: သင်နှိပ်လိုက်တဲ့ ဇာတ်ကားအား Bot Direct Message သို့ပေးပို့လိုက်ပါ \n\nCheck bot Direct Message \n\n {file_info["file_name"]}')
-
 
 async def ch9_imdb(bot: Bot, message: types.Message, text=True):
     if message.text.startswith("/"):
