@@ -83,7 +83,7 @@ class FiltersDb(MongoDb):
             )
             return True, 1
 
-    async def get_search_results(self, query: str, file_type: str = None, max_results: int = 5, offset: int = 0, filter: bool = False, photo: bool = True):  # type: ignore
+    async def get_search_results(self, query: str, file_type: str = None, max_results: int = 5, offset: int = 0, filter: bool = False, photo: bool = True, video: bool = True):  # type: ignore
         """For given query return (results, next_offset)"""
 
         query = query.strip()
@@ -204,7 +204,7 @@ class FiltersDb2(MongoDb):
             )
             return True, 1
 
-    async def get_search_results(self, query: str, file_type: str = None, max_results: int = 5, offset: int = 0, filter: bool = False, photo: bool = True):  # type: ignore
+    async def get_search_results(self, query: str, file_type: str = None, max_results: int = 5, offset: int = 0, filter: bool = False, photo: bool = True, video: bool = True):  # type: ignore
         """For given query return (results, next_offset)"""
 
         query = query.strip()
@@ -324,7 +324,7 @@ class FiltersDb3(MongoDb):
             )
             return True, 1
 
-    async def get_search_results(self, query: str, file_type: str = None, max_results: int = 5, offset: int = 0, filter: bool = False, photo: bool = True):  # type: ignore
+    async def get_search_results(self, query: str, file_type: str = None, max_results: int = 5, offset: int = 0, filter: bool = False, photo: bool = True, video: bool = True):  # type: ignore
         """For given query return (results, next_offset)"""
 
         query = query.strip()
@@ -444,7 +444,7 @@ class FiltersDb4(MongoDb):
             )
             return True, 1
 
-    async def get_search_results(self, query: str, file_type: str = None, max_results: int = 5, offset: int = 0, filter: bool = False, photo: bool = True):  # type: ignore
+    async def get_search_results(self, query: str, file_type: str = None, max_results: int = 5, offset: int = 0, filter: bool = False, photo: bool = True, video: bool = True):  # type: ignore
         """For given query return (results, next_offset)"""
 
         query = query.strip()
