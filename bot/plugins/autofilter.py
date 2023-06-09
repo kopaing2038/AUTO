@@ -119,9 +119,12 @@ async def select_language(bot, query):
     data_parts = query.data.split("#")
     if len(data_parts) < 2:
         return await query.answer("Invalid data format.", show_alert=True)
+    req = query.from_user.id if query.from_user else 0
 
     _, search = data_parts
 
+    if int() not in [query.from_user.id, 0]:
+        return await query.answer("This is not for you", show_alert=True)
 
     btn = [
         [
@@ -155,7 +158,6 @@ async def select_language(bot, query):
     # Show an alert message
     await query.answer()
 
-
 async def ch1_give_filter(bot: Bot, message: types.Message):
 
     if message.text.startswith("/"):
@@ -167,14 +169,14 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
     if 2 < len(message.text) < 150:
         settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
         search = message.text
-        files_a, offset_a, total_results_a = await a_filter.get_search_results(
+        files_a, offset, total_results_a = await a_filter.get_search_results(
             search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER']
         )
-        files_b, offset_b, total_results_b = await b_filter.get_search_results(
+        files_b, offset, total_results_b = await b_filter.get_search_results(
             search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER']
         )
-        files = files_a + files_b  # Combine the files from both filters
-        total_results = total_results_a + total_results_b  # Combine the total results from both filters
+        # files = files_a + files_b  # Combine the files from both filters
+        # total_results = total_results_a + total_results_b  # Combine the total results from both filters
         if not files_b:
             return
     else:
@@ -195,7 +197,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
             imdb = await get_poster(search, file=(files_a[0])["file_name"])
         else:
             imdb = {}
-        Cache.SEARCH_DATA[key] = files_a, offset_a, total_results_a, imdb, settings
+        Cache.SEARCH_DATA[key] = files_a, offset, total_results_a, imdb, settings
 
 
     elif files_b:
@@ -206,18 +208,18 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
             imdb = await get_poster(search, file=(files_b[0])["file_name"])
         else:
             imdb = {}
-        Cache.SEARCH_DATA[key] = files_b, offset_b, total_results_b, imdb, settings
+        Cache.SEARCH_DATA[key] = files_b, offset, total_results_b, imdb, settings
         btn_b = await format_buttons(files_b, settings["CHANNEL"])
     else:
         return
 
     if files_a:
         if not settings.get("DOWNLOAD_BUTTON"):            
-            if offset_a != "":
+            if offset != "":
                 req = message.from_user.id if message.from_user else 0
                 btn_a.append(
                     [
-                        types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")                   
+                        types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}") 
                     ]
                 )
             else:
@@ -234,7 +236,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
     if files_b:
         if not settings.get("DOWNLOAD_BUTTON"):
             btn_b = await format_buttons(files_b, settings["CHANNEL"])
-            if offset_b != "":
+            if offset != "":
                 req = message.from_user.id if message.from_user else 0
                 btn_b.append(
                     [
@@ -243,7 +245,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                             callback_data="pages",
                         ),
                         types.InlineKeyboardButton(
-                            text="NEXT ⏩", callback_data=f"ch2next_{req}_{key}_{offset_b}"
+                            text="NEXT ⏩", callback_data=f"ch2next_{req}_{key}_{offset}"
                         ),
                     ]
                 )
@@ -259,7 +261,6 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                     )
                 ]
             ]
-
     if imdb:
         cap = Config.TEMPLATE.format(
             query=search,
