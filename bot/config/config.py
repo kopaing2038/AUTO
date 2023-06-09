@@ -57,8 +57,6 @@ class Config:
 
 👥 𝗖𝗮𝘀𝘁  : #{cast}
 
-📓 𝗦𝘁𝗿𝗼𝘆 𝗟𝗶𝗻𝗲 : {plot}
-
 <a href='https://t.me/+TIwZJBnFDP1kM2Q1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a><a href='https://t.me/+X7DNvf9iCy5jOGJl'>©️ 𝗝𝗢𝗜𝗡 𝗚𝗥𝗢𝗨𝗣</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>
         
 """,
