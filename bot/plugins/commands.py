@@ -126,7 +126,7 @@ async def start_handler(bot: Bot, msg: types.Message):
             ]
 
             await msg.reply(FORCE_TEXT, reply_markup=types.InlineKeyboardMarkup(btn))
-        await start_ch2handler(bot, msg)
+    await start_ch2handler(bot, msg)
 
 async def start_ch2handler(bot: Bot, msg: types.Message):
     if len(msg.command) > 1:
