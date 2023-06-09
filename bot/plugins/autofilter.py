@@ -47,7 +47,7 @@ async def language_check(bot, query):
     if language != "home":
         search = f"{search} {language}"
 
-    if 3 < len(search) < 150:
+    if 1 < len(search) < 150:
         settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
         files, offset, total_results = await a_filter.get_search_results(
             search.lower(), offset=0, filter=True
