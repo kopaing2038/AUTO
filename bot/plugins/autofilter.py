@@ -1542,7 +1542,7 @@ async def handle_file(bot: Bot, query: types.CallbackQuery):
         settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
         invite_link = await bot.create_chat_invite_link(file_info["chat_id"])
         caption1 = f"Hi {query.from_user.mention} \n\nအချောလေး ရှာတဲ့ [{file_info['file_name']}]({await parse_link(file_info['chat_id'], file_info['message_id'])}) ဇာတ်ကား အဆင့်သင့်ပါ ⬇️\n\nဝင်မရရင် <a href='{invite_link.invite_link}'>🍿 ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ🍿</a> ကို Join ပါ \n\n"
-        if settings["DOWNLOAD_BUTTON"]:
+        if not settings["DOWNLOAD_BUTTON"]:
             await query.message.reply_text(                
                 caption1,
                 reply_markup=types.InlineKeyboardMarkup(
