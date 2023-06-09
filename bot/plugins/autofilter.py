@@ -31,13 +31,8 @@ async def auto_filter(bot: Bot, message: types.Message, text=True):
 
 @Bot.on_callback_query(filters.regex(r"^lang"))
 async def language_check(bot, query):
-    data_parts = re.split(r"(?<!\\)_", query.data)
+    _, req, key, search, language, *_ = query.data.split("_")
 
-    if len(data_parts) < 2:
-        return await query.answer("Invalid data format.", show_alert=True)
-
-    _, search, language = data_parts + [""] * (3 - len(data_parts))
-    req = query.from_user.id if query.from_user else 0
     if str(req) not in [str(query.from_user.id), "0"]:
         return await query.answer("This is not for you", show_alert=True)
 
@@ -119,28 +114,30 @@ async def select_language(bot, query):
     
     if str(key) not in [str(query.from_user.id), "0"]:        
         return await query.answer("This is not for you", show_alert=True)
-    #search = Cache.BUTTONS.get(key)
+    key = f"{query.message.chat.id}-{query.message.id}"
+
+    search = Cache.BUTTONS.get(key)
     btn = [
         [
-            types.InlineKeyboardButton("↓ Channel နဲ့ Video Quality ရွေးချယ်ပါ။ ↓", callback_data=f"lang_{key}_unknown")
+            types.InlineKeyboardButton("↓ Channel နဲ့ Video Quality ရွေးချယ်ပါ။ ↓", callback_data=f"lang_{search}_unknown")
         ],
         [
-            types.InlineKeyboardButton("Eɴɢʟɪꜱʜ", callback_data=f"lang_{key}_eng"),
-            types.InlineKeyboardButton("Channel Myanmar", callback_data=f"lang_{key}_cm"),
-            types.InlineKeyboardButton("Gold Channel", callback_data=f"lang_{key}_gc"),
+            types.InlineKeyboardButton("Eɴɢʟɪꜱʜ", callback_data=f"lang_{req}_{key}_{search}_eng"),
+            types.InlineKeyboardButton("Channel Myanmar", callback_data=f"lang_{req}_{key}_{search}_cm"),
+            types.InlineKeyboardButton("Gold Channel", callback_data=f"lang_{search}_gc"),
         ],
         [
-            types.InlineKeyboardButton("One Channel", callback_data=f"lang_{key}_one"),
-            types.InlineKeyboardButton("Happy Channel", callback_data=f"lang_{key}_hc"),
+            types.InlineKeyboardButton("One Channel", callback_data=f"lang_{search}_one"),
+            types.InlineKeyboardButton("Happy Channel", callback_data=f"lang_{search}_hc"),
         ],
         [
-            types.InlineKeyboardButton("360P", callback_data=f"lang_{key}_360"),
-            types.InlineKeyboardButton("480P", callback_data=f"lang_{key}_480"),
-            types.InlineKeyboardButton("720P", callback_data=f"lang_{key}_720"),
-            types.InlineKeyboardButton("1080P", callback_data=f"lang_{key}_1080")
+            types.InlineKeyboardButton("360P", callback_data=f"lang_{search}_360"),
+            types.InlineKeyboardButton("480P", callback_data=f"lang_{search}_480"),
+            types.InlineKeyboardButton("720P", callback_data=f"lang_{search}_720"),
+            types.InlineKeyboardButton("1080P", callback_data=f"lang_{search}_1080")
         ],
         [
-            types.InlineKeyboardButton("Gᴏ Bᴀᴄᴋ", callback_data=f"lang_{key}_home")
+            types.InlineKeyboardButton("Gᴏ Bᴀᴄᴋ", callback_data=f"lang_{search}_home")
         ]
     ]
 
