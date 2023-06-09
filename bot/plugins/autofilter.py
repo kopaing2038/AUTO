@@ -209,7 +209,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         return
     if files_a:
         if not settings.get("DOWNLOAD_BUTTON"):
-            btn_a = await format_buttons(files_b, settings["CHANNEL"])
+            #btn_a = await format_buttons(files_b, settings["CHANNEL"])
             if offset != "":
                 req = message.from_user.id if message.from_user else 0
                 btn_a.append(
