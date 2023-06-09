@@ -92,7 +92,7 @@ async def language_check(bot, query):
         imdb = {}
     Cache.SEARCH_DATA[key] = files, offset, total_results, imdb, settings
 
-    btn = await format_buttons(files, settings["CHANNEL"])
+    btn = await format_buttons2(files, settings["CHANNEL"])
     settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
     if not settings.get("DOWNLOAD_BUTTON"):
         if offset != "":
@@ -241,7 +241,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         else:
             imdb = {}
         Cache.SEARCH_DATA[key] = files_c, offset, total_results_c, imdb, settings
-        btn_c = await format_buttons(files_c, settings["CHANNEL3"])
+        btn_c = await format_buttons2(files_c, settings["CHANNEL3"])
 
     else:
         return
@@ -297,7 +297,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
 
     if files_c:
         if not settings.get("DOWNLOAD_BUTTON"):
-            btn_c = await format_buttons(files_c, settings["CHANNEL3"])
+            btn_c = await format_buttons2(files_c, settings["CHANNEL3"])
             if offset != "":
                 req = message.from_user.id if message.from_user else 0
                 btn_c.append(
@@ -600,7 +600,7 @@ async def ch2_give_filter(bot: Bot, message: types.Message):
         else:
             imdb = {}
         Cache.SEARCH_DATA[key] = files_c, offset, total_results_c, imdb, settings
-        btn_c = await format_buttons(files_c, settings["CHANNEL3"])
+        btn_c = await format_buttons2(files_c, settings["CHANNEL3"])
 
     else:
         return
@@ -656,7 +656,7 @@ async def ch2_give_filter(bot: Bot, message: types.Message):
 
     if files_c:
         if not settings.get("DOWNLOAD_BUTTON"):
-            btn_c = await format_buttons(files_c, settings["CHANNEL3"])
+            btn_c = await format_buttons2(files_c, settings["CHANNEL3"])
             if offset != "":
                 req = message.from_user.id if message.from_user else 0
                 btn_c.append(
@@ -835,7 +835,7 @@ async def ch3_give_filter(bot: Bot, message: types.Message):
         else:
             imdb = {}
         Cache.SEARCH_DATA[key] = files_c, offset, total_results_c, imdb, settings
-        btn_c = await format_buttons(files_c, settings["CHANNEL3"])
+        btn_c = await format_buttons2(files_c, settings["CHANNEL3"])
 
     else:
         return
@@ -891,7 +891,7 @@ async def ch3_give_filter(bot: Bot, message: types.Message):
 
     if files_c:
         if not settings.get("DOWNLOAD_BUTTON"):
-            btn_c = await format_buttons(files_c, settings["CHANNEL3"])
+            btn_c = await format_buttons2(files_c, settings["CHANNEL3"])
             if offset != "":
                 req = message.from_user.id if message.from_user else 0
                 btn_c.append(
@@ -1070,7 +1070,7 @@ async def ch4_give_filter(bot: Bot, message: types.Message):
         else:
             imdb = {}
         Cache.SEARCH_DATA[key] = files_c, offset, total_results_c, imdb, settings
-        btn_c = await format_buttons(files_c, settings["CHANNEL3"])
+        btn_c = await format_buttons2(files_c, settings["CHANNEL3"])
 
     else:
         return
@@ -1126,7 +1126,7 @@ async def ch4_give_filter(bot: Bot, message: types.Message):
 
     if files_c:
         if not settings.get("DOWNLOAD_BUTTON"):
-            btn_c = await format_buttons(files_c, settings["CHANNEL3"])
+            btn_c = await format_buttons2(files_c, settings["CHANNEL3"])
             if offset != "":
                 req = message.from_user.id if message.from_user else 0
                 btn_c.append(
@@ -1271,7 +1271,7 @@ async def next_page(bot: Bot, query: types.CallbackQuery):
         return
     settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
 
-    btn = await format_buttons(files, settings["CHANNEL"])  # type: ignore
+    btn = await format_buttons2(files, settings["CHANNEL"])  # type: ignore
 
     if 0 < offset <= 10:
         off_set = 0
@@ -1440,7 +1440,7 @@ async def ch2next_page(bot: Bot, query: types.CallbackQuery):
         return
     settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
 
-    btn = await format_buttons(files, settings["CHANNEL3"])  # type: ignore
+    btn = await format_buttons2(files, settings["CHANNEL3"])  # type: ignore
 
     if 0 < offset <= 10:
         off_set = 0
