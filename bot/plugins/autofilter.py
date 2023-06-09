@@ -1528,6 +1528,17 @@ async def handle_file(bot: Bot, query: types.CallbackQuery):
             return await query.answer(url=f"https://t.me/{bot.me.username}?start=fsub")
         return await query.answer("Please Join My Main Channel and click again\n\nကျေးဇူးပြု၍ ကျွန်ုပ်၏ ပင်မချန်နယ်သို့ ဝင်ရောက်ပြီး ထပ်မံနှိပ်ပါ။")
     try:
+        file_send = await bot.send_cached_media(
+                Config.FILE_GROUP,
+                file_id,
+                caption=Config.CUSTOM_FILE_CAPTION.format(  # type: ignore
+                file_name=file_info["file_name"],
+                file_size=get_size(file_info["file_size"]),
+                caption=file_info["caption"],
+            ),                
+                reply_to_message_id=query.message.id,
+        )
+           
         settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
         invite_link = await bot.create_chat_invite_link(file_info["chat_id"])
         caption1 = f"Hi {query.from_user.mention} \n\nအချောလေး ရှာတဲ့ [{file_info['file_name']}]({await parse_link(file_info['chat_id'], file_info['message_id'])}) ဇာတ်ကား အဆင့်သင့်ပါ ⬇️\n\nဝင်မရရင် <a href='{invite_link.invite_link}'>🍿 ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ🍿</a> ကို Join ပါ \n\n"
@@ -1550,7 +1561,7 @@ async def handle_file(bot: Bot, query: types.CallbackQuery):
                 reply_markup=types.InlineKeyboardMarkup(
                     [
                         [types.InlineKeyboardButton("🍿ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ🍿", url=invite_link.invite_link)],  
-                        [types.InlineKeyboardButton(f'📥 {file_info["file_name"]} {file_info["caption"]} 📥', url=f'{(await parse_link(file_info["chat_id"], file_info["message_id"]))}')]
+                        [types.InlineKeyboardButton(f'📥 {file_info["file_name"]} {file_info["caption"]} 📥', url=file_send.link)]
                     ]
                 )
 	    )
