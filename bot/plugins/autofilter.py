@@ -24,12 +24,29 @@ OLD_ALRT_TXT = "test3"
 async def auto_filter(bot: Bot, message: types.Message, text=True):
     #if not await check_fsub(bot, message):
         #return 
-    a = await ch1_give_filter(bot, message)
+    #a = await ch1_give_filter(bot, message)
+    settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
+    if settings['V_FILTER'] or settings['PHOTO_FILTER']:
+        a = await ch1_give_filter(bot, message)
     settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
     if settings['CH_POST']:
         kt = await ch9_imdb(bot, message)
+        return 
+   
+    settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
+    if settings['V_FILTER2'] or settings['PHOTO_FILTER2']:
+        b = await ch2_give_filter(bot, message)
+        return    
 
+    settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
+    if settings['V_FILTER3'] or settings['PHOTO_FILTER3']:
+        c = await ch3_give_filter(bot, message)
+        return
 
+    settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
+    if settings['V_FILTER4'] or settings['PHOTO_FILTER4']:
+        d = await ch4_give_filter(bot, message)
+        return
 
 @Bot.on_callback_query(filters.regex(r"^lang"))
 async def language_check(bot, query):
