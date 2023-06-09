@@ -111,10 +111,12 @@ async def language_check(bot, query):
 
 @Bot.on_callback_query(filters.regex(r"^select_lang"))
 async def select_language(bot, query):
-    _, search, *_ = query.data.split("_")
-    if int(query.from_user.id) != int(search):
+    _, search, value = query.data.split("_", 2)
+    
+    if int(query.from_user.id) != int(value):
         await query.answer("This is not for you", show_alert=True)
         return
+
     btn = [
         [
             types.InlineKeyboardButton("↓ Channel နဲ့ Video Quality ရွေးချယ်ပါ။ ↓", callback_data=f"lang_{search}_unknown")
