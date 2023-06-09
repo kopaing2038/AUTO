@@ -123,7 +123,7 @@ async def select_language(bot, query):
         ],
         [
             types.InlineKeyboardButton("Eɴɢʟɪꜱʜ", callback_data=f"lang_{search}_eng"),
-            types.InlineKeyboardButton("Channel Myanmar", callback_data=f"lang_{search}_cm"),
+            types.InlineKeyboardButton("Channel Myanmar", callback_data=f"lang_{req}_{key}_{search}_cm"),
             types.InlineKeyboardButton("Gold Channel", callback_data=f"lang_{search}_gc"),
         ],
         [
