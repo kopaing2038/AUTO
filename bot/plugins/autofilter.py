@@ -217,7 +217,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         else:
             btn_a = [
                 [
-                    types.InlineKeyboardButton(f"!{search} Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang_{req}_{key}_{search}"))                    
+                    types.InlineKeyboardButton(f"!{search} Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang_{req}_{key}_{search}")                    
                 ]
             ]
 
