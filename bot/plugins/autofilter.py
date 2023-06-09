@@ -179,7 +179,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         if not files_a and not files_b:
             search = message.text
             files_c, offset, total_results_c = await c_filter.get_search_results(
-                search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER'], video=settings['V_FILTER']
+                search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER']
             )
             if not files_c:
                 return
