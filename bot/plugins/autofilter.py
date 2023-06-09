@@ -7,6 +7,7 @@ from pyrogram import enums, errors, filters, types
 from pyrogram.errors import MessageNotModified
 
 from ..config import Config
+from ..script import Script
 from ..database import a_filter, b_filter, c_filter
 from ..database import configDB as config_db
 from ..utils.botTools import check_fsub, format_buttons, get_size, parse_link
@@ -315,11 +316,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
 
     else:
         cap = f"𝗤𝘂𝗲𝗿𝘆   :{search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"
-    cap2 = f"𝗤𝘂𝗲𝗿𝘆   : {search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"	
-    ADS = [
-        {"photo": "https://graph.org/file/00644e75f1d747f4b132c.jpg", "caption": cap2},
-        {"photo": "https://graph.org/file/14b989e4cb562882f28c3.jpg", "caption": cap2},
-    ]
+
     btn = btn_a + btn_b + btn_c
     if imdb and imdb.get("poster") and settings["IMDB_POSTER"]:
         if not settings["TEXT_LINK"]:
@@ -346,7 +343,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 caption=cap[:1024],
                 reply_markup=types.InlineKeyboardMarkup(btn),
             )
-            ad1 = random.choice(ADS)
+            ad1 = random.choice(Script.ADS)
             photo_url = ad1["photo"]
             caption = ad1["caption"]
             await message.reply_photo(
@@ -362,7 +359,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
             )
     else:
         if not settings["TEXT_LINK"]:
-            ad = random.choice(ADS)
+            ad = random.choice(Script.ADS)
             photo_url = ad["photo"]
             caption = ad["caption"]
             await message.reply_photo(
@@ -372,7 +369,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 quote=True
             )
         else:
-            ad = random.choice(ADS)
+            ad = random.choice(Script.ADS)
             photo_url = ad["photo"]
             caption = ad["caption"]
             file_send3 = await message.reply_photo(
@@ -393,146 +390,6 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 quote=True
             )
 
-
-async def ch11_give_filter(bot: Bot, message: types.Message):
-
-    if message.text.startswith("/"):
-        return  # ignore commands
-
-    if re.findall(r"((^\/|^,|^!|^\.|^[\U0001F600-\U000E007F()]).*)", str(message.text), re.UNICODE):
-        return
-
-    if 2 < len(message.text) < 150:
-        settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
-        search = message.text
-        files, offset, total_results = await a_filter.get_search_results(
-            search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER']
-        )
-        if not files:
-            return
-    else:
-        return
-    key = f"{message.chat.id}-{message.id}"
-
-    Cache.BUTTONS[key] = search
-
-    if settings["IMDB"]:
-        imdb = await get_poster(search, file=(files[0])["file_name"])
-    else:
-        imdb = {}
-    Cache.SEARCH_DATA[key] = files, offset, total_results, imdb, settings
-    if not settings.get("DOWNLOAD_BUTTON"):
-        btn = await format_buttons(files, settings["CHANNEL"])
-        if offset != "":
-            req = message.from_user.id if message.from_user else 0
-            btn.append(
-                [
-                    types.InlineKeyboardButton(
-                        text=f"🗓 1/{math.ceil(int(total_results) / 5)}",
-                        callback_data="pages",
-                    ),
-                    types.InlineKeyboardButton(
-                        text="NEXT ⏩", callback_data=f"next_{req}_{key}_{offset}"
-                    ),
-                ]
-            )
-        else:
-            btn.append(
-                [types.InlineKeyboardButton(text="🗓 1/1", callback_data="pages")]
-            )
-    else:
-        btn = [
-            [
-                types.InlineKeyboardButton(
-                    f"📥  {search}  📥", url=f"https://t.me/{bot.me.username}?start=filter{key}"
-                )
-            ]
-        ]
-
-    if imdb:
-        cap = Config.TEMPLATE.format(
-            query=search,
-            **imdb,
-            **locals(),
-        )
-    else:
-        cap = f"𝗤𝘂𝗲𝗿𝘆   : {search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"
-    cap2 = f"𝗤𝘂𝗲𝗿𝘆   : {search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"	
-    ADS = [
-        {"photo": "https://graph.org/file/00644e75f1d747f4b132c.jpg", "caption": cap2},
-        {"photo": "https://graph.org/file/14b989e4cb562882f28c3.jpg", "caption": cap2},
-    ]
-    if imdb and imdb.get("poster") and settings["IMDB_POSTER"]:
-        if not settings["TEXT_LINK"]:
-            try:
-                await message.reply_photo(
-                    photo=imdb.get("poster"),  # type: ignore
-                    caption=cap[:1024],
-                    reply_markup=types.InlineKeyboardMarkup(btn),
-                    quote=True,
-                )
-            except (errors.MediaEmpty, errors.PhotoInvalidDimensions, errors.WebpageMediaEmpty):
-                pic = imdb.get("poster")
-                poster = pic.replace(".jpg", "._V1_UX360.jpg")
-                await message.reply_photo(
-                    photo=poster,
-                    caption=cap[:1024],
-                    reply_markup=types.InlineKeyboardMarkup(btn),
-                    quote=True,
-                )
-        else:
-            file_send = await bot.send_photo(
-                chat_id=Config.FILE_GROUP2,
-                photo=imdb.get("poster"),
-                caption=cap[:1024],
-                reply_markup=types.InlineKeyboardMarkup(btn),
-            )
-            ad1 = random.choice(ADS)
-            photo_url = ad1["photo"]
-            caption = ad1["caption"]
-            await message.reply_photo(
-                photo=photo_url,
-                caption=caption,
-                reply_markup=types.InlineKeyboardMarkup(
-                    [
-                        [types.InlineKeyboardButton('ဝင်မရရင်ဒီကိုအရင်နှိပ် Join ပေးပါ', url="https://t.me/+AGntow9MZbs2MjRh")],
-                        [types.InlineKeyboardButton(f'📥 {search} 📥', url=file_send.link)]
-                    ]
-                ),
-                quote=True,
-            )
-    else:
-        if not settings["TEXT_LINK"]:
-            ad = random.choice(ADS)
-            photo_url = ad["photo"]
-            caption = ad["caption"]
-            await message.reply_photo(
-                photo=photo_url,
-                caption=caption,
-                reply_markup=types.InlineKeyboardMarkup(btn),
-                quote=True
-            )
-        else:
-            ad = random.choice(ADS)
-            photo_url = ad["photo"]
-            caption = ad["caption"]
-            file_send3 = await message.reply_photo(
-                photo=photo_url,
-                caption=caption,
-                reply_markup=types.InlineKeyboardMarkup(btn),
-                quote=True
-            )
-            await message.reply_photo(
-                photo=photo_url,
-                caption=caption,
-                reply_markup=types.InlineKeyboardMarkup(
-                    [
-                        [types.InlineKeyboardButton('ဝင်မရရင်ဒီကိုအရင်နှိပ် Join ပေးပါ', url="https://t.me/+AGntow9MZbs2MjRh")],
-                        [types.InlineKeyboardButton(f'📥 {search} 📥', url=file_send3.link)]
-                    ]
-                ),
-                quote=True
-            )
 
 
 @Bot.on_callback_query(filters.regex(r"^next"))  # type: ignore
