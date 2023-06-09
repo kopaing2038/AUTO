@@ -176,12 +176,13 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         files_b, offset, total_results_b = await b_filter.get_search_results(
             search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER']
         )
-        files_c, offset, total_results_c = await c_filter.get_search_results(
-            search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER']
-        )
-        if not files_a and not files_b and not files_c:
-
-            return
+        if not files_a and not files_b:
+            search = message.text
+            files_c, offset, total_results_c = await c_filter.get_search_results(
+                search, offset=0, filter=True, photo=settings['PHOTO_FILTER']
+            )
+            if not files_c:
+                return
     else:
         return
 
@@ -221,7 +222,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         else:
             imdb = {}
         Cache.SEARCH_DATA[key] = files_c, offset, total_results_c, imdb, settings
-        btn_b = await format_buttons(files_c, settings["CHANNEL"])
+        btn_c = await format_buttons(files_c, settings["CHANNEL"])
 
     else:
         return
@@ -248,7 +249,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
 
     if files_b:
         if not settings.get("DOWNLOAD_BUTTON"):
-            btn_b = await format_buttons(files_b, settings["CHANNEL"])
+            btn_b = await format_buttons(files_b, settings["CHANNEL"])            
             if offset != "":
                 req = message.from_user.id if message.from_user else 0
                 btn_b.append(
