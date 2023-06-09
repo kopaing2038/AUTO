@@ -212,25 +212,6 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
     else:
         return
 
-    if files_a:
-        if not settings.get("DOWNLOAD_BUTTON"):            
-            if offset != "":
-                req = message.from_user.id if message.from_user else 0
-                btn_a.append(
-                    [
-                        types.InlineKeyboardButton(f"! {search} အတွက် Lᴀɴɢᴜᴀɢᴇs ရွေးချယ်ပါ။!", callback_data=f"select_lang#{search}") 
-                    ]
-                )
-            else:
-                btn_a.append(
-                    [types.InlineKeyboardButton(f"! {search} အတွက် Lᴀɴɢᴜᴀɢᴇs ရွေးချယ်ပါ။!", callback_data=f"select_lang#{search}")]
-                )
-        else:
-            btn_a = [
-                [
-                    types.InlineKeyboardButton(f"! {search} အတွက် Lᴀɴɢᴜᴀɢᴇs ရွေးချယ်ပါ။!", callback_data=f"select_lang#{search}")                    
-                ]
-            ]
     if files_b:
         if not settings.get("DOWNLOAD_BUTTON"):
             btn_b = await format_buttons(files_b, settings["CHANNEL"])
@@ -254,12 +235,9 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         else:
             btn_b = [
                 [
-                    types.InlineKeyboardButton(
-                        f"📥  {search}  📥", url=f"https://t.me/{bot.me.username}?start=filter{key}"
-                    )
+                    types.InlineKeyboardButton(f"📥  {search}  📥", url=f"https://t.me/{bot.me.username}?start=filter{key}", show_alert=True)
                 ]
             ]
-
         if imdb:
             cap = Config.TEMPLATE.format(
                 query=search,
