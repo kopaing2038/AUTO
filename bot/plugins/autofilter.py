@@ -245,7 +245,9 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
 
     else:
         return
-
+    cap = f"""🔮 𝙌𝙪𝙚𝙧𝙮 : {search} 
+📥 𝙏𝙤𝙩𝙖𝙡 : {total_results} 
+🙋🏻‍♂️ 𝙍𝙚𝙦𝙪𝙚𝙨𝙩 : {message.from_user.mention}\n\n"""
     if files_a:
         if not settings.get("DOWNLOAD_BUTTON"):
             if offset != "":
@@ -325,14 +327,14 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
             ]
 
     if imdb:
-        cap = Config.TEMPLATE.format(
+        cap += Config.TEMPLATE.format(
             query=search,
             **imdb,
             **locals(),
         )
 
     else:
-        cap = f"𝗤𝘂𝗲𝗿𝘆   :{search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"
+        cap += f"𝗤𝘂𝗲𝗿𝘆   :{search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"
     cap2 = f"""
 🔮𝙌𝙪𝙚𝙧𝙮 : {search} 
 📥𝙏𝙤𝙩𝙖𝙡 : {total_results} 
@@ -569,7 +571,9 @@ async def ch2_give_filter(bot: Bot, message: types.Message):
     btn_a = []
     btn_b = []
     btn_c = []
-
+    cap = f"""🔮 𝙌𝙪𝙚𝙧𝙮 : {search} 
+📥 𝙏𝙤𝙩𝙖𝙡 : {total_results} 
+🙋🏻‍♂️ 𝙍𝙚𝙦𝙪𝙚𝙨𝙩 : {message.from_user.mention}\n\n"""
     if files_a:
         key = f"{message.chat.id}-{message.id}"
         Cache.BUTTONS[key] = search
@@ -684,14 +688,14 @@ async def ch2_give_filter(bot: Bot, message: types.Message):
             ]
 
     if imdb:
-        cap = Config.TEMPLATE.format(
+        cap += Config.TEMPLATE.format(
             query=search,
             **imdb,
             **locals(),
         )
 
     else:
-        cap = f"𝗤𝘂𝗲𝗿𝘆   :{search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"
+        cap += f"𝗤𝘂𝗲𝗿𝘆   :{search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"
     cap2 = f"𝗤𝘂𝗲𝗿𝘆   : {search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"	
     ADS = [
         {"photo": "https://graph.org/file/00644e75f1d747f4b132c.jpg", "caption": cap2},
@@ -804,7 +808,9 @@ async def ch3_give_filter(bot: Bot, message: types.Message):
     btn_a = []
     btn_b = []
     btn_c = []
-
+    cap = f"""🔮 𝙌𝙪𝙚𝙧𝙮 : {search} 
+📥 𝙏𝙤𝙩𝙖𝙡 : {total_results} 
+🙋🏻‍♂️ 𝙍𝙚𝙦𝙪𝙚𝙨𝙩 : {message.from_user.mention}\n\n"""
     if files_a:
         key = f"{message.chat.id}-{message.id}"
         Cache.BUTTONS[key] = search
@@ -919,14 +925,14 @@ async def ch3_give_filter(bot: Bot, message: types.Message):
             ]
 
     if imdb:
-        cap = Config.TEMPLATE.format(
+        cap += Config.TEMPLATE.format(
             query=search,
             **imdb,
             **locals(),
         )
 
     else:
-        cap = f"𝗤𝘂𝗲𝗿𝘆   :{search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"
+        cap += f"𝗤𝘂𝗲𝗿𝘆   :{search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"
     cap3 = f"""🔮 𝙌𝙪𝙚𝙧𝙮 : {search} 
 📥 𝙏𝙤𝙩𝙖𝙡 : {total_results} 
 🙋🏻‍♂️ 𝙍𝙚𝙦𝙪𝙚𝙨𝙩 : {message.from_user.mention} 
@@ -1095,7 +1101,9 @@ async def ch4_give_filter(bot: Bot, message: types.Message):
     btn_a = []
     btn_b = []
     btn_c = []
-
+    cap = f"""🔮 𝙌𝙪𝙚𝙧𝙮 : {search} 
+📥 𝙏𝙤𝙩𝙖𝙡 : {total_results} 
+🙋🏻‍♂️ 𝙍𝙚𝙦𝙪𝙚𝙨𝙩 : {message.from_user.mention}\n\n"""
     if files_a:
         key = f"{message.chat.id}-{message.id}"
         Cache.BUTTONS[key] = search
@@ -1210,14 +1218,14 @@ async def ch4_give_filter(bot: Bot, message: types.Message):
             ]
 
     if imdb:
-        cap = Config.TEMPLATE.format(
+        cap += Config.TEMPLATE.format(
             query=search,
             **imdb,
             **locals(),
         )
 
     else:
-        cap = f"𝗤𝘂𝗲𝗿𝘆   :{search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"
+        cap += f"𝗤𝘂𝗲𝗿𝘆   :{search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"
     cap2 = f"𝗤𝘂𝗲𝗿𝘆   : {search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"	
     ADS = [
         {"photo": "https://graph.org/file/00644e75f1d747f4b132c.jpg", "caption": cap2},
