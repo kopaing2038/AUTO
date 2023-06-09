@@ -790,7 +790,6 @@ async def ch2next_page(bot: Bot, query: types.CallbackQuery):
 
 
 
-from pyrogram import errors
 
 @Bot.on_callback_query(filters.regex("^file"))
 async def handle_file(bot: Bot, query: types.CallbackQuery):
@@ -846,38 +845,34 @@ async def handle_file(bot: Bot, query: types.CallbackQuery):
         )
         caption1 = f"⚠️{query.from_user.mention} \n\nအချောလေး ရှာတဲ့ဇာတ်ကား အဆင့်သင့်ပါ ⬇️ "
         settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
-
-        if imdb and imdb.get("poster") and settings["IMDB_POSTER"]:
-            if settings["DOWNLOAD_BUTTON"]:
-                await query.message.reply_photo(
-                    photo=imdb.get("poster"),
-                    caption=caption1,
-                    reply_markup=types.InlineKeyboardMarkup(
-                        [
-                            [types.InlineKeyboardButton('Join Channel Link', url="https://t.me/+H7ERsk_04EoxOTU1")],
-                            [types.InlineKeyboardButton(f'📥 {file_info["file_name"]} {file_info["caption"]}📥',
-                                                       url=file_send.link)]
-                        ]
-                    ),
-                    quote=True,
-                    disable_web_page_preview=True,
+        if settings.get("DOWNLOAD_BUTTON"):
+            await query.message.reply_photo(
+                photo=imdb.get("poster"),
+                caption=caption1,
+                reply_markup=types.InlineKeyboardMarkup(
+                    [
+                        [types.InlineKeyboardButton('Join Channel Link', url="https://t.me/+H7ERsk_04EoxOTU1")],
+                        [types.InlineKeyboardButton(f'📥 {file_info["file_name"]} {file_info["caption"]} 📥', url=file_send.link)]
+                    ]
+                ),
+                quote=True,
+                disable_web_page_preview=True,
+            )
+        else:
+            await bot.send_photo(
+                chat_id=query.from_user.id,
+                photo=imdb.get("poster"),               
+                text=caption1,
+                reply_markup=types.InlineKeyboardMarkup(
+                    [
+                        [types.InlineKeyboardButton( 'Join Channel link', url="https://t.me/+H7ERsk_04EoxOTU1")],
+                        [types.InlineKeyboardButton(f'📥 {file_info["file_name"]} {file_info["caption"]} 📥', url=file_send.link)]
+                    ]
                 )
-            else:
-                await bot.send_photo(
-                    photo=imdb.get("poster"),
-                    chat_id=query.from_user.id,
-                    text=caption1,
-                    reply_markup=types.InlineKeyboardMarkup(
-                        [
-                            [types.InlineKeyboardButton('Join Channel link', url="https://t.me/+H7ERsk_04EoxOTU1")],
-                            [types.InlineKeyboardButton(f'📥 {file_info["file_name"]} {file_info["caption"]} 📥',
-                                                       url=file_send.link)]
-                        ]
-                    )
-                )
+            )
     except errors.PeerIdInvalid:
         return await query.answer(f"https://t.me/{bot.me.username}?start=okok")
-    await query.answer(f'Sending: သင်နှိပ်လိုက်တဲ့ ဇာတ်ကားအား Bot Direct Message သို့ပေးပို့လိုက်ပါ \n\nCheck bot Direct Message \n\n {file_info["file_name"]}')
+    await query.answer(f'Sending : သင်နှိပ်လိုက်တဲ့ ဇာတ်ကားအား Bot Direct Message သို့ပေးပို့လိုက်ပါပြီ \n\nCheck bot Direct Message \n\n {file_info["file_name"]}')	
 
 async def ch9_imdb(bot: Bot, message: types.Message, text=True):
     if message.text.startswith("/"):
