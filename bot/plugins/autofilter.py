@@ -814,7 +814,7 @@ async def handle_file(bot: Bot, query: types.CallbackQuery):
 
     query.message.from_user = query.from_user
     file_name = file_info["file_name"]
-    key = f"{query.message.chat.id}-{query.message.message_id}"
+    key = f"{query.message.chat.id}-{query.message.id}"
     Cache.BUTTONS[key] = file_name
     settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
     imdb = None
