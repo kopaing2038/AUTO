@@ -3,7 +3,7 @@ from ..config import Config
 from pyrogram import Client, filters
 from pyrogram.types import Message
 
-from ..database import a_filter
+from ..database import a_filter, b_filter
 
 media_filter = filters.document | filters.video | filters.audio | filters.photo
 
@@ -14,10 +14,8 @@ channel_filter = filters.chat(Config.CHANNELS_KP1) | \
                  filters.chat(Config.CHANNELS_KP4) | \
                  filters.chat(Config.CHANNELS_KP5) | \
                  filters.chat(Config.CHANNELS_KP6) | \
-                 filters.chat(Config.CHANNELS_SE) | \
-                 filters.chat(Config.CHANNELS_KPCT) | \
-                 filters.chat(Config.CHANNELS_KSCPR) | \
-                 filters.chat(Config.CHANNELS_MCPR) 
+                 filters.chat(Config.CHANNELS_KPCT) 
+
 
 @Client.on_message(channel_filter & media_filter)
 async def media_handler(bot: Bot, message: Message):
@@ -36,4 +34,4 @@ async def media_handler(bot: Bot, message: Message):
     media.caption = message.caption
     media.chat_id = message.chat.id
     media.message_id = message.id
-    await a_filter.save_file(media)
+    await b_filter.save_file(media)
