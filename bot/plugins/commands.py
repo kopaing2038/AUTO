@@ -9,6 +9,7 @@ from ..database import a_filter, usersDB
 from ..utils.botTools import (
     check_fsub,
     format_buttons,
+    format_buttons2,
     get_size,
     unpack_new_file_id,
     FORCE_TEXT,
@@ -52,7 +53,7 @@ async def start_handler(bot: Bot, msg: types.Message):
                 imdb = await get_poster(keyword, file=(files[0])["file_name"])
 
             sts = await msg.reply("Please Wait...", quote=True)
-            btn = await format_buttons(files, settings["CHANNEL"])
+            btn = await format_buttons2(files, settings["CHANNEL"])
             if offset != "":
                 req = msg.from_user.id if msg.from_user else 0
                 btn.append(
