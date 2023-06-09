@@ -34,15 +34,17 @@ class FiltersDb(MongoDb):
         return None, None
 
     async def insert_pending(self):
-        try:
-            insert = await self.col.insert_many(self.data, ordered=False)  # type: ignore
-        except BulkWriteError as e:
-            inserted = e.details["nInserted"]  # type: ignore
-        else:
-            inserted = len(insert.inserted_ids)
-        duplicate = len(self.data) - inserted
-        self.data.clear()
-        return inserted, duplicate
+        if self.data:
+            try:
+                insert = await self.col.insert_many(self.data, ordered=False)  # type: ignore
+            except BulkWriteError as e:
+                inserted = e.details["nInserted"]  # type: ignore
+            else:
+                inserted = len(insert.inserted_ids)
+            duplicate = len(self.data) - inserted
+            self.data.clear()
+            return inserted, duplicate
+        return 0, 0
 
 
     async def file_dict(self, media):
@@ -155,15 +157,17 @@ class FiltersDb2(MongoDb):
         return None, None
 
     async def insert_pending(self):
-        try:
-            insert = await self.col.insert_many(self.data, ordered=False)  # type: ignore
-        except BulkWriteError as e:
-            inserted = e.details["nInserted"]  # type: ignore
-        else:
-            inserted = len(insert.inserted_ids)
-        duplicate = len(self.data) - inserted
-        self.data.clear()
-        return inserted, duplicate
+        if self.data:
+            try:
+                insert = await self.col.insert_many(self.data, ordered=False)  # type: ignore
+            except BulkWriteError as e:
+                inserted = e.details["nInserted"]  # type: ignore
+            else:
+                inserted = len(insert.inserted_ids)
+            duplicate = len(self.data) - inserted
+            self.data.clear()
+            return inserted, duplicate
+        return 0, 0
 
     async def file_dict(self, media):
         file_id, file_ref = unpack_new_file_id(media.file_id)
@@ -276,15 +280,17 @@ class FiltersDb3(MongoDb):
         return None, None
 
     async def insert_pending(self):
-        try:
-            insert = await self.col.insert_many(self.data, ordered=False)  # type: ignore
-        except BulkWriteError as e:
-            inserted = e.details["nInserted"]  # type: ignore
-        else:
-            inserted = len(insert.inserted_ids)
-        duplicate = len(self.data) - inserted
-        self.data.clear()
-        return inserted, duplicate
+        if self.data:
+            try:
+                insert = await self.col.insert_many(self.data, ordered=False)  # type: ignore
+            except BulkWriteError as e:
+                inserted = e.details["nInserted"]  # type: ignore
+            else:
+                inserted = len(insert.inserted_ids)
+            duplicate = len(self.data) - inserted
+            self.data.clear()
+            return inserted, duplicate
+        return 0, 0
 
     async def file_dict(self, media):
         file_id, file_ref = unpack_new_file_id(media.file_id)
@@ -396,15 +402,17 @@ class FiltersDb4(MongoDb):
         return None, None
 
     async def insert_pending(self):
-        try:
-            insert = await self.col.insert_many(self.data, ordered=False)  # type: ignore
-        except BulkWriteError as e:
-            inserted = e.details["nInserted"]  # type: ignore
-        else:
-            inserted = len(insert.inserted_ids)
-        duplicate = len(self.data) - inserted
-        self.data.clear()
-        return inserted, duplicate
+        if self.data:
+            try:
+                insert = await self.col.insert_many(self.data, ordered=False)  # type: ignore
+            except BulkWriteError as e:
+                inserted = e.details["nInserted"]  # type: ignore
+            else:
+                inserted = len(insert.inserted_ids)
+            duplicate = len(self.data) - inserted
+            self.data.clear()
+            return inserted, duplicate
+        return 0, 0
 
     async def file_dict(self, media):
         file_id, file_ref = unpack_new_file_id(media.file_id)
