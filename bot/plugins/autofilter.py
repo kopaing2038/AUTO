@@ -176,6 +176,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         files_b, offset, total_results_b = await b_filter.get_search_results(
             search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER']
         )
+        files_c = []  # Initialize files_c as an empty list
         if not files_a and not files_b:
             search = message.text
             files_c, offset, total_results_c = await c_filter.get_search_results(
