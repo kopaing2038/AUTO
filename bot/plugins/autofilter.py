@@ -32,7 +32,7 @@ async def auto_filter(bot: Bot, message: types.Message, text=True):
 
 @Bot.on_callback_query(filters.regex(r"^lang"))
 async def language_check(bot, query):
-    data_parts = re.split(r"(?<!\\)#", query.data)
+    data_parts = re.split(r"(?<!\\)_", query.data)
 
     if len(data_parts) < 2:
         return await query.answer("Invalid data format.", show_alert=True)
@@ -117,37 +117,35 @@ async def language_check(bot, query):
 
 @Bot.on_callback_query(filters.regex(r"^select_lang"))
 async def select_language(bot, query):
-    data_parts = query.data.split("#")
-    if len(data_parts) < 2:
-        return await query.answer("Invalid data format.", show_alert=True)
-    req = query.from_user.id if query.from_user else 0
-
-    _, search = data_parts
-
-    if int() not in [query.from_user.id, 0]:
+    _, req, key, search = query.data.split("_")
+    if int(req) not in [query.from_user.id, 0]:
         return await query.answer("This is not for you", show_alert=True)
+
+    #if len(data_parts) < 2:
+       # return await query.answer("Invalid data format.", show_alert=True)
+    #_, search = data_parts
 
     btn = [
         [
-            types.InlineKeyboardButton("↓ Channel နဲ့ Video Quality ရွေးချယ်ပါ။ ↓", callback_data=f"lang#{search}#unknown")
+            types.InlineKeyboardButton("↓ Channel နဲ့ Video Quality ရွေးချယ်ပါ။ ↓", callback_data=f"lang_{search}_unknown")
         ],
         [
-            types.InlineKeyboardButton("Eɴɢʟɪꜱʜ", callback_data=f"lang#{search}#eng"),
-            types.InlineKeyboardButton("Channel Myanmar", callback_data=f"lang#{search}#cm"),
-            types.InlineKeyboardButton("Gold Channel", callback_data=f"lang#{search}#gc"),
+            types.InlineKeyboardButton("Eɴɢʟɪꜱʜ", callback_data=f"lang_{search}_eng"),
+            types.InlineKeyboardButton("Channel Myanmar", callback_data=f"lang_{search}_cm"),
+            types.InlineKeyboardButton("Gold Channel", callback_data=f"lang_{search}_gc"),
         ],
         [
-            types.InlineKeyboardButton("One Channel", callback_data=f"lang#{search}#one"),
-            types.InlineKeyboardButton("Happy Channel", callback_data=f"lang#{search}#hc"),
+            types.InlineKeyboardButton("One Channel", callback_data=f"lang_{search}_one"),
+            types.InlineKeyboardButton("Happy Channel", callback_data=f"lang_{search}_hc"),
         ],
         [
-            types.InlineKeyboardButton("360P", callback_data=f"lang#{search}#360"),
-            types.InlineKeyboardButton("480P", callback_data=f"lang#{search}#480"),
-            types.InlineKeyboardButton("720P", callback_data=f"lang#{search}#720"),
-            types.InlineKeyboardButton("1080P", callback_data=f"lang#{search}#1080")
+            types.InlineKeyboardButton("360P", callback_data=f"lang_{search}_360"),
+            types.InlineKeyboardButton("480P", callback_data=f"lang_{search}_480"),
+            types.InlineKeyboardButton("720P", callback_data=f"lang_{search}_720"),
+            types.InlineKeyboardButton("1080P", callback_data=f"lang_{search}_1080")
         ],
         [
-            types.InlineKeyboardButton("Gᴏ Bᴀᴄᴋ", callback_data=f"lang#{search}#home")
+            types.InlineKeyboardButton("Gᴏ Bᴀᴄᴋ", callback_data=f"lang_{search}_home")
         ]
     ]
 
@@ -220,17 +218,17 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 req = message.from_user.id if message.from_user else 0
                 btn_a.append(
                     [
-                        types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}") 
+                        types.InlineKeyboardButton(f"!{search} Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang_{req}_{search}") 
                     ]
                 )
             else:
                 btn_a.append(
-                    [types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")]
+                    [types.InlineKeyboardButton(f"!{search} Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang_{req}_{search}")]
                 )
         else:
             btn_a = [
                 [
-                    types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")                    
+                    types.InlineKeyboardButton(f"! {search} Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang_{req}_{search}")                    
                 ]
             ]
 
