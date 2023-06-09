@@ -31,11 +31,15 @@ async def auto_filter(bot: Bot, message: types.Message, text=True):
 
 @Bot.on_callback_query(filters.regex(r"^lang"))
 async def language_check(bot, query):
-    #_, search, language,*_ = query.data.split("_")
-    _, search, language = query.data.split("_")
+    data_parts = re.split(r"(?<!\\)#", query.data)
 
-    #if str(search) not in [str(query.from_user.id), "0"]:
-       # return await query.answer("This is not for you", show_alert=True)
+    if len(data_parts) < 2:
+        return await query.answer("Invalid data format.", show_alert=True)
+
+    _, search, language = data_parts + [""] * (3 - len(data_parts))
+    req = query.from_user.id if query.from_user else 0
+    if int(req) not in [query.from_user.id, 0]:
+        return await query.answer("This is not for you", show_alert=True)
 
     if search in [str(query.from_user.id), "0"]:
         await query.answer(f"No {search.upper()} found!", show_alert=True)
@@ -43,6 +47,7 @@ async def language_check(bot, query):
 
     if language == "unknown":
         return await query.answer("Sᴇʟᴇᴄᴛ ᴀɴʏ ʟᴀɴɢᴜᴀɢᴇ ғʀᴏᴍ ᴛʜᴇ ʙᴇʟᴏᴡ ʙᴜᴛᴛᴏɴs !", show_alert=True)
+
 
     if language != "home":
         search = f"{search} {language}"
@@ -59,7 +64,7 @@ async def language_check(bot, query):
     else:
         return
 
-    key = f"{query.message.chat.id}-{query.message.message_id}"
+    key = f"{query.message.chat.id}-{query.message.id}"
     Cache.BUTTONS[key] = search
     settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
     if settings["IMDB"]:
@@ -109,35 +114,39 @@ async def language_check(bot, query):
     await query.answer()
 
 
-@Bot.on_callback_query(filters.regex(r"^select_lang_\d+"))
+@Bot.on_callback_query(filters.regex(r"^select_lang"))
 async def select_language(bot, query):
-    _, search = query.data.split("_", 1)
-    
+    data_parts = query.data.split("#")
+    if len(data_parts) < 2:
+        return await query.answer("Invalid data format.", show_alert=True)
+
+    _, search = data_parts
+
     if int(query.from_user.id) != int(search):
         await query.answer("This is not for you", show_alert=True)
         return
 
     btn = [
         [
-            types.InlineKeyboardButton("↓ Channel နဲ့ Video Quality ရွေးချယ်ပါ။ ↓", callback_data=f"lang_{search}_unknown")
+            types.InlineKeyboardButton("↓ Channel နဲ့ Video Quality ရွေးချယ်ပါ။ ↓", callback_data=f"lang#{search}#unknown")
         ],
         [
-            types.InlineKeyboardButton("Eɴɢʟɪꜱʜ", callback_data=f"lang_{search}_eng"),
-            types.InlineKeyboardButton("Channel Myanmar", callback_data=f"lang_{search}_cm"),
-            types.InlineKeyboardButton("Gold Channel", callback_data=f"lang_{search}_gc"),
+            types.InlineKeyboardButton("Eɴɢʟɪꜱʜ", callback_data=f"lang#{search}#eng"),
+            types.InlineKeyboardButton("Channel Myanmar", callback_data=f"lang#{search}#cm"),
+            types.InlineKeyboardButton("Gold Channel", callback_data=f"lang#{search}#gc"),
         ],
         [
-            types.InlineKeyboardButton("One Channel", callback_data=f"lang_{search}_one"),
-            types.InlineKeyboardButton("Happy Channel", callback_data=f"lang_{search}_hc"),
+            types.InlineKeyboardButton("One Channel", callback_data=f"lang#{search}#one"),
+            types.InlineKeyboardButton("Happy Channel", callback_data=f"lang#{search}#hc"),
         ],
         [
-            types.InlineKeyboardButton("360P", callback_data=f"lang_{search}_360"),
-            types.InlineKeyboardButton("480P", callback_data=f"lang_{search}_480"),
-            types.InlineKeyboardButton("720P", callback_data=f"lang_{search}_720"),
-            types.InlineKeyboardButton("1080P", callback_data=f"lang_{search}_1080")
+            types.InlineKeyboardButton("360P", callback_data=f"lang#{search}#360"),
+            types.InlineKeyboardButton("480P", callback_data=f"lang#{search}#480"),
+            types.InlineKeyboardButton("720P", callback_data=f"lang#{search}#720"),
+            types.InlineKeyboardButton("1080P", callback_data=f"lang#{search}#1080")
         ],
         [
-            types.InlineKeyboardButton("Gᴏ Bᴀᴄᴋ", callback_data=f"lang_{search}_home")
+            types.InlineKeyboardButton("Gᴏ Bᴀᴄᴋ", callback_data=f"lang#{search}#home")
         ]
     ]
 
@@ -146,12 +155,11 @@ async def select_language(bot, query):
     except MessageNotModified:
         pass
     
-    # Show an alert message if the user is not allowed
+    # Show an alert message
     await query.answer()
 
-
-
 async def ch1_give_filter(bot: Bot, message: types.Message):
+
     if message.text.startswith("/"):
         return  # ignore commands
 
@@ -167,12 +175,17 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         files_b, offset, total_results_b = await b_filter.get_search_results(
             search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER']
         )
-
-        if not files_a and not files_b:
+        # files = files_a + files_b  # Combine the files from both filters
+        # total_results = total_results_a + total_results_b  # Combine the total results from both filters
+        if not files_b:
             return
+    else:
+        return
 
-    key = f"{message.chat.id}-{message.id}"
-    Cache.BUTTONS[key] = search
+    #key = f"{message.chat.id}-{message.id}"
+
+   # Cache.BUTTONS[key] = search
+
     btn_a = []
     btn_b = []
 
@@ -199,26 +212,26 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         btn_b = await format_buttons(files_b, settings["CHANNEL"])
     else:
         return
+
     if files_a:
         if not settings.get("DOWNLOAD_BUTTON"):            
             if offset != "":
                 req = message.from_user.id if message.from_user else 0
                 btn_a.append(
                     [
-                        types.InlineKeyboardButton(f"!{search} Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang_{search}") 
+                        types.InlineKeyboardButton(f"! {search} အတွက် Lᴀɴɢᴜᴀɢᴇs ရွေးချယ်ပါ။!", callback_data=f"select_lang#{search}") 
                     ]
                 )
             else:
                 btn_a.append(
-                    [types.InlineKeyboardButton(f"!{search} Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang_{search}")]
+                    [types.InlineKeyboardButton(f"! {search} အတွက် Lᴀɴɢᴜᴀɢᴇs ရွေးချယ်ပါ။!", callback_data=f"select_lang#{search}")]
                 )
         else:
             btn_a = [
                 [
-                    types.InlineKeyboardButton(f"!{search} Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang_{search}")                    
+                    types.InlineKeyboardButton(f"! {search} အတွက် Lᴀɴɢᴜᴀɢᴇs ရွေးချယ်ပါ။!", callback_data=f"select_lang#{search}")                    
                 ]
             ]
-
     if files_b:
         if not settings.get("DOWNLOAD_BUTTON"):
             btn_b = await format_buttons(files_b, settings["CHANNEL"])
