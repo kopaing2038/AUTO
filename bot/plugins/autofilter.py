@@ -192,20 +192,6 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         else:
             imdb = {}
         Cache.SEARCH_DATA[key] = files_a, offset, total_results_a, imdb, settings
-    elif files_b:
-        key = f"{message.chat.id}-{message.id}"
-        Cache.BUTTONS[key] = search
-        settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
-        if settings["IMDB"]:
-            imdb = await get_poster(search, file=(files_b[0])["file_name"])
-        else:
-            imdb = {}
-        Cache.SEARCH_DATA[key] = files_b, offset, total_results_b, imdb, settings
-        btn_b = await format_buttons(files_b, settings["CHANNEL"])
-    else:
-        return
-
-    if files_a:
         if not settings.get("DOWNLOAD_BUTTON"):
             if offset != "":
                 req = message.from_user.id if message.from_user else 0
@@ -222,6 +208,20 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                     types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")
                 ]
             ]
+
+    elif files_b:
+        key = f"{message.chat.id}-{message.id}"
+        Cache.BUTTONS[key] = search
+        settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
+        if settings["IMDB"]:
+            imdb = await get_poster(search, file=(files_b[0])["file_name"])
+        else:
+            imdb = {}
+        Cache.SEARCH_DATA[key] = files_b, offset, total_results_b, imdb, settings
+        btn_b = await format_buttons(files_b, settings["CHANNEL"])
+    else:
+        return
+
 
     if files_b:
         if not settings.get("DOWNLOAD_BUTTON"):
