@@ -812,7 +812,7 @@ async def handle_file(bot: Bot, query: types.CallbackQuery):
     query.message.from_user = query.from_user
     file_name = file_info["file_name"]
     key = f"{query.message.chat.id}-{query.message.id}"
-    Cache.BUTTONS[key] = search
+    Cache.BUTTONS[key] = file_name
     settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
     if settings["IMDB"]:
         imdb = await get_poster(search, file=(file_name[0])["file_name"])
