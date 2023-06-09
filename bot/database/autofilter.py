@@ -108,6 +108,9 @@ class FiltersDb(MongoDb):
         if not photo:
             filter_ = {"$and": [filter_, {"file_type": {"$ne": "photo"}}]}
 
+        if not video:
+            filter_ = {"$and": [filter_, {"file_type": {"$ne": "video"}}]}
+
         total_results = await self.col.count_documents(filter_)  # type: ignore
         next_offset = offset + max_results
 
@@ -226,6 +229,9 @@ class FiltersDb2(MongoDb):
         if not photo:
             filter_ = {"$and": [filter_, {"file_type": {"$ne": "photo"}}]}
 
+        if not video:
+            filter_ = {"$and": [filter_, {"file_type": {"$ne": "video"}}]}
+
         total_results = await self.col.count_documents(filter_)  # type: ignore
         next_offset = offset + max_results
 
@@ -343,6 +349,9 @@ class FiltersDb3(MongoDb):
         if not photo:
             filter_ = {"$and": [filter_, {"file_type": {"$ne": "photo"}}]}
 
+        if not video:
+            filter_ = {"$and": [filter_, {"file_type": {"$ne": "video"}}]}
+
         total_results = await self.col.count_documents(filter_)  # type: ignore
         next_offset = offset + max_results
 
@@ -459,6 +468,9 @@ class FiltersDb4(MongoDb):
 
         if not photo:
             filter_ = {"$and": [filter_, {"file_type": {"$ne": "photo"}}]}
+
+        if not video:
+            filter_ = {"$and": [filter_, {"file_type": {"$ne": "video"}}]}
 
         total_results = await self.col.count_documents(filter_)  # type: ignore
         next_offset = offset + max_results
