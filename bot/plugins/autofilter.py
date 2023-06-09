@@ -186,8 +186,8 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
     else:
         return
 
-    files = files_a + files_b + files_c  # Combine the files from all filters
-    total_results = total_results_a + total_results_b + total_results_c  # Combine the total results from all filters
+    files = files_a + files_b or files_c  # Combine the files from all filters
+    total_results = total_results_a + total_results_b or total_results_c 
     btn_a = []
     btn_b = []
     btn_c = []
