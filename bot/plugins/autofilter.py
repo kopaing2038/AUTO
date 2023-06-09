@@ -116,7 +116,7 @@ async def select_language(bot, query):
        # return await query.answer("This is not for you", show_alert=True)
 
 
-    search = Cache.BUTTONS.get(key)
+    
     btn = [
         [
             types.InlineKeyboardButton("↓ Channel နဲ့ Video Quality ရွေးချယ်ပါ။ ↓", callback_data=f"lang_{search}_unknown")
