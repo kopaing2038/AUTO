@@ -167,14 +167,14 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
     if 2 < len(message.text) < 150:
         settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
         search = message.text
-        files_a, offset, total_results_a = await a_filter.get_search_results(
+        files_a, offset_a, total_results_a = await a_filter.get_search_results(
             search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER']
         )
-        files_b, offset, total_results_b = await b_filter.get_search_results(
+        files_b, offset_b, total_results_b = await b_filter.get_search_results(
             search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER']
         )
-        # files = files_a + files_b  # Combine the files from both filters
-        # total_results = total_results_a + total_results_b  # Combine the total results from both filters
+        files = files_a + files_b  # Combine the files from both filters
+        total_results = total_results_a + total_results_b  # Combine the total results from both filters
         if not files_b:
             return
     else:
@@ -195,7 +195,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
             imdb = await get_poster(search, file=(files_a[0])["file_name"])
         else:
             imdb = {}
-        Cache.SEARCH_DATA[key] = files_a, offset, total_results_a, imdb, settings
+        Cache.SEARCH_DATA[key] = files_a, offset_a, total_results_a, imdb, settings
 
 
     elif files_b:
@@ -206,19 +206,18 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
             imdb = await get_poster(search, file=(files_b[0])["file_name"])
         else:
             imdb = {}
-        Cache.SEARCH_DATA[key] = files_b, offset, total_results_b, imdb, settings
+        Cache.SEARCH_DATA[key] = files_b, offset_b, total_results_b, imdb, settings
         btn_b = await format_buttons(files_b, settings["CHANNEL"])
     else:
         return
 
     if files_a:
         if not settings.get("DOWNLOAD_BUTTON"):            
-            if offset != "":
+            if offset_a != "":
                 req = message.from_user.id if message.from_user else 0
                 btn_a.append(
                     [
-                        types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}"),                        
-                        types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")
+                        types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")                   
                     ]
                 )
             else:
@@ -235,7 +234,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
     if files_b:
         if not settings.get("DOWNLOAD_BUTTON"):
             btn_b = await format_buttons(files_b, settings["CHANNEL"])
-            if offset != "":
+            if offset_b != "":
                 req = message.from_user.id if message.from_user else 0
                 btn_b.append(
                     [
@@ -244,7 +243,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                             callback_data="pages",
                         ),
                         types.InlineKeyboardButton(
-                            text="NEXT ⏩", callback_data=f"ch2next_{req}_{key}_{offset}"
+                            text="NEXT ⏩", callback_data=f"ch2next_{req}_{key}_{offset_b}"
                         ),
                     ]
                 )
@@ -492,13 +491,13 @@ async def ch11_give_filter(bot: Bot, message: types.Message):
 
 @Bot.on_callback_query(filters.regex(r"^next"))  # type: ignore
 async def next_page(bot: Bot, query: types.CallbackQuery):
-    _, req, key, offset = query.data.split("_")  # type: ignore
+    _, req, key, offset_b = query.data.split("_")  # type: ignore
     if int(req) not in [query.from_user.id, 0]:
         return await query.answer("This is not for you", show_alert=True)
     try:
-        offset = int(offset)
+        offset_b = int(offset_b)
     except:
-        offset = 0
+        offset_b = 0
     search = Cache.BUTTONS.get(key)
     if not search:
         await query.answer(
@@ -507,13 +506,13 @@ async def next_page(bot: Bot, query: types.CallbackQuery):
         )
         return
 
-    files, n_offset, total = await a_filter.get_search_results(
-        search, offset=offset, filter=True
+    files, n_offset_b, total = await a_filter.get_search_results(
+        search, offset_b=offset_b, filter=True
     )
     try:
-        n_offset = int(n_offset)
+        n_offset_b = int(n_offset)
     except:
-        n_offset = 0
+        n_offset_b = 0
 
     if not files:
         return
@@ -521,20 +520,20 @@ async def next_page(bot: Bot, query: types.CallbackQuery):
 
     btn = await format_buttons(files, settings["CHANNEL"])  # type: ignore
 
-    if 0 < offset <= 10:
+    if 0 < offset_b <= 10:
         off_set = 0
     elif offset == 0:
         off_set = None
     else:
-        off_set = offset - 10
-    if n_offset == 0:
+        off_set = offset_b - 10
+    if n_offset_b == 0:
         btn.append(
             [
                 types.InlineKeyboardButton(
                     "⏪ BACK", callback_data=f"next_{req}_{key}_{off_set}"
                 ),
                 types.InlineKeyboardButton(
-                    f"📃 Pages {math.ceil(int(offset) / 5) + 1} / {math.ceil(total / 5)}",
+                    f"📃 Pages {math.ceil(int(offset_b) / 5) + 1} / {math.ceil(total / 5)}",
                     callback_data="pages",
                 ),
             ]
@@ -543,7 +542,7 @@ async def next_page(bot: Bot, query: types.CallbackQuery):
         btn.append(
             [
                 types.InlineKeyboardButton(
-                    f"🗓 {math.ceil(int(offset) / 5) + 1} / {math.ceil(total / 5)}",
+                    f"🗓 {math.ceil(int(offset_b) / 5) + 1} / {math.ceil(total / 5)}",
                     callback_data="pages",
                 ),
                 types.InlineKeyboardButton(
@@ -558,11 +557,11 @@ async def next_page(bot: Bot, query: types.CallbackQuery):
                     "⏪ BACK", callback_data=f"next_{req}_{key}_{off_set}"
                 ),
                 types.InlineKeyboardButton(
-                    f"🗓 {math.ceil(int(offset) / 5) + 1} / {math.ceil(total / 5)}",
+                    f"🗓 {math.ceil(int(offset_b) / 5) + 1} / {math.ceil(total / 5)}",
                     callback_data="pages",
                 ),
                 types.InlineKeyboardButton(
-                    "NEXT ⏩", callback_data=f"next_{req}_{key}_{n_offset}"
+                    "NEXT ⏩", callback_data=f"next_{req}_{key}_{n_offset_b}"
                 ),
             ],
         )
