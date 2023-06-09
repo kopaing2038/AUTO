@@ -37,6 +37,7 @@ class Config:
     COLLECTION_NAME = get_config("COLLECTION_NAME", "Movie")
     COLLECTION_NAME2 = get_config("COLLECTION_NAME2", "Movie2")
     COLLECTION_NAME3 = get_config("COLLECTION_NAME3", "Movie3")
+    COLLECTION_NAME4 = get_config("COLLECTION_NAME4", "Movie4")
 
     BOT_NAME = get_config("BOT_NAME", "FILTER_BOT")
     FILE_GROUP = int(environ.get('FILE_GROUP', -1001975432612))
