@@ -128,12 +128,21 @@ class Config:
 =========== • ✠ • ===========</b>""",
     )
 
-    IMDB = True
-    CHANNEL = True
-    IMDB_POSTER = True
+    IMDB = False
+    CHANNEL = False
+    CHANNEL2 = False
+    CHANNEL3 = False
+    IMDB_POSTER = False
     PM_IMDB = True
     PM_IMDB_POSTER = True
-    PHOTO_FILTER = True
+    PHOTO_FILTER = False
+    PHOTO_FILTER2 = False
+    PHOTO_FILTER3 = False
+    PHOTO_FILTER4 = False
+    V_FILTER = False
+    V_FILTER2 = False
+    V_FILTER3 = False
+    V_FILTER4 = False
     CH_POST = False
     TEXT_LINK = False
 
