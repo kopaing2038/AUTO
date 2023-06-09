@@ -109,11 +109,11 @@ async def language_check(bot, query):
     await query.answer()
 
 
-@Bot.on_callback_query(filters.regex(r"^select_lang"))
+@Bot.on_callback_query(filters.regex(r"^select_lang_\d+"))
 async def select_language(bot, query):
-    _, search, value = query.data.split("_", 2)
+    _, search = query.data.split("_", 1)
     
-    if int(query.from_user.id) != int(value):
+    if int(query.from_user.id) != int(search):
         await query.answer("This is not for you", show_alert=True)
         return
 
