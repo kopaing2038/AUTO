@@ -113,7 +113,7 @@ async def select_language(bot, query):
     _, req, key, search, *_ = query.data.split("_")
 
 
-    if str(req) not in [str(query.from_user.id), "0"]:
+    if str(key) not in [str(query.from_user.id), "0"]:
         return await query.answer("This is not for you", show_alert=True)
     
     btn = [
