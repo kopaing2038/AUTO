@@ -807,25 +807,26 @@ async def handle_file(bot: Bot, query: types.CallbackQuery):
         file_info.update(file_info_c)
 
     if not file_info:
-        return await query.answer("FileNotFoundError", True)
+        return await query.answer("FileNotFoundError", show_alert=True)
 
     if file_info["file_type"] == "photo":
         file_id = file_info["file_ref"]
 
     query.message.from_user = query.from_user
     file_name = file_info["file_name"]
-    key = f"{query.message.chat.id}-{query.message.id}"
+    key = f"{query.message.chat.id}-{query.message.message_id}"
     Cache.BUTTONS[key] = file_name
     settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
     imdb = None
-    if settings["IMDB"]:
+    if settings.get("IMDB"):
         imdb = await get_poster(file_name, file=file_name)
 
-    isMsg = query.message.chat.type == enums.ChatType.PRIVATE
-    if not await check_fsub(bot, query.message, sendMsg=isMsg):
-        if not isMsg:
+    is_msg = query.message.chat.type == enums.ChatType.PRIVATE
+    if not await check_fsub(bot, query.message, send_msg=is_msg):
+        if not is_msg:
             return await query.answer(url=f"https://t.me/{bot.me.username}?start=fsub")
-        return await query.answer("Please Join My Update Channel and click again")
+        return await query.answer("Please join my update channel and click again")
+
     try:
         file_send = await bot.send_cached_media(
             chat_id=Config.FILE_CHANNEL2,
@@ -841,38 +842,44 @@ async def handle_file(bot: Bot, query: types.CallbackQuery):
                     [types.InlineKeyboardButton("Group Link ", url="https://t.me/+X7DNvf9iCy5jOGJl")]
                 ]
             ),
-            reply_to_message_id=query.message.id,
+            reply_to_message_id=query.message.message_id,
         )
-        caption1 = f"⚠️{query.from_user.mention} \n\nအချောလေး ရှာတဲ့ဇာတ်ကား အဆင့်သင့်ပါ ⬇️ "
-        settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
+        caption1 = f"⚠️{query.from_user.mention}\n\nအချောလေး ရှာတဲ့ဇာတ်ကား အဆင့်သင့်ပါ ⬇️"
         if settings.get("DOWNLOAD_BUTTON"):
-            await query.message.reply_photo(
-                photo=imdb.get("poster"),
-                caption=caption1,
-                reply_markup=types.InlineKeyboardMarkup(
-                    [
-                        [types.InlineKeyboardButton('Join Channel Link', url="https://t.me/+H7ERsk_04EoxOTU1")],
-                        [types.InlineKeyboardButton(f'📥 {file_info["file_name"]} {file_info["caption"]} 📥', url=file_send.link)]
-                    ]
-                ),
-                quote=True,
-                disable_web_page_preview=True,
-            )
-        else:
-            await bot.send_photo(
-                chat_id=query.from_user.id,
-                photo=imdb.get("poster"),               
-                text=caption1,
-                reply_markup=types.InlineKeyboardMarkup(
-                    [
-                        [types.InlineKeyboardButton( 'Join Channel link', url="https://t.me/+H7ERsk_04EoxOTU1")],
-                        [types.InlineKeyboardButton(f'📥 {file_info["file_name"]} {file_info["caption"]} 📥', url=file_send.link)]
-                    ]
+            if imdb is not None:
+                await query.message.reply_photo(
+                    photo=imdb.get("poster"),
+                    caption=caption1,
+                    reply_markup=types.InlineKeyboardMarkup(
+                        [
+                            [types.InlineKeyboardButton('Join Channel Link', url="https://t.me/+H7ERsk_04EoxOTU1")],
+                            [types.InlineKeyboardButton(f'📥 {file_info["file_name"]} {file_info["caption"]} 📥', url=file_send.link)]
+                        ]
+                    ),
+                    quote=True,
+                    disable_web_page_preview=True,
                 )
-            )
+            else:
+                await query.answer("Poster not found")
+        else:
+            if imdb is not None:
+                await bot.send_photo(
+                    chat_id=query.from_user.id,
+                    photo=imdb.get("poster"),
+                    caption=caption1,
+                    reply_markup=types.InlineKeyboardMarkup(
+                        [
+                            [types.InlineKeyboardButton('Join Channel link', url="https://t.me/+H7ERsk_04EoxOTU1")],
+                            [types.InlineKeyboardButton(f'📥 {file_info["file_name"]} {file_info["caption"]} 📥', url=file_send.link)]
+                        ]
+                    )
+                )
+            else:
+                await query.answer("Poster not found")
     except errors.PeerIdInvalid:
         return await query.answer(f"https://t.me/{bot.me.username}?start=okok")
-    await query.answer(f'Sending : သင်နှိပ်လိုက်တဲ့ ဇာတ်ကားအား Bot Direct Message သို့ပေးပို့လိုက်ပါပြီ \n\nCheck bot Direct Message \n\n {file_info["file_name"]}')	
+    await query.answer(f'Sending: သင်နှိပ်လိုက်တဲ့ ဇာတ်ကားအား Bot Direct Message သို့ပေးပို့လိုက်ပါပြီ \n\nCheck bot Direct Message\n\n{file_info["file_name"]}')
+
 
 async def ch9_imdb(bot: Bot, message: types.Message, text=True):
     if message.text.startswith("/"):
