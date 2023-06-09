@@ -122,9 +122,6 @@ async def select_language(bot, query):
 
     _, search = data_parts
 
-    if int(query.from_user.id) != int(search):
-        await query.answer("This is not for you", show_alert=True)
-        return
 
     btn = [
         [
