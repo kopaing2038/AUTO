@@ -788,14 +788,21 @@ async def ch2next_page(bot: Bot, query: types.CallbackQuery):
         pass
     await query.answer()
 
-@Bot.on_callback_query(filters.regex("^file"))  # type: ignore
+@Bot.on_callback_query(filters.regex("^file"))
 async def handle_file(bot: Bot, query: types.CallbackQuery):
     _, file_id = query.data.split()
-    file_info_a = await a_filter.get_file_details(file_id) or {}
-    file_info_b = await b_filter.get_file_details(file_id) or {}
-    file_info_c = await c_filter.get_file_details(file_id) or {}
+    file_info_a = await a_filter.get_file_details(file_id) if file_id else None
+    file_info_b = await b_filter.get_file_details(file_id) if file_id else None
+    file_info_c = await c_filter.get_file_details(file_id) if file_id else None
 
-    file_info = file_info_a + file_info_b + file_info_c
+    file_info = {}
+    if file_info_a:
+        file_info.update(file_info_a)
+    if file_info_b:
+        file_info.update(file_info_b)
+    if file_info_c:
+        file_info.update(file_info_c)
+
     if not file_info:
         return await query.answer("FileNotFoundError", True)
 
