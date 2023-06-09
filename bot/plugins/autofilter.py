@@ -173,73 +173,82 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         if not files_a and not files_b:
             return
 
+    key = f"{message.chat.id}-{message.id}"
+    Cache.BUTTONS[key] = search
+    btn_a = []
+    btn_b = []
+
+    if files_a:
         key = f"{message.chat.id}-{message.id}"
         Cache.BUTTONS[key] = search
         settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
-        if files_a:
-            if settings["IMDB"]:
-                imdb = await get_poster(search, file=files_a[0]["file_name"])
-            else:
-                imdb = {}
-            Cache.SEARCH_DATA[key] = files_a, offset, total_results_a, imdb, settings
+        if settings["IMDB"]:  # type: ignore
+            imdb = await get_poster(search, file=(files_a[0])["file_name"])
         else:
-            if settings["IMDB"]:
-                imdb = await get_poster(search, file=files_b[0]["file_name"])
-            else:
-                imdb = {}
-            Cache.SEARCH_DATA[key] = files_b, offset, total_results_b, imdb, settings
+            imdb = {}
+        Cache.SEARCH_DATA[key] = files_a, offset, total_results_a, imdb, settings
 
-        btn_a = []
-        btn_b = []
 
-        if files_a:
-            if not settings.get("DOWNLOAD_BUTTON"):
-                if offset != "":
-                    req = message.from_user.id if message.from_user else 0
-                    btn_a.append(
-                        [
-                            types.InlineKeyboardButton(f"!{search} Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang_{req}_{key}_{search}")
-                        ]
-                    )
-                else:
-                    btn_a.append(
-                        [types.InlineKeyboardButton(f"!{search} Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang_{req}_{key}_{search}")]
-                    )
-            else:
-                btn_a = [
+    elif files_b:
+        key = f"{message.chat.id}-{message.id}"
+        Cache.BUTTONS[key] = search
+        settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
+        if settings["IMDB"]:  # type: ignore
+            imdb = await get_poster(search, file=(files_b[0])["file_name"])
+        else:
+            imdb = {}
+        Cache.SEARCH_DATA[key] = files_b, offset, total_results_b, imdb, settings
+        btn_b = await format_buttons(files_b, settings["CHANNEL"])
+    else:
+        return
+    if files_a:
+        if not settings.get("DOWNLOAD_BUTTON"):            
+            if offset != "":
+                req = message.from_user.id if message.from_user else 0
+                btn_a.append(
                     [
-                        types.InlineKeyboardButton(f"! {search} Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang_{req}_{key}_{search}")
+                        types.InlineKeyboardButton(f"!{search} Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang_{req}_{key}_{search}") 
                     ]
-                ]
-
-        if files_b:
-            if not settings.get("DOWNLOAD_BUTTON"):
-                btn_b = await format_buttons(files_b, settings["CHANNEL"])
-                if offset != "":
-                    req = message.from_user.id if message.from_user else 0
-                    btn_b.append(
-                        [
-                            types.InlineKeyboardButton(
-                                text=f"🗓 1/{math.ceil(int(total_results_b) / 5)}",
-                                callback_data="pages",
-                            ),
-                            types.InlineKeyboardButton(
-                                text="NEXT ⏩", callback_data=f"ch2next_{req}_{key}_{offset}"
-                            ),
-                        ]
-                    )
-                else:
-                    btn_b.append(
-                        [types.InlineKeyboardButton(text="🗓 1/1", callback_data="pages")]
-                    )
+                )
             else:
-                btn_b = [
+                btn_a.append(
+                    [types.InlineKeyboardButton(f"!{search} Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang_{req}_{key}_{search}")]
+                )
+        else:
+            btn_a = [
+                [
+                    types.InlineKeyboardButton(f"!{search} Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang_{req}_{key}_{search}"))                    
+                ]
+            ]
+
+    if files_b:
+        if not settings.get("DOWNLOAD_BUTTON"):
+            btn_b = await format_buttons(files_b, settings["CHANNEL"])
+            if offset != "":
+                req = message.from_user.id if message.from_user else 0
+                btn_b.append(
                     [
                         types.InlineKeyboardButton(
-                            f"📥  {search}  📥", url=f"https://t.me/{bot.me.username}?start=filter{key}"
-                        )
+                            text=f"🗓 1/{math.ceil(int(total_results_b) / 5)}",
+                            callback_data="pages",
+                        ),
+                        types.InlineKeyboardButton(
+                            text="NEXT ⏩", callback_data=f"ch2next_{req}_{key}_{offset}"
+                        ),
                     ]
+                )
+            else:
+                btn_b.append(
+                    [types.InlineKeyboardButton(text="🗓 1/1", callback_data="pages")]
+                )
+        else:
+            btn_b = [
+                [
+                    types.InlineKeyboardButton(
+                        f"📥  {search}  📥", url=f"https://t.me/{bot.me.username}?start=filter{key}"
+                    )
                 ]
+            ]
 
         if imdb:
             cap = Config.TEMPLATE.format(
