@@ -155,7 +155,9 @@ async def select_language(bot, query):
     # Show an alert message
     await query.answer()
 
+
 async def ch1_give_filter(bot: Bot, message: types.Message):
+
     if message.text.startswith("/"):
         return  # ignore commands
 
@@ -171,41 +173,47 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         files_b, offset, total_results_b = await b_filter.get_search_results(
             search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER']
         )
-
+        #files = files_a + files_b  # Combine the files from both filters
+        #total_results = total_results_a + total_results_b  # Combine the total results from both filters
         if not files_b:
             return
     else:
         return
 
-    #key = f"{message.chat.id}-{message.id}"
-    #Cache.BUTTONS[key] = search
+    key = f"{message.chat.id}-{message.id}"
+
+    Cache.BUTTONS[key] = search
+
 
     btn_a = []
     btn_b = []
-
     if files_a:
-        key = f"{message.chat.id}-{message.id}"
+        key = f"{message.chat.id}-{message.id}"    
         Cache.BUTTONS[key] = search
         settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
-        if settings["IMDB"]:
-            imdb = await get_poster(search, file=(files_a[0])["file_name"])
+        if settings["IMDB"]:  # type: ignore
+           imdb = await get_poster(search, file=(files_a[0])["file_name"])
         else:
             imdb = {}
         Cache.SEARCH_DATA[key] = files_a, offset, total_results_a, imdb, settings
+        btn_a.append([
+            types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")
+        ])
 
 
     elif files_b:
         key = f"{message.chat.id}-{message.id}"
         Cache.BUTTONS[key] = search
         settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
-        if settings["IMDB"]:
+        if settings["IMDB"]:  # type: ignore
             imdb = await get_poster(search, file=(files_b[0])["file_name"])
         else:
-            imdb = {}
+           imdb = {}
         Cache.SEARCH_DATA[key] = files_b, offset, total_results_b, imdb, settings
         btn_b = await format_buttons(files_b, settings["CHANNEL"])
     else:
         return
+
     if files_a:
         if not settings.get("DOWNLOAD_BUTTON"):
             if offset != "":
