@@ -204,17 +204,17 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 req = message.from_user.id if message.from_user else 0
                 btn_a.append(
                     [
-                        types.InlineKeyboardButton(f"!{search} Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang_{req}_{key}_{search}") 
+                        types.InlineKeyboardButton(f"!{search} Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang_{req}_{key}_{message.from_user.id}") 
                     ]
                 )
             else:
                 btn_a.append(
-                    [types.InlineKeyboardButton(f"!{search} Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang_{req}_{key}_{search}")]
+                    [types.InlineKeyboardButton(f"!{search} Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang_{req}_{key}_{message.from_user.id}")]
                 )
         else:
             btn_a = [
                 [
-                    types.InlineKeyboardButton(f"!{search} Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang_{req}_{key}_{search}")                    
+                    types.InlineKeyboardButton(f"!{search} Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang_{req}_{key}_{message.from_user.id}")                    
                 ]
             ]
 
