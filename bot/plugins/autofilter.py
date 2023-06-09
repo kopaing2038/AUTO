@@ -31,7 +31,8 @@ async def auto_filter(bot: Bot, message: types.Message, text=True):
 
 @Bot.on_callback_query(filters.regex(r"^lang"))
 async def language_check(bot, query):
-    _, search, language, *_ = query.data.split("_")
+    _, req, key, search, language,*_ = query.data.split("_")
+    #_, search, language, *_ = query.data.split("_")
 
     #if str(search) not in [str(query.from_user.id), "0"]:
        # return await query.answer("This is not for you", show_alert=True)
