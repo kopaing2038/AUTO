@@ -92,7 +92,7 @@ async def language_check(bot, query):
         imdb = {}
     Cache.SEARCH_DATA[key] = files, offset, total_results, imdb, settings
 
-    btn = await format_buttons(files, settings["CHANNEL"])
+    btn = await format_buttons2(files, settings["CHANNEL"])
     settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
     if not settings.get("DOWNLOAD_BUTTON"):
         if offset != "":
@@ -1618,17 +1618,7 @@ async def handle_file(bot: Bot, query: types.CallbackQuery):
                 quote=True,
                 disable_web_page_preview=True,
             )
-            await query.message.reply_text(                
-                caption1,
-                reply_markup=types.InlineKeyboardMarkup(
-                    [
-                        [types.InlineKeyboardButton('🍿 ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 🍿', url="https://t.me/+6Rq1ZLh5UExiNTUx")],
-                        [types.InlineKeyboardButton(f'📥 {file_info["file_name"]} 📥', url=file_send.link)]
-                    ]
-                ),
-                quote=True,
-                disable_web_page_preview=True,
-            )
+
         else:
             await bot.send_message(
                 chat_id=query.from_user.id,                
@@ -1640,6 +1630,7 @@ async def handle_file(bot: Bot, query: types.CallbackQuery):
                     ]
                 )
 	    )
+
     except errors.PeerIdInvalid:
         return await query.answer(f"https://t.me/{bot.me.username}?start=okok")
     await query.answer(f'Sending: သင်နှိပ်လိုက်တဲ့ ဇာတ်ကားအား Channel သို့ပေးပို့လိုက်ပါပြီ \n\nCheck Channel Message \n\n {file_info["file_name"]}')
