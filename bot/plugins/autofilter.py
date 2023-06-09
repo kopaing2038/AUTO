@@ -119,28 +119,28 @@ async def select_language(bot, query):
     
     if str(key) not in [str(query.from_user.id), "0"]:        
         return await query.answer("This is not for you", show_alert=True)
-    search = Cache.BUTTONS.get(key)
+    #search = Cache.BUTTONS.get(key)
     btn = [
         [
-            types.InlineKeyboardButton("↓ Channel နဲ့ Video Quality ရွေးချယ်ပါ။ ↓", callback_data=f"lang_{search}_unknown")
+            types.InlineKeyboardButton("↓ Channel နဲ့ Video Quality ရွေးချယ်ပါ။ ↓", callback_data=f"lang_{key}_unknown")
         ],
         [
-            types.InlineKeyboardButton("Eɴɢʟɪꜱʜ", callback_data=f"lang_{search}_eng"),
-            types.InlineKeyboardButton("Channel Myanmar", callback_data=f"lang_{search}_cm"),
-            types.InlineKeyboardButton("Gold Channel", callback_data=f"lang_{search}_gc"),
+            types.InlineKeyboardButton("Eɴɢʟɪꜱʜ", callback_data=f"lang_{key}_eng"),
+            types.InlineKeyboardButton("Channel Myanmar", callback_data=f"lang_{key}_cm"),
+            types.InlineKeyboardButton("Gold Channel", callback_data=f"lang_{key}_gc"),
         ],
         [
-            types.InlineKeyboardButton("One Channel", callback_data=f"lang_{search}_one"),
-            types.InlineKeyboardButton("Happy Channel", callback_data=f"lang_{search}_hc"),
+            types.InlineKeyboardButton("One Channel", callback_data=f"lang_{key}_one"),
+            types.InlineKeyboardButton("Happy Channel", callback_data=f"lang_{key}_hc"),
         ],
         [
-            types.InlineKeyboardButton("360P", callback_data=f"lang_{search}_360"),
-            types.InlineKeyboardButton("480P", callback_data=f"lang_{search}_480"),
-            types.InlineKeyboardButton("720P", callback_data=f"lang_{search}_720"),
-            types.InlineKeyboardButton("1080P", callback_data=f"lang_{search}_1080")
+            types.InlineKeyboardButton("360P", callback_data=f"lang_{key}_360"),
+            types.InlineKeyboardButton("480P", callback_data=f"lang_{key}_480"),
+            types.InlineKeyboardButton("720P", callback_data=f"lang_{key}_720"),
+            types.InlineKeyboardButton("1080P", callback_data=f"lang_{key}_1080")
         ],
         [
-            types.InlineKeyboardButton("Gᴏ Bᴀᴄᴋ", callback_data=f"lang_{search}_home")
+            types.InlineKeyboardButton("Gᴏ Bᴀᴄᴋ", callback_data=f"lang_{key}_home")
         ]
     ]
 
