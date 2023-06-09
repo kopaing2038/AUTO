@@ -43,7 +43,7 @@ class Config:
     FILE_GROUP = int(environ.get('FILE_GROUP', -1001975432612))
     FILE_GROUP2 = int(environ.get('FILE_GROUP', "-1001804560420"))
     LOG_CHANNEL = int(get_config("LOG_CHANNEL", "-1001254905376"))
-    FORCE_SUB_CHANNEL = int(get_config("FORCE_SUB_CHANNEL", "-1001564382219"))
+    FORCE_SUB_CHANNEL = int(get_config("FORCE_SUB_CHANNEL", "-1001161641413"))
 
 
     TEMPLATE = get_config(
