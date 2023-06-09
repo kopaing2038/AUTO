@@ -172,7 +172,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         if not files_a and not files_b:
             return
 
-        key = f"{message.chat.id}-{message.message_id}"
+        key = f"{message.chat.id}-{message.id}"
         Cache.BUTTONS[key] = search
         settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
         if files_a:
