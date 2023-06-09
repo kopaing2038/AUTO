@@ -112,8 +112,8 @@ async def language_check(bot, query):
 async def select_language(bot, query):
     _, req, search, *_ = query.data.split("_")
     
-    #if str(req) not in [str(query.from_user.id), "0"]:        
-       # return await query.answer("This is not for you", show_alert=True)
+    if str(req) not in [str(query.from_user.id), "0"]:        
+        return await query.answer("This is not for you", show_alert=True)
 
 
     
@@ -122,8 +122,8 @@ async def select_language(bot, query):
             types.InlineKeyboardButton("↓ Channel နဲ့ Video Quality ရွေးချယ်ပါ။ ↓", callback_data=f"lang_{search}_unknown")
         ],
         [
-            types.InlineKeyboardButton("Eɴɢʟɪꜱʜ", callback_data=f"lang_{search}_eng"),
-            types.InlineKeyboardButton("Channel Myanmar", callback_data=f"lang_{search}_cm"),
+            types.InlineKeyboardButton("Eɴɢʟɪꜱʜ", callback_data=f"lang_{req}_{search}_eng"),
+            types.InlineKeyboardButton("Channel Myanmar", callback_data=f"lang_{req}_{search}_cm"),
             types.InlineKeyboardButton("Gold Channel", callback_data=f"lang_{search}_gc"),
         ],
         [
