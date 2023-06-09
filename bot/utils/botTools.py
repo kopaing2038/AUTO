@@ -174,6 +174,38 @@ async def format_buttons(files: list, channel: bool):
 
     return btn
 
+async def format_buttons2(files: list, channel: bool):
+    if channel:
+        btn = [
+            [
+                types.InlineKeyboardButton(
+                    text=f" {ch2file['file_name']} {get_size(ch2file['file_size'])}",
+                    url=f'{(await parse_link(ch2file["chat_id"], ch2file["message_id"]))}',
+                ),
+            ]
+            for ch2file in files
+        ]
+    else:
+        btn = [
+            [
+                types.InlineKeyboardButton(
+                    text=f"{ch2file['file_name']} {get_size(ch2file['file_size'])}",
+                    callback_data=f"ch2file {ch2file['_id']}",
+                ),
+            ]
+            for ch2file in files
+        ]
+
+    for row in btn:
+        for button in row:
+            caption = button.text.lower()
+            caption = caption.translate(str.maketrans(
+                "abcdefghijklmnopqrstuvwxyz0123456789",
+                "ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖᵠʳˢᵗᵘᵛʷˣʸᶻ⁰¹²³⁴⁵⁶⁷⁸⁹"
+            ))
+            button.text = caption
+
+    return btn
 
 
 FORCE_TEXT = """ 🗣 သင်သည် အောက်တွင်ပေးထားသော ကျွန်ုပ်တို့၏ Back-up ချန်နယ်တွင် မရှိသောကြောင့် ရုပ်ရှင်ဖိုင်ကို မရနိုင်ပါ။
