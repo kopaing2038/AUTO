@@ -53,6 +53,100 @@ async def start_handler(bot: Bot, msg: types.Message):
                 imdb = await get_poster(keyword, file=(files[0])["file_name"])
 
             sts = await msg.reply("Please Wait...", quote=True)
+            btn = await format_buttons(files, settings["CHANNEL"])
+            if offset != "":
+                req = msg.from_user.id if msg.from_user else 0
+                btn.append(
+                    [
+                        types.InlineKeyboardButton(
+                            text=f"🗓 1/{math.ceil(int(total_results) / 5)}",
+                            callback_data="pages",
+                        ),
+                        types.InlineKeyboardButton(
+                            text="NEXT ⏩", callback_data=f"ch2next_{req}_{key}_{offset}"
+                        ),
+                    ]
+                )
+            else:
+                btn.append(
+                    [types.InlineKeyboardButton(text="🗓 1/1", callback_data="pages")]
+                )
+            if imdb:
+                cap = Config.TEMPLATE.format(  # type: ignore
+                    query=keyword,
+                    **imdb,
+                    **locals(),
+                )
+
+            else:
+                cap = f"Here is what i found for your query {keyword}"
+            if imdb and imdb.get("poster") and settings["PM_IMDB_POSTER"]:
+                try:
+                    await msg.reply_photo(
+                        photo=imdb.get("poster"),  # type: ignore
+                        caption=cap[:1024],
+                        reply_markup=types.InlineKeyboardMarkup(btn),
+                        quote=True,
+                    )
+                except (
+                    errors.MediaEmpty,
+                    errors.PhotoInvalidDimensions,
+                    errors.WebpageMediaEmpty,
+                ):
+                    pic = imdb.get("poster")
+                    poster = pic.replace(".jpg", "._V1_UX360.jpg")
+                    await msg.reply_photo(
+                        photo=poster,
+                        caption=cap[:1024],
+                        reply_markup=types.InlineKeyboardMarkup(btn),
+                        quote=True,
+                    )
+                except Exception as e:
+                    log.exception(e)
+                    await msg.reply_text(
+                        cap, reply_markup=types.InlineKeyboardMarkup(btn), quote=True
+                    )
+            else:
+                await msg.reply_text(
+                    cap,
+                    reply_markup=types.InlineKeyboardMarkup(btn),
+                    quote=True,
+                    disable_web_page_preview=True,
+                )
+            await sts.delete()
+            return
+        elif cmd.startswith("fsub"):
+            invite_link = await bot.create_chat_invite_link(Config.FORCE_SUB_CHANNEL)
+            btn = [
+                [
+                    types.InlineKeyboardButton(
+                        "Join Channel", url=invite_link.invite_link
+                    )
+                ],
+            ]
+
+            await msg.reply(FORCE_TEXT, reply_markup=types.InlineKeyboardMarkup(btn))
+       await start_ch2handler(bot, msg)
+
+async def start_ch2handler(bot: Bot, msg: types.Message):
+    if len(msg.command) > 1:
+        _, cmd = msg.command
+        if cmd.startswith("ch2filter"):
+            if not await check_fsub(bot, msg, cmd):
+                return
+            key = cmd.replace("filter", "").strip()
+            keyword = Cache.BUTTONS.get(key)
+            filter_data = Cache.SEARCH_DATA.get(key)
+            if not (keyword and filter_data):
+                return await msg.reply("Search Expired\nPlease send movie name again.")
+            files, offset, total_results, imdb, g_settings = filter_data
+
+            settings = g_settings
+
+            if settings["PM_IMDB"] and not g_settings["IMDB"]:
+                imdb = await get_poster(keyword, file=(files[0])["file_name"])
+
+            sts = await msg.reply("Please Wait...", quote=True)
             btn = await format_buttons2(files, settings["CHANNEL"])
             if offset != "":
                 req = msg.from_user.id if msg.from_user else 0
