@@ -195,10 +195,6 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         else:
             imdb = {}
         Cache.SEARCH_DATA[key] = files_a, offset, total_results_a, imdb, settings
-        btn_a.append([
-            types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")
-        ])
-
     elif files_b:
         key = f"{message.chat.id}-{message.id}"
         Cache.BUTTONS[key] = search
@@ -211,6 +207,26 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         btn_b = await format_buttons(files_b, settings["CHANNEL"])
     else:
         return
+    if files_a:
+        if not settings.get("DOWNLOAD_BUTTON"):
+            btn_a = await format_buttons(files_b, settings["CHANNEL"])
+            if offset != "":
+                req = message.from_user.id if message.from_user else 0
+                btn_a.append(
+                    [
+                        types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")
+                    ]
+                )
+            else:
+                btn_a.append(
+                    [types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")]
+                )
+        else:
+            btn_a = [
+                [
+                    types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")
+                ]
+            ]
 
     if files_b:
         if not settings.get("DOWNLOAD_BUTTON"):
