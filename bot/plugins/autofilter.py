@@ -1603,7 +1603,7 @@ async def ch2_handle_file(bot: Bot, query: types.CallbackQuery):
         file_send = await bot.send_cached_media(
                 chat_id=Config.FILE_GROUP,
                 file_id=file_id,
-                caption=Config.CUSTOM_FILE_CAPTION3.format(
+                caption=Config.CUSTOM_FILE_CAPTION.format(
                 file_name=file_info["file_name"],
                 file_size=get_size(file_info["file_size"]),
                 caption=file_info["caption"],
