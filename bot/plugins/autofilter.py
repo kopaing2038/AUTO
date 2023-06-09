@@ -176,12 +176,13 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         files_b, offset, total_results_b = await b_filter.get_search_results(
             search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER']
         )
-        files_c, offset, total_results_c = await c_filter.get_search_results(
-            search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER']
-        )
-        if not files_a and not files_b and not files_c:
-            return
-
+        if not files_a and not files_b:
+            search = message.text
+            files_c, offset, total_results_c = await c_filter.get_search_results(
+                search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER'], video=settings['V_FILTER']
+            )
+            if not files_c:
+                return
     else:
         return
 
@@ -221,7 +222,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         else:
             imdb = {}
         Cache.SEARCH_DATA[key] = files_c, offset, total_results_c, imdb, settings
-        btn_c = await format_buttons(files_c, settings["CHANNEL"])
+        btn_b = await format_buttons(files_c, settings["CHANNEL"])
 
     else:
         return
@@ -637,6 +638,9 @@ async def ch2next_page(bot: Bot, query: types.CallbackQuery):
     files, n_offset, total = await b_filter.get_search_results(
         search, offset=offset, filter=True
     )
+    files, n_offset, total = await c_filter.get_search_results(
+        search, offset=offset, filter=True
+    )
     try:
         n_offset = int(n_offset)
     except:
@@ -705,8 +709,9 @@ async def ch2next_page(bot: Bot, query: types.CallbackQuery):
 async def handle_file(bot: Bot, query: types.CallbackQuery):
     _, file_id = query.data.split()
     file_info_a = await a_filter.get_file_details(file_id)  # type: ignore
-    file_info_b = await b_filter.get_file_details(file_id)  # type: ignore
-    file_info = file_info_a + file_info_b
+    file_info_b = await b_filter.get_file_details(file_id)
+    file_info_c = await c_filter.get_file_details(file_id)   # type: ignore
+    file_info = file_info_a + file_info_b + file_info_c
     if not file_info:
         return await query.answer("FileNotFoundError", True)
     if file_info["file_type"] == "photo":
