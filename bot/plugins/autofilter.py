@@ -173,32 +173,29 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         files_b, offset, total_results_b = await b_filter.get_search_results(
             search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER']
         )
-        #files = files_a + files_b  # Combine the files from both filters
-        #total_results = total_results_a + total_results_b  # Combine the total results from both filters
+        # files = files_a + files_b  # Combine the files from both filters
+        # total_results = total_results_a + total_results_b  # Combine the total results from both filters
         if not files_b:
             return
     else:
         return
 
-    key = f"{message.chat.id}-{message.id}"
+    #key = f"{message.chat.id}-{message.id}"
 
-    Cache.BUTTONS[key] = search
-
+   # Cache.BUTTONS[key] = search
 
     btn_a = []
     btn_b = []
+
     if files_a:
-        key = f"{message.chat.id}-{message.id}"    
+        key = f"{message.chat.id}-{message.id}"
         Cache.BUTTONS[key] = search
         settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
         if settings["IMDB"]:  # type: ignore
-           imdb = await get_poster(search, file=(files_a[0])["file_name"])
+            imdb = await get_poster(search, file=(files_a[0])["file_name"])
         else:
             imdb = {}
         Cache.SEARCH_DATA[key] = files_a, offset, total_results_a, imdb, settings
-        btn_a.append([
-            types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")
-        ])
 
 
     elif files_b:
@@ -208,62 +205,72 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         if settings["IMDB"]:  # type: ignore
             imdb = await get_poster(search, file=(files_b[0])["file_name"])
         else:
-           imdb = {}
+            imdb = {}
         Cache.SEARCH_DATA[key] = files_b, offset, total_results_b, imdb, settings
         btn_b = await format_buttons(files_b, settings["CHANNEL"])
     else:
         return
 
     if files_a:
-        if not settings.get("DOWNLOAD_BUTTON"):
+        if not settings.get("DOWNLOAD_BUTTON"):            
             if offset != "":
                 req = message.from_user.id if message.from_user else 0
-                btn_a.append([
-                    types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")
-                ])
+                btn_a.append(
+                    [
+                        types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}"),                        
+                        types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")
+                    ]
+                )
             else:
-                btn_a.append([
-                    types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")
-                ])
+                btn_a.append(
+                    [types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")]
+                )
         else:
             btn_a = [
                 [
-                    types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")
+                    types.InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang#{search}")                    
                 ]
             ]
-    elif files_b:
+
+    if files_b:
         if not settings.get("DOWNLOAD_BUTTON"):
             btn_b = await format_buttons(files_b, settings["CHANNEL"])
             if offset != "":
                 req = message.from_user.id if message.from_user else 0
-                btn_b.append([
-                    types.InlineKeyboardButton(
-                        text=f"🗓 1/{math.ceil(int(total_results_b) / 5)}",
-                        callback_data="pages",
-                    ),
-                    types.InlineKeyboardButton(
-                        text="NEXT ⏩", callback_data=f"ch2next_{req}_{key}_{offset}"
-                    ),
-                ])
+                btn_b.append(
+                    [
+                        types.InlineKeyboardButton(
+                            text=f"🗓 1/{math.ceil(int(total_results_b) / 5)}",
+                            callback_data="pages",
+                        ),
+                        types.InlineKeyboardButton(
+                            text="NEXT ⏩", callback_data=f"ch2next_{req}_{key}_{offset}"
+                        ),
+                    ]
+                )
             else:
-                btn_b.append([
-                    types.InlineKeyboardButton(text="🗓 1/1", callback_data="pages")
-                ])
+                btn_b.append(
+                    [types.InlineKeyboardButton(text="🗓 1/1", callback_data="pages")]
+                )
         else:
             btn_b = [
                 [
-                    types.InlineKeyboardButton(f"📥  {search}  📥", url=f"https://t.me/{bot.me.username}?start=filter{key}", show_alert=True)
+                    types.InlineKeyboardButton(
+                        f"📥  {search}  📥", url=f"https://t.me/{bot.me.username}?start=filter{key}"
+                    )
                 ]
             ]
-        if imdb:
-            cap = Config.TEMPLATE.format(
-                query=search,
-                **imdb,
-                **locals(),
-            )
-        else:
-            cap = f"𝗤𝘂𝗲𝗿𝘆 :{search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results_a}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"
-    cap2 = f"𝗤𝘂𝗲𝗿𝘆   : {search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results_b}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"
+
+    if imdb:
+        cap = Config.TEMPLATE.format(
+            query=search,
+            **imdb,
+            **locals(),
+        )
+
+    else:
+        cap = f"𝗤𝘂𝗲𝗿𝘆   :{search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results_a}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"
+    cap2 = f"𝗤𝘂𝗲𝗿𝘆   : {search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results_b}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"	
     ADS = [
         {"photo": "https://graph.org/file/00644e75f1d747f4b132c.jpg", "caption": cap2},
         {"photo": "https://graph.org/file/14b989e4cb562882f28c3.jpg", "caption": cap2},
@@ -273,7 +280,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         if not settings["TEXT_LINK"]:
             try:
                 await message.reply_photo(
-                    photo=imdb.get("poster"),
+                    photo=imdb.get("poster"),  # type: ignore
                     caption=cap[:1024],
                     reply_markup=types.InlineKeyboardMarkup(btn),
                     quote=True,
@@ -300,10 +307,12 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
             await message.reply_photo(
                 photo=photo_url,
                 caption=caption,
-                reply_markup=types.InlineKeyboardMarkup([
-                    [types.InlineKeyboardButton('ဝင်မရရင်ဒီကိုအရင်နှိပ် Join ပေးပါ', url="https://t.me/+AGntow9MZbs2MjRh")],
-                    [types.InlineKeyboardButton(f'📥 {search} 📥', url=file_send.link)]
-                ]),
+                reply_markup=types.InlineKeyboardMarkup(
+                    [
+                        [types.InlineKeyboardButton('ဝင်မရရင်ဒီကိုအရင်နှိပ် Join ပေးပါ', url="https://t.me/+AGntow9MZbs2MjRh")],
+                        [types.InlineKeyboardButton(f'📥 {search} 📥', url=file_send.link)]
+                    ]
+                ),
                 quote=True,
             )
     else:
@@ -330,13 +339,14 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
             await message.reply_photo(
                 photo=photo_url,
                 caption=caption,
-                reply_markup=types.InlineKeyboardMarkup([
-                    [types.InlineKeyboardButton('ဝင်မရရင်ဒီကိုအရင်နှိပ် Join ပေးပါ', url="https://t.me/+AGntow9MZbs2MjRh")],
-                    [types.InlineKeyboardButton(f'📥 {search} 📥', url=file_send3.link)]
-                ]),
+                reply_markup=types.InlineKeyboardMarkup(
+                    [
+                        [types.InlineKeyboardButton('ဝင်မရရင်ဒီကိုအရင်နှိပ် Join ပေးပါ', url="https://t.me/+AGntow9MZbs2MjRh")],
+                        [types.InlineKeyboardButton(f'📥 {search} 📥', url=file_send3.link)]
+                    ]
+                ),
                 quote=True
             )
-
 
 
 async def ch11_give_filter(bot: Bot, message: types.Message):
