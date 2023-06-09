@@ -846,7 +846,7 @@ async def handle_file(bot: Bot, query: types.CallbackQuery):
         caption1 = f"⚠️{query.from_user.mention} \n\nအချောလေး ရှာတဲ့ဇာတ်ကား အဆင့်သင့်ပါ ⬇️ "
         settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
         if imdb and imdb.get("poster") and settings["IMDB_POSTER"]:
-            if not settings["TEXT_LINK"] and settings["DOWNLOAD_BUTTON"]:
+            if settings["DOWNLOAD_BUTTON"]:
                 await query.message.reply_photo(
                     photo=imdb.get("poster"),
                     caption=caption1,
