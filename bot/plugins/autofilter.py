@@ -179,9 +179,9 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
     else:
         return
 
-    #key = f"{message.chat.id}-{message.id}"
+    key = f"{message.chat.id}-{message.id}"
 
-   # Cache.BUTTONS[key] = search
+    Cache.BUTTONS[key] = search
 
     btn_a = []
     btn_b = []
