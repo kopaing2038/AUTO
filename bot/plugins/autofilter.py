@@ -1599,6 +1599,7 @@ async def handle_file(bot: Bot, query: types.CallbackQuery):
                 file_name=file_info["file_name"],
                 file_size=get_size(file_info["file_size"]),
                 caption=file_info["caption"],
+                user_link=query.from_user.mention,
             ),                
                 reply_to_message_id=query.message.id,
         )
