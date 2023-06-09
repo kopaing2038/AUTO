@@ -111,23 +111,32 @@ class Config:
     LONG_IMDB_DESCRIPTION = get_config("LONG_IMDB_DESCRIPTION", False, True)  # type: ignore
     MAX_LIST_ELM = int(get_config("MAX_LIST_ELM", 5))  # type: ignore
 
-    CUSTOM_FILE_CAPTION = get_config(
+    CUSTOM_FILE_CAPTION2 = get_config(
         "CUSTOM_FILE_CAPTION",
         """{caption}
 
 @Movie_Zone_KP""",
     )
 
-    CUSTOM_FILE_CAPTION2 = get_config(
+    CUSTOM_FILE_CAPTION = get_config(
         "CUSTOM_FILE_CAPTION",
         """ {caption}
 
-အောက်တွင်ပေးထားသော Link အား မဖြစ်မနေ Join ပေးထားပါနော်။❤️
+=========== • ✠ • ===========
+🔘 ဤအဖွဲ့မှ ဖိုင်ကို ဒေါင်းလုဒ်မလုပ်ပါနှင့်။
 
-▫️ ᴄʜᴀɴɴᴇʟ : <a href="https://t.me/+6lHs-byrjxczY2U1"> ᴄʟɪᴄᴋ ʜᴇʀᴇ MY_CHANNEL</a>
-▫️ sᴜᴘᴘᴏʀᴛ ɢʀᴏᴜᴘ : <a href="https://t.me/+X7DNvf9iCy5jOGJl">ᴄʟɪᴄᴋ ʜᴇʀᴇ MY Group</a>
-=========== • ✠ • ===========</b>""",
-    )
+🔘 copyright ပြသာနာများကြောင့် 10 မိနစ်အကြာတွင် ဖိုင်ကို auto ဖျက်သွားမည်ဖြစ်သည်။
+
+🔘 ဒေါင်းလုဒ်တစ်ဝက်တွင် ဖိုင်ကို ဖျက်လိုက်သောအခါတွင် ဒေတာများစွာ ဆုံးရှုံးသွားမည်ဖြစ်သည်။
+
+🔘 တစ်နေရာရာကို ကူးပြီး ဒေါင်းလုဒ်လုပ်ပါ...
+    Forward လုပ်၍ save message လုပ်ပါ။
+
+🔘 ဘယ်လို save message လုပ်ရမလဲ မသိရင် ဒီ Video လေးကို ကြည့်ပါ...<a href='https://t.me/TelegramTips/242'>Click Here</a>
+
+⏩ How To Forward : <a href='https://t.me/TelegramTips/242'>Click Here</a>
+=========== • ✠ • ===========</b>
+""")
 
     IMDB = False
     CHANNEL = False
