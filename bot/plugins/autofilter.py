@@ -788,6 +788,8 @@ async def ch2next_page(bot: Bot, query: types.CallbackQuery):
         pass
     await query.answer()
 
+
+
 @Bot.on_callback_query(filters.regex("^file"))
 async def handle_file(bot: Bot, query: types.CallbackQuery):
     _, file_id = query.data.split()
@@ -814,11 +816,9 @@ async def handle_file(bot: Bot, query: types.CallbackQuery):
     key = f"{query.message.chat.id}-{query.message.id}"
     Cache.BUTTONS[key] = file_name
     settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
+    imdb = None
     if settings["IMDB"]:
         imdb = await get_poster(file_name, file=file_name)
-	
-    else:
-        imdb = {}
 
     isMsg = query.message.chat.type == enums.ChatType.PRIVATE
     if not await check_fsub(bot, query.message, sendMsg=isMsg):
@@ -874,7 +874,7 @@ async def handle_file(bot: Bot, query: types.CallbackQuery):
                 )
     except errors.PeerIdInvalid:
         return await query.answer(f"https://t.me/{bot.me.username}?start=okok")
-    await query.answer(f'Sending : သင်နှိပ်လိုက်တဲ့ ဇာတ်ကားအား Bot Direct Message သို့ပေးပို့လိုက်ပါ \n\nCheck bot Direct Message \n\n {file_info["file_name"]}')
+    await query.answer(f'Sending: သင်နှိပ်လိုက်တဲ့ ဇာတ်ကားအား Bot Direct Message သို့ပေးပို့လိုက်ပါ \n\nCheck bot Direct Message \n\n {file_info["file_name"]}')
 
 
 async def ch9_imdb(bot: Bot, message: types.Message, text=True):
