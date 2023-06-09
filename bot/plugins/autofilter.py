@@ -812,15 +812,16 @@ async def handle_file(bot: Bot, query: types.CallbackQuery):
     query.message.from_user = query.from_user
     file_name = file_info["file_name"]
     key = f"{query.message.chat.id}-{query.message.id}"
-    Cache.BUTTONS[key] = search
+    Cache.BUTTONS[key] = file_info
     settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
     if settings["IMDB"]:
-        imdb = await get_poster(search, file=(files[0])["file_name"])
+        imdb = await get_poster(file_info, file=(files[0])["file_name"])
     else:
         imdb = {}
         offset = 0  # Placeholder value, replace with the appropriate offset value
         total_results_c = 0  # Placeholder value, replace with the appropriate total_results_c value
-        Cache.SEARCH_DATA[key] =search, offset, total_results_c, imdb, settings
+        Cache.SEARCH_DATA[key] = file_info, offset, total_results_c, imdb, settings
+
     isMsg = query.message.chat.type == enums.ChatType.PRIVATE
     if not await check_fsub(bot, query.message, sendMsg=isMsg):
         if not isMsg:
