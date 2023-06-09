@@ -110,11 +110,11 @@ async def language_check(bot, query):
 
 @Bot.on_callback_query(filters.regex(r"^select_lang"))
 async def select_language(bot, query):
-    _, req, key, search, *_ = query.data.split("_")
+    _, key, search, *_ = query.data.split("_")
     
     if str(key) not in [str(query.from_user.id), "0"]:        
         return await query.answer("This is not for you", show_alert=True)
-    key = f"{query.message.chat.id}-{query.message.id}"
+
 
     search = Cache.BUTTONS.get(key)
     btn = [
@@ -204,17 +204,17 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 req = message.from_user.id if message.from_user else 0
                 btn_a.append(
                     [
-                        types.InlineKeyboardButton(f"!{search} Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang_{req}_{key}_{search}") 
+                        types.InlineKeyboardButton(f"!{search} Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang_{key}_{search}") 
                     ]
                 )
             else:
                 btn_a.append(
-                    [types.InlineKeyboardButton(f"!{search} Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang_{req}_{key}_{search}")]
+                    [types.InlineKeyboardButton(f"!{search} Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang_{key}_{search}")]
                 )
         else:
             btn_a = [
                 [
-                    types.InlineKeyboardButton(f"!{search} Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang_{req}_{key}_{search}")                    
+                    types.InlineKeyboardButton(f"!{search} Lᴀɴɢᴜᴀɢᴇs  ရွေးချယ်ပေးပါ။!", callback_data=f"select_lang_{key}_{search}")                    
                 ]
             ]
 
