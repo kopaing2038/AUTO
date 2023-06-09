@@ -10,7 +10,7 @@ from ..config import Config
 
 from ..database import a_filter, b_filter, c_filter
 from ..database import configDB as config_db
-from ..utils.botTools import check_fsub, format_buttons, get_size, parse_link
+from ..utils.botTools import check_fsub, format_buttons, format_buttons2, get_size, parse_link
 from ..utils.cache import Cache
 from ..utils.imdbHelpers import get_poster, get_photo
 from ..utils.logger import LOGGER
