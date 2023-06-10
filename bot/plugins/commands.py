@@ -223,13 +223,22 @@ async def start_ch2handler(bot: Bot, msg: types.Message):
             await msg.reply(FORCE_TEXT, reply_markup=types.InlineKeyboardMarkup(btn))
 
     await msg.reply_photo(
-        photo=random.choice(Config.PICS),
-        START_TEXT.format(mention=msg.from_user.mention),
+        photo=random.choice(Script.PICS),
+        caption=Script.START_TEXT.format(mention=msg.from_user.mention),
         reply_markup=types.InlineKeyboardMarkup(
-            [[types.InlineKeyboardButton("◀️ Back", callback_data="back_home")]] 
+            [                
+                [
+                    types.InlineKeyboardButton(
+                        "🔖 Join Our Group to Use Me",
+                        url="https://t.me/+X7DNvf9iCy5jOGJl",
+                    )
+                ]          
+            ]
+
         ),
         quote=True,  
     )
+
 
 
 @Bot.on_callback_query(filters.regex("help"))  # type: ignore
