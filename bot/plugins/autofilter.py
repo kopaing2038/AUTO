@@ -749,7 +749,7 @@ async def ch2_give_filter(bot: Bot, message: types.Message):
             photo_url = ad["photo"]
             caption = ad["caption"]
             await message.reply_photo(
-                photo=Config.PICS,
+                photo=photo_url,
                 caption=caption,
                 reply_markup=types.InlineKeyboardMarkup(btn),
                 quote=True
@@ -760,7 +760,7 @@ async def ch2_give_filter(bot: Bot, message: types.Message):
             caption = ad["caption"]
             file_send3 = await bot.send_photo(
                 chat_id=Config.FILE_GROUP2,
-                photo=photo_url2,
+                photo=Config.PICS,
                 caption=cap,
                 reply_markup=types.InlineKeyboardMarkup(btn),                
             )
