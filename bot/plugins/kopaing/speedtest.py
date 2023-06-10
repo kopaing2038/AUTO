@@ -22,8 +22,8 @@ async def testspeed(m):
 async def speedtest_function(bot: Bot, message):
     m = await message.reply_text("Running Speed test")
     result = await testspeed(m)
-    download_speed = getattr(result['download'], 'speed', '-')
-    upload_speed = getattr(result['upload'], 'speed', '-')
+    download_speed = result['download']['speed'] if isinstance(result['download'], dict) else result['download']
+    upload_speed = result['upload']['speed'] if isinstance(result['upload'], dict) else result['upload']
     output = f"""**Speedtest Results**
 
 <u>**Speed:**</u>
@@ -32,15 +32,15 @@ async def speedtest_function(bot: Bot, message):
 **__Upload Speed:__** {upload_speed}  Mbps
     
 <u>**Client:**</u>
-**__ISP:__** {getattr(result['client'], 'isp', '-')}
-**__Country:__** {getattr(result['client'], 'country', '-')}
+**__ISP:__** {result['client']['isp']}
+**__Country:__** {result['client']['country']}
 
 <u>**Server:**</u>
-**__Name:__** {getattr(result['server'], 'name', '-')}
-**__Country:__** {getattr(result['server'], 'country', '-')}, {getattr(result['server'], 'cc', '-')}
-**__Sponsor:__** {getattr(result['server'], 'sponsor', '-')}
-**__Latency:__** {getattr(result['server'], 'latency', '-')}  
-**__Ping:__** {getattr(result, 'ping', '-')}"""
+**__Name:__** {result['server']['name']}
+**__Country:__** {result['server']['country']}, {result['server']['cc']}
+**__Sponsor:__** {result['server']['sponsor']}
+**__Latency:__** {result['server']['latency']}  
+**__Ping:__** {result['ping']}"""
 
     msg = await bot.send_photo(
         chat_id=message.chat.id, 
