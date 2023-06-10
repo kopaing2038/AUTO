@@ -1,5 +1,5 @@
 import asyncio
-import speedtest_cli
+import speedtest
 from pyrogram import filters, Client
 from bot import Bot
 from pyrogram.types import Message, InlineKeyboardButton
@@ -8,7 +8,7 @@ SUDOERS = filters.user()
 
 async def testspeed(m):
     try:
-        test = speedtest_cli.Speedtest()
+        test = speedtest.Speedtest()
         test.get_best_server()
         m = await m.edit("Running Download SpeedTest")
         test.download()
@@ -24,7 +24,7 @@ async def testspeed(m):
 async def speedtest_function(bot: Bot, message):
     m = await message.reply_text("Running Speed test")
     result = await testspeed(m)
-    speedtester = speedtest_cli.Speedtest()
+    speedtester = speedtest.Speedtest()
     speedtester.get_best_server()
     download_speed = result['download'] if isinstance(result['download'], float) else result['download'].get('speed', '-')
     upload_speed = result['upload'] if isinstance(result['upload'], float) else result['upload'].get('speed', '-')
