@@ -8,12 +8,12 @@ SUDOERS = filters.user()
 
 async def testspeed(m):
     try:
-        m = await m.edit("Running SpeedTest")
         speedtester = speedtest_cli.Speedtest()
         speedtester.get_best_server()
         speedtester.download()
         speedtester.upload()
         result = speedtester.results.dict()
+        m = await m.edit("Sharing SpeedTest Results")
     except Exception as e:
         return await m.edit(str(e))
     return result
