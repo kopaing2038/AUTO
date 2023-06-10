@@ -226,16 +226,9 @@ async def start_ch2handler(bot: Bot, msg: types.Message):
         photo=random.choice(Config.PICS),
         START_TEXT.format(mention=msg.from_user.mention),
         reply_markup=types.InlineKeyboardMarkup(
-            [
-                [
-                    types.InlineKeyboardButton(
-                        "🔖 Join Our Group to Use Me",
-                        url="https://t.me/+X7DNvf9iCy5jOGJl",
-                    )
-                ]
-            ]
+            [[types.InlineKeyboardButton("◀️ Back", callback_data="back_home")]] 
         ),
-        disable_web_page_preview=True,
+        quote=True,  
     )
 
 
