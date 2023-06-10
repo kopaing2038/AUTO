@@ -1,5 +1,5 @@
 import asyncio
-import speedtest_cli as speedtest
+import speedtest
 from pyrogram import filters, Client
 from bot import Bot
 from pyrogram.types import Message, InlineKeyboardButton
@@ -18,7 +18,7 @@ def testspeed(m):
         result = test.results.dict()
         m = m.edit("Sharing SpeedTest Results")
     except Exception as e:
-        return m.edit(str(e))
+        return m.edit(e)
     return result
 
 @Bot.on_message(filters.command(["speedtest"]) & ~filters.channel)
