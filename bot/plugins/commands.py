@@ -5,7 +5,7 @@ from bot import Bot
 from pyrogram import errors, filters, types
 
 from ..config import Config
-from ..database import a_filter, usersDB
+from ..database import a_filter, usersDB, b_filter, c_filter, d_filter
 from ..utils.botTools import (
     check_fsub,
     format_buttons,
@@ -22,6 +22,7 @@ from ..utils.decorators import is_banned
 log = LOGGER(__name__)
 
 START_TEXT = """Hey {mention} 👋
+
 Iam An Advanced AutoFilter Bot
 
 I'm a group manager bot, I'm built only for CIMENA group
@@ -274,17 +275,45 @@ async def help_handler(bot: Bot, msg: types.Message):
 
 @Bot.on_message(filters.command("stats"))  # type: ignore
 async def get_stats(_, msg: types.Message):
-    count = await a_filter.col.count_documents({})  # type: ignore
+    count1 = await a_filter.col.count_documents({})  # type: ignore
+    count2 = await b_filter.col.count_documents({})  # type: ignore
+    count3 = await c_filter.col.count_documents({})  # type: ignore
+    count4 = await d_filter.col.count_documents({})  # type: ignore
+    count = count1 + count2 + count3 + count4  # type: ignore
     size = (await a_filter.db.command("dbstats"))["dataSize"]  # type: ignore
     users = await usersDB.total_users_count()
     free = 536870912 - size
     await msg.reply(
-        f"**Stats**\n\n**Total Files**: `{count}`"
-        f"\nTotal Users: {users}"
-        f"\n**Total DB Used:** `{get_size(size)}`"
+        f"**Stats**\n\n**Total 1 Files**: {count1}"
+        f"\n**Total 2 Files**: {count2}"
+        f"\n**Total 3 Files**: {count3}"
+        f"\n**Total 4 Files**: {count4}"
+        f"\n\n**Total All Files**: {count}"
+        f"\n\n**Total Users**: {users}"
+        f"\n**Total DB Used:** {get_size(size)}"
         f"\n**Free:** `{get_size(free)}`"
     )
 
+@Bot.on_message(filters.command("status"))  # type: ignore
+async def get_stats(_, msg: types.Message):
+    count1 = await a_filter.col.count_documents({})  # type: ignore
+    count2 = await b_filter.col.count_documents({})  # type: ignore
+    count3 = await c_filter.col.count_documents({})  # type: ignore
+    count4 = await d_filter.col.count_documents({})  # type: ignore
+    count = count1 + count2 + count3 + count4  # type: ignore
+    size = (await a_filter.db.command("dbstats"))["dataSize"]  # type: ignore
+    users = await usersDB.total_users_count()
+    free = 536870912 - size
+    await msg.reply(
+        f"**Stats**\n\n**Total 1 Files**: {count1}"
+        f"\n**Total 2 Files**: {count2}"
+        f"\n**Total 3 Files**: {count3}"
+        f"\n**Total 4 Files**: {count4}"
+        f"\n\n**Total All Files**: {count}"
+        f"\n\n**Total Users**: {users}"
+        f"\n**Total DB Used:** {get_size(size)}"
+        f"\n**Free:** `{get_size(free)}`"
+    )
 
 @Bot.on_message(filters.command("delete") & filters.user(Config.ADMINS))  # type: ignore
 async def handleDelete(bot: Bot, msg: types.Message):
@@ -336,6 +365,206 @@ async def handleDelete(bot: Bot, msg: types.Message):
 
         await msg.edit("File not found in database")
 
+@Bot.on_message(filters.command("delete") & filters.user(Config.ADMINS))  # type: ignore
+async def handleDelete(bot: Bot, msg: types.Message):
+    """Delete file from database"""
+    reply = msg.reply_to_message
+    if reply and reply.media:
+        msg = await msg.reply("Processing...⏳", quote=True)
+    else:
+        await msg.reply(
+            "Reply to file with /delete which you want to delete", quote=True
+        )
+        return
+
+    for file_type in ("document", "video", "audio", "photo"):
+        media = getattr(reply, file_type, None)
+        if media is not None:
+            break
+    else:
+        await msg.edit("This is not supported file format")
+        return
+
+    file_id, file_ref = unpack_new_file_id(media.file_id)
+
+    result = await a_filter.col.delete_one(
+        {
+            "_id": file_id,
+        }
+    )  # type: ignore
+    if file_type == "photo":
+        result = await a_filter.col.delete_one(
+            {
+                "file_ref": media.file_id,
+            }
+        )  # type: ignore
+    if result.deleted_count:
+        await msg.edit("File is successfully deleted from database")
+    else:
+        if file_type != "photo":
+            file_name = re.sub(r"(_|\-|\.|\+)", " ", str(media.file_name))
+            result = await a_filter.col.delete_many(
+                {
+                    "file_name": file_name,
+                    "file_size": media.file_size,
+                    "mime_type": media.mime_type,
+                }
+            )  # type: ignore
+            if result.deleted_count:
+                return await msg.edit("File is successfully deleted from database")
+
+        await msg.edit("File not found in database")
+
+@Bot.on_message(filters.command("delete2") & filters.user(Config.ADMINS))  # type: ignore
+async def handleDelete2(bot: Bot, msg: types.Message):
+    """Delete file from database"""
+    reply = msg.reply_to_message
+    if reply and reply.media:
+        msg = await msg.reply("2 Processing...⏳", quote=True)
+    else:
+        await msg.reply(
+            "2 Reply to file with /delete which you want to delete", quote=True
+        )
+        return
+
+    for file_type in ("document", "video", "audio", "photo"):
+        media = getattr(reply, file_type, None)
+        if media is not None:
+            break
+    else:
+        await msg.edit("2 This is not supported file format")
+        return
+
+    file_id, file_ref = unpack_new_file_id(media.file_id)
+
+    result = await c_filter.col.delete_one(
+        {
+            "_id": file_id,
+        }
+    )  # type: ignore
+    if file_type == "photo":
+        result = await b_filter.col.delete_one(
+            {
+                "file_ref": media.file_id,
+            }
+        )  # type: ignore
+    if result.deleted_count:
+        await msg.edit("2 File is successfully deleted from database")
+    else:
+        if file_type != "photo":
+            file_name = re.sub(r"(_|\-|\.|\+)", " ", str(media.file_name))
+            result = await b_filter.col.delete_many(
+                {
+                    "file_name": file_name,
+                    "file_size": media.file_size,
+                    "mime_type": media.mime_type,
+                }
+            )  # type: ignore
+            if result.deleted_count:
+                return await msg.edit("2 File is successfully deleted from database")
+
+        await msg.edit("2 File not found in database")
+
+@Bot.on_message(filters.command("delete3") & filters.user(Config.ADMINS))  # type: ignore
+async def handleDelete3(bot: Bot, msg: types.Message):
+    """Delete file from database"""
+    reply = msg.reply_to_message
+    if reply and reply.media:
+        msg = await msg.reply("3 Processing...⏳", quote=True)
+    else:
+        await msg.reply(
+            "3 Reply to file with /delete which you want to delete", quote=True
+        )
+        return
+
+    for file_type in ("document", "video", "audio", "photo"):
+        media = getattr(reply, file_type, None)
+        if media is not None:
+            break
+    else:
+        await msg.edit("3 This is not supported file format")
+        return
+
+    file_id, file_ref = unpack_new_file_id(media.file_id)
+
+    result = await c_filter.col.delete_one(
+        {
+            "_id": file_id,
+        }
+    )  # type: ignore
+    if file_type == "photo":
+        result = await c_filter.col.delete_one(
+            {
+                "file_ref": media.file_id,
+            }
+        )  # type: ignore
+    if result.deleted_count:
+        await msg.edit("3 File is successfully deleted from database")
+    else:
+        if file_type != "photo":
+            file_name = re.sub(r"(_|\-|\.|\+)", " ", str(media.file_name))
+            result = await c_filter.col.delete_many(
+                {
+                    "file_name": file_name,
+                    "file_size": media.file_size,
+                    "mime_type": media.mime_type,
+                }
+            )  # type: ignore
+            if result.deleted_count:
+                return await msg.edit("3 File is successfully deleted from database")
+
+        await msg.edit("3 File not found in database")
+
+@Bot.on_message(filters.command("delete4") & filters.user(Config.ADMINS))  # type: ignore
+async def handleDelete4(bot: Bot, msg: types.Message):
+    """4 Delete file from database"""
+    reply = msg.reply_to_message
+    if reply and reply.media:
+        msg = await msg.reply("4 Processing...⏳", quote=True)
+    else:
+        await msg.reply(
+            " 4 Reply to file with /delete which you want to delete", quote=True
+        )
+        return
+
+    for file_type in ("document", "video", "audio", "photo"):
+        media = getattr(reply, file_type, None)
+        if media is not None:
+            break
+    else:
+        await msg.edit("4 This is not supported file format")
+        return
+
+    file_id, file_ref = unpack_new_file_id(media.file_id)
+
+    result = await d_filter.col.delete_one(
+        {
+            "_id": file_id,
+        }
+    )  # type: ignore
+    if file_type == "photo":
+        result = await d_filter.col.delete_one(
+            {
+                "file_ref": media.file_id,
+            }
+        )  # type: ignore
+    if result.deleted_count:
+        await msg.edit(" 4 File is successfully deleted from database")
+    else:
+        if file_type != "photo":
+            file_name = re.sub(r"(_|\-|\.|\+)", " ", str(media.file_name))
+            result = await d_filter.col.delete_many(
+                {
+                    "file_name": file_name,
+                    "file_size": media.file_size,
+                    "mime_type": media.mime_type,
+                }
+            )  # type: ignore
+            if result.deleted_count:
+                return await msg.edit(" 4 File is successfully deleted from database")
+
+        await msg.edit("4 File not found in database")
+
 
 @Bot.on_message(filters.command('deleteall') & filters.user(Config.ADMINS))
 async def delete_all_index(bot, message):
@@ -345,7 +574,22 @@ async def delete_all_index(bot, message):
             [
                 [
                     types.InlineKeyboardButton(
-                        text="DB File YES", callback_data="autofilter_delete1"
+                        text="DB File 1 YES", callback_data="autofilter_delete1"
+                    )
+                ],  
+                [
+                    types.InlineKeyboardButton(
+                        text="DB File 2 YES", callback_data="autofilter_delete2"
+                    )
+                ],  
+                [
+                    types.InlineKeyboardButton(
+                        text="DB File 3 YES", callback_data="autofilter_delete3"
+                    )
+                ],  
+                [
+                    types.InlineKeyboardButton(
+                        text="DB File YES", callback_data="autofilter_delete4"
                     )
                 ],   
                 [
@@ -364,4 +608,22 @@ async def adelete_all_index_confirm(bot, message):
     await a_filter.col.drop()
     await message.answer('Piracy Is Crime')
     await message.message.edit('Succesfully Deleted All The Indexed Files.') 
+
+@Bot.on_callback_query(filters.regex(r'^autofilter_delete1'))
+async def adelete_all_2index_confirm(bot, message):
+    await b_filter.col.drop()
+    await message.answer('2 Piracy Is Crime')
+    await message.message.edit('2 Succesfully Deleted All The Indexed Files.') 
+
+@Bot.on_callback_query(filters.regex(r'^autofilter_delete3'))
+async def adelete_all_3index_confirm(bot, message):
+    await c_filter.col.drop()
+    await message.answer('3 Piracy Is Crime')
+    await message.message.edit('3 Succesfully Deleted All The Indexed Files.') 
+
+@Bot.on_callback_query(filters.regex(r'^autofilter_delete4'))
+async def adelete_all_4index_confirm(bot, message):
+    await d_filter.col.drop()
+    await message.answer('4 Piracy Is Crime')
+    await message.message.edit('4 Succesfully Deleted All The Indexed Files.') 
     
