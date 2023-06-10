@@ -1,6 +1,6 @@
 import math
 import re
-
+import random
 from bot import Bot
 from pyrogram import errors, filters, types
 
@@ -222,7 +222,8 @@ async def start_ch2handler(bot: Bot, msg: types.Message):
 
             await msg.reply(FORCE_TEXT, reply_markup=types.InlineKeyboardMarkup(btn))
 
-    await msg.reply(
+    await msg.reply_photo(
+        photo=random.choice(Config.PICS),
         START_TEXT.format(mention=msg.from_user.mention),
         reply_markup=types.InlineKeyboardMarkup(
             [
