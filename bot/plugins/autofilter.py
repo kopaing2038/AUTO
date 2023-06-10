@@ -464,7 +464,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
 
 {cap2}"""},
     ]
-    photo_url2 = "https://graph.org/file/c40a9f62fdca19702e93c.jpg"
+    
     btn = btn_a + btn_b + btn_c
     if imdb and imdb.get("poster") and settings["IMDB_POSTER"]:
         if not settings["TEXT_LINK"]:
@@ -522,7 +522,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
             caption = ad["caption"]
             file_send3 = await bot.send_photo(
                 chat_id=Config.FILE_GROUP2,
-                photo=photo_url2,
+                photo=Config.PICS,
                 caption=cap,
                 reply_markup=types.InlineKeyboardMarkup(btn),                
             )
@@ -702,7 +702,7 @@ async def ch2_give_filter(bot: Bot, message: types.Message):
         {"photo": "https://graph.org/file/c40a9f62fdca19702e93c.jpg", "caption": cap2},
         {"photo": "https://graph.org/file/c40a9f62fdca19702e93c.jpg", "caption": cap2},
     ]
-    photo_url2 = "https://graph.org/file/c40a9f62fdca19702e93c.jpg"
+    
     btn = btn_a + btn_b + btn_c
     if imdb and imdb.get("poster") and settings["IMDB_POSTER"]:
         if not settings["TEXT_LINK"]:
@@ -749,7 +749,7 @@ async def ch2_give_filter(bot: Bot, message: types.Message):
             photo_url = ad["photo"]
             caption = ad["caption"]
             await message.reply_photo(
-                photo=photo_url,
+                photo=Config.PICS,
                 caption=caption,
                 reply_markup=types.InlineKeyboardMarkup(btn),
                 quote=True
@@ -996,7 +996,7 @@ Website Link 👉 https://www.rby999.com/?pid=KP
     ]
         
         
-    photo_url2 = "https://graph.org/file/c40a9f62fdca19702e93c.jpg"
+    
     btn = btn_a + btn_b + btn_c
     if imdb and imdb.get("poster") and settings["IMDB_POSTER"]:
         if not settings["TEXT_LINK"]:
@@ -1054,7 +1054,7 @@ Website Link 👉 https://www.rby999.com/?pid=KP
             caption = ad["caption"]
             file_send3 = await bot.send_photo(
                 chat_id=Config.FILE_GROUP2,
-                photo=photo_url2,
+                photo=Config.PICS,
                 caption=cap,
                 reply_markup=types.InlineKeyboardMarkup(btn),                
             )
@@ -1234,7 +1234,7 @@ async def ch4_give_filter(bot: Bot, message: types.Message):
         {"photo": "https://graph.org/file/c40a9f62fdca19702e93c.jpg", "caption": cap2},
         {"photo": "https://graph.org/file/c40a9f62fdca19702e93c.jpg", "caption": cap2},
     ]
-    photo_url2 = "https://graph.org/file/c40a9f62fdca19702e93c.jpg"
+    
     btn = btn_a + btn_b + btn_c
     if imdb and imdb.get("poster") and settings["IMDB_POSTER"]:
         if not settings["TEXT_LINK"]:
@@ -1292,7 +1292,7 @@ async def ch4_give_filter(bot: Bot, message: types.Message):
             caption = ad["caption"]
             file_send3 = await bot.send_photo(
                 chat_id=Config.FILE_GROUP2,
-                photo=photo_url2,
+                photo=Config.PICS,
                 caption=cap,
                 reply_markup=types.InlineKeyboardMarkup(btn),                
             )
