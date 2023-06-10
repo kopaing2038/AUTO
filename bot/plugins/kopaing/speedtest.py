@@ -17,6 +17,12 @@ async def testspeed(m):
 async def speedtest_function(bot: Bot, message):
     m = await message.reply_text("Running Speed test")
     result = await testspeed(m)
+    
+    if isinstance(result, str):
+        # Error occurred, result is a string
+        await m.edit(result)
+        return
+    
     download_speed = round(result.download / 1000000, 2)
     upload_speed = round(result.upload / 1000000, 2)
     output = f"""**Speedtest Results**
