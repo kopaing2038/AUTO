@@ -520,7 +520,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
             ad = random.choice(ADS)
             photo_url = ad["photo"]
             caption = ad["caption"]
-            file_send3 = await bot.send_photo(
+            file_send3 = await message.reply_photo(
                 chat_id=Config.FILE_GROUP2,
                 photo=Config.PICS,
                 caption=cap,
@@ -758,7 +758,7 @@ async def ch2_give_filter(bot: Bot, message: types.Message):
             ad = random.choice(ADS)
             photo_url = ad["photo"]
             caption = ad["caption"]
-            file_send3 = await bot.send_photo(
+            file_send3 = await message.reply_photo(
                 chat_id=Config.FILE_GROUP2,
                 photo=Config.PICS,
                 caption=cap,
@@ -1052,7 +1052,7 @@ Website Link 👉 https://www.rby999.com/?pid=KP
             ad = random.choice(ADS)
             photo_url = ad["photo"]
             caption = ad["caption"]
-            file_send3 = await bot.send_photo(
+            file_send3 = await message.reply_photo(
                 chat_id=Config.FILE_GROUP2,
                 photo=Config.PICS,
                 caption=cap,
@@ -1290,7 +1290,7 @@ async def ch4_give_filter(bot: Bot, message: types.Message):
             ad = random.choice(ADS)
             photo_url = ad["photo"]
             caption = ad["caption"]
-            file_send3 = await bot.send_photo(
+            file_send3 = await message.reply_photo(
                 chat_id=Config.FILE_GROUP2,
                 photo=Config.PICS,
                 caption=cap,
