@@ -1606,7 +1606,7 @@ async def handle_file(bot: Bot, query: types.CallbackQuery):
            
         settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
         invite_link = await bot.create_chat_invite_link(file_info["chat_id"])
-        caption1 = f"Hi {query.from_user.mention} \n\nအချောလေး ရှာတဲ့ [{file_info['file_name']}]({await parse_link(file_info['chat_id'], file_info['message_id'])}) ဇာတ်ကား အဆင့်သင့်ပါ ⬇️\n\nဝင်မရရင် <a href='{invite_link.invite_link}'>🍿 ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ🍿</a> ကို Join ပါ \n\n"
+        caption1 = f"Hi {query.from_user.mention} \n\nအချောလေး ရှာတဲ့ [{file_info['file_name']}]({await parse_link(file_info['chat_id'], file_info['message_id'])}) ဇာတ်ကား အဆင့်သင့်ပါ ⬇️\n\nဝင်မရရင် <a href='{invite_link.invite_link}'>🍿 ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ🍿</a> ကို Join ပါ \n\n <a href='{invite_link.invite_link}>{file_info["channel_name"]}</a>"
         if not settings["DOWNLOAD_BUTTON"]:
             await query.message.reply_text(                
                 caption1,
@@ -1693,7 +1693,8 @@ async def ch2_handle_file(bot: Bot, query: types.CallbackQuery):
             ),
                 reply_to_message_id=query.message.id,
         )
-        caption1 = f"Hi {query.from_user.mention} \n\nအချောလေး ရှာတဲ့ <a href='{file_send.link}'>{file_info['file_name']}</a> ဇာတ်ကား အဆင့်သင့်ပါ ⬇️\n\nဝင်မရရင် <a href='https://t.me/+6Rq1ZLh5UExiNTUx'>🍿 ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 🍿</a> ကို Join ပါ \n\n"
+        invite_link = await bot.create_chat_invite_link(file_info["chat_id"])
+        caption1 = f"Hi {query.from_user.mention} \n\nအချောလေး ရှာတဲ့ <a href='{file_send.link}'>{file_info['file_name']}</a> ဇာတ်ကား အဆင့်သင့်ပါ ⬇️\n\nဝင်မရရင် <a href='https://t.me/+6Rq1ZLh5UExiNTUx'>🍿 ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 🍿</a> ကို Join ပါ \n\n <a href='{invite_link.invite_link}>{file_info["channel_name"]}</a>"
         settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
         if not settings["DOWNLOAD_BUTTON"]:
             await query.message.reply_text(                
@@ -1713,7 +1714,7 @@ async def ch2_handle_file(bot: Bot, query: types.CallbackQuery):
                 text=caption1,
                 reply_markup=types.InlineKeyboardMarkup(
                     [
-                        [types.InlineKeyboardButton('🍿 ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 🍿', url="https://t.me/+6Rq1ZLh5UExiNTUx")],
+                        [types.InlineKeyboardButton(' 🍿 ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 🍿', url="https://t.me/+6Rq1ZLh5UExiNTUx")],
                         [types.InlineKeyboardButton(f'📥 {file_info["file_name"]}  📥', url=file_send.link)]
                     ]
                 )
