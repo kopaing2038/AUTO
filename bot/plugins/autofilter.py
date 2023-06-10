@@ -1616,8 +1616,7 @@ async def handle_file(bot: Bot, query: types.CallbackQuery):
                         [types.InlineKeyboardButton("🍿ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ🍿", url=invite_link.invite_link)],  
                         [types.InlineKeyboardButton(f'📥 {file_info["file_name"]} {file_info["caption"]}📥', url=f'{(await parse_link(file_info["chat_id"], file_info["message_id"]))}')]
                     ]
-                ),
-                quote=True,
+                ),               
                 disable_web_page_preview=True,
             )
 
@@ -1706,8 +1705,7 @@ async def ch2_handle_file(bot: Bot, query: types.CallbackQuery):
                         [types.InlineKeyboardButton('🍿 ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 🍿', url="https://t.me/+6Rq1ZLh5UExiNTUx")],
                         [types.InlineKeyboardButton(f'📥 {file_info["file_name"]} 📥', url=file_send.link)]
                     ]
-                ),
-                quote=True,
+                ),                
                 disable_web_page_preview=True,
             )
         else:
