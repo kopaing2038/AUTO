@@ -11,16 +11,15 @@ async def testspeed(m):
         result = await asyncio.to_thread(speedtest_cli.speedtest)
         return result
     except Exception as e:
-        return str(e)
+        return None
 
 @Bot.on_message(filters.command(["speedtest"]) & ~filters.channel)
 async def speedtest_function(bot: Bot, message):
     m = await message.reply_text("Running Speed test")
     result = await testspeed(m)
     
-    if isinstance(result, str):
-        # Error occurred, result is a string
-        await m.edit(result)
+    if result is None:
+        await m.edit("Failed to run Speed test.")
         return
     
     download_speed = round(result.download / 1000000, 2)
