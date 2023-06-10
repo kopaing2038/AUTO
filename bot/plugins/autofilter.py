@@ -519,11 +519,10 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
             ad = random.choice(ADS)
             photo_url = ad["photo"]
             caption = ad["caption"]
-            file_send3 = await message.reply_photo(
-                photo=photo_url,
-                caption=caption,
-                reply_markup=types.InlineKeyboardMarkup(btn),
-                quote=True
+            file_send3 = await message.reply_text(
+                chat_id=Config.FILE_GROUP2,
+                text=cap,
+                reply_markup=types.InlineKeyboardMarkup(btn),                
             )
             await message.reply_photo(
                 photo=photo_url,
