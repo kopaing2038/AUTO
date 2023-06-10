@@ -334,7 +334,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         )
 
     else:
-        cap += f"𝗤𝘂𝗲𝗿𝘆   :{search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"
+        cap += f""
     cap2 = f"""
 🔮𝙌𝙪𝙚𝙧𝙮 : {search} 
 📥𝙏𝙤𝙩𝙖𝙡 : {total_results} 
@@ -464,6 +464,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
 
 {cap2}"""},
     ]
+    photo_url2 = "https://graph.org/file/c40a9f62fdca19702e93c.jpg"
     btn = btn_a + btn_b + btn_c
     if imdb and imdb.get("poster") and settings["IMDB_POSTER"]:
         if not settings["TEXT_LINK"]:
@@ -519,9 +520,10 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
             ad = random.choice(ADS)
             photo_url = ad["photo"]
             caption = ad["caption"]
-            file_send3 = await bot.send_message(
+            file_send3 = await bot.send_photo(
                 chat_id=Config.FILE_GROUP2,
-                text=cap,
+                photo=photo_url2,
+                caption=cap,
                 reply_markup=types.InlineKeyboardMarkup(btn),                
             )
             await message.reply_photo(
@@ -694,12 +696,13 @@ async def ch2_give_filter(bot: Bot, message: types.Message):
         )
 
     else:
-        cap += f"𝗤𝘂𝗲𝗿𝘆   :{search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"
+        cap += f""
     cap2 = f"𝗤𝘂𝗲𝗿𝘆   : {search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"	
     ADS = [
         {"photo": "https://graph.org/file/c40a9f62fdca19702e93c.jpg", "caption": cap2},
         {"photo": "https://graph.org/file/c40a9f62fdca19702e93c.jpg", "caption": cap2},
     ]
+    photo_url2 = "https://graph.org/file/c40a9f62fdca19702e93c.jpg"
     btn = btn_a + btn_b + btn_c
     if imdb and imdb.get("poster") and settings["IMDB_POSTER"]:
         if not settings["TEXT_LINK"]:
@@ -755,9 +758,10 @@ async def ch2_give_filter(bot: Bot, message: types.Message):
             ad = random.choice(ADS)
             photo_url = ad["photo"]
             caption = ad["caption"]
-            file_send3 = await bot.send_message(
+            file_send3 = await bot.send_photo(
                 chat_id=Config.FILE_GROUP2,
-                text=cap,
+                photo=photo_url2,
+                caption=cap,
                 reply_markup=types.InlineKeyboardMarkup(btn),                
             )
             await message.reply_photo(
@@ -930,7 +934,7 @@ async def ch3_give_filter(bot: Bot, message: types.Message):
         )
 
     else:
-        cap += f"𝗤𝘂𝗲𝗿𝘆   :{search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"
+        cap += f""
     cap3 = f"""🔮 𝙌𝙪𝙚𝙧𝙮 : {search} 
 📥 𝙏𝙤𝙩𝙖𝙡 : {total_results} 
 🙋🏻‍♂️ 𝙍𝙚𝙦𝙪𝙚𝙨𝙩 : {message.from_user.mention} 
@@ -992,6 +996,7 @@ Website Link 👉 https://www.rby999.com/?pid=KP
     ]
         
         
+    photo_url2 = "https://graph.org/file/c40a9f62fdca19702e93c.jpg"
     btn = btn_a + btn_b + btn_c
     if imdb and imdb.get("poster") and settings["IMDB_POSTER"]:
         if not settings["TEXT_LINK"]:
@@ -1047,9 +1052,10 @@ Website Link 👉 https://www.rby999.com/?pid=KP
             ad = random.choice(ADS)
             photo_url = ad["photo"]
             caption = ad["caption"]
-            file_send3 = await bot.send_message(
+            file_send3 = await bot.send_photo(
                 chat_id=Config.FILE_GROUP2,
-                text=cap,
+                photo=photo_url2,
+                caption=cap,
                 reply_markup=types.InlineKeyboardMarkup(btn),                
             )
             await message.reply_photo(
@@ -1222,12 +1228,13 @@ async def ch4_give_filter(bot: Bot, message: types.Message):
         )
 
     else:
-        cap += f"𝗤𝘂𝗲𝗿𝘆   :{search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"
+        cap += f""
     cap2 = f"𝗤𝘂𝗲𝗿𝘆   : {search}\n𝗧𝗼𝘁𝗮𝗹    : {total_results}\n𝗥𝗲𝗾𝘂𝗲𝘀𝘁 : {message.from_user.mention} \n\n</b><a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>"	
     ADS = [
         {"photo": "https://graph.org/file/c40a9f62fdca19702e93c.jpg", "caption": cap2},
         {"photo": "https://graph.org/file/c40a9f62fdca19702e93c.jpg", "caption": cap2},
     ]
+    photo_url2 = "https://graph.org/file/c40a9f62fdca19702e93c.jpg"
     btn = btn_a + btn_b + btn_c
     if imdb and imdb.get("poster") and settings["IMDB_POSTER"]:
         if not settings["TEXT_LINK"]:
@@ -1283,9 +1290,10 @@ async def ch4_give_filter(bot: Bot, message: types.Message):
             ad = random.choice(ADS)
             photo_url = ad["photo"]
             caption = ad["caption"]
-            file_send3 = await bot.send_message(
+            file_send3 = await bot.send_photo(
                 chat_id=Config.FILE_GROUP2,
-                text=cap,
+                photo=photo_url2,
+                caption=cap,
                 reply_markup=types.InlineKeyboardMarkup(btn),                
             )
             await message.reply_photo(
