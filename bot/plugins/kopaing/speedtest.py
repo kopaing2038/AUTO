@@ -8,18 +8,18 @@ SUDOERS = filters.user()
 
 async def testspeed(m):
     try:
+        m = await m.edit("Running SpeedTest")
         speedtester = speedtest_cli.Speedtest()
         speedtester.get_best_server()
         speedtester.download()
         speedtester.upload()
         result = speedtester.results.dict()
-        m = await m.edit("Sharing SpeedTest Results")
     except Exception as e:
         return await m.edit(str(e))
     return result
 
 @Bot.on_message(filters.command(["speedtest"]) & ~filters.channel)
-async def speedtest_function(bot: Bot, message):
+async def speedtest_function(bot: Bot, message: Message):
     m = await message.reply_text("Running Speed test")
     result = await testspeed(m)
     download_speed = result['download'] / 1000000
@@ -32,7 +32,7 @@ async def speedtest_function(bot: Bot, message):
 **__Upload Speed:__** {upload_speed:.2f} Mbps
     
 <u>**Client:**</u>
-**__ISP:__** {result['client']['isp']}
+**__ISP:__** {message.from_user.username}
 **__Country:__** {result['client']['country']}
 
 <u>**Server:**</u>
