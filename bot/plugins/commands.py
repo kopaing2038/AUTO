@@ -224,7 +224,7 @@ async def start_ch2handler(bot: Bot, msg: types.Message):
 
     await msg.reply_photo(
         photo=random.choice(Config.PICS),
-        caption=Script.START_TEXT.format(mention=msg.from_user.mention),
+        caption=START_TEXT.format(mention=msg.from_user.mention),
         reply_markup=types.InlineKeyboardMarkup(
             [                
                 [
