@@ -45,7 +45,7 @@ class Config:
     LOG_CHANNEL = int(get_config("LOG_CHANNEL", "-1001254905376"))
     FORCE_SUB_CHANNEL = int(get_config("FORCE_SUB_CHANNEL", "-1001161641413"))
 
-    PICS = (get_config('PICS', 'https://graph.org/file/10337fadbffa79c148340.jpg https://graph.org/file/d36571680767216fc2087.jpg https://graph.org/file/d0c149634f817daadfa7f.jpg https://graph.org/file/25f15ce7d53d0e3e751a5.jpg')).split()
+    PICS = ('PICS', 'https://graph.org/file/10337fadbffa79c148340.jpg https://graph.org/file/d36571680767216fc2087.jpg https://graph.org/file/d0c149634f817daadfa7f.jpg https://graph.org/file/25f15ce7d53d0e3e751a5.jpg').split()
     TEMPLATE = get_config(
         "IMDB_TEMPLATE",
         """<b>🏷 𝗧𝗶𝘁𝗹𝗲 :</b>: <a href={url}>{title}</a>  <a href={url}/releaseinfo>{year}</a> - #{kind}
