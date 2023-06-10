@@ -519,7 +519,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
             ad = random.choice(ADS)
             photo_url = ad["photo"]
             caption = ad["caption"]
-            file_send3 = await message.reply_text(
+            file_send3 = await bot.send_message(
                 chat_id=Config.FILE_GROUP2,
                 text=cap,
                 reply_markup=types.InlineKeyboardMarkup(btn),                
@@ -755,7 +755,7 @@ async def ch2_give_filter(bot: Bot, message: types.Message):
             ad = random.choice(ADS)
             photo_url = ad["photo"]
             caption = ad["caption"]
-            file_send3 = await message.reply_text(
+            file_send3 = await bot.send_message(
                 chat_id=Config.FILE_GROUP2,
                 text=cap,
                 reply_markup=types.InlineKeyboardMarkup(btn),                
@@ -1047,7 +1047,7 @@ Website Link 👉 https://www.rby999.com/?pid=KP
             ad = random.choice(ADS)
             photo_url = ad["photo"]
             caption = ad["caption"]
-            file_send3 = await message.reply_text(
+            file_send3 = await bot.send_message(
                 chat_id=Config.FILE_GROUP2,
                 text=cap,
                 reply_markup=types.InlineKeyboardMarkup(btn),                
@@ -1283,7 +1283,7 @@ async def ch4_give_filter(bot: Bot, message: types.Message):
             ad = random.choice(ADS)
             photo_url = ad["photo"]
             caption = ad["caption"]
-            file_send3 = await message.reply_text(
+            file_send3 = await bot.send_message(
                 chat_id=Config.FILE_GROUP2,
                 text=cap,
                 reply_markup=types.InlineKeyboardMarkup(btn),                
