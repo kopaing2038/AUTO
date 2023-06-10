@@ -1,35 +1,30 @@
 import asyncio
-import speedtest
+import speedtest_cli
 from pyrogram import filters, Client
 from bot import Bot
 from pyrogram.types import Message, InlineKeyboardButton
-#from speedtest_cli import Speedtest
-
 
 SUDOERS = filters.user()
 
-
-def testspeed(m):
+async def testspeed(m):
     try:
-        test = speedtest.Speedtest()
+        test = speedtest_cli.Speedtest()
         test.get_best_server()
-        m = m.edit("Running Download SpeedTest")
+        m = await m.edit("Running Download SpeedTest")
         test.download()
-        m = m.edit("Running Upload SpeedTest")
+        m = await m.edit("Running Upload SpeedTest")
         test.upload()
-        test.results.share()
         result = test.results.dict()
-        m = m.edit("Sharing SpeedTest Results")
+        m = await m.edit("Sharing SpeedTest Results")
     except Exception as e:
-        return m.edit(e)
+        return await m.edit(str(e))
     return result
 
 @Bot.on_message(filters.command(["speedtest"]) & ~filters.channel)
 async def speedtest_function(bot: Bot, message):
     m = await message.reply_text("Running Speed test")
-    loop = asyncio.get_event_loop()
-    result = await loop.run_in_executor(None, testspeed, m)
-    speedtester = speedtest.Speedtest()
+    result = await testspeed(m)
+    speedtester = speedtest_cli.Speedtest()
     speedtester.get_best_server()
     download_speed = result['download'] if isinstance(result['download'], float) else result['download'].get('speed', '-')
     upload_speed = result['upload'] if isinstance(result['upload'], float) else result['upload'].get('speed', '-')
@@ -59,5 +54,3 @@ async def speedtest_function(bot: Bot, message):
         caption=output
     )
     await m.delete()
-
-
