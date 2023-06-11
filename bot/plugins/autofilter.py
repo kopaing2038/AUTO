@@ -1339,7 +1339,7 @@ async def next_page(bot: Bot, query: types.CallbackQuery):
         return
     settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
 
-    btn = await format_buttons2(files, settings["CHANNEL"])  # type: ignore
+    btn = await format_buttons(files, settings["CHANNEL"])  # type: ignore
 
     if 0 < offset <= 10:
         off_set = 0
@@ -1394,9 +1394,8 @@ async def next_page(bot: Bot, query: types.CallbackQuery):
         pass
     await query.answer()
 
-
-@Bot.on_callback_query(filters.regex(r"^ch2next"))  # type: ignore
-async def ch2next_page(bot: Bot, query: types.CallbackQuery):
+@Bot.on_callback_query(filters.regex(r"^chnext2"))  # type: ignore
+async def chnext2_next_page(bot: Bot, query: types.CallbackQuery):
     _, req, key, offset = query.data.split("_")  # type: ignore
     if int(req) not in [query.from_user.id, 0]:
         return await query.answer("This is not for you", show_alert=True)
@@ -1436,7 +1435,7 @@ async def ch2next_page(bot: Bot, query: types.CallbackQuery):
         btn.append(
             [
                 types.InlineKeyboardButton(
-                    "⏪ BACK", callback_data=f"ch2next_{req}_{key}_{off_set}"
+                    "⏪ BACK", callback_data=f"chnext2_{req}_{key}_{off_set}"
                 ),
                 types.InlineKeyboardButton(
                     f"📃 Pages {math.ceil(int(offset) / 5) + 1} / {math.ceil(total / 5)}",
@@ -1452,7 +1451,7 @@ async def ch2next_page(bot: Bot, query: types.CallbackQuery):
                     callback_data="pages",
                 ),
                 types.InlineKeyboardButton(
-                    "NEXT ⏩", callback_data=f"ch2next_{req}_{key}_{n_offset}"
+                    "NEXT ⏩", callback_data=f"chnext2_{req}_{key}_{n_offset}"
                 ),
             ]
         )
@@ -1460,14 +1459,14 @@ async def ch2next_page(bot: Bot, query: types.CallbackQuery):
         btn.append(
             [
                 types.InlineKeyboardButton(
-                    "⏪ BACK", callback_data=f"ch2next_{req}_{key}_{off_set}"
+                    "⏪ BACK", callback_data=f"chnext2_{req}_{key}_{off_set}"
                 ),
                 types.InlineKeyboardButton(
                     f"🗓 {math.ceil(int(offset) / 5) + 1} / {math.ceil(total / 5)}",
                     callback_data="pages",
                 ),
                 types.InlineKeyboardButton(
-                    "NEXT ⏩", callback_data=f"ch2next_{req}_{key}_{n_offset}"
+                    "NEXT ⏩", callback_data=f"chnext2_{req}_{key}_{n_offset}"
                 ),
             ],
         )
@@ -1480,7 +1479,7 @@ async def ch2next_page(bot: Bot, query: types.CallbackQuery):
     await query.answer()
 
 @Bot.on_callback_query(filters.regex(r"^ch3next"))  # type: ignore
-async def ch2next_page(bot: Bot, query: types.CallbackQuery):
+async def ch3next_next_page(bot: Bot, query: types.CallbackQuery):
     _, req, key, offset = query.data.split("_")  # type: ignore
     if int(req) not in [query.from_user.id, 0]:
         return await query.answer("This is not for you", show_alert=True)
@@ -1520,7 +1519,7 @@ async def ch2next_page(bot: Bot, query: types.CallbackQuery):
         btn.append(
             [
                 types.InlineKeyboardButton(
-                    "⌫ 𝐁𝐀𝐂𝐊", callback_data=f"ch3next_{req}_{key}_{off_set}"
+                    "⏪ BACK", callback_data=f"ch3next_{req}_{key}_{off_set}"
                 ),
                 types.InlineKeyboardButton(
                     f"📃 Pages {math.ceil(int(offset) / 5) + 1} / {math.ceil(total / 5)}",
@@ -1536,7 +1535,7 @@ async def ch2next_page(bot: Bot, query: types.CallbackQuery):
                     callback_data="pages",
                 ),
                 types.InlineKeyboardButton(
-                    "𝐍𝐄𝐗𝐓 ➪", callback_data=f"ch3next_{req}_{key}_{n_offset}"
+                    "NEXT ⏩", callback_data=f"ch3next_{req}_{key}_{n_offset}"
                 ),
             ]
         )
@@ -1544,14 +1543,14 @@ async def ch2next_page(bot: Bot, query: types.CallbackQuery):
         btn.append(
             [
                 types.InlineKeyboardButton(
-                    "⌫ 𝐁𝐀𝐂𝐊", callback_data=f"ch3next_{req}_{key}_{off_set}"
+                    "⏪ BACK", callback_data=f"ch3next_{req}_{key}_{off_set}"
                 ),
                 types.InlineKeyboardButton(
                     f"🗓 {math.ceil(int(offset) / 5) + 1} / {math.ceil(total / 5)}",
                     callback_data="pages",
                 ),
                 types.InlineKeyboardButton(
-                    "𝐍𝐄𝐗𝐓 ➪", callback_data=f"ch3next_{req}_{key}_{n_offset}"
+                    "NEXT ⏩", callback_data=f"ch3next_{req}_{key}_{n_offset}"
                 ),
             ],
         )
@@ -1562,7 +1561,6 @@ async def ch2next_page(bot: Bot, query: types.CallbackQuery):
     except errors.MessageNotModified:
         pass
     await query.answer()
-
 
 
 
