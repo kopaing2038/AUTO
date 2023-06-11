@@ -1339,7 +1339,7 @@ async def next_page(bot: Bot, query: types.CallbackQuery):
         return
     settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
 
-    btn = await format_buttons(files, settings["CHANNEL"])  # type: ignore
+    btn = await format_buttons2(files, settings["CHANNEL"])  # type: ignore
 
     if 0 < offset <= 10:
         off_set = 0
