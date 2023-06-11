@@ -280,7 +280,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                             callback_data="pages",
                         ),
                         types.InlineKeyboardButton(
-                            text="NEXT ⏩", callback_data=f"ch2next_{req}_{key}_{offset}"
+                            text="NEXT ⏩", callback_data=f"chnext2_{req}_{key}_{offset}"
                         ),
                     ]
                 )
@@ -642,7 +642,7 @@ async def ch2_give_filter(bot: Bot, message: types.Message):
                             callback_data="pages",
                         ),
                         types.InlineKeyboardButton(
-                            text="NEXT ⏩", callback_data=f"ch2next_{req}_{key}_{offset}"
+                            text="NEXT ⏩", callback_data=f"chnext2_{req}_{key}_{offset}"
                         ),
                     ]
                 )
@@ -880,7 +880,7 @@ async def ch3_give_filter(bot: Bot, message: types.Message):
                             callback_data="pages",
                         ),
                         types.InlineKeyboardButton(
-                            text="NEXT ⏩", callback_data=f"ch2next_{req}_{key}_{offset}"
+                            text="NEXT ⏩", callback_data=f"chnext2_{req}_{key}_{offset}"
                         ),
                     ]
                 )
@@ -1174,7 +1174,7 @@ async def ch4_give_filter(bot: Bot, message: types.Message):
                             callback_data="pages",
                         ),
                         types.InlineKeyboardButton(
-                            text="NEXT ⏩", callback_data=f"ch2next_{req}_{key}_{offset}"
+                            text="NEXT ⏩", callback_data=f"chnext2_{req}_{key}_{offset}"
                         ),
                     ]
                 )
