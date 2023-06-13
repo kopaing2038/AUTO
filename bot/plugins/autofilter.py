@@ -492,9 +492,12 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                     caption=cap[:1024],
                     reply_markup=types.InlineKeyboardMarkup(btn),
                 )
+                ad1 = random.choice(ADS)
+                photo_url = ad1["photo"]
+                caption = ad1["caption"]
                 await message.reply_photo(
-                    photo=imdb.get("poster"),
-                    caption=cap[:1024],
+                    photo=photo_url,
+                    caption=caption,
                     reply_markup=types.InlineKeyboardMarkup(
                         [
                             [types.InlineKeyboardButton('ဝင်မရရင်ဒီကိုအရင်နှိပ် Join ပေးပါ', url="https://t.me/+AGntow9MZbs2MjRh")],
@@ -558,6 +561,8 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 ),
                 quote=True
             )
+
+
 
 async def ch2_give_filter(bot: Bot, message: types.Message):
 
@@ -750,9 +755,12 @@ async def ch2_give_filter(bot: Bot, message: types.Message):
                     caption=cap[:1024],
                     reply_markup=types.InlineKeyboardMarkup(btn),
                 )
+                ad1 = random.choice(ADS)
+                photo_url = ad1["photo"]
+                caption = ad1["caption"]
                 await message.reply_photo(
-                    photo=imdb.get("poster"),
-                    caption=cap[:1024],
+                    photo=photo_url,
+                    caption=caption,
                     reply_markup=types.InlineKeyboardMarkup(
                         [
                             [types.InlineKeyboardButton('ဝင်မရရင်ဒီကိုအရင်နှိပ် Join ပေးပါ', url="https://t.me/+AGntow9MZbs2MjRh")],
@@ -1066,9 +1074,12 @@ Website Link 👉 https://www.rby999.com/?pid=KP
                     caption=cap[:1024],
                     reply_markup=types.InlineKeyboardMarkup(btn),
                 )
+                ad1 = random.choice(ADS)
+                photo_url = ad1["photo"]
+                caption = ad1["caption"]
                 await message.reply_photo(
-                    photo=imdb.get("poster"),
-                    caption=cap[:1024],
+                    photo=photo_url,
+                    caption=caption,
                     reply_markup=types.InlineKeyboardMarkup(
                         [
                             [types.InlineKeyboardButton('ဝင်မရရင်ဒီကိုအရင်နှိပ် Join ပေးပါ', url="https://t.me/+AGntow9MZbs2MjRh")],
@@ -1132,6 +1143,7 @@ Website Link 👉 https://www.rby999.com/?pid=KP
                 ),
                 quote=True
             )
+
 
 
 async def ch4_give_filter(bot: Bot, message: types.Message):
@@ -1325,9 +1337,12 @@ async def ch4_give_filter(bot: Bot, message: types.Message):
                     caption=cap[:1024],
                     reply_markup=types.InlineKeyboardMarkup(btn),
                 )
+                ad1 = random.choice(ADS)
+                photo_url = ad1["photo"]
+                caption = ad1["caption"]
                 await message.reply_photo(
-                    photo=imdb.get("poster"),
-                    caption=cap[:1024],
+                    photo=photo_url,
+                    caption=caption,
                     reply_markup=types.InlineKeyboardMarkup(
                         [
                             [types.InlineKeyboardButton('ဝင်မရရင်ဒီကိုအရင်နှိပ် Join ပေးပါ', url="https://t.me/+AGntow9MZbs2MjRh")],
@@ -1391,6 +1406,7 @@ async def ch4_give_filter(bot: Bot, message: types.Message):
                 ),
                 quote=True
             )
+
 
 
 
