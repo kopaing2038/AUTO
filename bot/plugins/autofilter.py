@@ -723,12 +723,23 @@ async def ch2_give_filter(bot: Bot, message: types.Message):
                     quote=True,
                 )
         else:
-            file_send = await bot.send_photo(
-                chat_id=Config.FILE_GROUP2,
-                photo=imdb.get("poster"),
-                caption=cap[:1024],
-                reply_markup=types.InlineKeyboardMarkup(btn),
-            )
+
+            try:
+                file_send = await bot.send_photo(
+                    chat_id=Config.FILE_GROUP2,
+                    photo=imdb.get("poster"),
+                    caption=cap[:1024],
+                    reply_markup=types.InlineKeyboardMarkup(btn),
+                )
+            except (errors.MediaEmpty, errors.PhotoInvalidDimensions, errors.WebpageMediaEmpty):
+                pic = imdb.get("poster")
+                poster = pic.replace(".jpg", "._V1_UX360.jpg")
+                file_send = await bot.send_photo(
+                    chat_id=Config.FILE_GROUP2,
+                    photo=poster,
+                    caption=cap[:1024],
+                    reply_markup=types.InlineKeyboardMarkup(btn),
+                )
             ad1 = random.choice(ADS)
             photo_url = ad1["photo"]
             caption = ad1["caption"]
@@ -740,9 +751,9 @@ async def ch2_give_filter(bot: Bot, message: types.Message):
                         [types.InlineKeyboardButton('ဝင်မရရင်ဒီကိုအရင်နှိပ် Join ပေးပါ', url="https://t.me/+AGntow9MZbs2MjRh")],
                         [types.InlineKeyboardButton(f'📥 {search} 📥', url=file_send.link)]
                     ]
-                ),
+               ),
                 quote=True,
-            )
+	    )
     else:
         if not settings["TEXT_LINK"]:
             ad = random.choice(ADS)
