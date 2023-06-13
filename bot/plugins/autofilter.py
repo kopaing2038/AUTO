@@ -485,26 +485,47 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                     quote=True,
                 )
         else:
-            file_send = await bot.send_photo(
-                chat_id=Config.FILE_GROUP2,
-                photo=imdb.get("poster"),
-                caption=cap[:1024],
-                reply_markup=types.InlineKeyboardMarkup(btn),
-            )
-            ad1 = random.choice(ADS)
-            photo_url = ad1["photo"]
-            caption = ad1["caption"]
-            await message.reply_photo(
-                photo=photo_url,
-                caption=caption,
-                reply_markup=types.InlineKeyboardMarkup(
-                    [
-                        [types.InlineKeyboardButton('ဝင်မရရင်ဒီကိုအရင်နှိပ် Join ပေးပါ', url="https://t.me/+AGntow9MZbs2MjRh")],
-                        [types.InlineKeyboardButton(f'📥 {search} 📥', url=file_send.link)]
-                    ]
-                ),
-                quote=True,
-            )
+            try:
+                file_send = await bot.send_photo(
+                    chat_id=Config.FILE_GROUP2,
+                    photo=imdb.get("poster"),
+                    caption=cap[:1024],
+                    reply_markup=types.InlineKeyboardMarkup(btn),
+                )
+                await message.reply_photo(
+                    photo=imdb.get("poster"),
+                    caption=cap[:1024],
+                    reply_markup=types.InlineKeyboardMarkup(
+                        [
+                            [types.InlineKeyboardButton('ဝင်မရရင်ဒီကိုအရင်နှိပ် Join ပေးပါ', url="https://t.me/+AGntow9MZbs2MjRh")],
+                            [types.InlineKeyboardButton(f'📥 {search} 📥', url=file_send.link)]
+                        ]
+                    ),
+                    quote=True,
+                )
+            except (errors.MediaEmpty, errors.PhotoInvalidDimensions, errors.WebpageMediaEmpty):
+                pic = imdb.get("poster")
+                poster = pic.replace(".jpg", "._V1_UX360.jpg")
+                file_send2 = await bot.send_photo(
+                    chat_id=Config.FILE_GROUP2,
+                    photo=poster,
+                    caption=cap[:1024],
+                    reply_markup=types.InlineKeyboardMarkup(btn),
+                )
+                ad1 = random.choice(ADS)
+                photo_url = ad1["photo"]
+                caption = ad1["caption"]
+                await message.reply_photo(
+                    photo=photo_url,
+                    caption=caption,
+                    reply_markup=types.InlineKeyboardMarkup(
+                        [
+                            [types.InlineKeyboardButton('ဝင်မရရင်ဒီကိုအရင်နှိပ် Join ပေးပါ', url="https://t.me/+AGntow9MZbs2MjRh")],
+                            [types.InlineKeyboardButton(f'📥 {search} 📥', url=file_send2.link)]
+                        ]
+                    ),
+                    quote=True,
+                )
     else:
         if not settings["TEXT_LINK"]:
             ad = random.choice(ADS)
@@ -524,7 +545,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 chat_id=Config.FILE_GROUP2,
                 photo=random.choice(Config.PICS),
                 caption=cap,
-                reply_markup=types.InlineKeyboardMarkup(btn),                
+                reply_markup=types.InlineKeyboardMarkup(btn),
             )
             await message.reply_photo(
                 photo=photo_url,
@@ -537,7 +558,6 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 ),
                 quote=True
             )
-
 
 async def ch2_give_filter(bot: Bot, message: types.Message):
 
@@ -1039,26 +1059,47 @@ Website Link 👉 https://www.rby999.com/?pid=KP
                     quote=True,
                 )
         else:
-            file_send = await bot.send_photo(
-                chat_id=Config.FILE_GROUP2,
-                photo=imdb.get("poster"),
-                caption=cap[:1024],
-                reply_markup=types.InlineKeyboardMarkup(btn),
-            )
-            ad1 = random.choice(ADS)
-            photo_url = ad1["photo"]
-            caption = ad1["caption"]
-            await message.reply_photo(
-                photo=photo_url,
-                caption=caption,
-                reply_markup=types.InlineKeyboardMarkup(
-                    [
-                        [types.InlineKeyboardButton('ဝင်မရရင်ဒီကိုအရင်နှိပ် Join ပေးပါ', url="https://t.me/+AGntow9MZbs2MjRh")],
-                        [types.InlineKeyboardButton(f'📥 {search} 📥', url=file_send.link)]
-                    ]
-                ),
-                quote=True,
-            )
+            try:
+                file_send = await bot.send_photo(
+                    chat_id=Config.FILE_GROUP2,
+                    photo=imdb.get("poster"),
+                    caption=cap[:1024],
+                    reply_markup=types.InlineKeyboardMarkup(btn),
+                )
+                await message.reply_photo(
+                    photo=imdb.get("poster"),
+                    caption=cap[:1024],
+                    reply_markup=types.InlineKeyboardMarkup(
+                        [
+                            [types.InlineKeyboardButton('ဝင်မရရင်ဒီကိုအရင်နှိပ် Join ပေးပါ', url="https://t.me/+AGntow9MZbs2MjRh")],
+                            [types.InlineKeyboardButton(f'📥 {search} 📥', url=file_send.link)]
+                        ]
+                    ),
+                    quote=True,
+                )
+            except (errors.MediaEmpty, errors.PhotoInvalidDimensions, errors.WebpageMediaEmpty):
+                pic = imdb.get("poster")
+                poster = pic.replace(".jpg", "._V1_UX360.jpg")
+                file_send2 = await bot.send_photo(
+                    chat_id=Config.FILE_GROUP2,
+                    photo=poster,
+                    caption=cap[:1024],
+                    reply_markup=types.InlineKeyboardMarkup(btn),
+                )
+                ad1 = random.choice(ADS)
+                photo_url = ad1["photo"]
+                caption = ad1["caption"]
+                await message.reply_photo(
+                    photo=photo_url,
+                    caption=caption,
+                    reply_markup=types.InlineKeyboardMarkup(
+                        [
+                            [types.InlineKeyboardButton('ဝင်မရရင်ဒီကိုအရင်နှိပ် Join ပေးပါ', url="https://t.me/+AGntow9MZbs2MjRh")],
+                            [types.InlineKeyboardButton(f'📥 {search} 📥', url=file_send2.link)]
+                        ]
+                    ),
+                    quote=True,
+                )
     else:
         if not settings["TEXT_LINK"]:
             ad = random.choice(ADS)
@@ -1078,7 +1119,7 @@ Website Link 👉 https://www.rby999.com/?pid=KP
                 chat_id=Config.FILE_GROUP2,
                 photo=random.choice(Config.PICS),
                 caption=cap,
-                reply_markup=types.InlineKeyboardMarkup(btn),                
+                reply_markup=types.InlineKeyboardMarkup(btn),
             )
             await message.reply_photo(
                 photo=photo_url,
@@ -1277,26 +1318,47 @@ async def ch4_give_filter(bot: Bot, message: types.Message):
                     quote=True,
                 )
         else:
-            file_send = await bot.send_photo(
-                chat_id=Config.FILE_GROUP2,
-                photo=imdb.get("poster"),
-                caption=cap[:1024],
-                reply_markup=types.InlineKeyboardMarkup(btn),
-            )
-            ad1 = random.choice(ADS)
-            photo_url = ad1["photo"]
-            caption = ad1["caption"]
-            await message.reply_photo(
-                photo=photo_url,
-                caption=caption,
-                reply_markup=types.InlineKeyboardMarkup(
-                    [
-                        [types.InlineKeyboardButton('ဝင်မရရင်ဒီကိုအရင်နှိပ် Join ပေးပါ', url="https://t.me/+AGntow9MZbs2MjRh")],
-                        [types.InlineKeyboardButton(f'📥 {search} 📥', url=file_send.link)]
-                    ]
-                ),
-                quote=True,
-            )
+            try:
+                file_send = await bot.send_photo(
+                    chat_id=Config.FILE_GROUP2,
+                    photo=imdb.get("poster"),
+                    caption=cap[:1024],
+                    reply_markup=types.InlineKeyboardMarkup(btn),
+                )
+                await message.reply_photo(
+                    photo=imdb.get("poster"),
+                    caption=cap[:1024],
+                    reply_markup=types.InlineKeyboardMarkup(
+                        [
+                            [types.InlineKeyboardButton('ဝင်မရရင်ဒီကိုအရင်နှိပ် Join ပေးပါ', url="https://t.me/+AGntow9MZbs2MjRh")],
+                            [types.InlineKeyboardButton(f'📥 {search} 📥', url=file_send.link)]
+                        ]
+                    ),
+                    quote=True,
+                )
+            except (errors.MediaEmpty, errors.PhotoInvalidDimensions, errors.WebpageMediaEmpty):
+                pic = imdb.get("poster")
+                poster = pic.replace(".jpg", "._V1_UX360.jpg")
+                file_send2 = await bot.send_photo(
+                    chat_id=Config.FILE_GROUP2,
+                    photo=poster,
+                    caption=cap[:1024],
+                    reply_markup=types.InlineKeyboardMarkup(btn),
+                )
+                ad1 = random.choice(ADS)
+                photo_url = ad1["photo"]
+                caption = ad1["caption"]
+                await message.reply_photo(
+                    photo=photo_url,
+                    caption=caption,
+                    reply_markup=types.InlineKeyboardMarkup(
+                        [
+                            [types.InlineKeyboardButton('ဝင်မရရင်ဒီကိုအရင်နှိပ် Join ပေးပါ', url="https://t.me/+AGntow9MZbs2MjRh")],
+                            [types.InlineKeyboardButton(f'📥 {search} 📥', url=file_send2.link)]
+                        ]
+                    ),
+                    quote=True,
+                )
     else:
         if not settings["TEXT_LINK"]:
             ad = random.choice(ADS)
@@ -1316,7 +1378,7 @@ async def ch4_give_filter(bot: Bot, message: types.Message):
                 chat_id=Config.FILE_GROUP2,
                 photo=random.choice(Config.PICS),
                 caption=cap,
-                reply_markup=types.InlineKeyboardMarkup(btn),                
+                reply_markup=types.InlineKeyboardMarkup(btn),
             )
             await message.reply_photo(
                 photo=photo_url,
