@@ -202,7 +202,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
             )
             if not files_c:
                 m = await message.reply_text(                
-                    f"Sᴏʀʀʏ. သင့်ရှာဖွေမှုကို {search}  ရှာမတွေ့ပါ။! \n\n အကြောင်းပြချက်မှာ :\n\n"               
+                    f"Sᴏʀʀʏ. သင့်ရှာဖွေမှု {search}  ကိုရှာမတွေ့ပါ။! \n\n အကြောင်းပြချက်မှာ :\n\n"               
                     "◉ ကျွန်ုပ်တို့၏ Database  မရှိနိုင်ပါ။ 💾\n\n"
                     "◉ ဒါမှမဟုတ် မင်းရဲ့ စာလုံးပေါင်း မှားနေတာ ဖြစ်နိုင်တယ်။  ဒါကြောင့် google မှာ စာလုံးပေါင်းစစ်ဆေးကြည့်ပါ။ 🔍.",
                     reply_markup=types.InlineKeyboardMarkup(
@@ -601,7 +601,7 @@ async def ch2_give_filter(bot: Bot, message: types.Message):
             )
             if not files_c:
                 m = await message.reply_text(                
-                    f"Sᴏʀʀʏ. သင့်ရှာဖွေမှုကို {search}  ရှာမတွေ့ပါ။! \n\n အကြောင်းပြချက်မှာ :\n\n"               
+                    f"Sᴏʀʀʏ. သင့်ရှာဖွေမှု {search}  ကိုရှာမတွေ့ပါ။! \n\n အကြောင်းပြချက်မှာ :\n\n"                    
                     "◉ ကျွန်ုပ်တို့၏ Database  မရှိနိုင်ပါ။ 💾\n\n"
                     "◉ ဒါမှမဟုတ် မင်းရဲ့ စာလုံးပေါင်း မှားနေတာ ဖြစ်နိုင်တယ်။  ဒါကြောင့် google မှာ စာလုံးပေါင်းစစ်ဆေးကြည့်ပါ။ 🔍.",
                     reply_markup=types.InlineKeyboardMarkup(
@@ -1207,7 +1207,7 @@ async def ch4_give_filter(bot: Bot, message: types.Message):
             )
             if not files_c:
                 m = await message.reply_text(                
-                    f"Sᴏʀʀʏ. သင့်ရှာဖွေမှုကို {search}  ရှာမတွေ့ပါ။! \n\n အကြောင်းပြချက်မှာ :\n\n"               
+                    f"Sᴏʀʀʏ. သင့်ရှာဖွေမှု {search}  ကိုရှာမတွေ့ပါ။! \n\n အကြောင်းပြချက်မှာ :\n\n"                   
                     "◉ ကျွန်ုပ်တို့၏ Database  မရှိနိုင်ပါ။ 💾\n\n"
                     "◉ ဒါမှမဟုတ် မင်းရဲ့ စာလုံးပေါင်း မှားနေတာ ဖြစ်နိုင်တယ်။  ဒါကြောင့် google မှာ စာလုံးပေါင်းစစ်ဆေးကြည့်ပါ။ 🔍.",
                     reply_markup=types.InlineKeyboardMarkup(
