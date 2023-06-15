@@ -201,6 +201,18 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 search, offset=0, filter=True, photo=settings['PHOTO_FILTER'], video=settings['V_FILTER']
             )
             if not files_c:
+                m = await message.reply_text(                
+                    f"Sᴏʀʀʏ. သင့်ရှာဖွေမှုကို {search}  ရှာမတွေ့ပါ။! \n\n အကြောင်းပြချက်မှာ :\n\n"               
+                    "◉ ကျွန်ုပ်တို့၏ Database  မရှိနိုင်ပါ။ 💾\n\n"
+                    "◉ ဒါမှမဟုတ် မင်းရဲ့ စာလုံးပေါင်း မှားနေတာ ဖြစ်နိုင်တယ်။  ဒါကြောင့် google မှာ စာလုံးပေါင်းစစ်ဆေးကြည့်ပါ။ 🔍.",
+                    reply_markup=types.InlineKeyboardMarkup(
+                        [
+                            [types.InlineKeyboardButton(f"Sᴩᴇʟʟɪɴɢ Oɴ Gᴏᴏɢʟᴇ 🔍", url=f"https://www.google.com/search?q={search.replace(' ', '+')}")]
+                        ]
+                )
+                )
+                await asyncio.sleep(60)
+                await m.delete()
                 return
     else:
         return
@@ -588,6 +600,18 @@ async def ch2_give_filter(bot: Bot, message: types.Message):
                 search, offset=0, filter=True, photo=settings['PHOTO_FILTER2'], video=settings['V_FILTER2']
             )
             if not files_c:
+                m = await message.reply_text(                
+                    f"Sᴏʀʀʏ. သင့်ရှာဖွေမှုကို {search}  ရှာမတွေ့ပါ။! \n\n အကြောင်းပြချက်မှာ :\n\n"               
+                    "◉ ကျွန်ုပ်တို့၏ Database  မရှိနိုင်ပါ။ 💾\n\n"
+                    "◉ ဒါမှမဟုတ် မင်းရဲ့ စာလုံးပေါင်း မှားနေတာ ဖြစ်နိုင်တယ်။  ဒါကြောင့် google မှာ စာလုံးပေါင်းစစ်ဆေးကြည့်ပါ။ 🔍.",
+                    reply_markup=types.InlineKeyboardMarkup(
+                        [
+                            [types.InlineKeyboardButton(f"Sᴩᴇʟʟɪɴɢ Oɴ Gᴏᴏɢʟᴇ 🔍", url=f"https://www.google.com/search?q={search.replace(' ', '+')}")]
+                        ]
+                )
+                )
+                await asyncio.sleep(60)
+                await m.delete()
                 return
     else:
         return
@@ -851,6 +875,18 @@ async def ch3_give_filter(bot: Bot, message: types.Message):
                 search, offset=0, filter=True, photo=settings['PHOTO_FILTER3'], video=settings['V_FILTER3']
             )
             if not files_c:
+                m = await message.reply_text(                
+                    f"Sᴏʀʀʏ. သင့်ရှာဖွေမှုကို {search}  ရှာမတွေ့ပါ။! \n\n အကြောင်းပြချက်မှာ :\n\n"               
+                    "◉ ကျွန်ုပ်တို့၏ Database  မရှိနိုင်ပါ။ 💾\n\n"
+                    "◉ ဒါမှမဟုတ် မင်းရဲ့ စာလုံးပေါင်း မှားနေတာ ဖြစ်နိုင်တယ်။  ဒါကြောင့် google မှာ စာလုံးပေါင်းစစ်ဆေးကြည့်ပါ။ 🔍.",
+                    reply_markup=types.InlineKeyboardMarkup(
+                        [
+                            [types.InlineKeyboardButton(f"Sᴩᴇʟʟɪɴɢ Oɴ Gᴏᴏɢʟᴇ 🔍", url=f"https://www.google.com/search?q={search.replace(' ', '+')}")]
+                        ]
+                )
+                )
+                await asyncio.sleep(60)
+                await m.delete()
                 return
     else:
         return
@@ -1170,6 +1206,18 @@ async def ch4_give_filter(bot: Bot, message: types.Message):
                 search, offset=0, filter=True, photo=settings['PHOTO_FILTER4'], video=settings['V_FILTER4']
             )
             if not files_c:
+                m = await message.reply_text(                
+                    f"Sᴏʀʀʏ. သင့်ရှာဖွေမှုကို {search}  ရှာမတွေ့ပါ။! \n\n အကြောင်းပြချက်မှာ :\n\n"               
+                    "◉ ကျွန်ုပ်တို့၏ Database  မရှိနိုင်ပါ။ 💾\n\n"
+                    "◉ ဒါမှမဟုတ် မင်းရဲ့ စာလုံးပေါင်း မှားနေတာ ဖြစ်နိုင်တယ်။  ဒါကြောင့် google မှာ စာလုံးပေါင်းစစ်ဆေးကြည့်ပါ။ 🔍.",
+                    reply_markup=types.InlineKeyboardMarkup(
+                        [
+                            [types.InlineKeyboardButton(f"Sᴩᴇʟʟɪɴɢ Oɴ Gᴏᴏɢʟᴇ 🔍", url=f"https://www.google.com/search?q={search.replace(' ', '+')}")]
+                        ]
+                )
+                )
+                await asyncio.sleep(60)
+                await m.delete()
                 return
     else:
         return
