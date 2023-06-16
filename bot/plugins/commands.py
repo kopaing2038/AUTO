@@ -302,21 +302,21 @@ async def get_stats_at(_, msg: types.Message):
     disk_usage = psutil.disk_usage('/').percent
     buttons = [[types.InlineKeyboardButton('𝚁𝙴𝙵𝚁𝙴𝚂𝙷 ♻️', callback_data='rfrsh')]]
     await msg.reply(
-        f"**Stats**\n\n**Total 1 Files**: {count1}"
-        f"\n**Total 2 Files**: {count2}"
-        f"\n**Total 3 Files**: {count3}"
-        f"\n**Total 4 Files**: {count4}"
-        f"\n\n**Total All Files**: {count}"
-        f"\n\n**Total Users**: {users}"
-        f"\n**Total DB Used:** {get_size(size)}"
-        f"\n**Free:** `{get_size(free)}`"
-        f"\n\n**Uptime:** {currentTime}"
-        f"\n**CPU Usage:** {cpu_usage}%"
-        f"\n**RAM Usage:** {ram_usage}%"        
-        f"\n**Total Disk Space:** {total}"
-        f"\n**Used Space:** {used} ({disk_usage}%)"
-        f"\n**Free Space:** {free2}"
-        f"\n\n**Power By** @KOPAINGLAY15",
+        f"**Stats**\n\nTotal 1 Files: {count1}"
+        f"\nTotal 2 Files: {count2}"
+        f"\nTotal 3 Files: {count3}"
+        f"\nTotal 4 Files: {count4}"
+        f"\n\nTotal All Files: {count}"
+        f"\n\nTotal Users: {users}"
+        f"\nTotal DB Used: {get_size(size)}"
+        f"\nFree: {get_size(free)}"
+        f"\n\nUptime: {currentTime}"
+        f"\nCPU Usage: {cpu_usage}%"
+        f"\nRAM Usage: {ram_usage}%"        
+        f"\nTotal Disk Space: {total}"
+        f"\nUsed Space: {used} ({disk_usage}%)"
+        f"\nFree Space: {free2}"
+        f"\n\nPower By @KOPAINGLAY15",
         reply_markup=types.InlineKeyboardMarkup(buttons),
         parse_mode=enums.ParseMode.HTML    
     )
@@ -342,21 +342,21 @@ async def get_stats(_, msg: types.Message):
     disk_usage = psutil.disk_usage('/').percent
     buttons = [[types.InlineKeyboardButton('𝚁𝙴𝙵𝚁𝙴𝚂𝙷 ♻️', callback_data='rfrsh')]]
     await msg.reply(
-        f"**Stats**\n\n**Total 1 Files**: {count1}"
-        f"\n**Total 2 Files**: {count2}"
-        f"\n**Total 3 Files**: {count3}"
-        f"\n**Total 4 Files**: {count4}"
-        f"\n\n**Total All Files**: {count}"
-        f"\n\n**Total Users**: {users}"
-        f"\n**Total DB Used:** {get_size(size)}"
-        f"\n**Free:** `{get_size(free)}`"
-        f"\n\n**Uptime:** {currentTime}"
-        f"\n**CPU Usage:** {cpu_usage}%"
-        f"\n**RAM Usage:** {ram_usage}%"        
-        f"\n**Total Disk Space:** {total}"
-        f"\n**Used Space:** {used} ({disk_usage}%)"
-        f"\n**Free Space:** {free2}"
-        f"\n\n**Power By** @KOPAINGLAY15",
+        f"**Stats**\n\nTotal 1 Files: {count1}"
+        f"\nTotal 2 Files: {count2}"
+        f"\nTotal 3 Files: {count3}"
+        f"\nTotal 4 Files: {count4}"
+        f"\n\nTotal All Files: {count}"
+        f"\n\nTotal Users: {users}"
+        f"\nTotal DB Used: {get_size(size)}"
+        f"\nFree: {get_size(free)}"
+        f"\n\nUptime: {currentTime}"
+        f"\nCPU Usage: {cpu_usage}%"
+        f"\nRAM Usage: {ram_usage}%"        
+        f"\nTotal Disk Space: {total}"
+        f"\nUsed Space: {used} ({disk_usage}%)"
+        f"\nFree Space: {free2}"
+        f"\n\nPower By @KOPAINGLAY15",
         reply_markup=types.InlineKeyboardMarkup(buttons),
         parse_mode=enums.ParseMode.HTML    
     )
@@ -382,21 +382,21 @@ async def ref_get_stats(bot: Bot, query: types.CallbackQuery):
     disk_usage = psutil.disk_usage('/').percent
     buttons = [[types.InlineKeyboardButton('𝚁𝙴𝙵𝚁𝙴𝚂𝙷 ♻️', callback_data='rfrsh')]]
     text = (
-        f"**Stats**\n\n**Total 1 Files**: {count1}"
-        f"\n**Total 2 Files**: {count2}"
-        f"\n**Total 3 Files**: {count3}"
-        f"\n**Total 4 Files**: {count4}"
-        f"\n\n**Total All Files**: {count}"
-        f"\n\n**Total Users**: {users}"
-        f"\n**Total DB Used:** {get_size(size)}"
-        f"\n**Free:** `{get_size(free)}`"
-        f"\n\n**Uptime:** {currentTime}"
-        f"\n**CPU Usage:** {cpu_usage}%"
-        f"\n**RAM Usage:** {ram_usage}%"        
-        f"\n**Total Disk Space:** {total}"
-        f"\n**Used Space:** {used} ({disk_usage}%)"
-        f"\n**Free Space:** {free2}"
-        f"\n\n**Power By** @KOPAINGLAY15",
+        f"**Stats**\n\nTotal 1 Files: {count1}"
+        f"\nTotal 2 Files: {count2}"
+        f"\nTotal 3 Files: {count3}"
+        f"\nTotal 4 Files: {count4}"
+        f"\n\nTotal All Files: {count}"
+        f"\n\nTotal Users: {users}"
+        f"\nTotal DB Used: {get_size(size)}"
+        f"\nFree: {get_size(free)}"
+        f"\n\nUptime: {currentTime}"
+        f"\nCPU Usage: {cpu_usage}%"
+        f"\nRAM Usage: {ram_usage}%"        
+        f"\nTotal Disk Space: {total}"
+        f"\nUsed Space: {used} ({disk_usage}%)"
+        f"\nFree Space: {free2}"
+        f"\n\nPower By @KOPAINGLAY15"
     )
     await query.message.edit_text(
         text,
