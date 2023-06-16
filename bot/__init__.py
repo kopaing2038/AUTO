@@ -1,7 +1,8 @@
 import asyncio
 from typing import AsyncGenerator, Optional, Union
-
-from pyrogram import types
+import os
+import sys
+from typing import AsyncGenerator, Optional, Union
 from pyrogram import errors, filters, types
 from .client import Client
 from .config import Config
