@@ -300,6 +300,7 @@ async def get_stats_at(_, msg: types.Message):
     cpu_usage = psutil.cpu_percent()
     ram_usage = psutil.virtual_memory().percent
     disk_usage = psutil.disk_usage('/').percent
+    buttons = [[types.InlineKeyboardButton('𝚁𝙴𝙵𝚁𝙴𝚂𝙷 ♻️', callback_data='rfrsh')]]
     await msg.reply(
         f"**Stats**\n\n**Total 1 Files**: {count1}"
         f"\n**Total 2 Files**: {count2}"
@@ -309,12 +310,15 @@ async def get_stats_at(_, msg: types.Message):
         f"\n\n**Total Users**: {users}"
         f"\n**Total DB Used:** {get_size(size)}"
         f"\n**Free:** `{get_size(free)}`"
-        f"\n\nUptime: {currentTime}"
-        f"\nCPU Usage: {cpu_usage}%"
-        f"\nRAM Usage: {ram_usage}%"        
-        f"\nTotal Disk Space: {total}"
-        f"\nUsed Space: {used} ({disk_usage}%)"
-        f"\nFree Space: {free2}"
+        f"\n\n**Uptime:** {currentTime}"
+        f"\n**CPU Usage:** {cpu_usage}%"
+        f"\n**RAM Usage:** {ram_usage}%"        
+        f"\n**Total Disk Space:** {total}"
+        f"\n**Used Space:** {used} ({disk_usage}%)"
+        f"\n**Free Space:** {free2}"
+        f"\n\n**Power By** @KOPAINGLAY15",
+        reply_markup=types.InlineKeyboardMarkup(buttons),
+        parse_mode=enums.ParseMode.HTML    
     )
 
 @Bot.on_message(filters.command("status"))  # type: ignore
@@ -336,6 +340,7 @@ async def get_stats(_, msg: types.Message):
     cpu_usage = psutil.cpu_percent()
     ram_usage = psutil.virtual_memory().percent
     disk_usage = psutil.disk_usage('/').percent
+    buttons = [[types.InlineKeyboardButton('𝚁𝙴𝙵𝚁𝙴𝚂𝙷 ♻️', callback_data='rfrsh')]]
     await msg.reply(
         f"**Stats**\n\n**Total 1 Files**: {count1}"
         f"\n**Total 2 Files**: {count2}"
@@ -345,13 +350,60 @@ async def get_stats(_, msg: types.Message):
         f"\n\n**Total Users**: {users}"
         f"\n**Total DB Used:** {get_size(size)}"
         f"\n**Free:** `{get_size(free)}`"
-        f"\n\nUptime: {currentTime}"
-        f"\nCPU Usage: {cpu_usage}%"
-        f"\nRAM Usage: {ram_usage}%"        
-        f"\nTotal Disk Space: {total}"
-        f"\nUsed Space: {used} ({disk_usage}%)"
-        f"\nFree Space: {free2}"
+        f"\n\n**Uptime:** {currentTime}"
+        f"\n**CPU Usage:** {cpu_usage}%"
+        f"\n**RAM Usage:** {ram_usage}%"        
+        f"\n**Total Disk Space:** {total}"
+        f"\n**Used Space:** {used} ({disk_usage}%)"
+        f"\n**Free Space:** {free2}"
+        f"\n\n**Power By** @KOPAINGLAY15",
+        reply_markup=types.InlineKeyboardMarkup(buttons),
+        parse_mode=enums.ParseMode.HTML    
     )
+
+@Bot.on_callback_query(filters.regex("rfrsh"))  # type: ignore
+async def ref_get_stats(bot: Bot, query: types.CallbackQuery): 
+    count1 = await a_filter.col.count_documents({})  # type: ignore
+    count2 = await b_filter.col.count_documents({})  # type: ignore
+    count3 = await c_filter.col.count_documents({})  # type: ignore
+    count4 = await d_filter.col.count_documents({})  # type: ignore
+    count = count1 + count2 + count3 + count4  # type: ignore
+    size = (await a_filter.db.command("dbstats"))["dataSize"]  # type: ignore
+    users = await usersDB.total_users_count()
+    free = 536870912 - size
+
+    currentTime = time.strftime("%Hh%Mm%Ss", time.gmtime(time.time() - BOT_START_TIME))
+    total, used, free2 = shutil.disk_usage(".")
+    total = humanbytes(total)
+    used = humanbytes(used)
+    free2 = humanbytes(free2)
+    cpu_usage = psutil.cpu_percent()
+    ram_usage = psutil.virtual_memory().percent
+    disk_usage = psutil.disk_usage('/').percent
+    buttons = [[types.InlineKeyboardButton('𝚁𝙴𝙵𝚁𝙴𝚂𝙷 ♻️', callback_data='rfrsh')]]
+    text = (
+        f"**Stats**\n\n**Total 1 Files**: {count1}"
+        f"\n**Total 2 Files**: {count2}"
+        f"\n**Total 3 Files**: {count3}"
+        f"\n**Total 4 Files**: {count4}"
+        f"\n\n**Total All Files**: {count}"
+        f"\n\n**Total Users**: {users}"
+        f"\n**Total DB Used:** {get_size(size)}"
+        f"\n**Free:** `{get_size(free)}`"
+        f"\n\n**Uptime:** {currentTime}"
+        f"\n**CPU Usage:** {cpu_usage}%"
+        f"\n**RAM Usage:** {ram_usage}%"        
+        f"\n**Total Disk Space:** {total}"
+        f"\n**Used Space:** {used} ({disk_usage}%)"
+        f"\n**Free Space:** {free2}"
+        f"\n\n**Power By** @KOPAINGLAY15",
+    )
+    await query.message.edit_text(
+        text,
+        reply_markup=types.InlineKeyboardMarkup(buttons),
+        parse_mode=enums.ParseMode.HTML
+    ) 
+
 
 @Bot.on_message(filters.command("delete") & filters.user(Config.ADMINS))  # type: ignore
 async def handleDelete(bot: Bot, msg: types.Message):
