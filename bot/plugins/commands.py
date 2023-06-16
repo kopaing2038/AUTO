@@ -14,6 +14,7 @@ from ..utils.botTools import (
     get_size,
     unpack_new_file_id,
     FORCE_TEXT,
+    humanbytes,
 )
 from ..utils.cache import Cache
 from ..utils.imdbHelpers import get_poster
@@ -22,6 +23,7 @@ from ..utils.decorators import is_banned
 
 log = LOGGER(__name__)
 
+BOT_START_TIME = time()
 START_TEXT = """Hey {mention} 👋
 
 Iam An Advanced AutoFilter Bot
@@ -287,6 +289,12 @@ async def get_stats_at(_, msg: types.Message):
     size = (await a_filter.db.command("dbstats"))["dataSize"]  # type: ignore
     users = await usersDB.total_users_count()
     free = 536870912 - size
+
+    currentTime = time.strftime("%Hh%Mm%Ss", time.gmtime(time.time() - BOT_START_TIME))
+    total, used, free2 = shutil.disk_usage(".")
+    total = humanbytes(total)
+    used = humanbytes(used)
+    free2 = humanbytes(free2)
     cpu_usage = psutil.cpu_percent()
     ram_usage = psutil.virtual_memory().percent
     disk_usage = psutil.disk_usage('/').percent
@@ -301,7 +309,10 @@ async def get_stats_at(_, msg: types.Message):
         f"\n**Free:** `{get_size(free)}`"
         f"\n\nUptime: {currentTime}"
         f"\nCPU Usage: {cpu_usage}%"
-        f"\nRAM Usage: {ram_usage}%"
+        f"\nRAM Usage: {ram_usage}%"        
+        f"\nTotal Disk Space: {total}"
+        f"\nUsed Space: {used} ({disk_usage}%)"
+        f"\nFree Space: {free2}"
     )
 
 @Bot.on_message(filters.command("status"))  # type: ignore
@@ -314,6 +325,12 @@ async def get_stats(_, msg: types.Message):
     size = (await a_filter.db.command("dbstats"))["dataSize"]  # type: ignore
     users = await usersDB.total_users_count()
     free = 536870912 - size
+
+    currentTime = time.strftime("%Hh%Mm%Ss", time.gmtime(time.time() - BOT_START_TIME))
+    total, used, free2 = shutil.disk_usage(".")
+    total = humanbytes(total)
+    used = humanbytes(used)
+    free2 = humanbytes(free2)
     cpu_usage = psutil.cpu_percent()
     ram_usage = psutil.virtual_memory().percent
     disk_usage = psutil.disk_usage('/').percent
@@ -328,7 +345,10 @@ async def get_stats(_, msg: types.Message):
         f"\n**Free:** `{get_size(free)}`"
         f"\n\nUptime: {currentTime}"
         f"\nCPU Usage: {cpu_usage}%"
-        f"\nRAM Usage: {ram_usage}%"
+        f"\nRAM Usage: {ram_usage}%"        
+        f"\nTotal Disk Space: {total}"
+        f"\nUsed Space: {used} ({disk_usage}%)"
+        f"\nFree Space: {free2}"
     )
 
 @Bot.on_message(filters.command("delete") & filters.user(Config.ADMINS))  # type: ignore
