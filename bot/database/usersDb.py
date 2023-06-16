@@ -4,7 +4,8 @@ from .mongoDb import MongoDb
 class UsersDb(MongoDb):
     def __init__(self):
         super().__init__()
-        self.col = self.get_collection("users")
+        self.col = self.get_collection("users_2")  # autofilter2023 Vip
+        self.col = self.db.users
 
     def new_user_data(self):
         return dict(
@@ -49,7 +50,7 @@ class UsersDb(MongoDb):
 
     async def remove_ban(self, user_id: int):
         ban_status = dict(is_banned=False, ban_reason="")
-        await self.col.update_one({"_id": id}, {"$set": {"ban_status": ban_status}})  # type: ignore
+        await self.col.update_one({"_id": user_id}, {"$set": {"ban_status": ban_status}})  # type: ignore
 
     async def get_ban_status(self, user_id: int):
         default = dict(is_banned=False, ban_reason="")
