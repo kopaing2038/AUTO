@@ -4,7 +4,7 @@ import random
 from bot import Bot
 from pyrogram import errors, filters, types
 import re, asyncio, time, shutil, psutil, os, sys
-
+from pyrogram import errors, filters, types, enums
 import time
 
 from ..config import Config
