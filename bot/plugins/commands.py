@@ -4,7 +4,8 @@ import random
 from bot import Bot
 from pyrogram import errors, filters, types
 import re, asyncio, time, shutil, psutil, os, sys
-from time import time
+
+import time
 
 from ..config import Config
 from ..database import a_filter, usersDB, b_filter, c_filter, d_filter
