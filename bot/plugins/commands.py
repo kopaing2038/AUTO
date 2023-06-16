@@ -3,6 +3,7 @@ import re
 import random
 from bot import Bot
 from pyrogram import errors, filters, types
+import re, asyncio, time, shutil, psutil, os, sys
 
 from ..config import Config
 from ..database import a_filter, usersDB, b_filter, c_filter, d_filter
@@ -277,7 +278,7 @@ async def help_handler(bot: Bot, msg: types.Message):
 
 
 @Bot.on_message(filters.command("stats"))  # type: ignore
-async def get_stats(_, msg: types.Message):
+async def get_stats_at(_, msg: types.Message):
     count1 = await a_filter.col.count_documents({})  # type: ignore
     count2 = await b_filter.col.count_documents({})  # type: ignore
     count3 = await c_filter.col.count_documents({})  # type: ignore
@@ -286,6 +287,9 @@ async def get_stats(_, msg: types.Message):
     size = (await a_filter.db.command("dbstats"))["dataSize"]  # type: ignore
     users = await usersDB.total_users_count()
     free = 536870912 - size
+    cpu_usage = psutil.cpu_percent()
+    ram_usage = psutil.virtual_memory().percent
+    disk_usage = psutil.disk_usage('/').percent
     await msg.reply(
         f"**Stats**\n\n**Total 1 Files**: {count1}"
         f"\n**Total 2 Files**: {count2}"
@@ -295,6 +299,9 @@ async def get_stats(_, msg: types.Message):
         f"\n\n**Total Users**: {users}"
         f"\n**Total DB Used:** {get_size(size)}"
         f"\n**Free:** `{get_size(free)}`"
+        f"\n\nUptime: {currentTime}"
+        f"\nCPU Usage: {cpu_usage}%"
+        f"\nRAM Usage: {ram_usage}%"
     )
 
 @Bot.on_message(filters.command("status"))  # type: ignore
@@ -307,6 +314,9 @@ async def get_stats(_, msg: types.Message):
     size = (await a_filter.db.command("dbstats"))["dataSize"]  # type: ignore
     users = await usersDB.total_users_count()
     free = 536870912 - size
+    cpu_usage = psutil.cpu_percent()
+    ram_usage = psutil.virtual_memory().percent
+    disk_usage = psutil.disk_usage('/').percent
     await msg.reply(
         f"**Stats**\n\n**Total 1 Files**: {count1}"
         f"\n**Total 2 Files**: {count2}"
@@ -316,6 +326,9 @@ async def get_stats(_, msg: types.Message):
         f"\n\n**Total Users**: {users}"
         f"\n**Total DB Used:** {get_size(size)}"
         f"\n**Free:** `{get_size(free)}`"
+        f"\n\nUptime: {currentTime}"
+        f"\nCPU Usage: {cpu_usage}%"
+        f"\nRAM Usage: {ram_usage}%"
     )
 
 @Bot.on_message(filters.command("delete") & filters.user(Config.ADMINS))  # type: ignore
