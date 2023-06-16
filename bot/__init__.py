@@ -70,4 +70,4 @@ class Bot(Client):
 
 bot = Bot(Config.BOT_NAME)  # type: ignore
 
-bot.run()
+bot.run(m)
