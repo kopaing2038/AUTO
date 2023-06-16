@@ -69,4 +69,4 @@ class Bot(Client):
 
 
 bot = Bot(Config.BOT_NAME)  # type: ignore
-asyncio.get_event_loop().run_until_complete(bot.start())
+
