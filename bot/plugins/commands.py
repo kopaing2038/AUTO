@@ -404,7 +404,7 @@ async def ref_get_stats(bot: Bot, query: types.CallbackQuery):
         parse_mode=enums.ParseMode.HTML
     ) 
 
-@Bot.on_message(filters.command("restart") & filters.user(ADMINS))
+@Bot.on_message(filters.command("restart") & filters.user(Config.ADMINS))
 async def stop_button(bot, message):
     msg = await bot.send_message(text="**🔄 𝙿𝚁𝙾𝙲𝙴𝚂𝚂𝙴𝚂 𝚂𝚃𝙾𝙿𝙴𝙳. 𝙱𝙾𝚃 𝙸𝚂 𝚁𝙴𝚂𝚃𝙰𝚁𝚃𝙸𝙽𝙶...**", chat_id=message.chat.id)       
     await asyncio.sleep(3)
