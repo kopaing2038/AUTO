@@ -1,6 +1,7 @@
 from .mongoDb import MongoDb
 
 
+
 class UsersDb(MongoDb):
     def __init__(self):
         super().__init__()
