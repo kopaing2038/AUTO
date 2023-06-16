@@ -25,7 +25,7 @@ from ..utils.decorators import is_banned
 
 log = LOGGER(__name__)
 
-BOT_START_TIME = time()
+BOT_START_TIME = time.time()
 START_TEXT = """Hey {mention} 👋
 
 Iam An Advanced AutoFilter Bot
