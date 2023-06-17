@@ -188,16 +188,16 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
         search = message.text
         files_a, offset, total_results_a = await a_filter.get_search_results(
-            search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER1'], video=settings['V_FILTER1']
+            search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER'], video=settings['V_FILTER']
         )
         files_b, offset, total_results_b = await b_filter.get_search_results(
-            search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER1'], video=settings['V_FILTER1']
+            search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER'], video=settings['V_FILTER']
         )
         files_c = []  # Initialize files_c as an empty list
         if not files_a and not files_b:
             search = message.text
             files_c, offset, total_results_c = await c_filter.get_search_results(
-                search, offset=0, filter=True, photo=settings['PHOTO_FILTER1'], video=settings['V_FILTER1']
+                search, offset=0, filter=True, photo=settings['PHOTO_FILTER'], video=settings['V_FILTER']
             )
             if not files_c:
                 m = await message.reply_text(                
