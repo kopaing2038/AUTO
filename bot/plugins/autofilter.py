@@ -189,31 +189,37 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
         search = message.text
         files_a, offset, total_results_a = await a_filter.get_search_results(
-            search, offset=0, filter=True, photo=settings['PHOTO_FILTER'], video=settings['V_FILTER']
+            search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER'], video=settings['V_FILTER']
         )
         files_b, offset, total_results_b = await b_filter.get_search_results(
-            search, offset=0, filter=True, photo=settings['PHOTO_FILTER'], video=settings['V_FILTER']
+            search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER'], video=settings['V_FILTER']
         )
         files_c = []  # Initialize files_c as an empty list
         if not files_a and not files_b:
-            search = message.text
-            files_c, offset, total_results_c = await c_filter.get_search_results(
+            search = re.sub(r'\s*\(\d{4}\)\s*', ' ', search) 
+            files_b, offset, total_results_b = await b_filter.get_search_results(
                 search, offset=0, filter=True, photo=settings['PHOTO_FILTER'], video=settings['V_FILTER']
             )
-            if not files_c:
-                m = await message.reply_text(                
-                    f"Sᴏʀʀʏ. သင့်ရှာဖွေမှု {search}  ကိုရှာမတွေ့ပါ။! \n\n အကြောင်းပြချက်မှာ :\n\n"               
-                    "◉ ကျွန်ုပ်တို့၏ Database  မရှိနိုင်ပါ။ 💾\n\n"
-                    "◉ ဒါမှမဟုတ် မင်းရဲ့ စာလုံးပေါင်း မှားနေတာ ဖြစ်နိုင်တယ်။  ဒါကြောင့် google မှာ စာလုံးပေါင်းစစ်ဆေးကြည့်ပါ။ 🔍.",
-                    reply_markup=types.InlineKeyboardMarkup(
-                        [
-                            [types.InlineKeyboardButton(f"Sᴩᴇʟʟɪɴɢ Oɴ Gᴏᴏɢʟᴇ 🔍", url=f"https://www.google.com/search?q={search.replace(' ', '+')}")]
-                        ]
+            if not files_b:
+            search = message.text
+                files_c, offset, total_results_c = await c_filter.get_search_results(
+                    search, offset=0, filter=True, photo=settings['PHOTO_FILTER'], video=settings['V_FILTER']
                 )
-                )
-                await asyncio.sleep(60)
-                await m.delete()
-                return
+                if not files_c:
+                    m = await message.reply_text(                
+                        f"Sᴏʀʀʏ. သင့်ရှာဖွေမှု {search}  ကိုရှာမတွေ့ပါ။! \n\n အကြောင်းပြချက်မှာ :\n\n"               
+                        "◉ ကျွန်ုပ်တို့၏ Database  မရှိနိုင်ပါ။ 💾\n\n"
+                        "◉ ဒါမှမဟုတ် မင်းရဲ့ စာလုံးပေါင်း မှားနေတာ ဖြစ်နိုင်တယ်။  ဒါကြောင့် google မှာ စာလုံးပေါင်းစစ်ဆေးကြည့်ပါ။ 🔍.",
+                        reply_markup=types.InlineKeyboardMarkup(
+                            [
+                                [types.InlineKeyboardButton(f"Sᴩᴇʟʟɪɴɢ Oɴ Gᴏᴏɢʟᴇ 🔍", url=f"https://www.google.com/search?q={search.replace(' ', '+')}")]
+                            ]
+                    )
+                    )
+                    await asyncio.sleep(60)
+                    await m.delete()
+                    return
+
     else:
         return
 
