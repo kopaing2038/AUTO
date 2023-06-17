@@ -182,9 +182,9 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
     if message.text.startswith("/"):
         return  # ignore commands
 
-    if re.findall(r"((^\/|^,|^!|^\.|^[\U0001F600-\U000E007F\(\)\{\}\[\]]).*)", str(message.text), re.UNICODE):
-        return
 
+    if re.findall(r"((^\/|^,|^!|^\.|^[\U0001F600-\U000E007F()\{\}\[\]]).*)", str(message.text), re.UNICODE):
+        return
     if 2 < len(message.text) < 150:
         settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
         search = message.text
