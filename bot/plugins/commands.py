@@ -292,7 +292,7 @@ async def start_ch2handler(bot: Bot, msg: types.Message):
                     ),
                     types.InlineKeyboardButton(
                         "🔖 CHANNEL 6",
-                        url="https://t.me/movielist",
+                        url="https://t.me/kpmovielist",
                     ),
                 ],
                 [
