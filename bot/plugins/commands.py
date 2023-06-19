@@ -337,10 +337,81 @@ async def home_handler(bot: Bot, query: types.CallbackQuery):
             [
                 [
                     types.InlineKeyboardButton(
-                        "🔖 Join Our Group to Use Me",
+                        "♻️ 𝕁𝕆𝕀ℕ 𝕆𝕌ℝ 𝔾ℝ𝕆𝕌ℙ 𝕋𝕆 𝕌𝕊𝔼 𝕄𝔼 ♻️",
                         url="https://t.me/+X7DNvf9iCy5jOGJl",
                     )
-                ]
+                ],
+                [
+                    types.InlineKeyboardButton(
+                        "🔖 GROUP 1",
+                        url="https://t.me/+_1Hs8V60HGs1NzA1",
+                    ),
+                    types.InlineKeyboardButton(
+                        "🔖 GROUP 2",
+                        url="https://t.me/+z5lhEpxP5Go4MWM1",
+                    ),
+                    types.InlineKeyboardButton(
+                        "🔖 GROUP 3",
+                        url="https://t.me/MKS_RequestGroup",
+                    ),
+                ],
+                [
+
+                    types.InlineKeyboardButton(
+                        "🔖 GROUP 4",
+                        url="https://t.me/Movie_Group_MMSUB",
+                    ),
+                    types.InlineKeyboardButton(
+                        "🔖 GROUP 5",
+                        url="https://t.me/+cHMLAeatqKdlNGVl",
+                    ),
+                    types.InlineKeyboardButton(
+                        "🔖 GROUP 6",
+                        url="https://t.me/+X7DNvf9iCy5jOGJl",
+                    ),
+                ],
+                [
+                    types.InlineKeyboardButton(
+                        "🔖 CHANNEL 1",
+                        url="https://t.me/MKSVIPLINK",
+                    ),
+                    types.InlineKeyboardButton(
+                        "🔖 CHANNEL 2",
+                        url="https://t.me/MKSVIPLINK2",
+                    ),
+                    types.InlineKeyboardButton(
+                        "🔖 CHANNEL 3",
+                        url="https://t.me/+3xS_MTfvJSEzZjY1",
+                    ),
+                ],
+                [
+                    types.InlineKeyboardButton(
+                        "🔖 CHANNEL 4",
+                        url="https://t.me/MKSMAINCHANNEL",
+                    ),
+                    types.InlineKeyboardButton(
+                        "🔖 CHANNEL 5",
+                        url="https://t.me/MKSMAINCHANNEL2",
+                    ),
+                    types.InlineKeyboardButton(
+                        "🔖 CHANNEL 6",
+                        url="https://t.me/kpmovielist",
+                    ),
+                ],
+                [
+                    types.InlineKeyboardButton(
+                        "🔖 CHANNEL 7",
+                        url="https://t.me/+6lHs-byrjxczY2U1",
+                    ),
+                    types.InlineKeyboardButton(
+                        "🔖 CHANNEL 8",
+                        url="https://t.me/ONGOING_MKS",
+                    ),
+                    types.InlineKeyboardButton(
+                        "🔖 CHANNEL 9",
+                        url="https://t.me/Movie_Zone_KP",
+                    ),
+                ]  
             ]
         ),
         disable_web_page_preview=True,
