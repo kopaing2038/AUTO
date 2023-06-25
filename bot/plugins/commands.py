@@ -762,22 +762,36 @@ async def handleDelete4(bot: Bot, msg: types.Message):
 @Bot.on_message(filters.command('delete') & filters.user(Config.ADMINS))
 async def deletefile(bot, message):
     msg = await message.reply_text('Fetching...')
-    srt = await a_filter.count_documents({'mime_type': 'application/x-subrip'})
-    avi = await a_filter.count_documents({'mime_type': 'video/x-msvideo'})
-    zip = await a_filter.count_documents({'mime_type': 'application/zip'})
-    rar = await a_filter.count_documents({'mime_type': 'application/x-rar-compressed'})
-    mkv = await a_filter.count_documents({'mime_type': 'video/x-matroska'})
-    btn = [[
-        types.InlineKeyboardButton(f"SRT ({srt})", callback_data="srt_delete"),
-        types.InlineKeyboardButton(f"AVI ({avi})", callback_data="avi_delete"),
-        types.InlineKeyboardButton(f"MKV ({mkv})", callback_data="mkv_delete"),
-    ],[
-        types.InlineKeyboardButton(f"ZIP ({zip})", callback_data="zip_delete"),
-        types.InlineKeyboardButton(f"RAR ({rar})", callback_data="rar_delete")
-    ],[
-        types.InlineKeyboardButton("CLOSE", callback_data="close_data")
-    ]]
-    await msg.edit('Choose do you want to delete file type?', reply_markup=types.InlineKeyboardMarkup(btn))
+    
+    filters_db = a_filter  # Create an instance of the FiltersDb class
+    
+    srt = await filters_db.get_file_details({'mime_type': 'application/x-subrip'})
+    avi = await filters_db.get_file_details({'mime_type': 'video/x-msvideo'})
+    zip_ = await filters_db.get_file_details({'mime_type': 'application/zip'})
+    rar = await filters_db.get_file_details({'mime_type': 'application/x-rar-compressed'})
+    mkv = await filters_db.get_file_details({'mime_type': 'video/x-matroska'})
+    jpg = await filters_db.get_file_details({'mime_type': 'image/jpeg'})
+    mp4 = await filters_db.get_file_details({'mime_type': 'video/mp4'})
+    
+    btn = [
+        [
+            types.InlineKeyboardButton(f"SRT ({srt})", callback_data="srt_delete"),
+            types.InlineKeyboardButton(f"AVI ({avi})", callback_data="avi_delete"),
+            types.InlineKeyboardButton(f"MKV ({mkv})", callback_data="mkv_delete"),
+        ],
+        [
+            types.InlineKeyboardButton(f"ZIP ({zip_})", callback_data="zip_delete"),
+            types.InlineKeyboardButton(f"RAR ({rar})", callback_data="rar_delete"),
+            types.InlineKeyboardButton(f"MP4 ({mp4})", callback_data="mp4_delete")
+        ],
+        [
+            types.InlineKeyboardButton(f"JPG ({jpg})", callback_data="jpg_delete"),
+            types.InlineKeyboardButton("CLOSE", callback_data="close_data")
+        ]
+    ]
+    
+    await msg.edit('Choose the file type you want to delete:', reply_markup=types.InlineKeyboardMarkup(btn))
+
 
 @Bot.on_message(filters.command('deleteall') & filters.user(Config.ADMINS))
 async def delete_all_index(bot, message):
