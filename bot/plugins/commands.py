@@ -768,7 +768,7 @@ async def delete(bot, message):
     ],[
         InlineKeyboardButton("CLOSE", callback_data="close_data")
     ]]
-    await msg.edit('Choose do you want to delete file Database?', reply_markup=InlineKeyboardMarkup(btn))
+    await msg.edit('Choose do you want to delete file Database?', reply_markup=types.InlineKeyboardMarkup(btn))
     
 
 
