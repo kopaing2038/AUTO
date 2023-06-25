@@ -921,6 +921,7 @@ async def deletefilev2(bot, query):
     mkv = await filters_db.count_documents({'mime_type': 'video/x-matroska'})
     jpg = await filters_db.count_documents({'mime_type': 'image/jpg'})
     mp4 = await filters_db.count_documents({'mime_type': 'video/mp4'})
+    chname = await filters_db.count_documents({'channel_name': ''})
     
     btn = [
         [
@@ -935,6 +936,7 @@ async def deletefilev2(bot, query):
         ],
         [
             types.InlineKeyboardButton(f"JPG ({jpg})", callback_data="jpg_deletev2"),
+            types.InlineKeyboardButton(f"Ch ({chname})", callback_data="chname_deletev2"),
             types.InlineKeyboardButton("CLOSE", callback_data="close_datav2")
         ]
     ]
@@ -942,9 +944,23 @@ async def deletefilev2(bot, query):
     await msg.edit('Choose the file type you want to delete:', reply_markup=types.InlineKeyboardMarkup(btn))
 
 
+@Bot.on_callback_query(filters.regex(r'^chname_deletev2'))
+async def chname_deletev2(bot, query):
+    if query.data == "chname_deletev2":
+        await query.message.edit_text("Deleting...")
+        
+        filters_db = b_filter  # Create an instance of the FiltersDb class
+        
+        result = await filters_db.col.delete_many({'channel_name': ''})
+        if result.deleted_count:
+            await query.message.edit_text(f"Successfully deleted Channel files")
+        else:
+            await query.message.edit_text("No Channel files to delete")
+
+
 @Bot.on_callback_query(filters.regex(r'^srt_deletev2'))
 async def srt_deletev2(bot, query):
-    if query.data == "srt_delete":
+    if query.data == "srt_deletev2":
         await query.message.edit_text("Deleting...")
         
         filters_db = b_filter  # Create an instance of the FiltersDb class
@@ -958,7 +974,7 @@ async def srt_deletev2(bot, query):
 
 @Bot.on_callback_query(filters.regex(r'^avi_deletev2'))
 async def avi_deletev2(bot, query):
-    if query.data == "avi_delete":
+    if query.data == "avi_deletev2":
         await query.message.edit_text("Deleting...")
         
         filters_db = b_filter  # Create an instance of the FiltersDb class
@@ -971,7 +987,7 @@ async def avi_deletev2(bot, query):
 
 @Bot.on_callback_query(filters.regex(r'^rar_deletev2'))
 async def rar_deletev2(bot, query):
-    if query.data == "rar_delete":
+    if query.data == "rar_deletev2":
         await query.message.edit_text("Deleting...")
         
         filters_db = b_filter  # Create an instance of the FiltersDb class
@@ -985,7 +1001,7 @@ async def rar_deletev2(bot, query):
 
 @Bot.on_callback_query(filters.regex(r'^zip_deletev2'))
 async def zip_deletev2(bot, query):
-    if query.data == "zip_delete":
+    if query.data == "zip_deletev2":
         await query.message.edit_text("Deleting...")
         
         filters_db = b_filter  # Create an instance of the FiltersDb class
@@ -999,7 +1015,7 @@ async def zip_deletev2(bot, query):
 
 @Bot.on_callback_query(filters.regex(r'^mkv_deletev2'))
 async def mkv_deletev2(bot, query):
-    if query.data == "mkv_delete":
+    if query.data == "mkv_deletev2":
         await query.message.edit_text("Deleting...")
         
         filters_db = b_filter # Create an instance of the FiltersDb class
@@ -1013,7 +1029,7 @@ async def mkv_deletev2(bot, query):
 
 @Bot.on_callback_query(filters.regex(r'^jpg_deletev2'))
 async def jpg_deletev2(bot, query):
-    if query.data == "jpg_delete":
+    if query.data == "jpg_deletev2":
         await query.message.edit_text("Deleting...")
         
         filters_db = b_filter  # Create an instance of the FiltersDb class
@@ -1027,7 +1043,7 @@ async def jpg_deletev2(bot, query):
 
 @Bot.on_callback_query(filters.regex(r'^mp4_deletev2'))
 async def mp4_deletev2(bot, query):
-    if query.data == "mp4_delete":
+    if query.data == "mp4_deletev2":
         await query.message.edit_text("Deleting...")
 
         filters_db = b_filter  # Create an instance of the FiltersDb class
