@@ -794,8 +794,7 @@ async def deletefile(bot, message):
 
 @Bot.on_callback_query(filters.regex(r'^srt_delete'))
 async def srt_delete(bot, message):
-    query = message.data
-    if query == "srt_delete":
+    if query.data == "srt_delete":
         await query.message.edit_text("Deleting...")
         
         filters_db = a_filter  # Create an instance of the FiltersDb class
@@ -809,8 +808,7 @@ async def srt_delete(bot, message):
 
 @Bot.on_callback_query(filters.regex(r'^avi_delete'))
 async def avi_delete(bot, message):
-    query = message.data
-    if query == "avi_delete":
+    if query.data == "avi_delete":
         await query.message.edit_text("Deleting...")
         
         filters_db = a_filter  # Create an instance of the FiltersDb class
@@ -823,8 +821,7 @@ async def avi_delete(bot, message):
 
 @Bot.on_callback_query(filters.regex(r'^rar_delete'))
 async def rar_delete(bot, message):
-    query = message.data
-    if query == "rar_delete":
+    if query.data == "rar_delete":
         await query.message.edit_text("Deleting...")
         
         filters_db = a_filter  # Create an instance of the FiltersDb class
@@ -838,8 +835,7 @@ async def rar_delete(bot, message):
 
 @Bot.on_callback_query(filters.regex(r'^zip_delete'))
 async def zip_delete(bot, message):
-    query = message.data
-    if query == "zip_delete":
+    if query.data == "zip_delete":
         await query.message.edit_text("Deleting...")
         
         filters_db = a_filter  # Create an instance of the FiltersDb class
@@ -853,8 +849,7 @@ async def zip_delete(bot, message):
 
 @Bot.on_callback_query(filters.regex(r'^mkv_delete'))
 async def mkv_delete(bot, message):
-    query = message.data
-    if query == "mkv_delete":
+    if query.data == "mkv_delete":
         await query.message.edit_text("Deleting...")
         
         filters_db = a_filter # Create an instance of the FiltersDb class
@@ -866,10 +861,10 @@ async def mkv_delete(bot, message):
             await query.message.edit_text("No MKV files to delete")
 
 
+
 @Bot.on_callback_query(filters.regex(r'^jpg_delete'))
 async def jpg_delete(bot, message):
-    query = message.data
-    if query == "jpg_delete":
+    if query.data == "jpg_delete":
         await query.message.edit_text("Deleting...")
         
         filters_db = a_filter  # Create an instance of the FiltersDb class
@@ -883,8 +878,7 @@ async def jpg_delete(bot, message):
 
 @Bot.on_callback_query(filters.regex(r'^mp4_delete'))
 async def mp4_delete(bot, message):
-    query = message.data
-    if query == "mp4_delete":
+    if query.data == "mp4_delete":
         await query.message.edit_text("Deleting...")
 
         filters_db = a_filter  # Create an instance of the FiltersDb class
