@@ -779,7 +779,7 @@ async def deletefile(bot, message):
             types.InlineKeyboardButton(f"MKV ({mkv})", callback_data="mkv_delete"),
         ],
         [
-            types.InlineKeyboardButton(f"ZIP ({zip_})", callback_data="zip_delete"),
+            types.InlineKeyboardButton(f"ZIP ({zip})", callback_data="zip_delete"),
             types.InlineKeyboardButton(f"RAR ({rar})", callback_data="rar_delete"),
             types.InlineKeyboardButton(f"MP4 ({mp4})", callback_data="mp4_delete")
         ],
