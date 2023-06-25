@@ -759,7 +759,7 @@ async def handleDelete4(bot: Bot, msg: types.Message):
         await msg.edit("4 File not found in database")
 
     
-@Client.on_message(filters.command('delete') & filters.user(ADMINS))
+@Bot.on_message(filters.command('delete') & filters.user(Config.ADMINS))
 async def deletefile(bot, message):
     msg = await message.reply_text('Fetching...')
     srt = await a_filter.count_documents({'mime_type': 'application/x-subrip'})
