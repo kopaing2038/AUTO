@@ -763,15 +763,14 @@ async def handleDelete4(bot: Bot, msg: types.Message):
 async def deletefile(bot, message):
     msg = await message.reply_text('Fetching...')
     
-    filters_db = a_filter  # Create an instance of the FiltersDb class
     
-    srt = await filters_db.get_file_details({'mime_type': 'application/x-subrip'})
-    avi = await filters_db.get_file_details({'mime_type': 'video/x-msvideo'})
-    zip_ = await filters_db.get_file_details({'mime_type': 'application/zip'})
-    rar = await filters_db.get_file_details({'mime_type': 'application/x-rar-compressed'})
-    mkv = await filters_db.get_file_details({'mime_type': 'video/x-matroska'})
-    jpg = await filters_db.get_file_details({'mime_type': 'image/jpeg'})
-    mp4 = await filters_db.get_file_details({'mime_type': 'video/mp4'})
+    srt = await a_filter.get_file_details({'mime_type': 'application/x-subrip'})
+    avi = await a_filter.get_file_details({'mime_type': 'video/x-msvideo'})
+    zip = await a_filter.get_file_details({'mime_type': 'application/zip'})
+    rar = await a_filter.get_file_details({'mime_type': 'application/x-rar-compressed'})
+    mkv = await a_filter.get_file_details({'mime_type': 'video/x-matroska'})
+    jpg = await a_filter.get_file_details({'mime_type': 'image/jpeg'})
+    mp4 = await a_filter.get_file_details({'mime_type': 'video/mp4'})
     
     btn = [
         [
