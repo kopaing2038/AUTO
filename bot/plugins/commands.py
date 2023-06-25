@@ -762,7 +762,7 @@ async def handleDelete4(bot: Bot, msg: types.Message):
 @Bot.on_message(filters.command('delete') & filters.user(Config.ADMINS))
 async def deletefile(bot, message):
     msg = await message.reply_text('Fetching...')
-    filters_db = a_filter 
+    filters_db = a_filter
     
     srt = await filters_db.count_documents({'mime_type': 'application/x-subrip'})
     avi = await filters_db.count_documents({'mime_type': 'video/x-msvideo'})
@@ -790,6 +790,103 @@ async def deletefile(bot, message):
     ]
     
     await msg.edit('Choose the file type you want to delete:', reply_markup=types.InlineKeyboardMarkup(btn))
+
+
+@Bot.on_callback_query(filters.regex(r'^srt_delete'))
+async def srt_delete(bot, message):
+    query = message.data
+    if query == "srt_delete":
+        await message.edit_text("Deleting...")
+        
+        filters_db = a_filter  # Create an instance of the FiltersDb class
+        
+        result = await filters_db.col.delete_many({'mime_type': 'application/x-subrip'})
+        if result.deleted_count:
+            await message.edit_text(f"Successfully deleted SRT files")
+        else:
+            await message.edit_text("No SRT files to delete")
+
+
+@Bot.on_callback_query(filters.regex(r'^avi_delete'))
+async def avi_delete(bot, message):
+    query = message.data
+    if query == "avi_delete":
+        await message.edit_text("Deleting...")
+        
+        filters_db = a_filter  # Create an instance of the FiltersDb class
+        
+        result = await filters_db.col.delete_many({'mime_type': 'video/x-msvideo'})
+        if result.deleted_count:
+            await message.edit_text(f"Successfully deleted AVI files")
+        else:
+            await message.edit_text("No AVI files to delete")
+
+
+@Bot.on_callback_query(filters.regex(r'^zip_delete'))
+async def zip_delete(bot, message):
+    query = message.data
+    if query == "zip_delete":
+        await message.edit_text("Deleting...")
+        
+        filters_db = a_filter  # Create an instance of the FiltersDb class
+        
+        result = await filters_db.col.delete_many({'mime_type': 'application/zip'})
+        if result.deleted_count:
+            await message.edit_text(f"Successfully deleted ZIP files")
+        else:
+            await message.edit_text("No ZIP files to delete")
+
+
+@Bot.on_callback_query(filters.regex(r'^mkv_delete'))
+async def mkv_delete(bot, message):
+    query = message.data
+    if query == "mkv_delete":
+        await message.edit_text("Deleting...")
+        
+        filters_db = a_filter # Create an instance of the FiltersDb class
+        
+        result = await filters_db.col.delete_many({'mime_type': 'video/x-matroska'})
+        if result.deleted_count:
+            await message.edit_text(f"Successfully deleted MKV files")
+        else:
+            await message.edit_text("No MKV files to delete")
+
+
+@Bot.on_callback_query(filters.regex(r'^jpg_delete'))
+async def jpg_delete(bot, message):
+    query = message.data
+    if query == "jpg_delete":
+        await message.edit_text("Deleting...")
+        
+        filters_db = a_filter  # Create an instance of the FiltersDb class
+        
+        result = await filters_db.col.delete_many({'mime_type': 'image/jpeg'})
+        if result.deleted_count:
+            await message.edit_text(f"Successfully deleted JPG files")
+        else:
+            await message.edit_text("No JPG files to delete")
+
+
+@Bot.on_callback_query(filters.regex(r'^mp4_delete'))
+async def mp4_delete(bot, message):
+    query = message.data
+    if query == "mp4_delete":
+        await message.edit_text("Deleting...")
+        
+        filters_db = a_filter  # Create an instance of the FiltersDb class
+        
+        result = await filters_db.col.delete_many({'mime_type': 'video/mp4'})
+        if result.deleted_count:
+            await message.edit_text(f"Successfully deleted MP4 files")
+        else:
+            await message.edit_text("No MP4 files to delete")
+
+
+@Bot.on_callback_query(filters.regex(r'^close_data'))
+async def close_data_delete(bot, message):
+    await message.message.delete()
+
+
 
 
 @Bot.on_message(filters.command('deleteall') & filters.user(Config.ADMINS))
