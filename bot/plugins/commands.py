@@ -760,8 +760,21 @@ async def handleDelete4(bot: Bot, msg: types.Message):
 
     
 @Bot.on_message(filters.command('delete') & filters.user(Config.ADMINS))
-async def deletefile(bot, message):
+async def delete(bot, message):
     msg = await message.reply_text('Fetching...')
+    btn = [[
+        types.InlineKeyboardButton(f"A Filter", callback_data="deletev1"),
+        types.InlineKeyboardButton(f"B Filter", callback_data="deletev2"),
+    ],[
+        InlineKeyboardButton("CLOSE", callback_data="close_data")
+    ]]
+    await msg.edit('Choose do you want to delete file Database?', reply_markup=InlineKeyboardMarkup(btn))
+    
+
+
+@Bot.on_callback_query(filters.regex(r'^deletev1'))
+async def deletefilev1(bot, query):
+    msg = await query.message.edit_text('Fetching...')
     filters_db = a_filter
     
     srt = await filters_db.count_documents({'mime_type': 'application/x-subrip'})
@@ -894,7 +907,139 @@ async def close_data_delete(bot, query):
     await query.message.delete()
 
 
+@Bot.on_callback_query(filters.regex(r'^deletev2'))
+async def deletefilev2(bot, query):
+    msg = await query.message.edit_text('Fetching...')
+    filters_db = b_filter
+    
+    srt = await filters_db.count_documents({'mime_type': 'application/x-subrip'})
+    avi = await filters_db.count_documents({'mime_type': 'video/x-msvideo'})
+    zip = await filters_db.count_documents({'mime_type': 'application/zip'})
+    rar = await filters_db.count_documents({'mime_type': 'application/x-rar-compressed'})
+    mkv = await filters_db.count_documents({'mime_type': 'video/x-matroska'})
+    jpg = await filters_db.count_documents({'mime_type': 'image/jpeg'})
+    mp4 = await filters_db.count_documents({'mime_type': 'video/mp4'})
+    
+    btn = [
+        [
+            types.InlineKeyboardButton(f"SRT ({srt})", callback_data="srt_deletev2"),
+            types.InlineKeyboardButton(f"AVI ({avi})", callback_data="avi_deletev2"),
+            types.InlineKeyboardButton(f"MKV ({mkv})", callback_data="mkv_deletev2"),
+        ],
+        [
+            types.InlineKeyboardButton(f"ZIP ({zip})", callback_data="zip_deletev2"),
+            types.InlineKeyboardButton(f"RAR ({rar})", callback_data="rar_deletev2"),
+            types.InlineKeyboardButton(f"MP4 ({mp4})", callback_data="mp4_deletev2")
+        ],
+        [
+            types.InlineKeyboardButton(f"JPG ({jpg})", callback_data="jpg_deletev2"),
+            types.InlineKeyboardButton("CLOSE", callback_data="close_data")
+        ]
+    ]
+    
+    await msg.edit('Choose the file type you want to delete:', reply_markup=types.InlineKeyboardMarkup(btn))
 
+
+@Bot.on_callback_query(filters.regex(r'^srt_deletev2'))
+async def srt_deletev2(bot, query):
+    if query.data == "srt_delete":
+        await query.message.edit_text("Deleting...")
+        
+        filters_db = b_filter  # Create an instance of the FiltersDb class
+        
+        result = await filters_db.col.delete_many({'mime_type': 'application/x-subrip'})
+        if result.deleted_count:
+            await query.message.edit_text(f"Successfully deleted SRT files")
+        else:
+            await query.message.edit_text("No SRT files to delete")
+
+
+@Bot.on_callback_query(filters.regex(r'^avi_deletev2'))
+async def avi_deletev2(bot, query):
+    if query.data == "avi_delete":
+        await query.message.edit_text("Deleting...")
+        
+        filters_db = b_filter  # Create an instance of the FiltersDb class
+        
+        result = await filters_db.col.delete_many({'mime_type': 'video/x-msvideo'})
+        if result.deleted_count:
+            await query.message.edit_text(f"Successfully deleted AVI files")
+        else:
+            await query.message.edit_text("No AVI files to delete")
+
+@Bot.on_callback_query(filters.regex(r'^rar_deletev2'))
+async def rar_deletev2(bot, query):
+    if query.data == "rar_delete":
+        await query.message.edit_text("Deleting...")
+        
+        filters_db = b_filter  # Create an instance of the FiltersDb class
+        
+        result = await filters_db.col.delete_many({'mime_type': 'application/x-rar-compressed'})
+        if result.deleted_count:
+            await query.message.edit_text(f"Successfully deleted RAR files")
+        else:
+            await query.message.edit_text("No RAR files to delete")
+
+
+@Bot.on_callback_query(filters.regex(r'^zip_deletev2'))
+async def zip_deletev2(bot, query):
+    if query.data == "zip_delete":
+        await query.message.edit_text("Deleting...")
+        
+        filters_db = b_filter  # Create an instance of the FiltersDb class
+        
+        result = await filters_db.col.delete_many({'mime_type': 'application/zip'})
+        if result.deleted_count:
+            await query.message.edit_text(f"Successfully deleted ZIP files")
+        else:
+            await query.message.edit_text("No ZIP files to delete")
+
+
+@Bot.on_callback_query(filters.regex(r'^mkv_deletev2'))
+async def mkv_deletev2(bot, query):
+    if query.data == "mkv_delete":
+        await query.message.edit_text("Deleting...")
+        
+        filters_db = b_filter # Create an instance of the FiltersDb class
+        
+        result = await filters_db.col.delete_many({'mime_type': 'video/x-matroska'})
+        if result.deleted_count:
+            await query.message.edit_text(f"Successfully deleted MKV files")
+        else:
+            await query.message.edit_text("No MKV files to delete")
+
+
+@Bot.on_callback_query(filters.regex(r'^jpg_deletev2'))
+async def jpg_deletev2(bot, query):
+    if query.data == "jpg_delete":
+        await query.message.edit_text("Deleting...")
+        
+        filters_db = b_filter  # Create an instance of the FiltersDb class
+        
+        result = await filters_db.col.delete_many({'mime_type': 'image/jpeg'})
+        if result.deleted_count:
+            await query.message.edit_text(f"Successfully deleted JPG files")
+        else:
+            await query.message.edit_text("No JPG files to delete")
+
+
+@Bot.on_callback_query(filters.regex(r'^mp4_deletev2'))
+async def mp4_deletev2(bot, query):
+    if query.data == "mp4_delete":
+        await query.message.edit_text("Deleting...")
+
+        filters_db = b_filter  # Create an instance of the FiltersDb class
+        
+        result = await filters_db.col.delete_many({'mime_type': 'video/mp4'})
+        if result.deleted_count:
+            await query.message.edit_text(f"Successfully deleted MP4 files")
+        else:
+            await query.message.edit_text("No MP4 files to delete")
+
+
+@Bot.on_callback_query(filters.regex(r'^close_datav2'))
+async def close_data_deletev2(bot, query):
+    await query.message.delete()
 
 
 @Bot.on_message(filters.command('deleteall') & filters.user(Config.ADMINS))
