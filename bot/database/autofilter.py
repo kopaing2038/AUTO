@@ -133,6 +133,9 @@ class FiltersDb(MongoDb):
     async def get_file_details(self, file_id: str):
         return await self.col.find_one({"_id": file_id})  # type: ignore
 
+    async def count_documents(self, filter_: dict) -> int:
+        return await self.col.count_documents(filter_)
+
 class FiltersDb2(MongoDb):
     def __init__(self):
         super().__init__()
