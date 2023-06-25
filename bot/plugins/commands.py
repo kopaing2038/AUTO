@@ -784,7 +784,7 @@ async def deletefilev1(bot, query):
     zip = await filters_db.count_documents({'mime_type': 'application/zip'})
     rar = await filters_db.count_documents({'mime_type': 'application/x-rar-compressed'})
     mkv = await filters_db.count_documents({'mime_type': 'video/x-matroska'})
-    jpg = await filters_db.count_documents({'mime_type': 'image/jpeg'})
+    jpg = await filters_db.count_documents({'mime_type': 'image/jpg'})
     mp4 = await filters_db.count_documents({'mime_type': 'video/mp4'})
     
     btn = [
@@ -883,7 +883,7 @@ async def jpg_delete(bot, query):
         
         filters_db = a_filter  # Create an instance of the FiltersDb class
         
-        result = await filters_db.col.delete_many({'mime_type': 'image/jpeg'})
+        result = await filters_db.col.delete_many({'mime_type': 'image/jpg'})
         if result.deleted_count:
             await query.message.edit_text(f"Successfully deleted JPG files")
         else:
@@ -919,7 +919,7 @@ async def deletefilev2(bot, query):
     zip = await filters_db.count_documents({'mime_type': 'application/zip'})
     rar = await filters_db.count_documents({'mime_type': 'application/x-rar-compressed'})
     mkv = await filters_db.count_documents({'mime_type': 'video/x-matroska'})
-    jpg = await filters_db.count_documents({'mime_type': 'image/jpeg'})
+    jpg = await filters_db.count_documents({'mime_type': 'image/jpg'})
     mp4 = await filters_db.count_documents({'mime_type': 'video/mp4'})
     
     btn = [
@@ -1018,7 +1018,7 @@ async def jpg_deletev2(bot, query):
         
         filters_db = b_filter  # Create an instance of the FiltersDb class
         
-        result = await filters_db.col.delete_many({'mime_type': 'image/jpeg'})
+        result = await filters_db.col.delete_many({'mime_type': 'image/jpg'})
         if result.deleted_count:
             await query.message.edit_text(f"Successfully deleted JPG files")
         else:
