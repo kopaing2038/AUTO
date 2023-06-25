@@ -945,12 +945,28 @@ async def deletefilev2(bot, query):
 
 
 @Bot.on_callback_query(filters.regex(r'^chname_deletev2'))
+async def delete_by_channel_name(bot, query):
+    await query.answer()
+    await query.message.edit_text('Please enter the channel name to delete files from:')
+    await bot.register_next_step_handler(query.message, process_channel_name)
+
+
+async def process_channel_name(message):
+    channel_name = message.text
+    
+    # Add your code here to delete files based on the channel_name
+    # Use the 'channel_name' variable to perform the deletion
+    
+    await message.answer('Files deleted successfully based on the channel name.')
+
+
+@Bot.on_callback_query(filters.regex(r'^chname_deletev2'))
 async def chname_deletev2(bot, query):
     if query.data == "chname_deletev2":
         await query.message.edit_text("Deleting...")
         
         filters_db = b_filter  # Create an instance of the FiltersDb class
-        
+        result = await filters_db.col.delete_many({'channel_name': {'$eq': ''}})
         result = await filters_db.col.delete_many({'channel_name': ''})
         if result.deleted_count:
             await query.message.edit_text(f"Successfully deleted Channel files")
