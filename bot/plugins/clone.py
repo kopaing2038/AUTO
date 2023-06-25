@@ -104,7 +104,12 @@ async def cloned_count(client, message):
 
 @Client.on_message(filters.command(["removebot"]) & filters.user(Config.ADMINS))
 async def remove_bot(client: Client, message: Message):
-    bot_username = message.text.split(" ", maxsplit=1)[1].strip()
+    try:
+        bot_username = message.text.split(" ", maxsplit=1)[1].strip()
+    except IndexError:
+        await message.reply_text("Please provide a bot username.")
+        return
+
     bot_data = mongo_db.bots.find_one_and_delete({"username": bot_username})
 
     if bot_data:
@@ -117,6 +122,7 @@ async def remove_bot(client: Client, message: Message):
         await message.reply_text(f"Bot @{bot_username} removed successfully.")
     else:
         await message.reply_text(f"Bot @{bot_username} is not in the cloned bots list.")
+
 
 @Client.on_message(filters.command("deletecloned") & filters.private)
 async def delete_cloned_bot(client, message):
