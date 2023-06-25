@@ -921,7 +921,6 @@ async def deletefilev2(bot, query):
     mkv = await filters_db.count_documents({'mime_type': 'video/x-matroska'})
     jpg = await filters_db.count_documents({'mime_type': 'image/jpg'})
     mp4 = await filters_db.count_documents({'mime_type': 'video/mp4'})
-    chname = await filters_db.count_documents({'channel_name': ''})
     
     btn = [
         [
@@ -936,7 +935,6 @@ async def deletefilev2(bot, query):
         ],
         [
             types.InlineKeyboardButton(f"JPG ({jpg})", callback_data="jpg_deletev2"),
-            types.InlineKeyboardButton(f"Ch ({chname})", callback_data="chname_deletev2"),
             types.InlineKeyboardButton("CLOSE", callback_data="close_datav2")
         ]
     ]
@@ -944,20 +942,6 @@ async def deletefilev2(bot, query):
     await msg.edit('Choose the file type you want to delete:', reply_markup=types.InlineKeyboardMarkup(btn))
 
 
-@Bot.on_callback_query(filters.regex(r'^chname_deletev2'))
-async def delete_by_channel_name(bot, query):
-    await query.message.edit_text('Enter the channel name to delete files:')
-    await delete_channel_name.set()
-
-
-@Bot.on_message(Filters.text & delete_channel_name)
-async def delete_files_by_channel_name(bot, message):
-    channel_name = message.text.strip()
-    filters_db = b_filter
-    deleted_count = await filters_db.count_documents({'channel_name': channel_name})
-    await filters_db.delete_many({'channel_name': channel_name})
-    await message.reply_text(f"Deleted {deleted_count} files with channel name: {channel_name}")
-    await delete_channel_name.reset()
 
 @Bot.on_callback_query(filters.regex(r'^srt_deletev2'))
 async def srt_deletev2(bot, query):
