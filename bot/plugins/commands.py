@@ -556,57 +556,9 @@ async def stop_button(bot, message):
     os.execl(python, python, "-m", "bot")
 
 
-@Bot.on_message(filters.command("delete") & filters.user(Config.ADMINS))  # type: ignore
-async def handleDelete(bot: Bot, msg: types.Message):
-    """Delete file from database"""
-    reply = msg.reply_to_message
-    if reply and reply.media:
-        msg = await msg.reply("Processing...⏳", quote=True)
-    else:
-        await msg.reply(
-            "Reply to file with /delete which you want to delete", quote=True
-        )
-        return
 
-    for file_type in ("document", "video", "audio", "photo"):
-        media = getattr(reply, file_type, None)
-        if media is not None:
-            break
-    else:
-        await msg.edit("This is not supported file format")
-        return
 
-    file_id, file_ref = unpack_new_file_id(media.file_id)
-
-    result = await a_filter.col.delete_one(
-        {
-            "_id": file_id,
-        }
-    )  # type: ignore
-    if file_type == "photo":
-        result = await a_filter.col.delete_one(
-            {
-                "file_ref": media.file_id,
-            }
-        )  # type: ignore
-    if result.deleted_count:
-        await msg.edit("File is successfully deleted from database")
-    else:
-        if file_type != "photo":
-            file_name = re.sub(r"(_|\-|\.|\+)", " ", str(media.file_name))
-            result = await a_filter.col.delete_many(
-                {
-                    "file_name": file_name,
-                    "file_size": media.file_size,
-                    "mime_type": media.mime_type,
-                }
-            )  # type: ignore
-            if result.deleted_count:
-                return await msg.edit("File is successfully deleted from database")
-
-        await msg.edit("File not found in database")
-
-@Bot.on_message(filters.command("delete") & filters.user(Config.ADMINS))  # type: ignore
+@Bot.on_message(filters.command("delete1") & filters.user(Config.ADMINS))  # type: ignore
 async def handleDelete(bot: Bot, msg: types.Message):
     """Delete file from database"""
     reply = msg.reply_to_message
@@ -806,6 +758,24 @@ async def handleDelete4(bot: Bot, msg: types.Message):
 
         await msg.edit("4 File not found in database")
 
+    
+@Client.on_message(filters.command('delete') & filters.user(ADMINS))
+async def deletefile(bot, message):
+    msg = await message.reply_text('Fetching...')
+    srt = await a_filter.count_documents({'mime_type': 'application/x-subrip'})
+    avi = await a_filter.count_documents({'mime_type': 'video/x-msvideo'})
+    zip = await a_filter.count_documents({'mime_type': 'application/zip'})
+    rar = await a_filter..count_documents({'mime_type': 'application/x-rar-compressed'})
+    btn = [[
+        types.InlineKeyboardButton(f"SRT ({srt})", callback_data="srt_delete"),
+        types.InlineKeyboardButton(f"AVI ({avi})", callback_data="avi_delete"),
+    ],[
+        types.InlineKeyboardButton(f"ZIP ({zip})", callback_data="zip_delete"),
+        types.InlineKeyboardButton(f"RAR ({rar})", callback_data="rar_delete")
+    ],[
+        types.InlineKeyboardButton("CLOSE", callback_data="close_data")
+    ]]
+    await msg.edit('Choose do you want to delete file type?', reply_markup=types.InlineKeyboardMarkup(btn))
 
 @Bot.on_message(filters.command('deleteall') & filters.user(Config.ADMINS))
 async def delete_all_index(bot, message):
