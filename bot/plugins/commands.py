@@ -793,7 +793,7 @@ async def deletefile(bot, message):
 
 
 @Bot.on_callback_query(filters.regex(r'^srt_delete'))
-async def srt_delete(bot, message):
+async def srt_delete(bot, query):
     if query.data == "srt_delete":
         await query.message.edit_text("Deleting...")
         
@@ -807,7 +807,7 @@ async def srt_delete(bot, message):
 
 
 @Bot.on_callback_query(filters.regex(r'^avi_delete'))
-async def avi_delete(bot, message):
+async def avi_delete(bot, query):
     if query.data == "avi_delete":
         await query.message.edit_text("Deleting...")
         
@@ -820,7 +820,7 @@ async def avi_delete(bot, message):
             await query.message.edit_text("No AVI files to delete")
 
 @Bot.on_callback_query(filters.regex(r'^rar_delete'))
-async def rar_delete(bot, message):
+async def rar_delete(bot, query):
     if query.data == "rar_delete":
         await query.message.edit_text("Deleting...")
         
@@ -834,7 +834,7 @@ async def rar_delete(bot, message):
 
 
 @Bot.on_callback_query(filters.regex(r'^zip_delete'))
-async def zip_delete(bot, message):
+async def zip_delete(bot, query):
     if query.data == "zip_delete":
         await query.message.edit_text("Deleting...")
         
@@ -848,7 +848,7 @@ async def zip_delete(bot, message):
 
 
 @Bot.on_callback_query(filters.regex(r'^mkv_delete'))
-async def mkv_delete(bot, message):
+async def mkv_delete(bot, query):
     if query.data == "mkv_delete":
         await query.message.edit_text("Deleting...")
         
@@ -861,9 +861,8 @@ async def mkv_delete(bot, message):
             await query.message.edit_text("No MKV files to delete")
 
 
-
 @Bot.on_callback_query(filters.regex(r'^jpg_delete'))
-async def jpg_delete(bot, message):
+async def jpg_delete(bot, query):
     if query.data == "jpg_delete":
         await query.message.edit_text("Deleting...")
         
@@ -877,7 +876,7 @@ async def jpg_delete(bot, message):
 
 
 @Bot.on_callback_query(filters.regex(r'^mp4_delete'))
-async def mp4_delete(bot, message):
+async def mp4_delete(bot, query):
     if query.data == "mp4_delete":
         await query.message.edit_text("Deleting...")
 
@@ -891,8 +890,9 @@ async def mp4_delete(bot, message):
 
 
 @Bot.on_callback_query(filters.regex(r'^close_data'))
-async def close_data_delete(bot, message):
-    await message.message.delete()
+async def close_data_delete(bot, query):
+    await query.message.delete()
+
 
 
 
