@@ -770,7 +770,9 @@ async def delete(bot, message):
     ]]
     await msg.edit('Choose do you want to delete file Database?', reply_markup=types.InlineKeyboardMarkup(btn))
     
-
+@Bot.on_callback_query(filters.regex(r'^close_data'))
+async def close_data_delete(bot, query):
+    await query.message.delete()
 
 @Bot.on_callback_query(filters.regex(r'^deletev1'))
 async def deletefilev1(bot, query):
@@ -798,7 +800,7 @@ async def deletefilev1(bot, query):
         ],
         [
             types.InlineKeyboardButton(f"JPG ({jpg})", callback_data="jpg_delete"),
-            types.InlineKeyboardButton("CLOSE", callback_data="close_data")
+            types.InlineKeyboardButton("CLOSE", callback_data="close_datav1")
         ]
     ]
     
@@ -902,8 +904,8 @@ async def mp4_delete(bot, query):
             await query.message.edit_text("No MP4 files to delete")
 
 
-@Bot.on_callback_query(filters.regex(r'^close_data'))
-async def close_data_delete(bot, query):
+@Bot.on_callback_query(filters.regex(r'^close_datav1'))
+async def close_data_deletev1(bot, query):
     await query.message.delete()
 
 
@@ -933,7 +935,7 @@ async def deletefilev2(bot, query):
         ],
         [
             types.InlineKeyboardButton(f"JPG ({jpg})", callback_data="jpg_deletev2"),
-            types.InlineKeyboardButton("CLOSE", callback_data="close_data")
+            types.InlineKeyboardButton("CLOSE", callback_data="close_datav2")
         ]
     ]
     
