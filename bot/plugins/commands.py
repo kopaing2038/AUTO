@@ -766,7 +766,7 @@ async def deletefile(bot, message):
     avi = await a_filter.count_documents({'mime_type': 'video/x-msvideo'})
     zip = await a_filter.count_documents({'mime_type': 'application/zip'})
     rar = await a_filter.count_documents({'mime_type': 'application/x-rar-compressed'})
-    mkv = await a_filter.count_documents({'mime_type': 'application/x-rar-compressed'})
+    mkv = await a_filter.count_documents({'mime_type': 'video/x-matroska'})
     btn = [[
         types.InlineKeyboardButton(f"SRT ({srt})", callback_data="srt_delete"),
         types.InlineKeyboardButton(f"AVI ({avi})", callback_data="avi_delete"),
