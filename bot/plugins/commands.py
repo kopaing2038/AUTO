@@ -1103,11 +1103,6 @@ async def deleteindex(bot, message):
     try:
         cmd, text = message.text.split(" ", 1)
     except ValueError:
-        await message.reply_text(@Bot.on_message(filters.command('del') & filters.user(Config.ADMINS))
-async def deleteindex(bot, message):
-    try:
-        cmd, text = message.text.split(" ", 1)
-    except ValueError:
         await message.reply_text(
             "<i>Enter in correct format!\n\n<code>/del channelid</code> or\n"
             "<code>/del @channelusername</code></i>"
@@ -1170,8 +1165,6 @@ async def deleteindex(bot, message):
         await intmsg.edit_text(
             "Couldn't delete the channel"
         )
-
-
 
 
 
