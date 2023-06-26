@@ -18,46 +18,35 @@ class clonedme(object):
     U_NAME = None
     B_NAME = None
 
-mongodb_url = None
 
 @Client.on_message(filters.command("mongodb") & filters.private)
 async def mongodb(client, message):
-    # Assuming the user sends the MongoDB URL as a text message
-    global mongodb_url
-    mongodb_url = message.text
-    
-    # Perform any necessary validation or processing on the MongoDB URL here
-    
-    # Continue with your desired logic
-    await message.reply("MongoDB URL set successfully!")
+    # Extract the MongoDB URL from the command message
+    command_url = ""
 
-@Client.on_message(filters.private)
-async def handle_private_message(client, message):
-    global mongodb_url
-    if mongodb_url is not None:
-        # Assuming you have a global variable to store the MongoDB client
-        mongo_client = None
-        
-        # Connect to MongoDB using the URL provided by the user
-        try:
-            mongo_client = MongoClient(mongodb_url)
-            # Use the mongo_client object to perform database operations as needed
-            # For example:
-            db = mongo_client.get_database()
-            collection = db.get_collection("your_collection_name")
-            # Perform operations on the collection, such as insert, update, delete, etc.
-            
-        except pymongo.errors.InvalidURI:
-            # Handle invalid MongoDB URLs
-            await message.reply("Invalid MongoDB URL!")
-        
-        finally:
-            # Close the MongoDB client connection
-            if mongo_client is not None:
-                mongo_client.close()
-        
-    else:
-        await message.reply("Please set the MongoDB URL first using the /mongodb command.")
+    # Extract the MongoDB URL sent by the user
+    user_url = message.text.split(" ")[1]  # Assumes the URL is provided as the second word after the command
+
+    # Connect to the MongoDB cluster using the user-provided URL
+    user_client = MongoClient(user_url)
+
+    # Connect to the MongoDB cluster using the command URL
+    command_client = MongoClient(command_url)
+
+    # Use the client connections to perform database operations
+    # For example, retrieve a list of databases from the user-provided URL
+    user_databases = user_client.list_database_names()
+
+    # Similarly, retrieve a list of databases from the command URL
+    command_databases = command_client.list_database_names()
+
+    # Perform any further operations or logic with the retrieved data
+
+    # Close the client connections
+    user_client.close()
+    command_client.close()
+
+
 
 @Client.on_message((filters.regex(r'\d[0-9]{8,10}:[0-9A-Za-z_-]{35}')) & filters.private)
 async def on_clone(self, message):
