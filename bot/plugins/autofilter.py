@@ -358,7 +358,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
 
     k = 1
     for file in files:
-        cap += f"{k}. [{file.file_name} [{get_size(file.file_size)}]](https://t.me/{bot.me.username}?start={req}_{file.file_id})\n\n"
+        cap += f"{k}. [file['file_name'][{get_size(file['file_size'])}]](https://t.me/{bot.me.username}?start={req}_{file['_id']})\n\n"
         k += 1
 
 
