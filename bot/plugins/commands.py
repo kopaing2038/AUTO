@@ -1102,13 +1102,16 @@ async def deleteindex(bot, message):
     if len(command) == 2:
         chat_id = command[1]
         await b_filter.col.delete_many({'chat_id': chat_id})  # Delete all documents with the specified chat_id
-        await bot.edit_message_text(
-            chat_id=message.chat.id,
-            message_id=message.id,
-            text='Successfully Deleted All The Indexed Files for chat_id: {}'.format(chat_id)
-        )
+        try:
+            await bot.edit_message_text(
+                chat_id=message.chat.id,
+                message_id=message.message_id,
+                text='Successfully Deleted All The Indexed Files for chat_id: {}'.format(chat_id)
+            )
+        except pyrogram.errors.exceptions.bad_request_400.MessageIdInvalid as e:
+            await message.reply_text('Failed to edit the message. The message ID is invalid.')
     else:
-        await message.edit_text('Invalid command format. Please provide a chat_id.')
+        await message.reply_text('Invalid command format. Please provide a chat_id.')
 
 
 
