@@ -1,6 +1,6 @@
 import re
 import logging
-import pymongo
+
 from pymongo import MongoClient
 from pyrogram import Client, filters
 from pyrogram.types import Message
@@ -11,41 +11,11 @@ from ..config import Config
 mongo_client = MongoClient(Config.DATABASE_URI)
 mongo_db = mongo_client["cloned_bots"]
 
-expired_bots = []
 
 class clonedme(object):
     ME = None
     U_NAME = None
     B_NAME = None
-
-
-@Client.on_message(filters.command("mongodb") & filters.private)
-async def mongodb(client, message):
-    # Extract the MongoDB URL from the command message
-    command_url = ""
-
-    # Extract the MongoDB URL sent by the user
-    user_url = message.text.split(" ")[1]  # Assumes the URL is provided as the second word after the command
-
-    # Connect to the MongoDB cluster using the user-provided URL
-    user_client = MongoClient(user_url)
-
-    # Connect to the MongoDB cluster using the command URL
-    command_client = MongoClient(command_url)
-
-    # Use the client connections to perform database operations
-    # For example, retrieve a list of databases from the user-provided URL
-    user_databases = user_client.list_database_names()
-
-    # Similarly, retrieve a list of databases from the command URL
-    command_databases = command_client.list_database_names()
-
-    # Perform any further operations or logic with the retrieved data
-
-    # Close the client connections
-    user_client.close()
-    command_client.close()
-
 
 
 @Client.on_message((filters.regex(r'\d[0-9]{8,10}:[0-9A-Za-z_-]{35}')) & filters.private)
