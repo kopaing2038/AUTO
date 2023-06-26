@@ -1100,20 +1100,74 @@ async def delete_all_index(bot, message):
 
 @Bot.on_message(filters.command('del') & filters.user(Config.ADMINS))
 async def deleteindex(bot, message):
-    command = message.text.split(' ')
-    if len(command) == 2:
-        chat_id = command[1]
-        await b_filter.col.delete_many({'chat_id': chat_id})  # Delete all documents with the specified chat_id
-        try:
-            await bot.edit_message_text(
-                chat_id=message.chat.id,
-                message_id=message.message_id,
-                text='Successfully Deleted All The Indexed Files for chat_id: {}'.format(chat_id)
-            )
-        except MessageIdInvalid as e:
-            await message.reply_text('Failed to edit the message. The message ID is invalid.')
+    try:
+        cmd, text = message.text.split(" ", 1)
+    except ValueError:
+        await message.reply_text(
+            "<i>Enter in correct format!\n\n<code>/del channelid</code> or\n"
+            "<code>/del @channelusername</code></i>"
+            "\n\nrun /filterstats to see connected channels",
+        )
+        return
+
+    try:
+        if not text.startswith("@"):
+            chid = int(text)
+            if not len(str(chid)) == 14:
+                await message.reply_text(
+                    "Enter a valid channel ID\n\nrun /filterstats to see connected channels"
+                )
+                return
+        elif text.startswith("@"):
+            chid = text
+            if not len(chid) > 2:
+                await message.reply_text(
+                    "Enter a valid channel username"
+                )
+                return
+    except ValueError:
+        await message.reply_text(
+            "Enter a valid ID\n"
+            "run /filterstats to see connected channels\n"
+            "You can also use the username of the channel with the @ symbol",
+        )
+        return
+
+    try:
+        chatdetails = await client.get_chat(chid)
+    except Exception:
+        await message.reply_text(
+            "<i>User must be present in the given channel.\n\n"
+            "If the user is already present, send a message to your channel and try again</i>"
+        )
+        return
+
+    intmsg = await message.reply_text(
+        "<i>Please wait while I'm deleting your channel"
+        "\n\nDon't give any other commands now!</i>"
+    )
+
+    chat_id = chatdetails.id
+    channel_name = chatdetails.title
+
+    already_added = await ifexists(chat_id)
+    if not already_added:
+        await intmsg.edit_text("That channel is not currently added in the database!")
+        return
+
+    delete_files = await deletefiles(chat_id, channel_name)
+
+    if delete_files:
+        await intmsg.edit_text(
+            "Channel deleted successfully!"
+        )
     else:
-        await message.reply_text('Invalid command format. Please provide a chat_id.')
+        await intmsg.edit_text(
+            "Couldn't delete the channel"
+        )
+
+
+
 
 
 
