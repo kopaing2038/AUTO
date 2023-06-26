@@ -356,7 +356,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
 
     buttons = []
     for i, file in enumerate(files):
-        cap += f"[{i+1} {file['file_name']}]({await parse_link(file['chat_id'], file['message_id'])})\n\n"
+        cap += f"[{i+1} {file['file_name']}]  {file['_id']}\n\n"
 
     cap2 = f"""
 🔮𝙌𝙪𝙚𝙧𝙮 : {search} 
