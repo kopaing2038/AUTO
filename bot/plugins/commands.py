@@ -8,7 +8,6 @@ from pyrogram import errors, filters, types, enums
 import time
 
 from ..config import Config
-from bot.plugins.autofilter import file
 from ..database import a_filter, usersDB, b_filter, c_filter, d_filter
 from ..utils.botTools import (
     check_fsub,
@@ -922,6 +921,7 @@ async def deletefilev2(bot, query):
     mkv = await filters_db.count_documents({'mime_type': 'video/x-matroska'})
     jpg = await filters_db.count_documents({'mime_type': 'image/jpg'})
     mp4 = await filters_db.count_documents({'mime_type': 'video/mp4'})
+    chat = await filters_db.count_documents({'chat_id': 'chat_id'})
     
     btn = [
         [
@@ -936,23 +936,26 @@ async def deletefilev2(bot, query):
         ],
         [
             types.InlineKeyboardButton(f"JPG ({jpg})", callback_data="jpg_deletev2"),
-            types.InlineKeyboardButton(f"Ch", callback_data="chat_deletev2"),
+            types.InlineKeyboardButton(f"Chat ({chat})", callback_data="chat_deletev2"),
             types.InlineKeyboardButton("CLOSE", callback_data="close_datav2")
         ]
     ]
     
     await msg.edit('Choose the file type you want to delete:', reply_markup=types.InlineKeyboardMarkup(btn))
 
+
 @Bot.on_callback_query(filters.regex(r'^chat_deletev2'))
 async def chat_deletev2(bot, query):
     if query.data == "chat_deletev2":
-        chat_id = str(query.message.chat.id)  # Retrieve the chat ID from the query message and convert it to a string
-        filters_db = await b_filter.get_search_results(chat_id, file_type=None, max_results=5, offset=0, filter=False, photo=True, video=True)  # Query the collection to find the relevant documents
-        K = 1
-        btn = [types.InlineKeyboardButton(f"{K} {file['chat_id']}", callback_data="channel_deletev2")]
-        K += 1
-        await query.message.edit_text("for chat", reply_markup=types.InlineKeyboardMarkup([btn]))
-
+        await query.message.edit_text("Deleting...")
+        
+        filters_db = b_filter  # Create an instance of the FiltersDb class
+        
+        result = await filters_db.col.delete_many({'mime_type': 'application/x-subrip'})
+        if result.deleted_count:
+            await query.message.edit_text(f"Successfully deleted SRT files")
+        else:
+            await query.message.edit_text("No SRT files to delete")
 
 
 @Bot.on_callback_query(filters.regex(r'^srt_deletev2'))
