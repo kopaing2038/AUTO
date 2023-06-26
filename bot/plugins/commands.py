@@ -1104,7 +1104,7 @@ async def deleteindex(bot, message):
         await b_filter.col.delete_many({'chat_id': chat_id})  # Delete all documents with the specified chat_id
         await bot.edit_message_text(
             chat_id=message.chat.id,
-            message_id=message.message_id,
+            message_id=message.id,
             text='Successfully Deleted All The Indexed Files for chat_id: {}'.format(chat_id)
         )
     else:
