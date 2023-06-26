@@ -946,7 +946,7 @@ async def deletefilev2(bot, query):
 async def chat_deletev2(bot, query):
     if query.data == "chat_deletev2":
         chat_id = query.message.chat.id  # Retrieve the chat ID from the query message
-        filters_db = await b_filter.get_search_results({'chat_id': chat_id})  # Query the collection to find the relevant documents
+        filters_db = await b_filter.get_search_results(chat_id)  # Query the collection to find the relevant documents
         K = 1
         btn = [types.InlineKeyboardButton(f"{K} file['chat_id']", callback_data="channel_deletev2")]
         K += 1
