@@ -935,6 +935,7 @@ async def deletefilev2(bot, query):
         ],
         [
             types.InlineKeyboardButton(f"JPG ({jpg})", callback_data="jpg_deletev2"),
+        
             types.InlineKeyboardButton("CLOSE", callback_data="close_datav2")
         ]
     ]
