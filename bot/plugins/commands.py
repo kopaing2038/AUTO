@@ -1098,11 +1098,14 @@ async def delete_all_index(bot, message):
 
 @Bot.on_message(filters.command('del') & filters.user(Config.ADMINS))
 async def deleteindex(bot, message):
-    if message.text == "":
-        chat_id = str(message.chat.id)  # Retrieve the chat ID from the query message and convert it to a string
+    command = message.text.split(' ')
+    if len(command) == 2:
+        chat_id = command[1]
         await b_filter.col.delete_many({'chat_id': chat_id})  # Delete all documents with the specified chat_id
-        await message.answer('2 Piracy Is Crime')
-        await message.edit_text('2 Successfully Deleted All The Indexed Files.')
+        await message.edit_text('Successfully Deleted All The Indexed Files for chat_id: {}'.format(chat_id))
+    else:
+        await message.edit_text('Invalid command format. Please provide a chat_id.')
+
 
 
 
