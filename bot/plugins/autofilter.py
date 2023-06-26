@@ -262,9 +262,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
 📥 𝙏𝙤𝙩𝙖𝙡 : {total_results} 
 🙋🏻‍♂️ 𝙍𝙚𝙦𝙪𝙚𝙨𝙩 : {message.from_user.mention}\n\n"""
 
-    buttons = []
-    for i, file in enumerate(files):
-        cap += f"[{i+1} {file['chat_id']}]({await parse_link(file['chat_id'], file['message_id'])})\n\n"
+
 
 
     if files_a:
@@ -354,6 +352,12 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
 
     else:
         cap += f""
+
+
+    buttons = []
+    for i, file in enumerate(files):
+        cap += f"[{i+1} {file['file_name']}]({await parse_link(file['chat_id'], file['message_id'])})\n\n"
+
     cap2 = f"""
 🔮𝙌𝙪𝙚𝙧𝙮 : {search} 
 📥𝙏𝙤𝙩𝙖𝙡 : {total_results} 
