@@ -935,7 +935,7 @@ async def deletefilev2(bot, query):
         ],
         [
             types.InlineKeyboardButton(f"JPG ({jpg})", callback_data="jpg_deletev2"),
-        
+            types.InlineKeyboardButton(f"Ch", callback_data="channel_deletev2"),
             types.InlineKeyboardButton("CLOSE", callback_data="close_datav2")
         ]
     ]
@@ -943,6 +943,39 @@ async def deletefilev2(bot, query):
     await msg.edit('Choose the file type you want to delete:', reply_markup=types.InlineKeyboardMarkup(btn))
 
 
+@Bot.on_callback_query(filters.regex(r'^channel_deletev2'))
+async def channel_deletev2(bot, query):
+    if query.data == "channel_deletev2":
+        await query.message.edit_text("Deleting...")
+
+    try:
+        cmd, text = query.message.text.split(" ", 1)
+        
+        if not text.startswith("@"):
+            chid = int(text)
+            if not len(text) == 14:
+                await message.reply_text(
+                    "Enter a valid channel ID\n\nrun /filterstats to see connected channels"
+                )
+                return
+        elif text.startswith("@"):
+            chid = text
+            if not len(chid) > 2:
+                await message.reply_text(
+                    "Enter a valid channel username"
+                )
+                return
+
+        try:
+            chatdetails = await client.USER.get_chat(chat_id)
+        except:
+            await message.reply_text(
+                "<i>The user must be present in the given channel.\n\n"
+                "If the user is already present, send a message to your channel and try again</i>"
+            )
+    
+    except ValueError:
+        await message.reply_text("Invalid input format. Please try again.")
 
 @Bot.on_callback_query(filters.regex(r'^srt_deletev2'))
 async def srt_deletev2(bot, query):
