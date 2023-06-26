@@ -355,9 +355,11 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
 
 
     buttons = []
-
-    for i, file in enumerate(files):
-        cap += f"{i+1}. {file['file_name']} {file['file_size']}](https://t.me/{bot.me.username}?start={file['_id']}\n\n"
+    pre = 'filep' if settings['file_secure'] else 'file'
+    k = 1
+    for file in files:
+        cap += f"{k}. [{file.file_name} [{get_size(file.file_size)}]](https://t.me/{bot.me.username}?start={pre}_{file.file_id})\n\n"
+        k += 1
 
 
     cap2 = f"""
