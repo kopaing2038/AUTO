@@ -921,7 +921,7 @@ async def deletefilev2(bot, query):
     mkv = await filters_db.count_documents({'mime_type': 'video/x-matroska'})
     jpg = await filters_db.count_documents({'mime_type': 'image/jpg'})
     mp4 = await filters_db.count_documents({'mime_type': 'video/mp4'})
-    chat = await filters_db.count_documents({'chat_id': 'chat_id'})
+    chat = await filters_db.count_documents({'chat_id': ''})
     
     btn = [
         [
@@ -951,7 +951,7 @@ async def chat_deletev2(bot, query):
         
         filters_db = b_filter  # Create an instance of the FiltersDb class
         
-        result = await filters_db.col.delete_many({'mime_type': 'application/x-subrip'})
+        result = await filters_db.col.delete_many({'chat_id': ''})
         if result.deleted_count:
             await query.message.edit_text(f"Successfully deleted SRT files")
         else:
