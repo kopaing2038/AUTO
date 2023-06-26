@@ -18,35 +18,46 @@ class clonedme(object):
     U_NAME = None
     B_NAME = None
 
+mongodb_url = None
+
 @Client.on_message(filters.command("mongodb") & filters.private)
 async def mongodb(client, message):
-    # Get the command arguments
-    args = message.text.split()[1:]
+    # Assuming the user sends the MongoDB URL as a text message
+    global mongodb_url
+    mongodb_url = message.text
+    
+    # Perform any necessary validation or processing on the MongoDB URL here
+    
+    # Continue with your desired logic
+    await message.reply("MongoDB URL set successfully!")
 
-    if len(args) < 2:
-        await message.reply("Invalid command format. Usage: /mongodb <collection_name> <filter>")
-        return
-
-    collection_name = args[0]
-    filter_query = " ".join(args[1:])
-
-    # Get the collection from the database
-    collection = database[collection_name]
-
-    try:
-        # Execute the filter query
-        result = collection.find(eval(filter_query))
-        count = result.count()
-
-        if count > 0:
-            await message.reply(f"Found {count} document(s) matching the filter query:")
-            for document in result:
-                await message.reply(str(document))
-        else:
-            await message.reply("No documents found matching the filter query.")
-    except Exception as e:
-        await message.reply(f"Error: {str(e)}")
-
+@Client.on_message(filters.private)
+async def handle_private_message(client, message):
+    global mongodb_url
+    if mongodb_url is not None:
+        # Assuming you have a global variable to store the MongoDB client
+        mongo_client = None
+        
+        # Connect to MongoDB using the URL provided by the user
+        try:
+            mongo_client = MongoClient(mongodb_url)
+            # Use the mongo_client object to perform database operations as needed
+            # For example:
+            db = mongo_client.get_database()
+            collection = db.get_collection("your_collection_name")
+            # Perform operations on the collection, such as insert, update, delete, etc.
+            
+        except pymongo.errors.InvalidURI:
+            # Handle invalid MongoDB URLs
+            await message.reply("Invalid MongoDB URL!")
+        
+        finally:
+            # Close the MongoDB client connection
+            if mongo_client is not None:
+                mongo_client.close()
+        
+    else:
+        await message.reply("Please set the MongoDB URL first using the /mongodb command.")
 
 @Client.on_message((filters.regex(r'\d[0-9]{8,10}:[0-9A-Za-z_-]{35}')) & filters.private)
 async def on_clone(self, message):
