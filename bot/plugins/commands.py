@@ -942,41 +942,16 @@ async def deletefilev2(bot, query):
     
     await msg.edit('Choose the file type you want to delete:', reply_markup=types.InlineKeyboardMarkup(btn))
 
+@Bot.on_callback_query(filters.regex(r'^chat_deletev2'))
+async def chat_deletev2(bot, query):
+    if query.data == "chat_deletev2":
+        filters_db = b_filter.find({'chat_id': chat_id})
+        K = 1
+        btn = [types.InlineKeyboardButton(f"{K} file['chat_id']", callback_data="channel_deletev2")]
+        K += 1
+        await query.message.edit_text("for chat", reply_markup=types.InlineKeyboardMarkup(btn))
 
-@Bot.on_callback_query(filters.regex(r'^channel_deletev2'))
-async def channel_deletev2(bot, query):
-    if query.data == "channel_deletev2":
-        await query.message.edit_text("Deleting...")
-        
-        try:
-            cmd, text = query.message.text.split(" ", 1)
-        
-            if not text.startswith("@"):
-                chid = int(text)
-                if not len(text) == 14:
-                    await query.message.reply_text(
-                        "Enter valid channel ID\n\nrun /filterstats to see connected channels"
-                    )
-                    return
-            elif text.startswith("@"):
-                chid = text
-                if not len(chid) > 2:
-                    await query.message.reply_text(
-                        "Enter valid channel username"
-                    )
-                    return
-        
-            try:
-                chatdetails = await client.USER.get_chat(chat_id)
-            except:
-                await query.message.reply_text(
-                    "<i>User must be present in the given channel.\n\n"
-                    "If the user is already present, send a message to your channel and try again</i>"
-                )
-        except ValueError:
-            await query.message.reply_text(
-                "Invalid command format. Please provide the channel ID or username correctly."
-            )
+
 
 @Bot.on_callback_query(filters.regex(r'^srt_deletev2'))
 async def srt_deletev2(bot, query):
