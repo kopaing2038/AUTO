@@ -1137,8 +1137,7 @@ async def deleteindex(bot, message):
         chatdetails = await client.get_chat(chid)
     except Exception:
         await message.reply_text(
-            "<i>User must be present in the given channel.\n\n"
-            "If the user is already present, send a message to your channel and try again</i>"
+            "<i>If the user is already present, send a message to your channel and try again</i>"
         )
         return
 
