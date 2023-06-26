@@ -552,7 +552,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 reply_markup=types.InlineKeyboardMarkup(btn),
                 quote=True,
             )
-       except (errors.MediaEmpty, errors.PhotoInvalidDimensions, errors.WebpageMediaEmpty):
+        except (errors.MediaEmpty, errors.PhotoInvalidDimensions, errors.WebpageMediaEmpty):
             pic = imdb.get("poster")
             poster = pic.replace(".jpg", "._V1_UX360.jpg")
             await message.reply_photo(
