@@ -8,6 +8,7 @@ from pyrogram import errors, filters, types, enums
 import time
 
 from ..config import Config
+from bot.plugins.autofilter import file
 from ..database import a_filter, usersDB, b_filter, c_filter, d_filter
 from ..utils.botTools import (
     check_fsub,
