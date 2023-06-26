@@ -2,6 +2,8 @@ import math
 import re
 import random
 from bot import Bot
+import pyrogram
+from pyrogram.errors.exceptions.bad_request_400 import MessageIdInvalid
 from pyrogram import errors, filters, types
 import re, asyncio, time, shutil, psutil, os, sys
 from pyrogram import errors, filters, types, enums
@@ -1108,11 +1110,10 @@ async def deleteindex(bot, message):
                 message_id=message.message_id,
                 text='Successfully Deleted All The Indexed Files for chat_id: {}'.format(chat_id)
             )
-        except pyrogram.errors.exceptions.bad_request_400.MessageIdInvalid as e:
+        except MessageIdInvalid as e:
             await message.reply_text('Failed to edit the message. The message ID is invalid.')
     else:
         await message.reply_text('Invalid command format. Please provide a chat_id.')
-
 
 
 
