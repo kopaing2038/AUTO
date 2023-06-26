@@ -950,7 +950,7 @@ async def chat_deletev2(bot, query):
         K = 1
         btn = [types.InlineKeyboardButton(f"{K} file['chat_id']", callback_data="channel_deletev2")]
         K += 1
-        await query.message.edit_text("for chat", reply_markup=types.InlineKeyboardMarkup(btn))
+        await query.message.edit_text("for chat", reply_markup=types.InlineKeyboardMarkup([btn]))
 
 
 
