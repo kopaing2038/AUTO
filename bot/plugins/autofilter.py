@@ -495,67 +495,72 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
     btn = btn_a + btn_b + btn_c
     if imdb and imdb.get("poster") and settings["IMDB_POSTER"]:
         if not settings["TEXT_LINK"]:
-            try:
-                await message.reply_photo(
-                    photo=imdb.get("poster"),  # type: ignore
-                    caption=cap[:1024],
-                    reply_markup=types.InlineKeyboardMarkup(btn),
-                    quote=True,
+            if settings["PM_IMDB_POSTER"]:
+                buttons = []
+                k = 1
+                for file in files:
+                    cap += f"{k}. [{file['file_name']} {get_size(file['file_size'])}]({await parse_link(file['chat_id'], file['message_id'])})\n\n"
+                    k += 1
+            btn2 = []
+            if offset != "" and total_results > 5:
+                key = f"{msg.chat.id}-{msg.message_id}"
+                BUTTONS[key] = search
+                req = msg.from_user.id if msg.from_user else 0
+                btn2.append(
+                    [types.InlineKeyboardButton(text=f"🗓 1/{math.ceil(int(total_results) / 5)}", callback_data="pages"),
+                     types.InlineKeyboardButton(text="NEXT ⏩", callback_data=f"next_{req}_{key}_{offset}")]
                 )
-            except (errors.MediaEmpty, errors.PhotoInvalidDimensions, errors.WebpageMediaEmpty):
-                pic = imdb.get("poster")
-                poster = pic.replace(".jpg", "._V1_UX360.jpg")
-                await message.reply_photo(
-                    photo=poster,
-                    caption=cap[:1024],
-                    reply_markup=types.InlineKeyboardMarkup(btn),
-                    quote=True,
+            else:
+                btn2.append(
+                    [types.InlineKeyboardButton(text="🗓 1/1", callback_data="pages")]
                 )
+            await message.reply_photo(
+                photo=imdb.get("poster"),  # type: ignore
+                caption=cap[:1024],
+                reply_markup=types.InlineKeyboardMarkup(btn2),
+            )
         else:
-            try:
-                file_send = await bot.send_photo(
-                    chat_id=Config.FILE_GROUP2,
-                    photo=imdb.get("poster"),
-                    caption=cap[:1024],
-                    reply_markup=types.InlineKeyboardMarkup(btn),
+            if settings["PM_IMDB_POSTER"]:
+                buttons = []
+                k = 1
+                for file in files:
+                    cap += f"{k}. [{file['file_name']} {get_size(file['file_size'])}]({await parse_link(file['chat_id'], file['message_id'])})\n\n"
+                    k += 1
+            btn2 = []
+            if offset != "" and total_results > 5:
+                key = f"{msg.chat.id}-{msg.message_id}"
+                BUTTONS[key] = search
+                req = msg.from_user.id if msg.from_user else 0
+                btn2.append(
+                    [types.InlineKeyboardButton(text=f"🗓 1/{math.ceil(int(total_results) / 5)}", callback_data="pages"),
+                     types.InlineKeyboardButton(text="NEXT ⏩", callback_data=f"next_{req}_{key}_{offset}")]
                 )
-                ad1 = random.choice(ADS)
-                photo_url = ad1["photo"]
-                caption = ad1["caption"]
-                await message.reply_photo(
-                    photo=photo_url,
-                    caption=caption,
-                    reply_markup=types.InlineKeyboardMarkup(
-                        [
-                            [types.InlineKeyboardButton('ဝင်မရရင်ဒီကိုအရင်နှိပ် Join ပေးပါ', url="https://t.me/+AGntow9MZbs2MjRh")],
-                            [types.InlineKeyboardButton(f'📥 {search} 📥', url=file_send.link)]
-                        ]
-                    ),
-                    quote=True,
+            else:
+                btn2.append(
+                    [types.InlineKeyboardButton(text="🗓 1/1", callback_data="pages")]
                 )
-            except (errors.MediaEmpty, errors.PhotoInvalidDimensions, errors.WebpageMediaEmpty):
-                pic = imdb.get("poster")
-                poster = pic.replace(".jpg", "._V1_UX360.jpg")
-                file_send2 = await bot.send_photo(
-                    chat_id=Config.FILE_GROUP2,
-                    photo=poster,
-                    caption=cap[:1024],
-                    reply_markup=types.InlineKeyboardMarkup(btn),
-                )
-                ad1 = random.choice(ADS)
-                photo_url = ad1["photo"]
-                caption = ad1["caption"]
-                await message.reply_photo(
-                    photo=photo_url,
-                    caption=caption,
-                    reply_markup=types.InlineKeyboardMarkup(
-                        [
-                            [types.InlineKeyboardButton('ဝင်မရရင်ဒီကိုအရင်နှိပ် Join ပေးပါ', url="https://t.me/+AGntow9MZbs2MjRh")],
-                            [types.InlineKeyboardButton(f'📥 {search} 📥', url=file_send2.link)]
-                        ]
-                    ),
-                    quote=True,
-                )
+            await message.reply_photo(
+                photo=imdb.get("poster"),  # type: ignore
+                caption=cap[:1024],
+                reply_markup=types.InlineKeyboardMarkup(btn2),
+            )
+
+        try:
+            await message.reply_photo(
+                photo=imdb.get("poster"),  # type: ignore
+                caption=cap[:1024],
+                reply_markup=types.InlineKeyboardMarkup(btn),
+                quote=True,
+            )
+       except (errors.MediaEmpty, errors.PhotoInvalidDimensions, errors.WebpageMediaEmpty):
+            pic = imdb.get("poster")
+            poster = pic.replace(".jpg", "._V1_UX360.jpg")
+            await message.reply_photo(
+                photo=poster,
+                caption=cap[:1024],
+                reply_markup=types.InlineKeyboardMarkup(btn),
+                quote=True,
+            )
     else:
         if not settings["TEXT_LINK"]:
             ad = random.choice(ADS)
@@ -588,7 +593,6 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 ),
                 quote=True
             )
-
 
 
 async def ch2_give_filter(bot: Bot, message: types.Message):
