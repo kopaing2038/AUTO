@@ -503,7 +503,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                     k += 1
             btn2 = []
             if offset != "" and total_results > 5:
-                key = f"{msg.chat.id}-{msg.message_id}"
+                key = f"{message.chat.id}-{message.id}"
                 BUTTONS[key] = search
                 req = msg.from_user.id if msg.from_user else 0
                 btn2.append(
@@ -528,7 +528,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                     k += 1
             btn2 = []
             if offset != "" and total_results > 5:
-                key = f"{msg.chat.id}-{msg.message_id}"
+                key = f"{message.chat.id}-{message.id}"
                 BUTTONS[key] = search
                 req = msg.from_user.id if msg.from_user else 0
                 btn2.append(
