@@ -504,8 +504,8 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
             btn2 = []
             if offset != "" and total_results > 5:
                 key = f"{message.chat.id}-{message.id}"
-                BUTTONS[key] = search
-                req = msg.from_user.id if msg.from_user else 0
+                Cache.BUTTONS[key] = search
+                req = message.from_user.id if message.from_user else 0
                 btn2.append(
                     [types.InlineKeyboardButton(text=f"🗓 1/{math.ceil(int(total_results) / 5)}", callback_data="pages"),
                      types.InlineKeyboardButton(text="NEXT ⏩", callback_data=f"next_{req}_{key}_{offset}")]
@@ -529,8 +529,8 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
             btn2 = []
             if offset != "" and total_results > 5:
                 key = f"{message.chat.id}-{message.id}"
-                BUTTONS[key] = search
-                req = msg.from_user.id if msg.from_user else 0
+                Cache.BUTTONS[key] = search
+                req = message.from_user.id if message.from_user else 0
                 btn2.append(
                     [types.InlineKeyboardButton(text=f"🗓 1/{math.ceil(int(total_results) / 5)}", callback_data="pages"),
                      types.InlineKeyboardButton(text="NEXT ⏩", callback_data=f"next_{req}_{key}_{offset}")]
