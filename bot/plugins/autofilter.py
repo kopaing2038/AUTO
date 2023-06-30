@@ -366,22 +366,22 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
        # k += 1
 
 
-    cap2 = f"""<small>────── • ADS • ──────
-ဂိမ်းကစားမယ်ဆို FHM95 ကိုသတိရလိုက်ပါ...
+    cap2 = f"""────── • ADS • ──────
+<code><font size="8">ဂိမ်းကစားမယ်ဆို FHM95 ကိုသတိရလိုက်ပါ...
 
 မန်ဘာအကောင့်ဖွင့်တာနဲ့ 👉  ဖရီး 3,000 
 ပထမအကြိမ်ငွေဖြည့်တာနဲ့ 👉  ဖရီး 15,000  ရယူနိုင်ပါတယ် 
 
 စလော့ ငါးပစ် ရှမ်းကိုးမီး ခြောက်ကောင်ဂျင် ဂိမ်းတွေ ရှယ်ကစားလိုရတယ်နော် ဒါ့အပြင် တိုက်ရိုက်ဒိုင်အချောတွေနဲ့ကစားလိုရမည့် Live Casino ဂိမ်းလဲရှိပါသေးတယ် 
 
-ဂိမ်း Download လုပ်ရန်နှင့် 🅵🅷🅼95 ကိုဆက်သွယ်ရန် 🔥 https://fhm95.net/online-fhm/ 🔥 နှိပ်လိုက်ပါ
+ဂိမ်း Download လုပ်ရန်နှင့် 🅵🅷🅼95 ကိုဆက်သွယ်ရန် 🔥 https://fhm95.net/online-fhm/ 🔥 နှိပ်လိုက်ပါ</font></code>
 ────── • ◆ • ──────
 
 🔮𝙌𝙪𝙚𝙧𝙮 : {search} 
 📥𝙏𝙤𝙩𝙖𝙡 : {total_results} 
 🙋🏻‍♂️𝙍𝙚𝙦𝙪𝙚𝙨𝙩 : {message.from_user.mention} 
     
-⚠️<a href='https://t.me/kopainglay15'>ကြော်ငြာများထည့်သွင်းရန်</a></small>"""
+⚠️<a href='https://t.me/kopainglay15'>ကြော်ငြာများထည့်သွင်းရန်</a>"""
 
     ADS = [
         {"photo": "https://graph.org/file/57c7be369ccd72eff94ee.jpg", "caption": f"""
