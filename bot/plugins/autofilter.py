@@ -185,7 +185,9 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
 
     if re.findall(r"((^\/|^,|^!|^\.|^[\U0001F600-\U000E007F()]).*)", str(message.text), re.UNICODE):
         return
-
+    m=await message.reply_text("🔍")
+    await asyncio.sleep(3)
+    await m.delete()
     if 2 < len(message.text) < 150:
         settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
         search = message.text
@@ -497,9 +499,6 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
     btn = btn_a + btn_b + btn_c
     if imdb and imdb.get("poster") and settings["IMDB_POSTER"]:
         if not settings["TEXT_LINK"]:
-            m=await message.reply_text("🔍")
-            await asyncio.sleep(3)
-            await m.delete()
             try:
                 await message.reply_photo(
                     photo=imdb.get("poster"),  # type: ignore
@@ -517,9 +516,6 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                     quote=True,
                 )
         else:
-            m=await message.reply_text("🔍")
-            await asyncio.sleep(3)
-            await m.delete()
             try:
                 file_send = await bot.send_photo(
                     chat_id=Config.FILE_GROUP2,
@@ -576,9 +572,6 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 quote=True
             )
         else:
-            m=await message.reply_text("🔍")
-            await asyncio.sleep(3)
-            await m.delete()
             ad = random.choice(ADS)
             photo_url = ad["photo"]
             caption = ad["caption"]
