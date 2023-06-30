@@ -47,6 +47,9 @@ class Config:
     LOG_CHANNEL = int(get_config("LOG_CHANNEL", "-1001254905376"))
     FORCE_SUB_CHANNEL = int(get_config("FORCE_SUB_CHANNEL", "-1001161641413"))
 
+    FLOOD = int(environ.get("FLOOD", "10"))
+    RENAME_MODE = bool(environ.get("RENAME_MODE"))
+
     PICS = (get_config('PICS', 'https://graph.org/file/10337fadbffa79c148340.jpg https://graph.org/file/d36571680767216fc2087.jpg https://graph.org/file/d0c149634f817daadfa7f.jpg https://graph.org/file/25f15ce7d53d0e3e751a5.jpg')).split()
     TEMPLATE = get_config(
         "IMDB_TEMPLATE",
