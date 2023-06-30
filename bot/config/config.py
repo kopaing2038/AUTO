@@ -47,6 +47,10 @@ class Config:
     LOG_CHANNEL = int(get_config("LOG_CHANNEL", "-1001254905376"))
     FORCE_SUB_CHANNEL = int(get_config("FORCE_SUB_CHANNEL", "-1001161641413"))
 
+    UPDATES_CHANNEL = int(environ. get('UPDATES_CHANNEL', '-1001646572603'))
+    #BANNED_CHANNELS = list(set(int(x) for x in str(getenv("BANNED_CHANNELS", "-1001362659779")).split()))
+    BIN_CHANNEL = int(environ. get('BIN_CHANNEL', '-1001965839568'))
+
     FLOOD = int(environ.get("FLOOD", "10"))
     RENAME_MODE = bool(environ.get("RENAME_MODE"))
 
