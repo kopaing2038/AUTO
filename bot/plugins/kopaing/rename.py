@@ -4,7 +4,7 @@ from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram.errors import FloodWait
 import humanize
-from bot.config. import Config 
+from bot.config import Config 
 import random
 
 
