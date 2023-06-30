@@ -495,6 +495,9 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
     btn = btn_a + btn_b + btn_c
     if imdb and imdb.get("poster") and settings["IMDB_POSTER"]:
         if not settings["TEXT_LINK"]:
+            m=await message.reply_text("🔍")
+            await asyncio.sleep(3)
+            await m.delete()
             try:
                 await message.reply_photo(
                     photo=imdb.get("poster"),  # type: ignore
@@ -512,6 +515,9 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                     quote=True,
                 )
         else:
+            m=await message.reply_text("🔍")
+            await asyncio.sleep(3)
+            await m.delete()
             try:
                 file_send = await bot.send_photo(
                     chat_id=Config.FILE_GROUP2,
@@ -568,6 +574,9 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 quote=True
             )
         else:
+            m=await message.reply_text("🔍")
+            await asyncio.sleep(3)
+            await m.delete()
             ad = random.choice(ADS)
             photo_url = ad["photo"]
             caption = ad["caption"]
@@ -770,6 +779,9 @@ async def ch2_give_filter(bot: Bot, message: types.Message):
     btn = btn_a + btn_b + btn_c
     if imdb and imdb.get("poster") and settings["IMDB_POSTER"]:
         if not settings["TEXT_LINK"]:
+            m=await message.reply_text("🔍")
+            await asyncio.sleep(3)
+            await m.delete()
             try:
                 await message.reply_photo(
                     photo=imdb.get("poster"),  # type: ignore
@@ -787,6 +799,9 @@ async def ch2_give_filter(bot: Bot, message: types.Message):
                     quote=True,
                 )
         else:
+            m=await message.reply_text("🔍")
+            await asyncio.sleep(3)
+            await m.delete()
             try:
                 file_send = await bot.send_photo(
                     chat_id=Config.FILE_GROUP2,
@@ -843,6 +858,9 @@ async def ch2_give_filter(bot: Bot, message: types.Message):
                 quote=True
             )
         else:
+            m=await message.reply_text("🔍")
+            await asyncio.sleep(3)
+            await m.delete()
             ad = random.choice(ADS)
             photo_url = ad["photo"]
             caption = ad["caption"]
@@ -1102,6 +1120,9 @@ Website Link 👉 https://www.rby999.com/?pid=KP
     btn = btn_a + btn_b + btn_c
     if imdb and imdb.get("poster") and settings["IMDB_POSTER"]:
         if not settings["TEXT_LINK"]:
+            m=await message.reply_text("🔍")
+            await asyncio.sleep(3)
+            await m.delete()
             try:
                 await message.reply_photo(
                     photo=imdb.get("poster"),  # type: ignore
@@ -1119,6 +1140,9 @@ Website Link 👉 https://www.rby999.com/?pid=KP
                     quote=True,
                 )
         else:
+            m=await message.reply_text("🔍")
+            await asyncio.sleep(3)
+            await m.delete()
             try:
                 file_send = await bot.send_photo(
                     chat_id=Config.FILE_GROUP2,
@@ -1175,6 +1199,9 @@ Website Link 👉 https://www.rby999.com/?pid=KP
                 quote=True
             )
         else:
+            m=await message.reply_text("🔍")
+            await asyncio.sleep(3)
+            await m.delete()
             ad = random.choice(ADS)
             photo_url = ad["photo"]
             caption = ad["caption"]
@@ -1378,6 +1405,9 @@ async def ch4_give_filter(bot: Bot, message: types.Message):
     btn = btn_a + btn_b + btn_c
     if imdb and imdb.get("poster") and settings["IMDB_POSTER"]:
         if not settings["TEXT_LINK"]:
+            m=await message.reply_text("🔍")
+            await asyncio.sleep(3)
+            await m.delete()
             try:
                 await message.reply_photo(
                     photo=imdb.get("poster"),  # type: ignore
@@ -1395,6 +1425,9 @@ async def ch4_give_filter(bot: Bot, message: types.Message):
                     quote=True,
                 )
         else:
+            m=await message.reply_text("🔍")
+            await asyncio.sleep(3)
+            await m.delete()
             try:
                 file_send = await bot.send_photo(
                     chat_id=Config.FILE_GROUP2,
@@ -1451,6 +1484,9 @@ async def ch4_give_filter(bot: Bot, message: types.Message):
                 quote=True
             )
         else:
+            m=await message.reply_text("🔍")
+            await asyncio.sleep(3)
+            await m.delete()
             ad = random.choice(ADS)
             photo_url = ad["photo"]
             caption = ad["caption"]
