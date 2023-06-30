@@ -141,9 +141,9 @@ async def select_language(bot, query):
         return await query.answer("Invalid data format.", show_alert=True)
     #req = query.from_user.id if query.from_user else 0
 
-    _, req, search = data_parts
+    _, key, search = data_parts
 
-    if int(req) not in [query.from_user.id, 0]:
+    if int(key) not in [query.from_user.id, 0]:
         return await query.answer("This is not for you", show_alert=True)
 
     btn = [
@@ -272,17 +272,17 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 req = message.from_user.id if message.from_user else 0
                 btn_a.append(
                     [
-                        types.InlineKeyboardButton(f"{search} အတွက် Lᴀɴɢᴜᴀɢᴇs ရွေးချယ်ပါ။!", callback_data=f"select_lang#{req}#{search}")
+                        types.InlineKeyboardButton(f"{search} အတွက် Lᴀɴɢᴜᴀɢᴇs ရွေးချယ်ပါ။!", callback_data=f"select_lang#{key}#{search}")
                     ]
                 )
             else:
                 btn_a.append(
-                    [types.InlineKeyboardButton(f"{search} အတွက် Lᴀɴɢᴜᴀɢᴇs ရွေးချယ်ပါ။!", callback_data=f"select_lang#{req}#{search}")]
+                    [types.InlineKeyboardButton(f"{search} အတွက် Lᴀɴɢᴜᴀɢᴇs ရွေးချယ်ပါ။!", callback_data=f"select_lang#{key}#{search}")]
                 )
         else:
             btn_a = [
                 [
-                    types.InlineKeyboardButton(f"{search} အတွက် Lᴀɴɢᴜᴀɢᴇs ရွေးချယ်ပါ။!", callback_data=f"select_lang#{req}#{search}")
+                    types.InlineKeyboardButton(f"{search} အတွက် Lᴀɴɢᴜᴀɢᴇs ရွေးချယ်ပါ။!", callback_data=f"select_lang#{key}#{search}")
                 ]
             ]
 
