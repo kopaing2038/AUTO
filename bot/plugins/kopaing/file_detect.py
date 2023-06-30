@@ -6,8 +6,8 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ForceRepl
 
 @Client.on_message(filters.private & filters.command("rename"))
 async def refunc(client, message):
-
-    if not message.reply_to_message and not message.reply_to_message.media:
+    if message.reply_to_message is None or message.reply_to_message.media is None:
+    #if not message.reply_to_message and not message.reply_to_message.media:
           return await message.reply("reply to media's")
     if (message.reply_to_message.reply_markup) and isinstance(message.reply_to_message.reply_markup, ForceReply):
         new_name = message.text
