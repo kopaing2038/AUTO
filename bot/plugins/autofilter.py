@@ -358,12 +358,12 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         cap += f""
 
 
-    buttons = []
+    #buttons = []
 
-    k = 1
-    for file in files:
-        cap += f"{k}. [{file['file_name']} {get_size(file['file_size'])}]({await parse_link(file['chat_id'], file['message_id'])})\n\n"
-        k += 1
+    #k = 1
+    #for file in files:
+        #cap += f"{k}. [{file['file_name']} {get_size(file['file_size'])}]({await parse_link(file['chat_id'], file['message_id'])})\n\n"
+       # k += 1
 
 
     cap2 = f"""
