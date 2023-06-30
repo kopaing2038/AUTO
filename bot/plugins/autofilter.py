@@ -272,17 +272,17 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 req = message.from_user.id if message.from_user else 0
                 btn_a.append(
                     [
-                        types.InlineKeyboardButton(f"{search} အတွက် Lᴀɴɢᴜᴀɢᴇs ရွေးချယ်ပါ။!", callback_data=f"select_lang#req#{search}")
+                        types.InlineKeyboardButton(f"{search} အတွက် Lᴀɴɢᴜᴀɢᴇs ရွေးချယ်ပါ။!", callback_data=f"select_lang#{search}")
                     ]
                 )
             else:
                 btn_a.append(
-                    [types.InlineKeyboardButton(f"{search} အတွက် Lᴀɴɢᴜᴀɢᴇs ရွေးချယ်ပါ။!", callback_data=f"select_lang#req#{search}")]
+                    [types.InlineKeyboardButton(f"{search} အတွက် Lᴀɴɢᴜᴀɢᴇs ရွေးချယ်ပါ။!", callback_data=f"select_lang#{search}")]
                 )
         else:
             btn_a = [
                 [
-                    types.InlineKeyboardButton(f"{search} အတွက် Lᴀɴɢᴜᴀɢᴇs ရွေးချယ်ပါ။!", callback_data=f"select_lang#req#{search}")
+                    types.InlineKeyboardButton(f"{search} အတွက် Lᴀɴɢᴜᴀɢᴇs ရွေးချယ်ပါ။!", callback_data=f"select_lang#{search}")
                 ]
             ]
 
