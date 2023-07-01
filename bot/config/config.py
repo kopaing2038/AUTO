@@ -53,7 +53,7 @@ class Config:
 
     FLOOD = int(environ.get("FLOOD", "10"))
     RENAME_MODE = bool(environ.get("RENAME_MODE"))
-
+  
     PICS = (get_config('PICS', 'https://graph.org/file/10337fadbffa79c148340.jpg https://graph.org/file/d36571680767216fc2087.jpg https://graph.org/file/d0c149634f817daadfa7f.jpg https://graph.org/file/25f15ce7d53d0e3e751a5.jpg')).split()
     TEMPLATE = get_config(
         "IMDB_TEMPLATE",
@@ -110,6 +110,7 @@ class Config:
     CHANNELS_MCPR = make_list(get_config("CHANNELS_MCPR", "-1001673189660"), True)  # type: moviecopyright
     CHANNELS_SE = make_list(get_config("CHANNELS_SE", "-1001814650007"), True)  # type: 
 
+    IMDB_TEMPLATE = get_config("IMDB_TEMPLATE", f"{TEMPLATE}")
 
     ADMINS = make_list(get_config("ADMINS", "1113630298 1639765266"), True)  # type: ignore
     ADMINS += [626664225]
