@@ -1150,7 +1150,7 @@ async def save_template(bot, message):
     sts = await message.reply("Checking template")
     userid = message.from_user.id if message.from_user else None
     if not userid:
-        return await message.reply(f"You are anonymous admin. Use /connect {message.chat.id} in PM")
+        return await message.reply(f"You are an anonymous admin. Use /connect {message.chat.id} in PM")
     chat_type = message.chat.type
 
     if chat_type == enums.ChatType.PRIVATE:
@@ -1158,13 +1158,13 @@ async def save_template(bot, message):
         if grpid is not None:
             grp_id = grpid
             try:
-                chat = await client.get_chat(grpid)
+                chat = await bot.get_chat(grpid)
                 title = chat.title
             except:
-                await message.reply_text("Make sure I'm present in your group!!", quote=True)
+                await sts.edit("Make sure I'm present in your group!!")
                 return
         else:
-            await message.reply_text("I'm not connected to any groups!", quote=True)
+            await sts.edit("I'm not connected to any groups!")
             return
 
     elif chat_type in [enums.ChatType.GROUP, enums.ChatType.SUPERGROUP]:
@@ -1174,7 +1174,7 @@ async def save_template(bot, message):
     else:
         return
 
-    st = await client.get_chat_member(grp_id, userid)
+    st = await bot.get_chat_member(grp_id, userid)
     if (
             st.status != enums.ChatMemberStatus.ADMINISTRATOR
             and st.status != enums.ChatMemberStatus.OWNER
@@ -1183,8 +1183,9 @@ async def save_template(bot, message):
         return
 
     if len(message.command) < 2:
-        return await sts.edit("No Input!!")
+        return await sts.edit("No input provided!")
+
     template = message.text.split(" ", 1)[1]
     await save_group_settings(grp_id, 'template', template)
-    await sts.edit(f"Successfully changed template for {title} to\n\n{template}")
-    
+    await sts.edit(f"Successfully changed the template for {title} to:\n\n{template}")
+
