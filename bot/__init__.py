@@ -4,7 +4,7 @@ from typing import AsyncGenerator, Optional, Union
 from pyrogram import types
 
 from .client import Client
-from .config import Config
+from .config import Config, LOG_STR
 
 from .utils.logger import LOGGER
 
@@ -19,7 +19,7 @@ class Bot(Client):
         await super().start()
         await self.send_message(Config.LOG_CHANNEL, f"#START\nBot [`@{self.me.username}`] started")
         LOGGER(__name__).info("--- Bot Initialized--- ")
-
+        LOGGER.info(LOG_STR)
     async def stop(self, *args):
         await self.send_message(Config.LOG_CHANNEL, f"#STOP\nBot [`@{self.me.username}`] Stopped")
         await super().stop()
