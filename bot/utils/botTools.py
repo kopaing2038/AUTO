@@ -4,7 +4,7 @@ import string
 from bot import bot
 from pyrogram import Client, enums, errors, types
 from pyrogram.file_id import FileId
-
+from bot.database.users_chats_db import db
 from ..config import Config
 from ..database import configDB as config_db
 from .cache import Cache
@@ -35,7 +35,7 @@ CONFIGURABLE = {
     "V_FILTER5": {"help": "Enable / disable Video filter", "name": "Video Filter 5"},
     "CH_POST": {"help": "Enable / disable Ch Post", "name": "Ch POst"},
     "TEXT_LINK": {"help": "Enable / disable Text Link", "name": "Text Link"},
-    "IMDB_TEMPLATES": {"help": "Enable / disable Text Link", "name": "IMDB TEMPLATE"},
+    
 
 }
 
@@ -134,7 +134,18 @@ def get_buttons(settings: dict):
     return BTN
 
 
-
+async def get_settings(group_id):
+    settings = Cache.SETTINGS.get(group_id)
+    if not settings:
+        settings = await db.get_settings(group_id)
+        Cache.SETTINGS[group_id] = settings
+    return settings
+    
+async def save_group_settings(group_id, key, value):
+    current = await get_settings(group_id)
+    current[key] = value
+    Cache.SETTINGS[group_id] = current
+    await db.update_settings(group_id, current)
 
 async def parse_link(chat_id: int, msg_id: int) -> str:
     username = Cache.USERNAMES.get(chat_id)
