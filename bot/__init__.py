@@ -27,7 +27,7 @@ class Bot(Client):
         await super().start()
         await self.send_message(Config.LOG_CHANNEL, f"#START\nBot [`@{self.me.username}`] started")
         LOGGER(__name__).info("--- Bot Initialized--- ")
-        logging.info(LOG_STR)
+        #logging.info(LOG_STR)
 
     async def stop(self, *args):
         await self.send_message(Config.LOG_CHANNEL, f"#STOP\nBot [`@{self.me.username}`] Stopped")
