@@ -77,11 +77,7 @@ def unpack_new_file_id(new_file_id: str) -> str:
     return file_id, file_ref  # type: ignore
 
     
-def save_group_settings(group_id, key, value):
-    current = await get_settings(group_id)
-    current[key] = value
-    Cache.SETTINGS[group_id] = current
-    await db.update_settings(group_id, current)
+
 
 def get_size(size: int) -> str:
     """Get size in readable format"""
@@ -134,6 +130,11 @@ def get_buttons(settings: dict):
         )
     return BTN
 
+async def save_group_settings(group_id, key, value):
+    current = await get_settings(group_id)
+    current[key] = value
+    Cache.SETTINGS[group_id] = current
+    await db.update_settings(group_id, current)
 
 async def parse_link(chat_id: int, msg_id: int) -> str:
     username = Cache.USERNAMES.get(chat_id)
