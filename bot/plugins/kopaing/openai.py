@@ -1,9 +1,8 @@
 from pyrogram import Client, filters
 import openai
 
-
 async def ai(query):
-    openai.api_key = "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"  # Replace with your correct API key
+    openai.api_key = "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" #Your openai api key
     response = openai.Completion.create(engine="text-davinci-002", prompt=query, max_tokens=100, n=1, stop=None, temperature=0.9, timeout=5)
     return response.choices[0].text.strip()
      
@@ -19,10 +18,10 @@ async def ask_ai(client, m, message):
         error_message = f"An error occurred: {e}"
         await m.edit(error_message)
 
-
 @Client.on_message(filters.command('openai'))
 async def openai_ask(client, message):
     if len(message.command) == 1:
        return await message.reply_text("Give an input!")
     m = await message.reply_text("👀")
     await ask_ai(client, m, message)
+
