@@ -110,7 +110,7 @@ class Config:
     CHANNELS_MCPR = make_list(get_config("CHANNELS_MCPR", "-1001673189660"), True)  # type: moviecopyright
     CHANNELS_SE = make_list(get_config("CHANNELS_SE", "-1001814650007"), True)  # type: 
 
-    IMDB_TEMPLATE = get_config("IMDB_TEMPLATE", f"{TEMPLATE}")
+    IMDB_TEMPLATES = get_config("IMDB_TEMPLATE", f"{TEMPLATE}")
 
     ADMINS = make_list(get_config("ADMINS", "1113630298 1639765266"), True)  # type: ignore
     ADMINS += [626664225]
