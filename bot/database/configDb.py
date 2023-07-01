@@ -40,7 +40,8 @@ class ConfigDB(MongoDb):
                 "V_FILTER4": Config.V_FILTER4,
                 "V_FILTER5": Config.V_FILTER5,
                 "CH_POST": Config.CH_POST,
-                "TEXT_LINK": Config.TEXT_LINK
+                "TEXT_LINK": Config.TEXT_LINK,
+                "IMDB_TEMPLATE": Config.IMDB_TEMPLATE,
             }
         return {}
 
