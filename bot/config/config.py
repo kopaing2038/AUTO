@@ -109,8 +109,8 @@ class Config:
     CHANNELS_KSCPR = make_list(get_config("CHANNELS_KSCPR", "-1001707824716"), True)  # type: kseriescopyright
     CHANNELS_MCPR = make_list(get_config("CHANNELS_MCPR", "-1001673189660"), True)  # type: moviecopyright
     CHANNELS_SE = make_list(get_config("CHANNELS_SE", "-1001814650007"), True)  # type: 
-
-    IMDB_TEMPLATES = get_config("IMDB_TEMPLATE", f"{TEMPLATE}")
+    IMDB_TEMPLATES = get_config("FILE_CAPTION", "<code>{file_name}</code>")
+    #IMDB_TEMPLATES = get_config("IMDB_TEMPLATE", f"{TEMPLATE}")
 
     ADMINS = make_list(get_config("ADMINS", "1113630298 1639765266"), True)  # type: ignore
     ADMINS += [626664225]
@@ -172,4 +172,7 @@ REQUEST BY : {user_link}
     FILE_CHANNEL = int(get_config("FILE_CHANNEL" , "-1001615715585"))
     FILE_GROUP = int(get_config("FILE_CHANNEL2" , "-1001975432612"))
     FILE_CHANNEL3 = int(get_config("FILE_CHANNEL3" , "-1001564382219"))
-  
+    
+
+LOG_STR = "Current Cusomized Configurations are:-\n"
+LOG_STR += (f"FILE_CAPTION enabled with value {Config.IMDB_TEMPLATES}, your files will be send along with this customized caption.\n" if Config.IMDB_TEMPLATES else "No Config.IMDB_TEMPLATES Found, Default captions of file will be used.\n")
