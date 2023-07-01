@@ -8,8 +8,7 @@ from pyrogram.errors.exceptions.bad_request_400 import AccessTokenExpired, Acces
 
 from ..config import Config
 
-DATABASE_URL = ""
-mongo_client = MongoClient(DATABASE_URL)
+mongo_client = MongoClient(Config.DATABASE_URL)
 mongo_db = mongo_client["cloned_bots"]
 
 
@@ -177,7 +176,7 @@ async def set_database_uri(client, message):
         database_uri = message.text.split(" ", maxsplit=1)[1].strip()
 
         # Update the database URI in the config
-        DATABASE_URL = database_uri
+        Config.DATABASE_URL = database_uri
 
         await message.reply_text("Database URI has been updated successfully.")
     except Exception as e:
