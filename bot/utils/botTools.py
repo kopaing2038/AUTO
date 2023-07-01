@@ -7,7 +7,6 @@ from pyrogram.file_id import FileId
 
 from ..config import Config
 from ..database import configDB as config_db
-from ..usersDb import usersDB
 from .cache import Cache
 from .logger import LOGGER
 
