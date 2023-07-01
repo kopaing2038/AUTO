@@ -9,10 +9,10 @@ from ..config import Config
 from ..database import configDB as config_db
 from .cache import Cache
 from .logger import LOGGER
-
+from bot.database.configDb import ConfigDB
 log = LOGGER(__name__)
 
-db = Database(Config.DATABASE_URI, Config.SESSION_NAME)
+
 
 CONFIGURABLE = {
     "IMDB": {"help": "Enable or disable IMDB status", "name": "Imdb Info"},
@@ -35,7 +35,7 @@ CONFIGURABLE = {
     "V_FILTER5": {"help": "Enable / disable Video filter", "name": "Video Filter 5"},
     "CH_POST": {"help": "Enable / disable Ch Post", "name": "Ch POst"},
     "TEXT_LINK": {"help": "Enable / disable Text Link", "name": "Text Link"},
-}
+    "IMDB_TEMPLATE": {"help": "Enable / disable Text Link", "name": "IMDB TEMPLATE"},
 
 
 def b64_encode(s: str) -> str:
@@ -134,7 +134,7 @@ def get_buttons(settings: dict):
 async def get_settings(group_id):
     settings = Cache.SETTINGS.get(group_id)
     if not settings:
-        settings = await db.CONNECTION(group_id)
+        settings = await ConfigDB.get_settings(group_id)
         Cache.SETTINGS[group_id] = settings
     return settings
 
