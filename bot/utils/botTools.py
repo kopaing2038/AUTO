@@ -133,19 +133,19 @@ def get_buttons(settings: dict):
         )
     return BTN
 
-async def get_settings(group_id, key):
+
+async def get_settings(group_id):
     settings = Cache.SETTINGS.get(group_id)
     if not settings:
-        settings = await ConfigDB.get_settings(group_id, key)
+        settings = await get_settings(group_id)
         Cache.SETTINGS[group_id] = settings
     return settings
-
-
+    
 async def save_group_settings(group_id, key, value):
-    current = await ConfigDB.get_settings(group_id, 'IMDB_TEMPLATES')
+    current = await ConfigDB.get_settings(group_id)
     current[key] = value
     Cache.SETTINGS[group_id] = current
-    await db.update_settings(group_id, current)
+    await ConfigDB.update_settings(group_id, current)
 
 async def parse_link(chat_id: int, msg_id: int) -> str:
     username = Cache.USERNAMES.get(chat_id)
