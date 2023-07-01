@@ -61,8 +61,8 @@ async def active_connection(user_id):
     if not query:
         return None
 
-    #group_id = query['active_group']
-    #return int(group_id) if group_id != None else None
+    group_id = query['active_group']
+    return int(group_id) if group_id != None else None
 
 
 async def all_connections(user_id):
