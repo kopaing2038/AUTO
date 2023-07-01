@@ -174,11 +174,13 @@ async def set_database_url(client, message):
             await message.reply_text("You are not authorized to use this command.")
             return
 
-        database_url = message.text.split(" ", maxsplit=1)[1].strip()
-
-        if not database_uri:
+        # Split the message text to get the database URI
+        args = message.text.split(" ", maxsplit=1)
+        if len(args) < 2:
             await message.reply_text("Please provide a valid database URI.")
             return
+
+        database_url = args[1].strip()
 
         # Update the database URI in the config
         Config.DATABASE_URI = database_url
@@ -187,6 +189,7 @@ async def set_database_url(client, message):
     except Exception as e:
         logging.exception("Error while setting database URI.")
         await message.reply_text("An error occurred while setting the database URI.")
+
 
 
 
