@@ -1145,8 +1145,8 @@ async def adelete_all_4index_confirm(bot, message):
     await message.answer('4 Piracy Is Crime')
     await message.message.edit('4 Succesfully Deleted All The Indexed Files.') 
 
-@Client.on_message(filters.command('set_template'))
-async def save_template(client, message):
+@Bot.on_message(filters.command('set_template'))
+async def save_template(bot, message):
     sts = await message.reply("Checking template")
     userid = message.from_user.id if message.from_user else None
     if not userid:
