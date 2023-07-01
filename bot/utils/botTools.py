@@ -37,6 +37,8 @@ CONFIGURABLE = {
     "TEXT_LINK": {"help": "Enable / disable Text Link", "name": "Text Link"},
     "IMDB_TEMPLATES": {"help": "Enable / disable Text Link", "name": "IMDB TEMPLATE"},
 
+}
+
 
 def b64_encode(s: str) -> str:
 
