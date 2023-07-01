@@ -44,6 +44,9 @@ class ConfigDB(MongoDb):
                 "IMDB_TEMPLATES": Config.IMDB_TEMPLATES,
                 "TEMPLATE": Config.TEMPLATE,
             }
+        chat = await self.grp.find_one({'id':int(id)})
+        if chat:
+            return chat.get('SETTINGS_', default)
         return {}
 
     async def update_settings(self, id, settings):
