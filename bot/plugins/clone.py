@@ -180,15 +180,16 @@ async def set_database_url(client, message):
             await message.reply_text("Please provide a valid database URI.")
             return
 
-        database_uri = args[1].strip()
+        database_url = args[1].strip()
 
         # Update the database URI in the config
-        Config.DATABASE_URI = database_uri
+        Config.set("DATABASE_URI", database_url)
 
         await message.reply_text("Database URI has been updated successfully.")
     except Exception as e:
         logging.exception("Error while setting database URI.")
         await message.reply_text("An error occurred while setting the database URI.")
+
 
 
 
