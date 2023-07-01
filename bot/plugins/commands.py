@@ -1189,6 +1189,6 @@ async def save_template(bot, message):
         return await sts.edit("No input provided!")
 
     template = message.text.split(" ", 1)[1]
-    await save_group_settings(grp_id, 'TEMPLATE', template)
+    await save_group_settings(grp_id, 'Config.TEMPLATE', template)
     await sts.edit(f"Successfully changed the template for {title} to:\n\n{template}")
 
