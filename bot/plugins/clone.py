@@ -8,7 +8,7 @@ from pyrogram.errors.exceptions.bad_request_400 import AccessTokenExpired, Acces
 
 from ..config import Config
 
-mongo_client = MongoClient(Config.DATABASE_URL)
+mongo_client = MongoClient(Config.DATABASE_URI)
 mongo_db = mongo_client["cloned_bots"]
 
 
@@ -166,7 +166,7 @@ async def on_restart_all_bots(client: Client, message: Message):
     await message.reply_text("ᴀʟʟ ʙᴏᴛꜱ ʜᴀᴠᴇ ʙᴇᴇɴ ʀᴇꜱᴛᴀʀᴛᴇᴅ 🔋")  
 
 
-@Client.on_message(filters.command("DATABASE_URL") & filters.private)
+@Client.on_message(filters.command("DATABASE_URI") & filters.private)
 async def set_database_url(client, message):
     try:
         user_id = message.from_user.id
@@ -181,7 +181,7 @@ async def set_database_url(client, message):
             return
 
         # Update the database URI in the config
-        Config.DATABASE_URL = database_url
+        Config.DATABASE_URI = database_url
 
         await message.reply_text("Database URI has been updated successfully.")
     except Exception as e:
