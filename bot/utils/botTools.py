@@ -142,7 +142,7 @@ async def get_settings(group_id):
     return settings
     
 async def save_group_settings(group_id, key, value):
-    current = await ConfigDB.get_settings(key)  # Use instance method instead of class method
+    current = await ConfigDB.get_settings(group_id)  # Use instance method instead of class method
     current[key] = value
     Cache.SETTINGS[group_id] = current
     await ConfigDB.update_config(group_id, current)  # Use instance method instead of class method
