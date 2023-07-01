@@ -167,7 +167,7 @@ async def on_restart_all_bots(client: Client, message: Message):
 
 
 @Client.on_message(filters.command("DATABASE_URI") & filters.private)
-async def set_database_url(client, message):
+async def set_database_uri(client, message):
     try:
         user_id = message.from_user.id
         if user_id not in Config.ADMINS:
@@ -180,10 +180,10 @@ async def set_database_url(client, message):
             await message.reply_text("Please provide a valid database URI.")
             return
 
-        database_url = args[1].strip()
+        database_uri = args[1].strip()
 
         # Update the database URI in the config
-        Config.set("DATABASE_URI", database_url)
+        Config.set("DATABASE_URI", database_uri)
 
         await message.reply_text("Database URI has been updated successfully.")
     except Exception as e:
