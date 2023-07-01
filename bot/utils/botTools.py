@@ -145,7 +145,7 @@ async def save_group_settings(group_id, key, value):
     current = await config_db.get_settings(group_id)
     current[key] = value
     Cache.SETTINGS[group_id] = current
-    await db.update_settings(group_id, current)
+    await config_db.update_settings(group_id, current)
 
 async def parse_link(chat_id: int, msg_id: int) -> str:
     username = Cache.USERNAMES.get(chat_id)
