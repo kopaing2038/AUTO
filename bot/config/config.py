@@ -175,4 +175,4 @@ REQUEST BY : {user_link}
     
 
 LOG_STR = "Current Cusomized Configurations are:-\n"
-LOG_STR += (f"FILE_CAPTION enabled with value {Config.IMDB_TEMPLATES}, your files will be send along with this customized caption.\n" if Config.IMDB_TEMPLATES else "No Config.IMDB_TEMPLATES Found, Default captions of file will be used.\n")
+LOG_STR += (f"Config.TEMPLATE enabled with value {Config.TEMPLATE}, your files will be send along with this customized caption.\n" if Config.TEMPLATE else "No Config.TEMPLATE Found, Default captions of file will be used.\n")
