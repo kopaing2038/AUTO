@@ -1151,17 +1151,19 @@ async def adelete_all_4index_confirm(bot, message):
 @Bot.on_message(filters.command('set_template'))
 async def save_template(bot, message):
     sts = await message.reply("Checking template")
-    userid = message.from_user.id if message.from_user else None
-    if not userid:
+    user_id = message.from_user.id if message.from_user else None
+    if not user_id:
         return await message.reply(f"You are an anonymous admin. Use /connect {message.chat.id} in PM")
+
     chat_type = message.chat.type
+    group_id = None
+    title = None
 
     if chat_type == enums.ChatType.PRIVATE:
-        grpid = await active_connection(str(userid))
-        if grpid is not None:
-            grp_id = grpid
+        group_id = await active_connection(str(user_id))
+        if group_id is not None:
             try:
-                chat = await bot.get_chat(grpid)
+                chat = await bot.get_chat(group_id)
                 title = chat.title
             except:
                 await sts.edit("Make sure I'm present in your group!!")
@@ -1171,17 +1173,16 @@ async def save_template(bot, message):
             return
 
     elif chat_type in [enums.ChatType.GROUP, enums.ChatType.SUPERGROUP]:
-        grp_id = message.chat.id
+        group_id = message.chat.id
         title = message.chat.title
 
-    else:
+    if not group_id:
         return
 
-    st = await bot.get_chat_member(grp_id, userid)
+    user_status = await bot.get_chat_member(group_id, user_id)
     if (
-            st.status != enums.ChatMemberStatus.ADMINISTRATOR
-            and st.status != enums.ChatMemberStatus.OWNER
-            and str(userid) not in Config.ADMINS
+            user_status.status not in [enums.ChatMemberStatus.ADMINISTRATOR, enums.ChatMemberStatus.OWNER]
+            and str(user_id) not in Config.ADMINS
     ):
         return
 
@@ -1189,6 +1190,6 @@ async def save_template(bot, message):
         return await sts.edit("No input provided!")
 
     template = message.text.split(" ", 1)[1]
-    await save_group_settings(grp_id, 'Config.TEMPLATE', template)
+    await save_group_settings(group_id, 'TEMPLATE', template)
     await sts.edit(f"Successfully changed the template for {title} to:\n\n{template}")
 
