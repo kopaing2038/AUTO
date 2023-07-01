@@ -7,6 +7,14 @@ from .client import Client
 from .config import Config
 from bot.config.config import LOG_STR
 from .utils.logger import LOGGER
+import logging
+import logging.config
+
+# Get logging configurations
+logging.config.fileConfig('logging.conf')
+logging.getLogger().setLevel(logging.INFO)
+logging.getLogger("pyrogram").setLevel(logging.ERROR)
+logging.getLogger("cinemagoer").setLevel(logging.ERROR)
 
 
 class Bot(Client):
@@ -19,7 +27,8 @@ class Bot(Client):
         await super().start()
         await self.send_message(Config.LOG_CHANNEL, f"#START\nBot [`@{self.me.username}`] started")
         LOGGER(__name__).info("--- Bot Initialized--- ")
-        LOGGER.info(LOG_STR)
+        logging.info(LOG_STR)
+
     async def stop(self, *args):
         await self.send_message(Config.LOG_CHANNEL, f"#STOP\nBot [`@{self.me.username}`] Stopped")
         await super().stop()
