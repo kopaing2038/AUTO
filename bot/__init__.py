@@ -5,7 +5,7 @@ from pyrogram import types
 
 from .client import Client
 from .config import Config, LOG_STR
-
+from bot.config.config import LOG_STR
 from .utils.logger import LOGGER
 
 
