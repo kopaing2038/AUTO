@@ -142,7 +142,7 @@ async def get_settings(group_id, key):
 
 
 async def save_group_settings(group_id, key, value):
-    current = await get_settings(group_id, 'IMDB_TEMPLATES')
+    current = await configDB.get_settings(group_id, 'IMDB_TEMPLATES')
     current[key] = value
     Cache.SETTINGS[group_id] = current
     await db.update_settings(group_id, current)
