@@ -12,7 +12,7 @@ from .logger import LOGGER
 
 log = LOGGER(__name__)
 
-db = Database(Config.DATABASE_URI, Config.SESSION_NAME)
+db = (Config.DATABASE_URI, Config.SESSION_NAME)
 CONFIGURABLE = {
     "IMDB": {"help": "Enable or disable IMDB status", "name": "Imdb Info"},
     "CHANNEL": {"help": "Redirect to Channel / Send File", "name": "Channel"},
