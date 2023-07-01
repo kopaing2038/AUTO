@@ -76,6 +76,12 @@ def unpack_new_file_id(new_file_id: str) -> str:
     file_ref = encode_file_ref(decoded.file_reference)
     return file_id, file_ref  # type: ignore
 
+    
+def save_group_settings(group_id, key, value):
+    current = await get_settings(group_id)
+    current[key] = value
+    Cache.SETTINGS[group_id] = current
+    await db.update_settings(group_id, current)
 
 def get_size(size: int) -> str:
     """Get size in readable format"""
