@@ -41,7 +41,7 @@ class ConfigDB(MongoDb):
                 "V_FILTER5": Config.V_FILTER5,
                 "CH_POST": Config.CH_POST,
                 "TEXT_LINK": Config.TEXT_LINK,
-                "IMDB_TEMPLATE": Config.IMDB_TEMPLATE,
+                "IMDB_TEMPLATES": Config.IMDB_TEMPLATES,
             }
         return {}
 
