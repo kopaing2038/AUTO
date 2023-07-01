@@ -166,31 +166,27 @@ async def on_restart_all_bots(client: Client, message: Message):
     await message.reply_text("ᴀʟʟ ʙᴏᴛꜱ ʜᴀᴠᴇ ʙᴇᴇɴ ʀᴇꜱᴛᴀʀᴛᴇᴅ 🔋")  
 
 
-
-@Client.on_message(filters.command("DATABASE_URI") & filters.private)
-async def set_database_uri(client, message):
+@Client.on_message(filters.command("DATABASE_URL") & filters.private)
+async def set_database_url(client, message):
     try:
         user_id = message.from_user.id
         if user_id not in Config.ADMINS:
             await message.reply_text("You are not authorized to use this command.")
             return
 
-        # Check if database URI is provided
-        if len(message.command) < 2:
+        database_url = message.text.split(" ", maxsplit=1)[1].strip()
+
+        if not database_uri:
             await message.reply_text("Please provide a valid database URI.")
             return
 
-        database_uri = message.command[1].strip()
-
         # Update the database URI in the config
-        Config.DATABASE_URL = database_uri
-
-        # Create a new MongoClient instance with the updated URI
-        mongo_client = MongoClient(Config.DATABASE_URL)
+        Config.DATABASE_URL = database_url
 
         await message.reply_text("Database URI has been updated successfully.")
     except Exception as e:
         logging.exception("Error while setting database URI.")
         await message.reply_text("An error occurred while setting the database URI.")
+
 
 
