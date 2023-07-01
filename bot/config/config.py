@@ -167,7 +167,7 @@ REQUEST BY : {user_link}
     V_FILTER5 = False
     CH_POST = False
     TEXT_LINK = False
-
+    IMDB_TEMPLATS = True
     USE_CAPTION_FILTER = get_config("USE_CAPTION_FILTER", True, True)  # type: ignore
     FILE_CHANNEL = int(get_config("FILE_CHANNEL" , "-1001615715585"))
     FILE_GROUP = int(get_config("FILE_CHANNEL2" , "-1001975432612"))
