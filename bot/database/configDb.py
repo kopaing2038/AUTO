@@ -42,6 +42,7 @@ class ConfigDB(MongoDb):
                 "CH_POST": Config.CH_POST,
                 "TEXT_LINK": Config.TEXT_LINK,
                 "IMDB_TEMPLATES": Config.IMDB_TEMPLATES,
+                "TEMPLATE": Config.TEMPLATE,
             }
         return {}
 
