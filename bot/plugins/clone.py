@@ -9,7 +9,7 @@ from pyrogram.errors.exceptions.bad_request_400 import AccessTokenExpired, Acces
 from ..config import Config
 
 DATABASE_URL = ""
-mongo_client = MongoClient(DATABASE_URI)
+mongo_client = MongoClient(DATABASE_URL)
 mongo_db = mongo_client["cloned_bots"]
 
 
