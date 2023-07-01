@@ -8,7 +8,7 @@ class Database:
         self._client = motor.motor_asyncio.AsyncIOMotorClient(uri)
         self.db = self._client[database_name]
         self.col = self.db.users
-        self.grp = self.db.CONNECTION
+        self.grp = self.db.Groups
 
 
     def new_user(self, id, name):
@@ -108,7 +108,7 @@ class Database:
     
     async def get_settings(self, id):
         default = {
-            'template': Config.IMDB_TEMPLATES
+            'template': Config.TEMPLATE
         }
         chat = await self.grp.find_one({'id':int(id)})
         if chat:
