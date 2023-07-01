@@ -130,6 +130,13 @@ def get_buttons(settings: dict):
         )
     return BTN
 
+async def get_settings(group_id):
+    settings = temp.SETTINGS.get(group_id)
+    if not settings:
+        settings = await db.get_settings(group_id)
+        Cache.SETTINGS[group_id] = settings
+    return settings
+
 async def save_group_settings(group_id, key, value):
     current = await get_settings(group_id)
     current[key] = value
