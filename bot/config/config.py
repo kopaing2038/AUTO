@@ -33,7 +33,7 @@ class Config:
     BOT_TOKEN = get_config("BOT_TOKEN", "5482704567:AAH4hOppkPz71lO4MePmSw5kbkHGkWYzVKE")
     API_ID = int(get_config("API_ID", "7880210"))
     API_HASH = get_config("API_HASH", "1bb4b2ff1489cc06af37cba448c8cce9")
-
+    DATABASE_URL = get_config("DATABASE_URL", "")
     DATABASE_URI = get_config("DATABASE_URL", "mongodb+srv://pmbot1:pmbot1@cluster0.esuavhf.mongodb.net/?retryWrites=true&w=majority")
     SESSION_NAME = get_config("DATABASE_NAME", "CH11BOT")
     COLLECTION_NAME = get_config("COLLECTION_NAME", "Movie")
