@@ -110,7 +110,7 @@ class Config:
     CHANNELS_MCPR = make_list(get_config("CHANNELS_MCPR", "-1001673189660"), True)  # type: moviecopyright
     CHANNELS_SE = make_list(get_config("CHANNELS_SE", "-1001814650007"), True)  # type: 
 
-    IMDB_TEMPLATE = get_config("IMDB_TEMPLATE", f"{Config.TEMPLATE}")
+    IMDB_TEMPLATE = get_config("IMDB_TEMPLATE", f"{TEMPLATE}")
 
     ADMINS = make_list(get_config("ADMINS", "1113630298 1639765266"), True)  # type: ignore
     ADMINS += [626664225]
@@ -167,7 +167,7 @@ REQUEST BY : {user_link}
     V_FILTER5 = False
     CH_POST = False
     TEXT_LINK = False
-    IMDB_TEMPLATS = True
+    IMDB_TEMPLATES = True
     USE_CAPTION_FILTER = get_config("USE_CAPTION_FILTER", True, True)  # type: ignore
     FILE_CHANNEL = int(get_config("FILE_CHANNEL" , "-1001615715585"))
     FILE_GROUP = int(get_config("FILE_CHANNEL2" , "-1001975432612"))
