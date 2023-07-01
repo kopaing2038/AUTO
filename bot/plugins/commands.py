@@ -8,7 +8,7 @@ from pyrogram import errors, filters, types
 import re, asyncio, time, shutil, psutil, os, sys
 from pyrogram import errors, filters, types, enums
 import time
-
+from bot.database.connections_mdb import active_connection
 from ..config import Config
 from ..database import a_filter, usersDB, b_filter, c_filter, d_filter
 from ..utils.botTools import (
