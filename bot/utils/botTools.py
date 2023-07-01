@@ -7,12 +7,13 @@ from pyrogram.file_id import FileId
 
 from ..config import Config
 from ..database import configDB as config_db
+from ..usersDb import usersDB
 from .cache import Cache
 from .logger import LOGGER
 
 log = LOGGER(__name__)
 
-
+db = Database(Config.DATABASE_URI, Config.SESSION_NAME)
 CONFIGURABLE = {
     "IMDB": {"help": "Enable or disable IMDB status", "name": "Imdb Info"},
     "CHANNEL": {"help": "Redirect to Channel / Send File", "name": "Channel"},
@@ -133,7 +134,7 @@ def get_buttons(settings: dict):
 async def get_settings(group_id):
     settings = Cache.SETTINGS.get(group_id)
     if not settings:
-        settings = await db.get_settings(group_id)
+        settings = await db.CONNECTION(group_id)
         Cache.SETTINGS[group_id] = settings
     return settings
 
