@@ -35,7 +35,7 @@ CONFIGURABLE = {
     "V_FILTER5": {"help": "Enable / disable Video filter", "name": "Video Filter 5"},
     "CH_POST": {"help": "Enable / disable Ch Post", "name": "Ch POst"},
     "TEXT_LINK": {"help": "Enable / disable Text Link", "name": "Text Link"},
-    "IMDB_TEMPLATE": {"help": "Enable / disable Text Link", "name": "IMDB TEMPLATE"},
+    "IMDB_TEMPLATES": {"help": "Enable / disable Text Link", "name": "IMDB TEMPLATE"},
 
 
 def b64_encode(s: str) -> str:
