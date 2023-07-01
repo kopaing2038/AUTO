@@ -4,7 +4,7 @@ from typing import AsyncGenerator, Optional, Union
 from pyrogram import types
 
 from .client import Client
-from .config import Config, LOG_STR
+from .config import Config
 from bot.config.config import LOG_STR
 from .utils.logger import LOGGER
 
