@@ -959,20 +959,20 @@ async def chat_listv2(bot, query):
     if query.data == "chatlistv2":
         await query.message.edit_text("list...")
         
-        filters_db = b_filter  # Create an instance of the FiltersDb class
+
+        filters_db = b_filter 
         chat_id_list = await filters_db.get_distinct_chat_ids()
     
-        chat_id_text = "\n".join([f"chat_id {cid}" for cid in chat_id_list])
-
         btn = [
-            [
-                types.InlineKeyboardButton(f"chat_id {cid}", callback_data=f"delete_chatv2:{cid}") for cid in chat_id_list
-            ],
-            [
-                types.InlineKeyboardButton("CANCEL", callback_data="cancel_deletev2")
-            ]
+            [types.InlineKeyboardButton(f"chat_id {cid}", callback_data=f"delete_chat_id {cid}")]
+            for cid in chat_id_list
         ]
-        await query.message.edit_text(f"Choose the chat ID to delete:\n\n{chat_id_text}", reply_markup=types.InlineKeyboardMarkup(btn))
+
+        btn.append([types.InlineKeyboardButton("CLOSE", callback_data="close_chatlistv2")])
+        
+        chat_id_text = "\n".join([f"chat_id {cid}" for cid in chat_id_list])
+        
+        await query.message.edit_text(f"Chat Id list:\n\n{chat_id_text}", reply_markup=types.InlineKeyboardMarkup(btn))
 
 
 
