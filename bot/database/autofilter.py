@@ -144,7 +144,7 @@ class BaseFiltersDb(MongoDb):
         result = await self.col.delete_many({"chat_id": chat_id})
         return result
 
-    async def delete_files(query, filter=True):
+    async def delete_files(self, query, filter=True):
         query = query.strip()
         # for better results
         if filter:
