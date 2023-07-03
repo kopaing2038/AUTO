@@ -954,18 +954,27 @@ async def deletefilev2(bot, query):
     
     await msg.edit(f'Choose the file type you want to delete:\n\n{chat_id_text}', reply_markup=types.InlineKeyboardMarkup(btn))
 
-@Bot.on_callback_query(filters.regex(r'^chat_deletev2'))
-async def chat_deletev2(bot, query):
+@Bot.on_callback_query(filters.regex(r'^chat_listv2'))
+async def chat_listv2(bot, query):
     if query.data == "chat_deletev2":
-        await query.message.edit_text("Deleting...")
+        await query.message.edit_text("list...")
         
         filters_db = b_filter  # Create an instance of the FiltersDb class
-        
-        result = await filters_db.col.delete_many({'chat_id': ''})
-        if result.deleted_count:
-            await query.message.edit_text(f"Successfully deleted SRT files")
-        else:
-            await query.message.edit_text("No SRT files to delete")
+        chat_id_list = await filters_db.get_distinct_chat_ids()
+    
+        chat_id_text = "\n".join([f"chat_id {cid}" for cid in chat_id_list])
+
+        btn = [
+            [
+                types.InlineKeyboardButton(f"chat_id {cid}", callback_data=f"delete_chatv2:{cid}") for cid in chat_id_list
+            ],
+            [
+                types.InlineKeyboardButton("CANCEL", callback_data="cancel_deletev2")
+            ]
+        ]
+        await query.message.edit_text(f"Choose the chat ID to delete:\n\n{chat_id_text}", reply_markup=types.InlineKeyboardMarkup(btn))
+
+
 
 
 @Bot.on_callback_query(filters.regex(r'^srt_deletev2'))
