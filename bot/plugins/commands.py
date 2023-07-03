@@ -960,7 +960,9 @@ async def deletefilev2(bot, query):
         ],
         [
             types.InlineKeyboardButton(f"JPG ({jpg})", callback_data="jpg_deletev2"), 
-            types.InlineKeyboardButton(f"Channel ({chat}) ({cht})", callback_data="chatlistv2"),                     
+            types.InlineKeyboardButton(f"CH ({chat}) ({cht})", callback_data="chatlistv2"),                     
+        ],
+        [                  
             types.InlineKeyboardButton("CLOSE", callback_data="close_datav2")
         ]
     ]
@@ -976,12 +978,12 @@ async def chat_listv2(bot, query):
         
         filters_db = b_filter
         chat_id_list = await filters_db.get_distinct_chat_ids()
-
+        cht = await filters_db.count_documents({'chat_id': {'$in': chat_id_list}})
         # Convert Int64 values to regular integers
         chat_id_list = [int(cid) for cid in chat_id_list]
     
         btn = [
-            [types.InlineKeyboardButton(f"{cid}", callback_data=f"delete_chat_id {cid}")]
+            [types.InlineKeyboardButton(f"{cid} {cht}", callback_data=f"delete_chat_id {cid}")]
             for cid in chat_id_list
         ]
 
