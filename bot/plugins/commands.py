@@ -927,9 +927,13 @@ async def deletefilev2(bot, query):
     jpg = await filters_db.count_documents({'mime_type': 'image/jpg'})
     mp4 = await filters_db.count_documents({'mime_type': 'video/mp4'})
     
-    chat_id_list = []
-    async for document in filters_db.find().distinct('chat_id'):
-        chat_id_list.append(document['chat_id'])
+    # Using the aggregate method to retrieve distinct chat IDs
+    pipeline = [
+        {"$group": {"_id": "$chat_id"}},
+        {"$project": {"chat_id": "$_id", "_id": 0}}
+    ]
+    cursor = filters_db.aggregate(pipeline)
+    chat_id_list = [document['chat_id'] async for document in cursor]
     
     chat_id_text = "\n".join([f"chat_id {cid}" for cid in chat_id_list])
     
