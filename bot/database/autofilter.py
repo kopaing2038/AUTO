@@ -144,27 +144,7 @@ class BaseFiltersDb(MongoDb):
         result = await self.col.delete_many({"chat_id": chat_id})
         return result
 
-    async def delete_files(self, query, filter=True):
-        query = query.strip()
-        # for better results
-        if filter:
-            query = query.replace(' ', r'(\s|\.|\+|\-|_)')
-            raw_pattern = r'(\s|_|\-|\.|\+)' + query + r'(\s|_|\-|\.|\+)'
-        if not query:
-            raw_pattern = '.'
-        elif ' ' not in query:
-            raw_pattern = r'(\b|[\.\+\-_])' + query + r'(\b|[\.\+\-_])'
-        else:
-            raw_pattern = query.replace(' ', r'.*[\s\.\+\-_]')
 
-        try:
-            regex = re.compile(raw_pattern, flags=re.IGNORECASE)
-        except:
-            return []
-        file_filter = {'file_name': regex}  # Renamed 'filter' variable to 'file_filter' to avoid confusion with built-in 'filter' function
-        total = await self.count_documents(file_filter)  # Use 'self.count_documents' instead of 'BaseFiltersDb.count_documents'
-        files = await self.col.find(file_filter).to_list(None)
-        return total, files
 
 
 
@@ -188,6 +168,28 @@ class FiltersDb4(BaseFiltersDb):
 class FiltersDb5(BaseFiltersDb):
     def __init__(self):
         super().__init__(Config.COLLECTION_NAME5)
+
+async def delete_files(self, query, filter=True):
+    query = query.strip()
+    # for better results
+    if filter:
+        query = query.replace(' ', r'(\s|\.|\+|\-|_)')
+        raw_pattern = r'(\s|_|\-|\.|\+)' + query + r'(\s|_|\-|\.|\+)'
+    if not query:
+        raw_pattern = '.'
+    elif ' ' not in query:
+        raw_pattern = r'(\b|[\.\+\-_])' + query + r'(\b|[\.\+\-_])'
+    else:
+        raw_pattern = query.replace(' ', r'.*[\s\.\+\-_]')
+
+    try:
+        regex = re.compile(raw_pattern, flags=re.IGNORECASE)
+    except:
+        return []
+    file_filter = {'file_name': regex}  # Renamed 'filter' variable to 'file_filter' to avoid confusion with built-in 'filter' function
+    total = await FiltersDb2.count_documents(file_filter)  # Use 'self.count_documents' instead of 'BaseFiltersDb.count_documents'
+    files = await FiltersDb2.col.find(file_filter).to_list(None)
+    return total, files
 
 
 a_filter = FiltersDb()
