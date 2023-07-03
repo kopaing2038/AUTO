@@ -986,8 +986,8 @@ async def delete_chat_id(bot, query):
         await query.message.edit_text("Deleting...")
         
         filters_db = b_filter
-        result = await filters_db.delete_one(chat_id)
-        
+        result = await filters_db.delete_one({"chat_id": chat_id})
+
         if result.deleted_count:
             await query.message.edit_text(f"Successfully deleted chat_id {chat_id} files")
         else:
