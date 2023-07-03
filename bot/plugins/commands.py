@@ -927,9 +927,7 @@ async def deletefilev2(bot, query):
     jpg = await filters_db.count_documents({'mime_type': 'image/jpg'})
     mp4 = await filters_db.count_documents({'mime_type': 'video/mp4'})
     
-    chat_id_list = [
-        filters_db('chat_id')
-    ]
+    chat_id_list = await filters_db.distinct('chat_id')
     
     chat_id_text = "\n".join([f"chat_id {cid}" for cid in chat_id_list])
     
