@@ -141,7 +141,7 @@ class BaseFiltersDb(MongoDb):
         return await self.col.distinct("chat_id")
 
     async def delete_one(self, filter_):
-        result = await self.col.delete_one(filter_)
+        result = await self.col.delete_one({"chat_id": chat_id})
         return result
 
 class FiltersDb(BaseFiltersDb):
