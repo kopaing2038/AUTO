@@ -954,28 +954,27 @@ async def deletefilev2(bot, query):
     
     await msg.edit(f'Choose the file type you want to delete', reply_markup=types.InlineKeyboardMarkup(btn))
 
-chatlist_counter = 1  # Global variable to store the counter
+  # Global variable to store the counter
 
 @Bot.on_callback_query(filters.regex(r'^chatlistv2'))
 async def chat_listv2(bot, query):
-    global chatlist_counter  # Access the global variable
-    if query.data == "chatlistv2":
-        K = chatlist_counter
+    K = 1
+    if query.data == "chatlistv2":        
         await query.message.edit_text("Fetching chat IDs...")
         
         filters_db = b_filter
         chat_id_list = await filters_db.get_distinct_chat_ids()
     
         btn = [
-            [types.InlineKeyboardButton(f"chat_id {cid}", callback_data=f"delete_chat_id {cid}")]
+            [types.InlineKeyboardButton(f"{cid}", callback_data=f"delete_chat_id {cid}")]
             for cid in chat_id_list
         ]
 
         btn.append([types.InlineKeyboardButton("CLOSE", callback_data="close_chatlistv2")])
         
-        chat_id_text = "\n".join([f"{K}. chat_id {cid}" for K, cid in enumerate(chat_id_list, start=K)])
+        chat_id_text = "\n".join([f"{K}. {cid}" for K, cid in chat_id_list])
         
-        chatlist_counter += len(chat_id_list)  # Update the counter
+        K += len(chat_id_list)  
         
         await query.message.edit_text(f"Chat Id list:\n\n{chat_id_text}", reply_markup=types.InlineKeyboardMarkup(btn))
 
