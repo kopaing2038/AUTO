@@ -140,8 +140,8 @@ class BaseFiltersDb(MongoDb):
     async def get_distinct_chat_ids(self):
         return await self.col.distinct("chat_id")
 
-    async def delete_many(self, channel_id):
-        result = await self.col.delete_many({'chat_id': channel_id})
+    async def delete_many(self, filter_: dict):
+        result = await self.col.delete_many(filter_)
         return result
 
 class FiltersDb(BaseFiltersDb):
