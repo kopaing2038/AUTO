@@ -986,16 +986,16 @@ async def delete_chat_id(bot, query):
         
         filters_db = b_filter
         #result = await filters_db.delete_one(channel_id)
-        result = await filters_db.col.delete_many(
-                {
-                    "chat_id": channel_id,
-                }
-            ) 
-            if result.deleted_count:
-                await query.message.edit_text(f"Successfully deleted files for chat_id {channel_id}")
-           else:
-                await query.message.edit_text(f"No files found for chat_id {channel_id} to delete")
 
+        result = await filters_db.col.delete_many(
+            {
+                "chat_id": channel_id,
+            }
+        ) 
+        if result.deleted_count:
+            await query.message.edit_text(f"Successfully deleted files for chat_id {channel_id}")
+        else:
+            await query.message.edit_text(f"No files found for chat_id {channel_id} to delete")
 
 
 
