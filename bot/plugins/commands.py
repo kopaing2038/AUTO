@@ -981,7 +981,19 @@ async def chat_listv2(bot, query):
 
 
 
-
+@Bot.on_callback_query(filters.regex(r'^delete_chat_id'))
+async def srt_deletev2(bot, query):
+    if query.data.startswith("delete_chat_id"):
+        chat_id = query.data.split(" ")[1]
+        await query.message.edit_text("Deleting...")
+        
+        filters_db = b_filter
+        result = await filters_db.delete_chat_files(chat_id)
+        
+        if result.deleted_count:
+            await query.message.edit_text(f"Successfully deleted chat_id files")
+        else:
+            await query.message.edit_text("No chat_id files to delete")
 
 
 @Bot.on_callback_query(filters.regex(r'^srt_deletev2'))
