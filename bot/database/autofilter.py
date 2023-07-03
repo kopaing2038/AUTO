@@ -140,8 +140,8 @@ class BaseFiltersDb(MongoDb):
     async def get_distinct_chat_ids(self):
         return await self.col.distinct("chat_id")
 
-    async def count_documentsV2(self, chat_id: dict) -> int:  # Add chat_id as a type-hinted parameter
-        result = await self.col.count_documentsV2({"chat_id": chat_id})
+    async def count_documentsV2(self, channel_id: dict) -> int:  # Add chat_id as a type-hinted parameter
+        result = await self.col.count_documentsV2({'chat_id': channel_id})
         return result
 
 class FiltersDb(BaseFiltersDb):
