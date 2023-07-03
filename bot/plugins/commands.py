@@ -1143,7 +1143,7 @@ async def delete_file(bot, message):
         await msg.edit(f"Total {total} files found in your query {query}.\n\nDo you want to delete?", reply_markup=types.InlineKeyboardMarkup(btn))
 
 
-@Bot.on_callback_query(filters.regex(r'^deletefiledelete'))
+@Bot.on_callback_query(filters.regex(r'^deletefiledelete_'))
 async def delete_filedelete(bot, query):
     if query.data == "deletefiledelete":
         _, query_ = query.data.split("_")
