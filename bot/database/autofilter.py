@@ -137,6 +137,9 @@ class BaseFiltersDb(MongoDb):
     async def count_documents(self, filter_: dict) -> int:
         return await self.col.count_documents(filter_)
 
+    async def get_distinct_chat_ids(self):
+        return await self.col.distinct("chat_id")
+
 class FiltersDb(BaseFiltersDb):
     def __init__(self):
         super().__init__(Config.COLLECTION_NAME)
