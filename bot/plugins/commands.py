@@ -947,16 +947,16 @@ async def deletefilev2(bot, query):
         ],
         [
             types.InlineKeyboardButton(f"JPG ({jpg})", callback_data="jpg_deletev2"), 
-            types.InlineKeyboardButton(f"Channel ({chat})", callback_data="chat_listv2"),                     
+            types.InlineKeyboardButton(f"Channel ({chat})", callback_data="chatlistv2"),                     
             types.InlineKeyboardButton("CLOSE", callback_data="close_datav2")
         ]
     ]
     
     await msg.edit(f'Choose the file type you want to delete', reply_markup=types.InlineKeyboardMarkup(btn))
 
-@Bot.on_callback_query(filters.regex(r'^chat_listv2'))
+@Bot.on_callback_query(filters.regex(r'^chatlistv2'))
 async def chat_listv2(bot, query):
-    if query.data == "chat_deletev2":
+    if query.data == "chatlistv2":
         await query.message.edit_text("list...")
         
         filters_db = b_filter  # Create an instance of the FiltersDb class
