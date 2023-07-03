@@ -1145,14 +1145,14 @@ async def delete_file(bot, message):
 
 @Bot.on_callback_query(filters.regex(r'^deletefiledelete_'))
 async def delete_filedelete(bot, query):
+    deleted = 0
     if query.data == "deletefiledelete":
         _, query_ = query.data.split("_")
-        deleted = 0
+
         await query.message.edit('Deleting...')
         total, files = await b_filter.delete_files(query_)
-        async for file in files:
-            await b_filter.col.delete_one({'_id': file['_id']})
-            deleted += 1
+        await b_filter.col.delete_one({'_id': files})
+        deleted += 1
         await query.message.edit(f'Deleted {deleted} files in your database for the query "{query_}"')
 
 
