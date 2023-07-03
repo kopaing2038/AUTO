@@ -1139,10 +1139,7 @@ async def delete_all_index(bot, message):
 
 @Bot.on_message(filters.command('del') & filters.user(Config.ADMINS))
 async def deleteindex(bot, message):
-    cmd, text = message.text.split(" ", 1)
-    """Delete file from database"""
-    chat_id = message.text
-    file_id, file_ref = chat_id, None
+    _, chat_id = message.text.split(" ", 1)
 
     result = await b_filter.col.delete_one(
         {
@@ -1152,7 +1149,8 @@ async def deleteindex(bot, message):
     if result.deleted_count:
         await message.reply_text(f"File is successfully deleted {chat_id} from the database.")
     else:
-        await message.reply_text(f"File not found in{chat_id}the database.")
+        await message.reply_text(f"File not found in {chat_id} the database.")
+
 
 
 @Bot.on_callback_query(filters.regex(r'^autofilter_delete1'))
