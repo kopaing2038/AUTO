@@ -9,7 +9,7 @@ import re, asyncio, time, shutil, psutil, os, sys
 from pyrogram import errors, filters, types, enums
 import time
 from bot.database.connections_mdb import active_connection
-
+from bot.config.config import delete_files
 from ..config import Config
 from ..database import a_filter, usersDB, b_filter, c_filter, d_filter
 from ..utils.botTools import (
@@ -1126,7 +1126,7 @@ async def delete_file(bot, message):
     except:
         return await message.reply_text("Command Incomplete!")
     msg = await message.reply_text('Searching...')
-    total, files = await b_filter.delete_files(query)
+    total, files = await delete_files(query)
 
     #total, files = await b_filter.delete_files(query)
     if int(total) == 0:
