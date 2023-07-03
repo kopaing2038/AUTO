@@ -1141,12 +1141,17 @@ async def delete_all_index(bot, message):
 async def deleteindex(bot, message):
     _, chat_id = message.text.split(" ", 1)
     
-    result = await b_filter.get_distinct_chat_ids()
+    result = await b_filter.col.delete_many(
+        {
+            "chat_id": chat_id,
+        }
+    )
     
-    if chat_id in result:
+    if result.deleted_count:
         await message.reply_text(f"File is successfully deleted {chat_id} from the database.")
     else:
         await message.reply_text(f"File not found in the database for chat_id {chat_id}.")
+
 
 
 
