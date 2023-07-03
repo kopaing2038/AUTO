@@ -926,11 +926,12 @@ async def deletefilev2(bot, query):
     mkv = await filters_db.count_documents({'mime_type': 'video/x-matroska'})
     jpg = await filters_db.count_documents({'mime_type': 'image/jpg'})
     mp4 = await filters_db.count_documents({'mime_type': 'video/mp4'})
-    chat = await filters_db.count_documents(await filters_db.get_distinct_chat_ids())
+    
 
 
     chat_id_list = await filters_db.get_distinct_chat_ids()
-    
+    chat = len(chat_id_list)
+
     chat_id_text = "\n".join([f"chat_id {cid}" for cid in chat_id_list])
     
     btn = [
