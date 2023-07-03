@@ -1123,16 +1123,18 @@ async def close_data_deletev2(bot, query):
 async def delete_file(bot, message):
     try:
         query = message.text.split(" ", 1)[1]
-    except IndexError:
+    except:
         return await message.reply_text("Command Incomplete!")
-    
     msg = await message.reply_text('Searching...')
-    total_deleted = await b_filter.delete_files(query)
-    
-    if total_deleted == 0:
-        await msg.edit_text('No files found in your query.')
-    else:
-        await msg.edit_text(f"Total {total_deleted} files deleted for your query: {query}.")
+    total, files = await b_filter.delete_files(query)
+    if int(total) == 0:
+        await message.reply_text('Not have files in your query')
+    btn = [[
+        types.InlineKeyboardButton("YES", callback_data=f"delete_{query}")
+    ],[
+        types.InlineKeyboardButton("CLOSE", callback_data="close_data")
+    ]]
+    await msg.edit(f"Total {total} files found in your query {query}.\n\nDo you want to delete?", reply_markup=types.InlineKeyboardMarkup(btn))
 
 
 @Bot.on_message(filters.command('deleteall') & filters.user(Config.ADMINS))
