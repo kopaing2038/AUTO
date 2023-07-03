@@ -169,7 +169,8 @@ class FiltersDb5(BaseFiltersDb):
     def __init__(self):
         super().__init__(Config.COLLECTION_NAME5)
 
-async def delete_files(self, query, filter=True):
+# Assuming this is outside the class definition
+async def delete_files(query, filter=True):
     query = query.strip()
     # for better results
     if filter:
@@ -187,9 +188,10 @@ async def delete_files(self, query, filter=True):
     except:
         return []
     file_filter = {'file_name': regex}  # Renamed 'filter' variable to 'file_filter' to avoid confusion with built-in 'filter' function
-    total = await FiltersDb2.count_documents(file_filter)  # Use 'self.count_documents' instead of 'BaseFiltersDb.count_documents'
+    total = await FiltersDb2.count_documents(file_filter)  # Use 'FiltersDb2' instead of 'self' since it's a static method
     files = await FiltersDb2.col.find(file_filter).to_list(None)
     return total, files
+
 
 
 a_filter = FiltersDb()
