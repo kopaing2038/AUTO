@@ -978,7 +978,7 @@ async def chat_listv2(bot, query):
         
         filters_db = b_filter
         chat_id_list = await filters_db.get_distinct_chat_ids()
-        cht = await filters_db.count_documents({'chat_id': {'$in': chat_id_list}})
+        
         # Convert Int64 values to regular integers
         chat_id_list = [int(cid) for cid in chat_id_list]
     
@@ -990,7 +990,7 @@ async def chat_listv2(bot, query):
         btn.append([types.InlineKeyboardButton("CLOSE", callback_data="close_chatlistv2")])
         
         chat_id_text = "\n".join([f"{K}. {cid}" for K, cid in enumerate(chat_id_list, start=K)])
-        
+        cht = await filters_db.count_documents({'chat_id': {'$in': chat_id_text}})
         K += len(chat_id_list)  
         
         await query.message.edit_text(f"Chat Id list:\n\n{chat_id_text}", reply_markup=types.InlineKeyboardMarkup(btn))
