@@ -981,7 +981,8 @@ async def chat_listv2(bot, query):
         
         # Convert Int64 values to regular integers
         chat_id_list = [int(cid) for cid in chat_id_list]
-        cht = await filters_db.count_documents({'chat_id': {'$in': {cid}}})
+        chat_id_lt = "\n".join([f"{K}. {cid}" for K, cid in enumerate(chat_id_list, start=K)])
+        cht = await filters_db.count_documents({'chat_id': {'$in': chat_id_lt}})
         btn = [
             [types.InlineKeyboardButton(f"{cid} {cht}", callback_data=f"delete_chat_id {cid}")]
             for cid in chat_id_list
