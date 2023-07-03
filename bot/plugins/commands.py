@@ -1150,9 +1150,9 @@ async def deleteindex(bot, message):
         }
     )
     if result.deleted_count:
-        await message.reply_text("File is successfully deleted from the database.")
+        await message.reply_text("File is successfully deleted {chat_id} from the database.")
     else:
-        await message.reply_text("File not found in the database.")
+        await message.reply_text("File not found in{chat_id}the database.")
 
 
 @Bot.on_callback_query(filters.regex(r'^autofilter_delete1'))
