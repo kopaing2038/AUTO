@@ -1141,7 +1141,7 @@ async def delete_all_index(bot, message):
 async def deleteindex(bot, message):
     cmd, text = message.text.split(" ", 1)
     """Delete file from database"""
-    chat_id = message.chat.id
+    chat_id = message.text
     file_id, file_ref = chat_id, None
 
     result = await b_filter.col.delete_one(
