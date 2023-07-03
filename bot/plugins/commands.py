@@ -986,7 +986,7 @@ async def chat_listv2(bot, query):
 async def delete_chat_id(bot, query):
     if query.data.startswith("delete_chat_id"):
         chat_id = query.data.split()[1]
-        await query.message.edit_text("Deleting...")
+        await query.message.edit_text(" {chat_id} Deleting...")
         
         filters_db = b_filter
         result = await filters_db.delete_one({"chat_id": chat_id})
