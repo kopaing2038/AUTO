@@ -943,7 +943,7 @@ async def deletefilev2(bot, query):
     chat_id_list = await filters_db.get_distinct_chat_ids()
     chat = len(chat_id_list)
 
-    cht = await filters_db.count_documents({'chat_id': chat_id})
+    cht = await filters_db.count_documents({'chat_id': {'$in': chat_id_list}})
 
     chat_id_text = "\n".join([f"chat_id {cid}" for cid in chat_id_list])
     
