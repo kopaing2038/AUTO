@@ -980,20 +980,19 @@ async def chat_listv2(bot, query):
         await query.message.edit_text(f"Chat Id list:\n\n{chat_id_text}", reply_markup=types.InlineKeyboardMarkup(btn))
 
 
-
 @Bot.on_callback_query(filters.regex(r'^delete_chat_id'))
-async def srt_deletev2(bot, query):
+async def delete_chat_id(bot, query):
     if query.data.startswith("delete_chat_id"):
-        chat_id = query.data.split(" ")[1]
+        chat_id = query.data.split()[1]
         await query.message.edit_text("Deleting...")
         
         filters_db = b_filter
-        result = await filters_db.delete_chat_files(chat_id)
+        result = await filters_db.delete_documents({"chat_id": chat_id})
         
         if result.deleted_count:
-            await query.message.edit_text(f"Successfully deleted chat_id files")
+            await query.message.edit_text(f"Successfully deleted chat_id {chat_id} files")
         else:
-            await query.message.edit_text("No chat_id files to delete")
+            await query.message.edit_text(f"No files found for chat_id {chat_id} to delete")
 
 
 @Bot.on_callback_query(filters.regex(r'^srt_deletev2'))
