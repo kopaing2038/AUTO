@@ -766,18 +766,18 @@ async def handleDelete4(bot: Bot, msg: types.Message):
 @Bot.on_message(filters.command('del') & filters.user(Config.ADMINS))
 async def deleteindex(bot, message):
     _, chat_id = message.text.split(" ", 1)
-    file_id, file_ref = unpack_new_file_id(chat_id)
-    
+
     result = await b_filter.col.delete_many(
         {
-            "_id": file_id,
+            "chat_id": chat_id,
         }
     )
-    
+
     if result.deleted_count:
-        await message.reply_text(f"File is successfully deleted. {result.deleted_count} files with file_id {file_id} are removed from the database.")
+        await message.reply_text(f"Successfully deleted {result.deleted_count} files for chat_id {chat_id} from the database.")
     else:
-        await message.reply_text(f"No files found in the database for file_id {file_id}.")
+        await message.reply_text(f"No files found in the {result.deleted_count} database for chat_id {chat_id}.")
+
 
 
     
@@ -1010,9 +1010,9 @@ async def delete_chat_id(bot, query):
             }
         ) 
         if result.deleted_count:
-            await query.message.edit_text(f"Successfully deleted files for chat_id {channel_id}")
-        #else:
-            #await query.message.edit_text(f"No files found for chat_id {channel_id} to delete")
+            await query.message.edit_text(f"Successfully deleted {result.deleted_count} files for chat_id {channel_id}")
+        else:
+            await query.message.edit_text(f"No files found for{result.deleted_count} chat_id {channel_id} to delete")
 
 
 
