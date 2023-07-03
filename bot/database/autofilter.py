@@ -144,13 +144,27 @@ class BaseFiltersDb(MongoDb):
         result = await self.col.delete_many({"chat_id": chat_id})
         return result
 
-    async def delete_files(self, query: str):
-        regex = re.compile(query, re.IGNORECASE)
-        deleted_count = 0
-        async for file in self.col.find({"file_name": regex}):
-            await self.col.delete_one({"_id": file["_id"]})
-            deleted_count += 1
-        return deleted_count
+    async def delete_files(query, filter=True):
+        query = query.strip()
+        # for better results
+        if filter:
+            query = query.replace(' ', r'(\s|\.|\+|\-|_)')
+            raw_pattern = r'(\s|_|\-|\.|\+)' + query + r'(\s|_|\-|\.|\+)'
+        if not query:
+            raw_pattern = '.'
+        elif ' ' not in query:
+            raw_pattern = r'(\b|[\.\+\-_])' + query + r'(\b|[\.\+\-_])'
+        else:
+            raw_pattern = query.replace(' ', r'.*[\s\.\+\-_]')
+    
+        try:
+            regex = re.compile(raw_pattern, flags=re.IGNORECASE)
+        except:
+            return []
+        filter = {'file_name': regex}
+        total = await Media.count_documents(filter)
+        files = Media.find(filter)
+        return total, files
 
 
 class FiltersDb(BaseFiltersDb):
