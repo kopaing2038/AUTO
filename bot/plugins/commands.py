@@ -979,8 +979,6 @@ async def chat_listv2(bot, query):
         
         await query.message.edit_text(f"Chat Id list:\n\n{chat_id_text}", reply_markup=types.InlineKeyboardMarkup(btn))
 
-
-
 @Bot.on_callback_query(filters.regex(r'^delete_chat_id'))
 async def delete_chat_id(bot, query):
     if query.data.startswith("delete_chat_id"):
