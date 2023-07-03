@@ -952,7 +952,7 @@ async def deletefilev2(bot, query):
         ]
     ]
     
-    await msg.edit(f'Choose the file type you want to delete:\n\n{chat_id_text}', reply_markup=types.InlineKeyboardMarkup(btn))
+    await msg.edit(f'Choose the file type you want to delete', reply_markup=types.InlineKeyboardMarkup(btn))
 
 @Bot.on_callback_query(filters.regex(r'^chat_listv2'))
 async def chat_listv2(bot, query):
