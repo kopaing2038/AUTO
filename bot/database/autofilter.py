@@ -144,6 +144,15 @@ class BaseFiltersDb(MongoDb):
         result = await self.col.delete_many({"chat_id": chat_id})
         return result
 
+    async def delete_files(self, query: str):
+        regex = re.compile(query, re.IGNORECASE)
+        deleted_count = 0
+        async for file in self.col.find({"file_name": regex}):
+            await self.col.delete_one({"_id": file["_id"]})
+            deleted_count += 1
+        return deleted_count
+
+
 class FiltersDb(BaseFiltersDb):
     def __init__(self):
         super().__init__(Config.COLLECTION_NAME)
