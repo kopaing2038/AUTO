@@ -926,7 +926,9 @@ async def deletefilev2(bot, query):
     mkv = await filters_db.count_documents({'mime_type': 'video/x-matroska'})
     jpg = await filters_db.count_documents({'mime_type': 'image/jpg'})
     mp4 = await filters_db.count_documents({'mime_type': 'video/mp4'})
-    
+    chat = await filters_db.count_documents(await filters_db.get_distinct_chat_ids())
+
+
     chat_id_list = await filters_db.get_distinct_chat_ids()
     
     chat_id_text = "\n".join([f"chat_id {cid}" for cid in chat_id_list])
@@ -943,7 +945,8 @@ async def deletefilev2(bot, query):
             types.InlineKeyboardButton(f"MP4 ({mp4})", callback_data="mp4_deletev2")
         ],
         [
-            types.InlineKeyboardButton(f"JPG ({jpg})", callback_data="jpg_deletev2"),           
+            types.InlineKeyboardButton(f"JPG ({jpg})", callback_data="jpg_deletev2"), 
+            types.InlineKeyboardButton(f"Channel ({chat})", callback_data="chat_deletev2"),                     
             types.InlineKeyboardButton("CLOSE", callback_data="close_datav2")
         ]
     ]
