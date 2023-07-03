@@ -1134,7 +1134,7 @@ async def delete_file(bot, message):
     else:
         btn = [
             [
-                types.InlineKeyboardButton("YES", callback_data=f"deletefiledelete_{query}")
+                types.InlineKeyboardButton("YES", callback_data=f"deleteV3_{query}")
             ],
             [
                 types.InlineKeyboardButton("CLOSE", callback_data="close_data")
@@ -1143,8 +1143,8 @@ async def delete_file(bot, message):
         await msg.edit(f"Total {total} files found in your query {query}.\n\nDo you want to delete?", reply_markup=types.InlineKeyboardMarkup(btn))
 
 
-@Bot.on_callback_query(filters.regex(r'^deletefiledelete'))
-async def delete_filedelete(bot, query):
+@Bot.on_callback_query(filters.regex(r'^deleteV3'))
+async def deleteV3(bot, query):
     deleted = 0
     if query.data == "deletefiledelete":
         _, query_ = query.data.split("_")
