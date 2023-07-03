@@ -913,7 +913,6 @@ async def mp4_delete(bot, query):
 async def close_data_deletev1(bot, query):
     await query.message.delete()
 
-
 @Bot.on_callback_query(filters.regex(r'^deletev2'))
 async def deletefilev2(bot, query):
     msg = await query.message.edit_text('Fetching...')
@@ -926,8 +925,6 @@ async def deletefilev2(bot, query):
     mkv = await filters_db.count_documents({'mime_type': 'video/x-matroska'})
     jpg = await filters_db.count_documents({'mime_type': 'image/jpg'})
     mp4 = await filters_db.count_documents({'mime_type': 'video/mp4'})
-    
-
 
     chat_id_list = await filters_db.get_distinct_chat_ids()
     chat = len(chat_id_list)
@@ -954,7 +951,6 @@ async def deletefilev2(bot, query):
     
     await msg.edit(f'Choose the file type you want to delete', reply_markup=types.InlineKeyboardMarkup(btn))
 
-  # Global variable to store the counter
 
 @Bot.on_callback_query(filters.regex(r'^chatlistv2'))
 async def chat_listv2(bot, query):
@@ -986,15 +982,16 @@ async def chat_listv2(bot, query):
 async def delete_chat_id(bot, query):
     if query.data.startswith("delete_chat_id"):
         channel_id = query.data.split()[1]
-        await query.message.edit_text(" {channel_id} Deleting...")
+        await query.message.edit_text(f"Deleting chat_id {channel_id}...")
         
         filters_db = b_filter
-        result = await filters_db.col.delete_many({'chat_id': channel_id})
+        result = await filters_db.delete_one(channel_id)
 
         if result.deleted_count:
-            await query.message.edit_text(f"Successfully deleted chat_id {channel_id} files")
+            await query.message.edit_text(f"Successfully deleted files for chat_id {channel_id}")
         else:
             await query.message.edit_text(f"No files found for chat_id {channel_id} to delete")
+
 
 
 
