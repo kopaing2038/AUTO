@@ -1149,16 +1149,11 @@ async def deleteindex(bot, message):
             "chat_id": chat_id,
         }
     )
-    if file_id and file_ref and file_id == "chat_id":
-        result = await b_filter.col.delete_one(
-            {
-                "file_ref": file_ref,
-            }
-        )
     if result.deleted_count:
         await message.reply_text("File is successfully deleted from the database.")
     else:
         await message.reply_text("File not found in the database.")
+
 
 @Bot.on_callback_query(filters.regex(r'^autofilter_delete1'))
 async def adelete_all_index_confirm(bot, message):
