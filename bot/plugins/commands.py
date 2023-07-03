@@ -1120,7 +1120,44 @@ async def close_data_deletev2(bot, query):
     await query.message.delete()
 
 
+@Bot.on_message(filters.command('delete_file') & filters.user(Config.ADMINS))
+async def delete_file(bot, message):
+    try:
+        query = message.text.split(" ", 1)[1]
+    except IndexError:
+        return await message.reply_text("Command Incomplete!")
 
+    msg = await message.reply_text('Searching...')
+    total, files = await b_filter.delete_files(query)
+
+    if int(total) == 0:
+        await message.reply_text('No files found in your query')
+    else:
+        btn = [
+            [
+                types.InlineKeyboardButton("YES", callback_data=f"deleteV3_{query}")
+            ],
+            [
+                types.InlineKeyboardButton("CLOSE", callback_data="close_data")
+            ]
+        ]
+        await msg.edit(f"Total {total} files found in your query {query}.\n\nDo you want to delete?", reply_markup=types.InlineKeyboardMarkup(btn))
+
+
+@Bot.on_callback_query(filters.regex(r'^deleteV3_'))
+async def deleteV3(bot, query):
+    deleted = 0
+    query_ = query.data.split("_", 1)[1]
+
+    await query.message.edit_text('Deleting...')
+    total, files = await b_filter.delete_files(query_)
+
+    for file in files:
+        await b_filter.col.delete_one({'_id': file})
+        deleted += 1
+
+    await query.message.edit_text(f'Deleted {deleted} files in your database for the query "{query_}"')
+	
 
 @Bot.on_message(filters.command('deleteall') & filters.user(Config.ADMINS))
 async def delete_all_index(bot, message):
