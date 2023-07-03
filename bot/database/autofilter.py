@@ -162,7 +162,7 @@ class BaseFiltersDb(MongoDb):
         except:
             return []
         filter = {'file_name': regex}
-        total = await Media.count_documents(filter)
+        total = await BaseFiltersDb.count_documents(filter)
         files = Media.find(filter)
         return total, files
 
