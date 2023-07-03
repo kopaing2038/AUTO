@@ -957,10 +957,10 @@ async def deletefilev2(bot, query):
 @Bot.on_callback_query(filters.regex(r'^chatlistv2'))
 async def chat_listv2(bot, query):
     if query.data == "chatlistv2":
-        await query.message.edit_text("list...")
+        K = bot.get("chatlist_counter", 1)
+        await query.message.edit_text("Fetching chat IDs...")
         
-
-        filters_db = b_filter 
+        filters_db = b_filter
         chat_id_list = await filters_db.get_distinct_chat_ids()
     
         btn = [
@@ -970,9 +970,12 @@ async def chat_listv2(bot, query):
 
         btn.append([types.InlineKeyboardButton("CLOSE", callback_data="close_chatlistv2")])
         
-        chat_id_text = "\n".join([f"chat_id {cid}" for cid in chat_id_list])
+        chat_id_text = "\n".join([f"{K}. chat_id {cid}" for K, cid in enumerate(chat_id_list, start=K)])
+        
+        bot["chatlist_counter"] = K + len(chat_id_list)  # Update the counter
         
         await query.message.edit_text(f"Chat Id list:\n\n{chat_id_text}", reply_markup=types.InlineKeyboardMarkup(btn))
+
 
 
 
