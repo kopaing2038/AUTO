@@ -144,7 +144,7 @@ class BaseFiltersDb(MongoDb):
         result = await self.col.delete_many({"chat_id": chat_id})
         return result
 
-    async def delete_files(query, filter=True):
+    async def delete_files(self, query, filter=True):
         query = query.strip()
         # for better results
         if filter:
@@ -162,8 +162,8 @@ class BaseFiltersDb(MongoDb):
         except:
             return []
         file_filter = {'file_name': regex}  # Renamed 'filter' variable to 'file_filter' to avoid confusion with built-in 'filter' function
-        total = await BaseFiltersDb.count_documents(file_filter)  # Use 'BaseFiltersDb' instead of 'FiltersDb2'
-        files = await BaseFiltersDb.col.find(file_filter).to_list(None)
+        total = await self.count_documents(file_filter)  # Use 'self' to access the instance variable
+        files = await self.col.find(file_filter).to_list(None)
         return total, files
 
 
