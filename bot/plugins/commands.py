@@ -943,6 +943,8 @@ async def deletefilev2(bot, query):
     chat_id_list = await filters_db.get_distinct_chat_ids()
     chat = len(chat_id_list)
 
+    cht = await filters_db.count_documents({'chat_id': chat_id})
+
     chat_id_text = "\n".join([f"chat_id {cid}" for cid in chat_id_list])
     
     btn = [
@@ -958,7 +960,7 @@ async def deletefilev2(bot, query):
         ],
         [
             types.InlineKeyboardButton(f"JPG ({jpg})", callback_data="jpg_deletev2"), 
-            types.InlineKeyboardButton(f"Channel ({chat})", callback_data="chatlistv2"),                     
+            types.InlineKeyboardButton(f"Channel ({chat}) ({cht})", callback_data="chatlistv2"),                     
             types.InlineKeyboardButton("CLOSE", callback_data="close_datav2")
         ]
     ]
