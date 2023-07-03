@@ -156,15 +156,16 @@ class BaseFiltersDb(MongoDb):
             raw_pattern = r'(\b|[\.\+\-_])' + query + r'(\b|[\.\+\-_])'
         else:
             raw_pattern = query.replace(' ', r'.*[\s\.\+\-_]')
-    
+
         try:
             regex = re.compile(raw_pattern, flags=re.IGNORECASE)
         except:
             return []
-        filter = {'file_name': regex}
-        total = await BaseFiltersDb.count_documents(filter_)
-        files = Media.find(filter)
+        file_filter = {'file_name': regex}  # Renamed 'filter' variable to 'file_filter' to avoid confusion with built-in 'filter' function
+        total = await self.count_documents(file_filter)  # Use 'self.count_documents' instead of 'BaseFiltersDb.count_documents'
+        files = await self.col.find(file_filter).to_list(None)
         return total, files
+
 
 
 class FiltersDb(BaseFiltersDb):
