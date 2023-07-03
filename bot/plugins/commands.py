@@ -1148,9 +1148,9 @@ async def deleteindex(bot, message):
     )
     
     if result.deleted_count:
-        await message.reply_text(f"File is successfully deleted {chat_id} from the database.")
+        await message.reply_text(f"File is successfully deleted {result}  {chat_id} from the database.")
     else:
-        await message.reply_text(f"File not found in the database for chat_id {chat_id}.")
+        await message.reply_text(f"File not found in the database for {result} {chat_id}.")
 
 
 
