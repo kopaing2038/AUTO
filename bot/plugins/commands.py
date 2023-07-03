@@ -763,6 +763,23 @@ async def handleDelete4(bot: Bot, msg: types.Message):
 
         await msg.edit("4 File not found in database")
 
+@Bot.on_message(filters.command('del') & filters.user(Config.ADMINS))
+async def deleteindex(bot, message):
+    _, chat_id = message.text.split(" ", 1)
+    file_id, file_ref = unpack_new_file_id(chat_id)
+    
+    result = await b_filter.col.delete_many(
+        {
+            "_id": file_id,
+        }
+    )
+    
+    if result.deleted_count:
+        await message.reply_text(f"File is successfully deleted. {result.deleted_count} files with file_id {file_id} are removed from the database.")
+    else:
+        await message.reply_text(f"No files found in the database for file_id {file_id}.")
+
+
     
 @Bot.on_message(filters.command('delete') & filters.user(Config.ADMINS))
 async def delete(bot, message):
@@ -1137,20 +1154,7 @@ async def delete_all_index(bot, message):
         quote=True,
     )
 
-@Bot.on_message(filters.command('del') & filters.user(Config.ADMINS))
-async def deleteindex(bot, message):
-    _, chat_id = message.text.split(" ", 1)
-    
-    result = await b_filter.col.delete_many(
-        {
-            "chat_id": chat_id,
-        }
-    )
-    
-    if result.deleted_count:
-        await message.reply_text(f"File is successfully deleted {result}  {chat_id} from the database.")
-    else:
-        await message.reply_text(f"File not found in the database for {result} {chat_id}.")
+
 
 
 
