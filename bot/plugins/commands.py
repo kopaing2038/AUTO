@@ -964,6 +964,9 @@ async def chat_listv2(bot, query):
         
         filters_db = b_filter
         chat_id_list = await filters_db.get_distinct_chat_ids()
+
+        # Convert Int64 values to regular integers
+        chat_id_list = [int(cid) for cid in chat_id_list]
     
         btn = [
             [types.InlineKeyboardButton(f"{cid}", callback_data=f"delete_chat_id {cid}")]
@@ -972,11 +975,12 @@ async def chat_listv2(bot, query):
 
         btn.append([types.InlineKeyboardButton("CLOSE", callback_data="close_chatlistv2")])
         
-        chat_id_text = "\n".join([f"{K}. {cid}" for K, cid in chat_id_list])
+        chat_id_text = "\n".join([f"{K}. {cid}" for K, cid in enumerate(chat_id_list, start=K)])
         
         K += len(chat_id_list)  
         
         await query.message.edit_text(f"Chat Id list:\n\n{chat_id_text}", reply_markup=types.InlineKeyboardMarkup(btn))
+
 
 @Bot.on_callback_query(filters.regex(r'^delete_chat_id'))
 async def delete_chat_id(bot, query):
