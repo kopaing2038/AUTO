@@ -926,7 +926,12 @@ async def deletefilev2(bot, query):
     mkv = await filters_db.count_documents({'mime_type': 'video/x-matroska'})
     jpg = await filters_db.count_documents({'mime_type': 'image/jpg'})
     mp4 = await filters_db.count_documents({'mime_type': 'video/mp4'})
-    chat = await filters_db.count_documents({'chat_id': ''})
+    
+    chat_id_list = [
+        filters_db('chat_id')
+    ]
+    
+    chat_id_text = "\n".join([f"chat_id {cid}" for cid in chat_id_list])
     
     btn = [
         [
@@ -940,14 +945,12 @@ async def deletefilev2(bot, query):
             types.InlineKeyboardButton(f"MP4 ({mp4})", callback_data="mp4_deletev2")
         ],
         [
-            types.InlineKeyboardButton(f"JPG ({jpg})", callback_data="jpg_deletev2"),
-            types.InlineKeyboardButton(f"Chat ({chat})", callback_data="chat_deletev2"),
+            types.InlineKeyboardButton(f"JPG ({jpg})", callback_data="jpg_deletev2"),           
             types.InlineKeyboardButton("CLOSE", callback_data="close_datav2")
         ]
     ]
     
-    await msg.edit('Choose the file type you want to delete:', reply_markup=types.InlineKeyboardMarkup(btn))
-
+    await msg.edit(f'Choose the file type you want to delete:\n\n{chat_id_text}', reply_markup=types.InlineKeyboardMarkup(btn))
 
 @Bot.on_callback_query(filters.regex(r'^chat_deletev2'))
 async def chat_deletev2(bot, query):
@@ -1148,48 +1151,4 @@ async def adelete_all_4index_confirm(bot, message):
     await message.answer('4 Piracy Is Crime')
     await message.message.edit('4 Succesfully Deleted All The Indexed Files.') 
 
-@Bot.on_message(filters.command('set_template'))
-async def save_template(bot, message):
-    sts = await message.reply("Checking template")
-    user_id = message.from_user.id if message.from_user else None
-    if not user_id:
-        return await message.reply(f"You are an anonymous admin. Use /connect {message.chat.id} in PM")
-
-    chat_type = message.chat.type
-    group_id = None
-    title = None
-
-    if chat_type == enums.ChatType.PRIVATE:
-        group_id = await active_connection(str(user_id))
-        if group_id is not None:
-            try:
-                chat = await bot.get_chat(group_id)
-                title = chat.title
-            except:
-                await sts.edit("Make sure I'm present in your group!!")
-                return
-        else:
-            await sts.edit("I'm not connected to any groups!")
-            return
-
-    elif chat_type in [enums.ChatType.GROUP, enums.ChatType.SUPERGROUP]:
-        group_id = message.chat.id
-        title = message.chat.title
-
-    if not group_id:
-        return
-
-    user_status = await bot.get_chat_member(group_id, user_id)
-    if (
-            user_status.status not in [enums.ChatMemberStatus.ADMINISTRATOR, enums.ChatMemberStatus.OWNER]
-            and str(user_id) not in Config.ADMINS
-    ):
-        return
-
-    if len(message.command) < 2:
-        return await sts.edit("No input provided!")
-
-    template = message.text.split(" ", 1)[1]
-    await save_group_settings(group_id, 'Config.TEMPLATE', template)
-    await sts.edit(f"Successfully changed the template for {title} to:\n\n{template}")
 
