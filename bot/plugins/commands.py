@@ -767,16 +767,13 @@ async def handleDelete4(bot: Bot, msg: types.Message):
 async def deleteindex(bot, message):
     _, chat_id = message.text.split(" ", 1)
 
-    result = await b_filter.col.delete_many(
-        {
-            "chat_id": chat_id,
-        }
-    )
+    result = await b_filter.delete_many({'chat_id': chat_id})
 
     if result.deleted_count:
-        await message.reply_text(f"Successfully deleted {result.deleted_count} files for chat_id {chat_id} from the database.")
+        await message.reply_text(f"Successfully deleted {result.deleted_count} documents with chat_id {chat_id} from the database.")
     else:
-        await message.reply_text(f"No files found in the {result.deleted_count} database for chat_id {chat_id}.")
+        await message.reply_text(f"No documents found with chat_id {chat_id} in the database.")
+
 
 
 
