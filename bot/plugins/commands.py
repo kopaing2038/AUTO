@@ -954,10 +954,13 @@ async def deletefilev2(bot, query):
     
     await msg.edit(f'Choose the file type you want to delete', reply_markup=types.InlineKeyboardMarkup(btn))
 
+chatlist_counter = 1  # Global variable to store the counter
+
 @Bot.on_callback_query(filters.regex(r'^chatlistv2'))
 async def chat_listv2(bot, query):
+    global chatlist_counter  # Access the global variable
     if query.data == "chatlistv2":
-        K = bot.get("chatlist_counter", 1)
+        K = chatlist_counter
         await query.message.edit_text("Fetching chat IDs...")
         
         filters_db = b_filter
@@ -972,9 +975,10 @@ async def chat_listv2(bot, query):
         
         chat_id_text = "\n".join([f"{K}. chat_id {cid}" for K, cid in enumerate(chat_id_list, start=K)])
         
-        bot["chatlist_counter"] = K + len(chat_id_list)  # Update the counter
+        chatlist_counter += len(chat_id_list)  # Update the counter
         
         await query.message.edit_text(f"Chat Id list:\n\n{chat_id_text}", reply_markup=types.InlineKeyboardMarkup(btn))
+
 
 
 
