@@ -35,8 +35,8 @@ async def start_handler(bot: Bot, msg: types.Message):
     if len(msg.command) > 1:
         _, cmd = msg.command
         if cmd.startswith("filter"):
-            if not await check_fsub(bot, msg, cmd):
-                return
+            #if not await check_fsub(bot, msg, cmd):
+               # return
             key = cmd.replace("filter", "").strip()
             keyword = Cache.BUTTONS.get(key)
             filter_data = Cache.SEARCH_DATA.get(key)
