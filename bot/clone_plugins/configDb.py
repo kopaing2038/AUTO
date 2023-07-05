@@ -12,7 +12,7 @@ PHOTO_FILTER = True
 class ConfigDB(MongoDb):
     def __init__(self):
         super().__init__()
-        self.col = self.get_collection("configs")
+        self.col = self.get_collection("cloneconfigs")
 
     def new_config(self, key: str, value: str):
         return dict(key=key, value=value)
