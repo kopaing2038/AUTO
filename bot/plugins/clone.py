@@ -84,18 +84,14 @@ async def ononv_clone(client, message):
         msg = await message.reply_text(f"Cloning your bot with token: {bot_token}")
 
         try:
-            # Initialize the new client with the provided bot_token
-            cloned_client = Client(
-                session_name=f"{user_id}_cloned_bot",
-                api_id=Config.API_ID,
-                api_hash=Config.API_HASH,
+            ai = Client(
+                f"{bot_token}", Config.API_ID, Config.API_HASH,
                 bot_token=bot_token,
-                plugins={"root": "bot"}
+                plugins={"root": "bot/clone_plugins"},
             )
-            await cloned_client.start()
-            bot = await cloned_client.get_me()
+            await ai.start()
+            bot = await ai.get_me()
 
-            # Save the details of the cloned bot into the MongoDB database
             details = {
                 'bot_id': bot.id,
                 'is_bot': True,
