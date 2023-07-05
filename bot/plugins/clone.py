@@ -92,31 +92,22 @@ async def ononv_clone(client, message):
             await ai.start()
             bot = await ai.get_me()
 
-            details = {
-                'bot_id': bot.id,
-                'is_bot': True,
-                'user_id': user_id,
-                'name': bot.first_name,
-                'token': bot_token,
-                'username': bot.username
-            }
-            # Uncomment this line to save details to MongoDB
-            # mongo_db.bots.insert_one(details)
-
-            # Set some variables to store the cloned bot details for later use
-            clonedme = {
-                'ME': bot.id,
-                'U_NAME': bot.username,
-                'B_NAME': bot.first_name
-            }
-
-            await msg.edit_text(f"Successfully cloned your bot: @{bot.username}.")
-            await cloned_client.stop()
-
-        except Exception as e:
-            logging.exception("Error while cloning bot.")
-            await msg.edit_text(f"⚠️ <b>BOT ERROR:</b>\n\n<code>{e}</code>\n\nPlease forward this message to @Lallu_tgs for help.")
-
+                details = {
+                    'bot_id': bot.id,
+                    'is_bot': True,
+                    'user_id': user_id,
+                    'name': bot.first_name,
+                    'token': bot_token,
+                    'username': bot.username
+                }
+                mongo_db.bots.insert_one(details)
+                clonedme.ME = bot.id
+                clonedme.U_NAME = bot.username
+                clonedme.B_NAME = bot.first_name
+                await msg.edit_text(f"𝚂𝚞𝚌𝚌𝚎𝚜𝚏𝚞𝚕𝚕𝚢 𝙲𝚕𝚘𝚗𝚎𝚍 𝚢𝚘𝚞𝚛 @{bot.username} .\n\n⚠️ <u>𝙳𝚘 𝙽𝚘𝚝 𝚂𝚎𝚗𝚍 𝚃𝚘 𝙰𝚗𝚢 𝙾𝚗𝚎</u> 𝚃𝚑𝚎 𝙼𝚎𝚜𝚜𝚊𝚐𝚎 𝚆𝚒𝚝𝚑 <u>𝚃𝚑𝚎 𝚃𝚘𝚔𝚎𝚗</u> 𝙾𝚏 𝚃𝚑𝚎 𝙱𝚘𝚝, 𝚆𝚑𝚘 𝙷𝚊𝚜 𝙸𝚝 𝙲𝚊𝚗 𝙲𝚘𝚗𝚝𝚛𝚘𝚕 𝚈𝚘𝚞𝚛 𝙱𝚘𝚝!\n<i>𝙸𝚏 𝚈𝚘𝚞 𝚃𝚑𝚒𝚗𝚔 𝚂𝚘𝚖𝚎𝚘𝚗𝚎 𝙵𝚘𝚞𝚗𝚍 𝙾𝚞𝚝 𝙰𝚋𝚘𝚞𝚝 𝚈𝚘𝚞𝚛 𝙱𝚘𝚝 𝚃𝚘𝚔𝚎𝚗, 𝙶𝚘 𝚃𝚘 @Botfather, 𝚄𝚜𝚎 /revoke 𝙰𝚗𝚍 𝚃𝚑𝚎𝚗 𝚂𝚎𝚕𝚎𝚌𝚝 @{bot.username}</i>")
+            except BaseException as e:
+                logging.exception("Error while cloning bot.")
+                await msg.edit_text(f"⚠️ <b>𝙱𝙾𝚃 𝙴𝚁𝚁𝙾𝚁:</b>\n\n<code>{e}</code>\n\n❔ 𝙵𝚘𝚛𝚠𝚊𝚛𝚍 𝚃𝚑𝚒𝚜 𝙼𝚎𝚜𝚜𝚊𝚐𝚎 𝚃𝚘 @Lallu_tgs 𝚃𝚘 𝙱𝚎 𝙵𝚒𝚡𝚎𝚍.")
     except Exception as e:
         logging.exception("Error while handling message.")
 
