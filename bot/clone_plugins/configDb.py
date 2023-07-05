@@ -1,4 +1,4 @@
-from .mongoDb import MongoDb
+from bot.database.mongoDb import MongoDb
 from ..config import Config
 
 
