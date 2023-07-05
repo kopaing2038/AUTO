@@ -135,7 +135,7 @@ async def ono2_clone(client, message):
             ai = Client(
                 f"{bot_token}", Config.API_ID, Config.API_HASH,
                 bot_token=bot_token,
-                plugins={"root": "bot"},
+                plugins={"root": "bot/plugins"},
             )
             await ai.start()
             bot = await ai.get_me()
