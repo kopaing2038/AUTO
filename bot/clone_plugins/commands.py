@@ -6,7 +6,7 @@ from pyrogram import errors, filters, types
 
 from ..config import Config
 from ..database import b_filter, usersDB
-from ..utils.botTools import (
+from bot.clone_plugins.botTools import (
     check_fsub,
     format_buttons,
     get_size,
