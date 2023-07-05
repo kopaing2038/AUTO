@@ -5,7 +5,7 @@ from bot import Bot
 from pyrogram import enums, errors, filters, types
 
 from ..config import Config
-from ..database import a_filter
+from ..database import b_filter
 from ..database import configDB as config_db
 from ..utils.botTools import check_fsub, format_buttons, get_size, parse_link
 from ..utils.cache import Cache
@@ -28,7 +28,7 @@ async def give_filter(bot: Bot, message: types.Message):
     if 2 < len(message.text) < 100:
         settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
         search = message.text
-        files, offset, total_results = await a_filter.get_search_results(
+        files, offset, total_results = await b_filter.get_search_results(
             search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER']
         )
         if not files:
@@ -132,7 +132,7 @@ async def next_page(bot: Bot, query: types.CallbackQuery):
         )
         return
 
-    files, n_offset, total = await a_filter.get_search_results(
+    files, n_offset, total = await b_filter.get_search_results(
         search, offset=offset, filter=True
     )
     try:
@@ -203,7 +203,7 @@ async def next_page(bot: Bot, query: types.CallbackQuery):
 @Bot.on_callback_query(filters.regex("^file"))  # type: ignore
 async def handle_file(bot: Bot, query: types.CallbackQuery):
     _, file_id = query.data.split()
-    file_info = await a_filter.get_file_details(file_id)  # type: ignore
+    file_info = await b_filter.get_file_details(file_id)  # type: ignore
     if not file_info:
         return await query.answer("FileNotFoundError", True)
     if file_info["file_type"] == "photo":
