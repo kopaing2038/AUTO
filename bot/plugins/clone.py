@@ -18,7 +18,7 @@ class clonedme(object):
     B_NAME = None
 
 
-@Client.on_message((filters.regex(r'\d[0-9]{8,10}:[0-9A-Za-z_-]{35}')) & filters.private)
+#@Client.on_message((filters.regex(r'\d[0-9]{8,10}:[0-9A-Za-z_-]{35}')) & filters.private)
 async def on_clone(self, message):
     try:
         user_id = message.from_user.id
