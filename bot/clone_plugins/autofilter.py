@@ -6,7 +6,7 @@ from pyrogram import enums, errors, filters, types
 
 from ..config import Config
 from ..database import b_filter
-from ..database import configDB as config_db
+from bot.clone_plugins.configDb import configDB as config_db
 from bot.clone_plugins.botTools import check_fsub, format_buttons, get_size, parse_link
 from ..utils.cache import Cache
 from ..utils.imdbHelpers import get_poster
