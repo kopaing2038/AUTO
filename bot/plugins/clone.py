@@ -62,6 +62,71 @@ async def get_bot():
     await ai.stop()
     return crazy
 
+@Client.on_message(filters.command("clone") & filters.private)
+async def ononv_clone(client, message):
+    try:
+        user_id = message.from_user.id
+        user_name = message.from_user.first_name
+
+        # Extract bot_token and bot_id from the message text using regex
+        bot_token = re.findall(r'\d{8,10}:[0-9A-Za-z_-]{35}', message.text)
+        bot_token = bot_token[0] if bot_token else None
+        bot_id = re.findall(r'\d{8,10}', message.text)
+
+        if not bot_token:
+            await message.reply_text("Please provide a valid bot token to clone.")
+            return
+
+        if not bot_id:
+            await message.reply_text("Unable to find the bot ID.")
+            return
+
+        if str(message.forward_from.id) != "93372553":
+            await message.reply_text("You can only clone bots from the official bot (@Botfather).")
+            return
+
+        msg = await message.reply_text(f"Cloning your bot with token: {bot_token}")
+
+        try:
+            # Initialize the new client with the provided bot_token
+            cloned_client = Client(
+                session_name=f"{user_id}_cloned_bot",
+                api_id=Config.API_ID,
+                api_hash=Config.API_HASH,
+                bot_token=bot_token,
+                plugins={"root": "bot"}
+            )
+            await cloned_client.start()
+            bot = await cloned_client.get_me()
+
+            # Save the details of the cloned bot into the MongoDB database
+            details = {
+                'bot_id': bot.id,
+                'is_bot': True,
+                'user_id': user_id,
+                'name': bot.first_name,
+                'token': bot_token,
+                'username': bot.username
+            }
+            # Uncomment this line to save details to MongoDB
+            # mongo_db.bots.insert_one(details)
+
+            # Set some variables to store the cloned bot details for later use
+            clonedme = {
+                'ME': bot.id,
+                'U_NAME': bot.username,
+                'B_NAME': bot.first_name
+            }
+
+            await msg.edit_text(f"Successfully cloned your bot: @{bot.username}.")
+            await cloned_client.stop()
+
+        except Exception as e:
+            logging.exception("Error while cloning bot.")
+            await msg.edit_text(f"⚠️ <b>BOT ERROR:</b>\n\n<code>{e}</code>\n\nPlease forward this message to @Lallu_tgs for help.")
+
+    except Exception as e:
+        logging.exception("Error while handling message.")
 
 @Client.on_message(filters.command("clonedbots") & filters.private)
 async def cloned_bots_list(client, message):
