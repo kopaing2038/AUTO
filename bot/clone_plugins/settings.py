@@ -2,7 +2,7 @@ from bot import Bot
 from ..config import Config
 from pyrogram import enums, errors, filters, types
 
-from ..database import configDB as config_db
+from bot.clone_plugins.configDb import configDB as config_db
 from ..utils.botTools import CONFIGURABLE, get_bool, get_buttons
 
 
