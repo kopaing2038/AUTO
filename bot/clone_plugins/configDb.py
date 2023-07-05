@@ -2,6 +2,13 @@ from .mongoDb import MongoDb
 from ..config import Config
 
 
+IMDB = True
+IMDB_POSTER = True
+CHANNEL = True
+PM_IMDB = True
+PM_IMDB_POSTER = True
+PHOTO_FILTER = True
+
 class ConfigDB(MongoDb):
     def __init__(self):
         super().__init__()
@@ -21,13 +28,13 @@ class ConfigDB(MongoDb):
             return config["value"]
         if key.startswith("SETTINGS_"):
             return {
-                "IMDB": Config.IMDB,
-                "IMDB_POSTER": Config.IMDB_POSTER,
-                "CHANNEL": Config.CHANNEL,
-                "PM_IMDB": Config.PM_IMDB,
-                "PM_IMDB_POSTER": Config.PM_IMDB_POSTER,
+                "IMDB": IMDB,
+                "IMDB_POSTER": IMDB_POSTER,
+                "CHANNEL": CHANNEL,
+                "PM_IMDB": PM_IMDB,
+                "PM_IMDB_POSTER": PM_IMDB_POSTER,
                 "DOWNLOAD_BUTTON": True,
-                "PHOTO_FILTER": Config.PHOTO_FILTER
+                "PHOTO_FILTER": PHOTO_FILTER
             }
         return {}
 
