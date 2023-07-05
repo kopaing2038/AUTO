@@ -5,7 +5,7 @@ from bot import Bot
 from pyrogram import errors, filters, types
 
 from ..config import Config
-from ..database import a_filter, usersDB
+from ..database import b_filter, usersDB
 from ..utils.botTools import (
     check_fsub,
     format_buttons,
@@ -177,8 +177,8 @@ async def help_handler(bot: Bot, msg: types.Message):
 
 @Bot.on_message(filters.command("stats"))  # type: ignore
 async def get_stats(_, msg: types.Message):
-    count = await a_filter.col.count_documents({})  # type: ignore
-    size = (await a_filter.db.command("dbstats"))["dataSize"]  # type: ignore
+    count = await b_filter.col.count_documents({})  # type: ignore
+    size = (await b_filter.db.command("dbstats"))["dataSize"]  # type: ignore
     users = await usersDB.total_users_count()
     free = 536870912 - size
     await msg.reply(
@@ -211,13 +211,13 @@ async def handleDelete(bot: Bot, msg: types.Message):
 
     file_id, file_ref = unpack_new_file_id(media.file_id)
 
-    result = await a_filter.col.delete_one(
+    result = await b_filter.col.delete_one(
         {
             "_id": file_id,
         }
     )  # type: ignore
     if file_type == "photo":
-        result = await a_filter.col.delete_one(
+        result = await b_filter.col.delete_one(
             {
                 "file_ref": media.file_id,
             }
@@ -227,7 +227,7 @@ async def handleDelete(bot: Bot, msg: types.Message):
     else:
         if file_type != "photo":
             file_name = re.sub(r"(_|\-|\.|\+)", " ", str(media.file_name))
-            result = await a_filter.col.delete_many(
+            result = await b_filter.col.delete_many(
                 {
                     "file_name": file_name,
                     "file_size": media.file_size,
