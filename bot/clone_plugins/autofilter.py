@@ -210,10 +210,10 @@ async def handle_file(bot: Bot, query: types.CallbackQuery):
         file_id = file_info["file_ref"]
     query.message.from_user = query.from_user
     isMsg = query.message.chat.type == enums.ChatType.PRIVATE
-    if not await check_fsub(bot, query.message, sendMsg=isMsg):
-        if not isMsg:
-            return await query.answer(url=f"https://t.me/{bot.me.username}?start=fsub")
-        return await query.answer("Please Join My Update Channel and click again")
+    #if not await check_fsub(bot, query.message, sendMsg=isMsg):
+        #if not isMsg:
+            #return await query.answer(url=f"https://t.me/{bot.me.username}?start=fsub")
+        #return await query.answer("Please Join My Update Channel and click again")
     try:
         await bot.send_cached_media(
             query.from_user.id,
