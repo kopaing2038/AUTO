@@ -3,7 +3,7 @@ from ..config import Config
 from pyrogram import enums, errors, filters, types
 
 from bot.clone_plugins.configDb import configDB as config_db
-from ..utils.botTools import CONFIGURABLE, get_bool, get_buttons
+from bot.clone_plugins.botTools import CONFIGURABLE, get_bool, get_buttons
 
 
 @Bot.on_message(filters.command("settings"))  # type: ignore
