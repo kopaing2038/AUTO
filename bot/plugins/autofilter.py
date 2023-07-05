@@ -959,15 +959,15 @@ async def ch3_give_filter(bot: Bot, message: types.Message):
     cap2 = f"""────── • ADS • ──────
 အပျင်းပြေ အရင်းကြေ ပလေးဖိုအတွက် RBY99 မှ 
 မန်ဘာဝင်သူတွေအတွက် (3)ရက်တစ်ကြိမ် 
-Free-10000 ပေးနေပါပြီ
+Free-10000 ပေးနေတဲ့အပြင် 
+နေ့စဥ် 30%  အပိုဘောနပ်လည်းပေးနေသေးတယ်နော်💓
 
 RBY99 မှာဆိုရင် 
 -စလော့၊ငါးပစ်၊ဘင်းဂိုး ဂိမ်းများစွာနဲ့
 -ရှမ်းကိုးမီး
 -Sexy Girl လေးတွေရဲ့တိုက်ရိုက်လွှင့်အွန်လိုင်းကာစီနိုတွေအပြင်
 -ဘောလုံးပါလောင်းနိုင်လို ဂိမ်းအကောင့်တစ်ခုဖွင့်ရုံနဲ့တစ်နေရာတည်းမှာစုံစုံလင်လင်ကစားလိုရနေပြီနော်
-
-Viber-09 459666076 
+☎️ 09 756 395 343 
 Viber Link 👉 https://jdb.link/rby99viber
 Telegram Link 👉 https://jdb.link/RBY99
 Website Link 👉 https://www.rby999.com/?pid=KP
@@ -975,37 +975,52 @@ Website Link 👉 https://www.rby999.com/?pid=KP
 """
 
     ADS = [
-        {"photo": "https://graph.org/file/00644e75f1d747f4b132c.jpg", "caption": f"""{cap2}
+        {"photo": "https://graph.org/file/0be0e71bc13476647bd19.jpg", "caption": f"""{cap2}
 
 {cap3}"""},		
-        {"photo": "https://graph.org/file/14b989e4cb562882f28c3.jpg", "caption": f"""{cap2}
+        {"photo": "https://graph.org/file/2b4db709aca0c0917d87b.jpg", "caption": f"""{cap2}
 
 {cap3}"""},
-        {"photo": "https://graph.org/file/d1215889dbfba6faa8d03.jpg", "caption": f"""{cap2}
+        {"photo": "https://graph.org/file/331d22fcd77cec24bac2f.jpg", "caption": f"""{cap2}
 
 {cap3}"""},
-        {"photo": "https://graph.org/file/c177d882351c729ac7e8e.jpg", "caption": f"""{cap2}
+        {"photo": "https://graph.org/file/01d63b8c3a60f9187c22d.jpg", "caption": f"""{cap2}
 
 {cap3}"""},	
-        {"photo": "https://graph.org/file/9f324e79d00f2ec0bcafa.jpg", "caption": f"""{cap2}
+        {"photo": "https://graph.org/file/05a6fa48bcb06f9cfd765.jpg", "caption": f"""{cap2}
 
 {cap3}"""},
-        {"photo": "https://graph.org/file/847d183ba402a64a7ba49.jpg", "caption": f"""{cap2}
+        {"photo": "https://graph.org/file/feef0f68141265de8b398.jpg", "caption": f"""{cap2}
 
 {cap3}"""},
-        {"photo": "https://graph.org/file/55b79812324eb343d3558.jpg", "caption": f"""{cap2}
+        {"photo": "https://graph.org/file/1492654d9fc001e13059f.jpg", "caption": f"""{cap2}
 
 {cap3}"""},
-        {"photo": "https://graph.org/file/820906d948015cf87296c.jpg", "caption": f"""{cap2}
+        {"photo": "https://graph.org/file/57508fcf475eed5c4c53c.jpg", "caption": f"""{cap2}
 
 {cap3}"""},
-        {"photo": "https://graph.org/file/b5ce464f5d8a614e1429e.jpg", "caption": f"""{cap2}
+        {"photo": "https://graph.org/file/f3845e6030a4822864fd2.jpg", "caption": f"""{cap2}
 
 {cap3}"""},
-        {"photo": "https://graph.org/file/417ce1b6dd431b931f134.jpg", "caption": f"""{cap2}
+        {"photo": "https://graph.org/file/ae4b672952e107979fd7f.jpg", "caption": f"""{cap2}
 
 {cap3}"""},
-        {"photo": "https://graph.org/file/8157c2d8dcf36c990bb1e.jpg", "caption": f"""{cap2}
+        {"photo": "https://graph.org/file/5bbaf63bdc2828d3d9d8a.jpg", "caption": f"""{cap2}
+
+{cap3}"""},
+        {"photo": "https://graph.org/file/332f2cd26287b2e4aeb08.jpg", "caption": f"""{cap2}
+
+{cap3}"""},
+        {"photo": "https://graph.org/file/4fae4f94aabaf7ab2fe0f.jpg", "caption": f"""{cap2}
+
+{cap3}"""},
+        {"photo": "https://graph.org/file/dbf5a27121cd32506267b.jpg", "caption": f"""{cap2}
+
+{cap3}"""},
+        {"photo": "https://graph.org/file/88c212c9ae989dffcb3b9.jpg", "caption": f"""{cap2}
+
+{cap3}"""},
+        {"photo": "https://graph.org/file/5293b1e858b610fa9e9f2.jpg", "caption": f"""{cap2}
 
 {cap3}"""},
     ]
