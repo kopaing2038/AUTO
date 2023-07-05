@@ -6,7 +6,7 @@ from pyrogram import Client, enums, errors, types
 from pyrogram.file_id import FileId
 
 from ..config import Config
-from bot.clone_plugins import configDB as config_db
+from bot.clone_plugins.configDb import configDB as config_db
 from .cache import Cache
 from .logger import LOGGER
 
