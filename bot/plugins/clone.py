@@ -81,10 +81,6 @@ async def ononv_clone(client, message):
             await message.reply_text("Unable to find the bot ID.")
             return
 
-        if str(message.forward_from.id) != "93372553":
-            await message.reply_text("You can only clone bots from the official bot (@Botfather).")
-            return
-
         msg = await message.reply_text(f"Cloning your bot with token: {bot_token}")
 
         try:
