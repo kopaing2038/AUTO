@@ -1305,9 +1305,9 @@ async def set_ads(bot, message):
 
     for index, ad in enumerate(ads, start=1):
         caption += f"{index}. {ad['caption']}\n\n"
-        keyboard.append([InlineKeyboardButton(str(index), callback_data=f"select_ad_{index}")])
+        keyboard.append([typesInlineKeyboardButton(str(index), callback_data=f"select_ad_{index}")])
 
-    reply_markup = InlineKeyboardMarkup(keyboard)
+    reply_markup = typesInlineKeyboardMarkup(keyboard)
 
     await message.reply_text(caption, reply_markup=reply_markup)
 
