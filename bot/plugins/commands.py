@@ -1284,14 +1284,13 @@ async def set_database_command(client, message):
 
 @Bot.on_message(filters.command('set_cap2') & filters.user(Config.ADMINS))
 async def set_cap2_command(client, message):
-    if len(message.command) < 2:
+    caption = message.text.split('/set_cap2', 1)[1].strip()
+
+    if not caption:
         await message.reply_text("Please provide a caption to set for CAP2.")
         return
-    
-    caption = message.text.split('\n')
 
     Config.CAP2 = caption
     await message.reply_text("CAP2 updated successfully.")
-
 
 
