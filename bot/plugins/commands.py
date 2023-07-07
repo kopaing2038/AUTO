@@ -1228,12 +1228,14 @@ async def adelete_all_4index_confirm(bot, message):
 
 @Bot.on_message(filters.command('set_pics') & filters.user(Config.ADMINS))
 async def set_pics_command(client, message):
+    if len(message.command) < 2:
+        await message.reply_text("Please provide a URL to add.")
+        return
+    
     pic_urls = []
     for arg in message.command[1:]:
         if isinstance(arg, str):
             pic_urls.append(arg)
-        elif arg.photo:
-            pic_urls.append(arg.photo[-1].file_id)
     
-    Config.PICS = pic_urls
-    await message.reply("PICS updated successfully.")
+    Config.PICS += pic_urls
+    await message.reply_text("URLs added successfully.")
