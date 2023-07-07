@@ -6,18 +6,17 @@ class ConfigDB(MongoDb):
     def __init__(self):
         super().__init__()
         self.col = self.get_collection("configs")
-        self.grp = self.get_collection("groups")  # Add a collection for group settings
 
     def new_config(self, key: str, value: str):
         return dict(key=key, value=value)
 
     async def update_config(self, key, value):
-        return await self.col.update_one({"key": key}, {"$set": {"value": value}}, upsert=True)
+        return await self.col.update_one({"key": key}, {"$set": {"value": value}}, upsert=True)  # type: ignore
 
-    async def get_settings(self, key, chat_id):
+    async def get_settings(self, key):
         if key.startswith("SETTINGS_") and not key.startswith("SETTINGS_-100"):
             key = "SETTINGS_PM"
-        config = await self.col.find_one({"key": key})
+        config = await self.col.find_one({"key": key})  # type: ignore
         if config:
             return config["value"]
         if key.startswith("SETTINGS_"):
@@ -46,13 +45,12 @@ class ConfigDB(MongoDb):
                 "TEMPLATE": Config.TEMPLATE,
                 "CAP2": Config.CAP2,
             }
-        chat = await self.grp.find_one({'id': chat_id})
+        chat = await self.grp.find_one({'id':int(id)})
         if chat:
-            return chat.get('settings', {})
+            return chat.get('SETTINGS_', default)
         return {}
 
-    async def update_settings(self, chat_id, settings):
-        await self.grp.update_one({'id': chat_id}, {'$set': {'settings': settings}})
-
+    async def update_settings(self, id, settings):
+        await self.grp.update_one({'id': int(id)}, {'$set': {'settings': settings}})
 
 configDB = ConfigDB()
