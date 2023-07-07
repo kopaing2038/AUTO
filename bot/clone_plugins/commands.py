@@ -282,3 +282,18 @@ async def set_database_command(client, message):
 
     # Reply to the user with a success message
     await message.reply("Database URI has been updated successfully!")
+
+@bot.on_message(filters.command('set_dbname') & filters.user(Config.ADMINS))
+async def set_dbname_command(client, message):
+    # Get the input argument from the command
+    if len(message.command) > 1:
+        new_dbname = message.command[1]
+
+        # Update the SESSION_NAME variable
+        Config.SESSION_NAME2 = new_dbname
+
+        # Reply to the user with the updated SESSION_NAME
+        await message.reply(f"SESSION_NAME has been set to: {new_dbname}")
+    else:
+        # If no argument is provided, reply with an error message
+        await message.reply("Please provide a new SESSION_NAME.")
