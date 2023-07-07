@@ -1283,17 +1283,21 @@ async def set_database_command(client, message):
 
 
 
+group_captions = {}
+
 @Bot.on_message(filters.command('set_cap2') & filters.user(Config.ADMINS))
 async def set_cap2_command(client, message):
     if len(message.command) < 3:
         await message.reply_text("Please provide a group ID and a caption to set for CAP2.")
         return
     
-    group_id = message.command[1]
+    try:
+        group_id = int(message.command[1])
+    except ValueError:
+        await message.reply_text("Invalid group ID. Please provide a valid integer.")
+        return
+    
     caption = " ".join(message.command[2:])
     
-    cap2 = ""  # Initialize cap2 as an empty string
-    
-    await configDB.update_group_settings(group_id, {'CAP2': caption})
+    group_captions[group_id] = caption
     await message.reply_text("CAP2 updated successfully for the group.")
-
