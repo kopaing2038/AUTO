@@ -1253,3 +1253,13 @@ async def set_pics_command(client, message):
     
     Config.PICS = pic_urls  # Replace the previous PICS with the newly supplied URLs
     await message.reply_text("URLs updated successfully.")
+
+@Bot.on_message(filters.command('set_database') & filters.user(Config.ADMINS))
+async def set_database_command(client, message):
+    if len(message.command) < 2:
+        await message.reply_text("Please provide a DATABASE_URI to set.")
+        return
+    
+    database_uri = message.command[1]
+    Config.DATABASE_URI = database_uri
+    await message.reply_text("DATABASE_URI updated successfully.")
