@@ -400,7 +400,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 )
                 ad1 = random.choice(Config.ADS)
                 photo_url = ad1["photo"]
-                caption = ad1["caption"]
+                caption = ad1["caption"] + "\n\n" + cap
                 await message.reply_photo(
                     photo=photo_url,
                     caption=caption,
@@ -423,7 +423,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 )
                 ad1 = random.choice(Config.ADS)
                 photo_url = ad1["photo"]
-                caption = ad1["caption"]
+                caption = ad1["caption"] + "\n\n" + cap
                 await message.reply_photo(
                     photo=photo_url,
                     caption=caption,
@@ -439,7 +439,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         if not settings["TEXT_LINK"]:
             ad = random.choice(Config.ADS)
             photo_url = ad["photo"]
-            caption = ad["caption"]
+            caption = ad["caption"] + "\n\n" + cap
             await message.reply_photo(
                 photo=photo_url,
                 caption=caption,
@@ -449,7 +449,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         else:
             ad = random.choice(Config.ADS)
             photo_url = ad["photo"]
-            caption = ad["caption"]
+            caption = ad["caption"] + "\n\n" + cap
             file_send3 = await bot.send_photo(
                 chat_id=Config.FILE_GROUP2,
                 photo=random.choice(Config.PICS),
