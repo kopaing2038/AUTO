@@ -1320,9 +1320,9 @@ async def set_ads(bot, message):
     ad_list = []
     for ad in ads:
         try:
-            photo, caption = ad.split(",", 1)
-            ad_list.append({"photo": photo.strip(), "caption": caption.strip()})
-        except ValueError:
+            ad_dict = eval(ad)
+            ad_list.append(ad_dict)
+        except Exception:
             pass
 
     if ad_list:
@@ -1330,6 +1330,7 @@ async def set_ads(bot, message):
         await message.reply("ADS have been updated successfully!")
     else:
         await message.reply("Invalid ADS format. Please provide the ADS in the correct format.")
+
 
 
 
