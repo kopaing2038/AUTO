@@ -1283,30 +1283,16 @@ async def set_database_command(client, message):
 
 
 
-@Bot.on_message(filters.command('set_cap2') & filters.user(Config.ADMINS))    
+@Bot.on_message(filters.command('set_cap2') & filters.user(Config.ADMINS))
 async def set_cap2_command(client, message):
-    if len(message.command) < 2:
-        await message.reply_text("Please provide a caption to set for CAP2.")
+    if len(message.command) < 3:
+        await message.reply_text("Please provide a group ID and a caption to set for CAP2.")
         return
-    
-    caption = " ".join(message.command[1:])
-    group_id = message.chat.id
-    
-    await configDB.update_settings(group_id, {"CAP2": caption})  # Store the CAP2 caption in the database
-    
+
+    group_id = int(message.command[1])
+    caption = " ".join(message.command[2:])
+
+    settings = await configDB.get_settings('SETTINGS_', group_id)
+    settings['CAP2'] = caption
+    await configDB.update_settings(group_id, settings)
     await message.reply_text("CAP2 updated successfully.")
-
-
-@Bot.on_message(filters.group & filters.text)
-async def apply_cap2_caption(client, message):
-    group_id = message.chat.id
-    
-    # Retrieve the CAP2 caption for the group from the database
-    group_settings = await configDB.get_settings(group_id)
-    cap2 = group_settings.get("CAP2", Config.CAP2)  # Use the group-specific CAP2 caption if available, otherwise use the default
-    
-    if cap2 is not None:
-        # Apply the CAP2 caption to the message
-        # You can modify this based on how you want to apply the caption
-        await message.reply_text(cap2)
-
