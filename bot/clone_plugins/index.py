@@ -8,7 +8,7 @@ from pyrogram.errors import (ChannelInvalid, UsernameInvalid,
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 from ..config import Config
-from bot.clone_plugins.database import a_filter
+from bot.clone_plugins.database.autofilter import a_filter
 from ..utils.cache import Cache
 from ..utils.logger import LOGGER
 
