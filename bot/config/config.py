@@ -180,6 +180,8 @@ REQUEST BY : {user_link}
     V_FILTER5 = False
     CH_POST = False
     TEXT_LINK = False
+    
+    GROUP_CAPTIONS = {} 
 
     USE_CAPTION_FILTER = get_config("USE_CAPTION_FILTER", True, True)  # type: ignore
     FILE_CHANNEL = int(get_config("FILE_CHANNEL" , "-1001615715585"))
