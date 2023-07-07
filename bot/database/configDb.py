@@ -44,6 +44,7 @@ class ConfigDB(MongoDb):
                 "TEXT_LINK": Config.TEXT_LINK,
                 "IMDB_TEMPLATES": Config.IMDB_TEMPLATES,
                 "TEMPLATE": Config.TEMPLATE,
+                "CAP2": Config.CAP2,
             }
         chat = await self.grp.find_one({'id':int(id)})
         if chat:
