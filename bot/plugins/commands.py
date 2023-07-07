@@ -1,6 +1,7 @@
 import math
 import re
 import random
+import json
 from bot import Bot
 import pyrogram
 from pyrogram.errors.exceptions.bad_request_400 import MessageIdInvalid
@@ -1293,23 +1294,16 @@ async def set_cap2_command(client, message):
     Config.CAP2 = caption
     await message.reply_text("CAP2 updated successfully.")
 
-
 @Bot.on_message(filters.command('set_ads') & filters.user(Config.ADMINS))
-async def set_ads(_, message):
-    # Get the list of ads from the message
-    ads_list = message.text.split('\n\n')
+async def set_ads_command(_, message):
+    if len(message.command) < 2:
+        await message.reply("Please provide the ADS as a JSON array.")
+        return
 
-    # Update the ADS configuration
-    Config.ADS = []
+    try:
+        ads = json.loads(" ".join(message.command[1:]))
+        Config.ADS = ads
+        await message.reply("ADS successfully updated.")
+    except json.JSONDecodeError:
+        await message.reply("Invalid JSON format. Please provide the ADS as a valid JSON array.")
 
-    for ad in ads_list:
-        # Split each ad into photo and caption
-        ad_parts = ad.strip().split('\n')
-        photo = ad_parts[0]
-        caption = '\n'.join(ad_parts[1:])
-
-        # Add the ad to the ADS configuration
-        Config.ADS.append({"photo": photo, "caption": caption})
-
-    # Reply with a confirmation message
-    await message.reply_text("ADS have been updated successfully!")
