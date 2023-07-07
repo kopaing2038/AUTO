@@ -1282,31 +1282,19 @@ async def set_database_command(client, message):
     await message.reply("Database URI has been updated successfully!")
 
 
-
-group_captions = {}
-
 @Bot.on_message(filters.command('set_cap2') & filters.user(Config.ADMINS))
-async def set_cap2_command(client, message):
-    if len(message.command) < 3:
-        await message.reply_text("Please provide a group ID and a caption to set for CAP2.")
-        return
-    
-    try:
-        group_id = int(message.command[1])
-    except ValueError:
-        await message.reply_text("Invalid group ID. Please provide a valid integer.")
-        return
-    
-    caption = " ".join(message.command[2:])
-    
-    group_captions[group_id] = caption
-    await message.reply_text("CAP2 updated successfully for the group.")
+async def set_cap2_command(message: types.Message):
+    # Check if the message is from a group
+    if message.chat.type == types.ChatType.GROUP or message.chat.type == types.ChatType.SUPERGROUP:
+        group_id = message.chat.id
+        # Get the text after the command
+        cap2 = message.get_args()
+        if cap2:
+            # Save the CAP2 caption for the group in the database or any storage mechanism of your choice
+            await configDB.update_group_settings(group_id, {"CAP2": cap2})
+            await message.reply("CAP2 caption has been set for this group.")
+        else:
+            await message.reply("Please provide a CAP2 caption after the command.")
+    else:
+        await message.reply("This command can only be used in groups.")
 
-@Bot.on_message(filters.group & filters.text)
-async def apply_cap2_caption(client, message):
-    group_id = message.chat.id
-    if group_id in group_captions:
-        caption = group_captions[group_id]
-        # Apply the caption to the message
-        # You can modify this based on how you want to apply the caption
-        await message.reply_text(caption)
