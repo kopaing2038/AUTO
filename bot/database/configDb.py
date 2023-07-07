@@ -50,6 +50,12 @@ class ConfigDB(MongoDb):
             return chat.get('SETTINGS_', default)
         return {}
 
+    async def get_group_settings(self, group_id):
+        group = await self.grp.find_one({'id': int(group_id)})
+        if group:
+            return group.get('settings', {})
+        return {}
+
     async def update_settings(self, id, settings):
         await self.grp.update_one({'id': int(id)}, {'$set': {'settings': settings}})
 
