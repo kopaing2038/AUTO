@@ -366,7 +366,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
        # k += 1
 
 
-    cap2 = Config.CAP2 or ""
+    cap2 = Config.CAP2 
 
 
     cap2 += f"""\n\n🔮𝙌𝙪𝙚𝙧𝙮 : {search} 
