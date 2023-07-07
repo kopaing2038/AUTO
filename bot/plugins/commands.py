@@ -1296,8 +1296,8 @@ async def set_cap2_command(client, message):
 
 
 
-@Bot.on_message(filters.command('set_ads') & filters.user(Config.ADMINS))
-async def set_ads(bot, message):
+#@Bot.on_message(filters.command('set_ads') & filters.user(Config.ADMINS))
+async def set_33ads(bot, message):
     ads = Config.ADS
     if len(message.text.split()) > 1:
         ad_index = int(message.text.split()[1]) - 1
@@ -1311,3 +1311,16 @@ async def set_ads(bot, message):
         ad_list += f"\n{i}. {ad['caption']}"
     response = f"Please select an ad from the list:\n{ad_list}"
     await bot.send_message(chat_id=message.chat.id, text=response)
+
+@Bot.on_message(filters.command('set_ads') & filters.user(Config.ADMINS))
+async def set_ads(bot, message):
+    ads = message.command[1:]  # Get the list of ads from the command arguments
+    
+    Config.ADS = []  # Clear the existing ads
+    
+    for ad in ads:
+        photo_url, caption = ad
+        Config.ADS.append({"photo": photo_url, "caption": caption})
+    
+    await message.reply_text("Ads have been updated successfully.")
+
