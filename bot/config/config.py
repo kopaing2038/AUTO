@@ -118,6 +118,19 @@ class Config:
 
     LONG_IMDB_DESCRIPTION = get_config("LONG_IMDB_DESCRIPTION", False, True)  # type: ignore
     MAX_LIST_ELM = int(get_config("MAX_LIST_ELM", 5))  # type: ignore
+    
+    CAP2 = get_config(f"""────── • ADS • ──────
+
+<font size="2">ဂိမ်းကစားမယ်ဆို FHM95 ကိုသတိရလိုက်ပါ...
+
+မန်ဘာအကောင့်ဖွင့်တာနဲ့ 👉  ဖရီး 3,000 
+ပထမအကြိမ်ငွေဖြည့်တာနဲ့ 👉  ဖရီး 15,000  ရယူနိုင်ပါတယ် 
+
+စလော့ ငါးပစ် ရှမ်းကိုးမီး ခြောက်ကောင်ဂျင် ဂိမ်းတွေ ရှယ်ကစားလိုရတယ်နော် ဒါ့အပြင် တိုက်ရိုက်ဒိုင်အချောတွေနဲ့ကစားလိုရမည့် Live Casino ဂိမ်းလဲရှိပါသေးတယ် 
+
+ဂိမ်း Download လုပ်ရန်နှင့် 🅵🅷🅼95 ကိုဆက်သွယ်ရန် 🔥 https://fhm95.net/online-fhm/ 🔥 နှိပ်လိုက်ပါ
+────── • ◆ • ──────""")
+
 
     CUSTOM_FILE_CAPTION2 = get_config(
         "CUSTOM_FILE_CAPTION",
