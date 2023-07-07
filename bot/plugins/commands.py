@@ -1295,7 +1295,7 @@ async def set_cap2_command(client, message):
 
 
 @Bot.on_message(filters.command('set_ads') & filters.user(Config.ADMINS))
-async def set_ads(bot: Bot, message: Message):
+async def set_ads(bot, message):
     ads_text = message.text.split('\n')[1:]  # Exclude the command from the message text
     ads = []
 
