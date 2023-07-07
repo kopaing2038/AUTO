@@ -4,6 +4,7 @@ import random
 import json
 from bot import Bot
 import pyrogram
+from typing import List
 from pyrogram.errors.exceptions.bad_request_400 import MessageIdInvalid
 from pyrogram import errors, filters, types
 import re, asyncio, time, shutil, psutil, os, sys
