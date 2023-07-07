@@ -369,7 +369,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
     cap2 = Config.CAP2 
 
 
-    cap2 += f"""\n\n🔮𝙌𝙪𝙚𝙧𝙮 : {search} 
+    cap3 = f"""\n\n🔮𝙌𝙪𝙚𝙧𝙮 : {search} 
 📥𝙏𝙤𝙩𝙖𝙡 : {total_results} 
 🙋🏻‍♂️𝙍𝙚𝙦𝙪𝙚𝙨𝙩 : {message.from_user.mention} 
     
@@ -377,23 +377,23 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
 
     ADS = [
         {"photo": "https://graph.org/file/57c7be369ccd72eff94ee.jpg", "caption": f"""
-{cap2}"""},
+{cap2}{cap3}"""},
         {"photo": "https://graph.org/file/7fb891f2249f1400c1fee.jpg", "caption": f"""
-{cap2}"""},
+{cap2}{cap3}"""},
         {"photo": "https://graph.org/file/708102b70a54d649676d6.jpg", "caption": f"""
-{cap2}"""},
+{cap2}{cap3}"""},
         {"photo": "https://graph.org/file/fbd0926e14e45ea736e03.jpg", "caption": f"""
-{cap2}"""},	
+{cap2}{cap3}"""},	
         {"photo": "https://graph.org/file/e205ea937a0dcdf23c4b1.jpg", "caption": f"""
-{cap2}"""},
+{cap2}{cap3}"""},
         {"photo": "https://graph.org/file/5930490dce2720cea4387.jpg", "caption": f"""
-{cap2}"""},
+{cap2}{cap3}"""},
         {"photo": "https://graph.org/file/302dda114e732957e109b.jpg", "caption": f"""
-{cap2}"""},
+{cap2}{cap3}"""},
         {"photo": "https://graph.org/file/77075138db8fa65b0c4e4.jpg", "caption": f"""
-{cap2}"""},
+{cap2}{cap3}"""},
         {"photo": "https://graph.org/file/1c4f825c25c71a5a56335.jpg", "caption": f"""
-{cap2}"""},
+{cap2}{cap3}"""},
     ]
     
     btn = btn_a + btn_b + btn_c
