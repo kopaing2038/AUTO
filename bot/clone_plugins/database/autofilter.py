@@ -4,7 +4,7 @@ from pymongo.errors import BulkWriteError, DuplicateKeyError
 
 from bot.config.config import Config
 from bot.clone_plugins.botTools import unpack_new_file_id
-from ..utils.logger import LOGGER
+from bot.utils.logger import LOGGER
 from bot.clone_plugins.database.mongoDb import MongoDb
 
 logger = LOGGER("AUTO_FILTER_DB")
