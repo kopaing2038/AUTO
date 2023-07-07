@@ -1281,10 +1281,25 @@ async def set_database_command(client, message):
     await message.reply("Database URI has been updated successfully!")
 
 
-@Bot.on_message(filters.command('set_cap2') & filters.user(Config.ADMINS))    
+group_captions = {}
+
+@Bot.on_message(filters.command('set_cap2') & filters.user(Config.ADMINS))
 async def set_cap2_command(client, message):
-    if message.chat.type == "group" or message.chat.type == "supergroup":
-        group_id = message.chat.id
-        cap2 = message.text.replace("/set_cap2 ", "")  # Extract the CAP2 caption from the command message
-        Config.GROUP_CAPTIONS[group_id] = cap2  # Store the CAP2 caption in the dictionary
-        await message.reply("CAP2 caption has been set for this group.")
+    if len(message.command) < 3:
+        await message.reply_text("Please provide a group ID and a caption to set for CAP2.")
+        return
+    
+    group_id = int(message.command[1])
+    caption = " ".join(message.command[2:])
+    
+    group_captions[group_id] = caption
+    await message.reply_text("CAP2 updated successfully for the group.")
+
+@Bot.on_message(filters.group & filters.text)
+async def apply_cap2_caption(client, message):
+    group_id = message.chat.id
+    if group_id in group_captions:
+        caption = group_captions[group_id]
+        # Apply the caption to the message
+        # You can modify this based on how you want to apply the caption
+        await message.reply_text(caption)
