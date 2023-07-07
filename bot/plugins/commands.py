@@ -1301,3 +1301,12 @@ async def set_cap2_command(client, message):
     
     group_captions[group_id] = caption
     await message.reply_text("CAP2 updated successfully for the group.")
+
+@Bot.on_message(filters.group & filters.text)
+async def apply_cap2_caption(client, message):
+    group_id = message.chat.id
+    if group_id in group_captions:
+        caption = group_captions[group_id]
+        # Apply the caption to the message
+        # You can modify this based on how you want to apply the caption
+        await message.reply_text(caption)
