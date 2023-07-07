@@ -1332,25 +1332,20 @@ async def set_ads(bot, message):
         await message.reply("Invalid ADS format. Please provide the ADS in the correct format.")
 
 
-@Bot.on_message(filters.command('set_admins') & filters.user(Config.ADMINS))
-async def set_admins_command(client, message):
-    try:
-        admins = message.text.split()[1:]
-        admin_ids = []
-        for admin in admins:
-            admin_id = int(admin)
-            admin_ids.append(admin_id)
-        
-        # Update the ADMINS list in the Config class
-        Config.ADMINS = admin_ids
-        
-        await message.reply("Admins updated successfully.")
+@Bot.on_message(filters.command('set_admins_plus') & filters.user(Config.ADMINS))
+async def set_admins_plus_command(client, message):
+    admins = message.text.split()[1:]  # Get the list of admin IDs from the command message
+    if not admins:
+        await message.reply("Please provide a list of admin IDs.")
+        return
     
-    except ValueError:
-        await message.reply("Invalid admin ID. Please provide valid user IDs.")
-
-    except Exception as e:
-        await message.reply(f"An error occurred: {str(e)}")
+    # Add the admins to the bot
+    for admin_id in admins:
+        admin_id = int(admin_id)
+        if admin_id not in Config.ADMINS:
+            Config.ADMINS.append(admin_id)
+    
+    await message.reply("Admins added successfully.")
 
 
 
