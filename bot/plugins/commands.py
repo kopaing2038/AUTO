@@ -1313,16 +1313,15 @@ async def set_33ads(bot, message):
     response = f"Please select an ad from the list:\n{ad_list}"
     await bot.send_message(chat_id=message.chat.id, text=response)
 
-
 @Bot.on_message(filters.command('set_ads') & filters.user(Config.ADMINS))
 async def set_ads(bot, message):
     ads = message.command[1:]
     ad_list = []
     for ad in ads:
         try:
-            ad_dict = eval(ad)
-            ad_list.append(ad_dict)
-        except Exception:
+            photo, caption = ad.split(" ", 1)
+            ad_list.append({"photo": photo.strip(), "caption": caption.strip()})
+        except ValueError:
             pass
 
     if ad_list:
@@ -1330,6 +1329,7 @@ async def set_ads(bot, message):
         await message.reply("ADS have been updated successfully!")
     else:
         await message.reply("Invalid ADS format. Please provide the ADS in the correct format.")
+
 
 
 
