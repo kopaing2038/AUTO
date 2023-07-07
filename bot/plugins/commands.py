@@ -1294,16 +1294,19 @@ async def set_cap2_command(client, message):
     Config.CAP2 = caption
     await message.reply_text("CAP2 updated successfully.")
 
+
 @Bot.on_message(filters.command('set_ads') & filters.user(Config.ADMINS))
-async def set_ads_command(_, message):
-    if len(message.command) < 2:
-        await message.reply("Please provide the ADS as a JSON array.")
-        return
-
+async def set_ads(client, message):
     try:
-        ads = json.loads(" ".join(message.command[1:]))
-        Config.ADS = ads
-        await message.reply("ADS successfully updated.")
-    except json.JSONDecodeError:
-        await message.reply("Invalid JSON format. Please provide the ADS as a valid JSON array.")
+        ads = message.text.split("/set_ads", maxsplit=1)[1].strip()
+        ads_data = json.loads(ads)
+        Config.ADS = ads_data
 
+        # Save the updated ADS to your configuration file or database
+        # For example, if you're using a JSON file:
+        with open('config.json', 'w') as f:
+            json.dump(ads_data, f, indent=4)
+
+        await message.reply_text("ADS updated successfully!")
+    except Exception as e:
+        await message.reply_text(f"Failed to update ADS. Error: {str(e)}")
