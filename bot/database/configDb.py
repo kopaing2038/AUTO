@@ -56,6 +56,9 @@ class ConfigDB(MongoDb):
             return group.get('settings', {})
         return {}
 
+    async def update_group_settings(self, group_id, settings):
+        await self.grp.update_one({'id': int(group_id)}, {'$set': {'settings': settings}})
+
     async def update_settings(self, id, settings):
         await self.grp.update_one({'id': int(id)}, {'$set': {'settings': settings}})
 
