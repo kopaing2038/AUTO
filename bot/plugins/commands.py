@@ -1254,7 +1254,7 @@ async def set_pics_command(client, message):
     Config.PICS = pic_urls  # Replace the previous PICS with the newly supplied URLs
     await message.reply_text("URLs updated successfully.")
 
-@Bot.on_message(filters.command('set_database') & filters.user(Config.ADMINS))
+#@Bot.on_message(filters.command('set_database') & filters.user(Config.ADMINS))
 async def set_database_command(client, message):
     if len(message.command) < 2:
         await message.reply_text("Please provide a DATABASE_URI to set.")
@@ -1263,3 +1263,19 @@ async def set_database_command(client, message):
     database_uri = message.command[1]
     Config.DATABASE_URI = database_uri
     await message.reply_text("DATABASE_URI updated successfully.")
+
+
+@Bot.on_message(filters.command('set_database') & filters.user(Config.ADMINS))
+async def set_database_command(client, message):
+    # Extract the database URI from the command arguments
+    database_uri = ' '.join(message.command[1:])
+
+    # Update the DATABASE_URI in the Config class
+    Config.DATABASE_URI = database_uri
+
+    # Save the updated value to the .env file
+    with open('.env', 'a') as env_file:
+        env_file.write(f"DATABASE_URL={database_uri}\n")
+
+    # Reply to the user with a success message
+    await message.reply("Database URI has been updated successfully!")
