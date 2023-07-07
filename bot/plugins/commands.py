@@ -1226,4 +1226,8 @@ async def adelete_all_4index_confirm(bot, message):
     await message.answer('4 Piracy Is Crime')
     await message.message.edit('4 Succesfully Deleted All The Indexed Files.') 
 
-
+@Bot.on_message(filters.command('set_pics') & filters.user(Config.ADMINS))
+async def set_pics_command(ctx, *args):
+    pic_urls = ' '.join(args)  # Join the arguments into a single string
+    Config.PICS = pic_urls.split()  # Split the string into a list of URLs
+    await ctx.send("PICS updated successfully.")
