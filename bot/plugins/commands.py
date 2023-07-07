@@ -1289,8 +1289,14 @@ async def set_cap2_command(client, message):
         await message.reply_text("Please provide a group ID and a caption to set for CAP2.")
         return
 
-    group_id = int(message.command[1])
+    group_id_str = message.command[1]
     caption = " ".join(message.command[2:])
+
+    try:
+        group_id = int(group_id_str)
+    except ValueError:
+        await message.reply_text("Invalid group ID. Please provide a valid integer.")
+        return
 
     settings = await configDB.get_settings('SETTINGS_', group_id)
     settings['CAP2'] = caption
