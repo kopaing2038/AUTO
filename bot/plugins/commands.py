@@ -1296,17 +1296,27 @@ async def set_cap2_command(client, message):
 
 
 @Bot.on_message(filters.command('set_ads') & filters.user(Config.ADMINS))
-async def set_ads(client, message):
-    try:
-        ads = message.text.split("/set_ads", maxsplit=1)[1].strip()
-        ads_data = json.loads(ads)
-        Config.ADS = ads_data
+async def set_ads(bot, message: Message):
+    ads = Config.ADS
 
-        # Save the updated ADS to your configuration file or database
-        # For example, if you're using a JSON file:
-        with open('config.json', 'w') as f:
-            json.dump(ads_data, f, indent=4)
+    caption = "Please choose one of the following ADS:\n\n"
 
-        await message.reply_text("ADS updated successfully!")
-    except Exception as e:
-        await message.reply_text(f"Failed to update ADS. Error: {str(e)}")
+    for index, ad in enumerate(ads, start=1):
+        caption += f"{index}. {ad['caption']}\n\n"
+
+    await message.reply_text(caption)
+
+@Bot.on_message(filters.regex(r'^\d+$') & filters.user(Config.ADMINS))
+async def select_ad(bot, message: Message):
+    ad_number = int(message.text)
+    ads = Config.ADS
+
+    if ad_number <= 0 or ad_number > len(ads):
+        await message.reply_text("Invalid selection. Please choose a valid ADS number.")
+        return
+
+    selected_ad = ads[ad_number - 1]
+
+    # You can perform further actions with the selected AD, such as saving it to a database or using it in your bot's logic.
+
+    await message.reply_text(f"You selected ADS {ad_number}.")
