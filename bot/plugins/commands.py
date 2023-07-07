@@ -1283,11 +1283,8 @@ async def set_database_command(client, message):
 
 @Bot.on_message(filters.command('set_cap2') & filters.user(Config.ADMINS))    
 async def set_cap2_command(client, message):
-    if len(message.command) < 2:
-        await message.reply_text("Please provide a caption to set for CAP2.")
-        return
-    
-    caption = " ".join(message.command[1:])
-    
-    Config.CAP2 = caption
-    await message.reply_text("CAP2 updated successfully.")
+    if message.chat.type == "group" or message.chat.type == "supergroup":
+        group_id = message.chat.id
+        cap2 = message.text.replace("/set_cap2 ", "")  # Extract the CAP2 caption from the command message
+        Config.GROUP_CAPTIONS[group_id] = cap2  # Store the CAP2 caption in the dictionary
+        await message.reply("CAP2 caption has been set for this group.")
