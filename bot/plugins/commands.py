@@ -1352,7 +1352,7 @@ async def set_admins_command(client, message):
         await message.reply("No valid admin IDs provided.")
         return
     
-    Config.ADMINS = admins
+    Config.ADMINS += admins
     await message.reply("Admins updated successfully.")
 
 
