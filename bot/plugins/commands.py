@@ -11,7 +11,7 @@ import time
 from bot.database.connections_mdb import active_connection
 #from bot.database.autofilter import delete_files
 from ..config import Config
-from ..database import configDB as config_db
+from ..configDB import configDB
 from ..database import a_filter, usersDB, b_filter, c_filter, d_filter
 from ..utils.botTools import (
     check_fsub,
