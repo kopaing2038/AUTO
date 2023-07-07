@@ -1227,7 +1227,13 @@ async def adelete_all_4index_confirm(bot, message):
     await message.message.edit('4 Succesfully Deleted All The Indexed Files.') 
 
 @Bot.on_message(filters.command('set_pics') & filters.user(Config.ADMINS))
-async def set_pics_command(ctx, *args):
-    pic_urls = ' '.join(args)  # Join the arguments into a single string
-    Config.PICS = pic_urls.split()  # Split the string into a list of URLs
-    await ctx.send("PICS updated successfully.")
+async def set_pics_command(client, message):
+    pic_urls = []
+    for arg in message.command[1:]:
+        if isinstance(arg, str):
+            pic_urls.append(arg)
+        elif arg.photo:
+            pic_urls.append(arg.photo[-1].file_id)
+    
+    Config.PICS = pic_urls
+    await message.reply("PICS updated successfully.")
