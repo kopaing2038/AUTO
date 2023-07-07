@@ -284,7 +284,7 @@ async def set_database_command(client, message):
     # Reply to the user with a success message
     await message.reply("Database URI has been updated successfully!")
 
-@bot.on_message(filters.command('set_dbname') & filters.user(Config.ADMINS))
+@Bot.on_message(filters.command('set_dbname') & filters.user(Config.ADMINS))
 async def set_dbname_command(client, message):
     # Get the input argument from the command
     if len(message.command) > 1:
