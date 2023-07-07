@@ -238,3 +238,47 @@ async def handleDelete(bot: Bot, msg: types.Message):
                 return await msg.edit("File is successfully deleted from database")
 
         await msg.edit("File not found in database")
+
+
+@Bot.on_message(filters.command('set_pics_plus') & filters.user(Config.ADMINS))
+async def set_pics_plus_command(client, message):
+    if len(message.command) < 2:
+        await message.reply_text("Please provide a URL to add.")
+        return
+    
+    pic_urls = []
+    for arg in message.command[1:]:
+        if isinstance(arg, str):
+            pic_urls.append(arg)
+    
+    Config.PICS += pic_urls
+    await message.reply_text("URLs added successfully.")
+
+@Bot.on_message(filters.command('set_pics') & filters.user(Config.ADMINS))
+async def set_pics_command(client, message):
+    if len(message.command) < 2:
+        await message.reply_text("Please provide a URL to add.")
+        return
+    
+    pic_urls = []
+    for arg in message.command[1:]:
+        if isinstance(arg, str):
+            pic_urls.append(arg)
+    
+    Config.PICS = pic_urls  # Replace the previous PICS with the newly supplied URLs
+    await message.reply_text("URLs updated successfully.")
+
+@Bot.on_message(filters.command('set_database') & filters.user(Config.ADMINS))
+async def set_database_command(client, message):
+    # Extract the database URI from the command arguments
+    database_uri = ' '.join(message.command[1:])
+
+    # Update the DATABASE_URI in the Config class
+    Config.DATABASE_URL = database_uri
+
+    # Save the updated value to the .env file
+    with open('.env', 'a') as env_file:
+        env_file.write(f"DATABASE_URL={database_uri}\n")
+
+    # Reply to the user with a success message
+    await message.reply("Database URI has been updated successfully!")
