@@ -1292,5 +1292,8 @@ async def set_cap2_command(client, message):
     group_id = message.command[1]
     caption = " ".join(message.command[2:])
     
+    cap2 = ""  # Initialize cap2 as an empty string
+    
     await configDB.update_group_settings(group_id, {'CAP2': caption})
     await message.reply_text("CAP2 updated successfully for the group.")
+
