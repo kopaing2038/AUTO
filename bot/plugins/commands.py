@@ -1345,7 +1345,7 @@ async def set_admins_plus_command(client, message):
         if admin_id not in Config.ADMINS:
             Config.ADMINS.append(admin_id)
     
-    await message.reply("Admins added successfully.")
+    await message.reply(f"Admins added {admin_id} successfully.")
 
 
 
