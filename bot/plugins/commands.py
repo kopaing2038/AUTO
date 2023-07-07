@@ -1296,7 +1296,7 @@ async def set_cap2_command(client, message):
 
 
 @Bot.on_message(filters.command('set_ads') & filters.user(Config.ADMINS))
-async def set_ads(bot, message: Message):
+async def set_ads(bot, message):
     ads = Config.ADS
 
     caption = "Please choose one of the following ADS:\n\n"
