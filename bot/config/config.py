@@ -132,6 +132,19 @@ class Config:
 ────── • ◆ • ──────""")
 
 
+    ADS: List[dict] = [
+        {"photo": "https://graph.org/file/57c7be369ccd72eff94ee.jpg", "caption": f"""
+────── • ADS • ──────
+"""},
+        {"photo": "https://graph.org/file/7fb891f2249f1400c1fee.jpg", "caption": f""
+FHM95 ကိုသတိရလိုက်ပါ...
+"""},
+        {"photo": "https://graph.org/file/708102b70a54d649676d6.jpg", "caption": f"""
+ဂိမ်းကစားမယ်ဆို 
+"""},
+    ]
+
+
     CUSTOM_FILE_CAPTION2 = get_config(
         "CUSTOM_FILE_CAPTION",
         """{caption}
