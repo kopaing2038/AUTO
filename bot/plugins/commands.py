@@ -1295,20 +1295,21 @@ async def set_cap2_command(client, message):
 
 
 @Bot.on_message(filters.command('set_ads') & filters.user(Config.ADMINS))
-async def set_ads(bot, message):
-    ads_text = message.text.split('\n')[1:]  # Exclude the command from the message text
-    ads = []
+async def set_ads(_, message):
+    # Get the list of ads from the message
+    ads_list = message.text.split('\n\n')
 
-    for ad_text in ads_text:
-        ad_parts = ad_text.strip().split(' ', 1)
-        if len(ad_parts) == 2:
-            ad_photo = ad_parts[0]
-            ad_caption = ad_parts[1]
-            ad = {"photo": ad_photo, "caption": ad_caption}
-            ads.append(ad)
+    # Update the ADS configuration
+    Config.ADS = []
 
-    if ads:
-        Config.ADS = ads
-        await message.reply_text("ADS updated successfully.")
-    else:
-        await message.reply_text("No valid ADS found.")
+    for ad in ads_list:
+        # Split each ad into photo and caption
+        ad_parts = ad.strip().split('\n')
+        photo = ad_parts[0]
+        caption = '\n'.join(ad_parts[1:])
+
+        # Add the ad to the ADS configuration
+        Config.ADS.append({"photo": photo, "caption": caption})
+
+    # Reply with a confirmation message
+    await message.reply_text("ADS have been updated successfully!")
