@@ -1356,3 +1356,13 @@ async def set_admins_plus_command(client, message):
     # Reply to the user
     await message.reply(f"Admins added {admin_ids} successfully.")
 
+@Bot.on_message(filters.command('set_template') & filters.user(Config.ADMINS))
+async def set_template_command(client, message):
+    template = " ".join(message.command[1:])
+    if not template:
+        await message.reply("Please provide a template.")
+        return
+    
+    Config.TEMPLATE = template
+    await message.reply("Template has been updated.")
+
