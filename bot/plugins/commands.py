@@ -1286,11 +1286,17 @@ group_captions = {}
 @Bot.on_message(filters.command('set_cap2') & filters.user(Config.ADMINS))
 async def set_cap2_command(client, message):
     if len(message.command) < 3:
-        await message.reply_text("Please provide a group ID and a caption to set for CAP2.")
+        await message.reply_text("Please provide a valid group ID and a caption to set for CAP2.")
         return
     
-    group_id = int(message.command[1])
+    group_id_str = message.command[1]
     caption = " ".join(message.command[2:])
+    
+    try:
+        group_id = int(group_id_str)
+    except ValueError:
+        await message.reply_text("Invalid group ID. Please provide a valid integer group ID.")
+        return
     
     group_captions[group_id] = caption
     await message.reply_text("CAP2 updated successfully for the group.")
