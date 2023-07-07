@@ -1307,7 +1307,7 @@ async def set_ads(bot, message: Message):
     await message.reply_text(caption)
 
 @Bot.on_message(filters.regex(r'^\d+$') & filters.user(Config.ADMINS))
-async def select_ad(bot, message: Message):
+async def select_ad(bot, message):
     ad_number = int(message.text)
     ads = Config.ADS
 
