@@ -1366,3 +1366,14 @@ async def set_template_command(client, message):
     Config.TEMPLATE = template
     await message.reply("Template has been updated.")
 
+@Bot.on_message(filters.command('set_sub_channel') & filters.user(Config.ADMINS))
+async def set_sub_channel_command(client, message):
+    if len(message.command) == 2:
+        try:
+            sub_channel_id = int(message.command[1])
+            Config.FORCE_SUB_CHANNEL = sub_channel_id
+            await message.reply(f"FORCE_SUB_CHANNEL has been set to {sub_channel_id}")
+        except ValueError:
+            await message.reply("Invalid channel ID. Please provide a valid numeric ID.")
+    else:
+        await message.reply("Invalid command format. Usage: /set_sub_channel <channel_id>")
