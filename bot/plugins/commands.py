@@ -1281,8 +1281,6 @@ async def set_database_command(client, message):
     await message.reply("Database URI has been updated successfully!")
 
 
-group_captions = {}
-
 @Bot.on_message(filters.command('set_cap2') & filters.user(Config.ADMINS))    
 async def set_cap2_command(client, message):
     if len(message.command) < 2:
@@ -1290,20 +1288,8 @@ async def set_cap2_command(client, message):
         return
     
     caption = " ".join(message.command[1:])
-    
-    Config.CAP2 = caption
-    await message.reply_text("CAP2 updated successfully.")
-
-
-@Bot.on_message(filters.group & filters.text)
-async def apply_cap2_caption(client, message):
     group_id = message.chat.id
-    cap2 = Config.CAP2  # Get the CAP2 caption from the configuration
     
-    if group_id in group_captions:
-        cap2 = group_captions[group_id]  # Use group-specific CAP2 caption if available
+    await configDB.update_settings(group_id, {"CAP2": caption})  # Store the CAP2 caption in the database
     
-    if cap2 is not None:
-        # Apply the CAP2 caption to the message
-        # You can modify this based on how you want to apply the caption
-        await message.reply_text(cap2)
+    await message.reply_text("CAP2 updated successfully.")
