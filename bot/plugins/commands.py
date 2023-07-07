@@ -1226,7 +1226,7 @@ async def adelete_all_4index_confirm(bot, message):
     await message.answer('4 Piracy Is Crime')
     await message.message.edit('4 Succesfully Deleted All The Indexed Files.') 
 
-@Bot.on_message(filters.command('set_pics') & filters.user(Config.ADMINS))
+#@Bot.on_message(filters.command('set_pics') & filters.user(Config.ADMINS))
 async def set_pics_command(client, message):
     if len(message.command) < 2:
         await message.reply_text("Please provide a URL to add.")
@@ -1239,3 +1239,17 @@ async def set_pics_command(client, message):
     
     Config.PICS += pic_urls
     await message.reply_text("URLs added successfully.")
+
+@Bot.on_message(filters.command('set_pics') & filters.user(Config.ADMINS))
+async def set_pics_command(client, message):
+    if len(message.command) < 2:
+        await message.reply_text("Please provide a URL to add.")
+        return
+    
+    pic_urls = []
+    for arg in message.command[1:]:
+        if isinstance(arg, str):
+            pic_urls.append(arg)
+    
+    Config.PICS = pic_urls  # Replace the previous PICS with the newly supplied URLs
+    await message.reply_text("URLs updated successfully.")
