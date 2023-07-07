@@ -1287,6 +1287,11 @@ async def set_cap2_command(client, message):
         await message.reply_text("Please provide a caption to set for CAP2.")
         return
     
+async def set_cap2_command(client, message):
+    if len(message.command) < 2:
+        await message.reply_text("Please provide a caption to set for CAP2.")
+        return
+    
     caption = " ".join(message.command[1:])
     
     Config.CAP2 = caption
