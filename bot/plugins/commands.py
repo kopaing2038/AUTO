@@ -1333,4 +1333,3 @@ async def set_ads(bot, message):
 
 
 
-
