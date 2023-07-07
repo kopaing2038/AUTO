@@ -450,7 +450,6 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
             ad = random.choice(Config.ADS)
             photo_url = ad["photo"]
             caption = ad["caption"]
-            caption += "cap"
             file_send3 = await bot.send_photo(
                 chat_id=Config.FILE_GROUP2,
                 photo=random.choice(Config.PICS),
