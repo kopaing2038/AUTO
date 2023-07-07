@@ -262,29 +262,7 @@ async def on_restart_all_bots(client: Client, message: Message):
     await message.reply_text("ᴀʟʟ ʙᴏᴛꜱ ʜᴀᴠᴇ ʙᴇᴇɴ ʀᴇꜱᴛᴀʀᴛᴇᴅ 🔋")  
 
 
-@Client.on_message(filters.command("DATABASE_URI") & filters.private)
-async def set_database_uri(client, message):
-    try:
-        user_id = message.from_user.id
-        if user_id not in Config.ADMINS:
-            await message.reply_text("You are not authorized to use this command.")
-            return
 
-        # Split the message text to get the database URI
-        args = message.text.split(" ", maxsplit=1)
-        if len(args) < 2:
-            await message.reply_text("Please provide a valid database URI.")
-            return
-
-        database_uri = args[1].strip()
-
-        # Update the database URI in the config
-        Config.DATABASE_URI = database_uri  # Use Config.DATABASE_URI to set the attribute directly
-
-        await message.reply_text("Database URI has been updated successfully.")
-    except Exception as e:
-        logging.exception("Error while setting database URI.")
-        await message.reply_text("An error occurred while setting the database URI.")
 
 
 
