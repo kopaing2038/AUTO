@@ -366,7 +366,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
        # k += 1
 
 
-    cap2 = Config.CAP2 
+
 
     caption = ""
     caption += f"""\n\n🔮𝙌𝙪𝙚𝙧𝙮 : {search} 
@@ -375,27 +375,6 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
     
 ⚠️<a href='https://t.me/kopainglay15'>ကြော်ငြာများထည့်သွင်းရန်</a></font>"""
 
-    ADS = [
-        {"photo": "https://graph.org/file/57c7be369ccd72eff94ee.jpg", "caption": f"""
-{cap2}{cap3}"""},
-        {"photo": "https://graph.org/file/7fb891f2249f1400c1fee.jpg", "caption": f"""
-{cap2}{cap3}"""},
-        {"photo": "https://graph.org/file/708102b70a54d649676d6.jpg", "caption": f"""
-{cap2}{cap3}"""},
-        {"photo": "https://graph.org/file/fbd0926e14e45ea736e03.jpg", "caption": f"""
-{cap2}{cap3}"""},	
-        {"photo": "https://graph.org/file/e205ea937a0dcdf23c4b1.jpg", "caption": f"""
-{cap2}{cap3}"""},
-        {"photo": "https://graph.org/file/5930490dce2720cea4387.jpg", "caption": f"""
-{cap2}{cap3}"""},
-        {"photo": "https://graph.org/file/302dda114e732957e109b.jpg", "caption": f"""
-{cap2}{cap3}"""},
-        {"photo": "https://graph.org/file/77075138db8fa65b0c4e4.jpg", "caption": f"""
-{cap2}{cap3}"""},
-        {"photo": "https://graph.org/file/1c4f825c25c71a5a56335.jpg", "caption": f"""
-{cap2}{cap3}"""},
-    ]
-    
     btn = btn_a + btn_b + btn_c
     if imdb and imdb.get("poster") and settings["IMDB_POSTER"]:
         if not settings["TEXT_LINK"]:
