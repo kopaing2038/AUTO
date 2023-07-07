@@ -1282,10 +1282,10 @@ async def set_database_command(client, message):
     await message.reply("Database URI has been updated successfully!")
 
 
-@Bot.on_message(filters.command('set_cap2') & filters.user(Config.ADMINS))
+@Bot.on_message(filters.command('set_cap2') & filters.group & filters.user(Config.ADMINS))
 async def set_cap2_command(client, message):
     # Check if the message is from a group
-    if message.chat.type in ["group", "supergroup"]:
+    if message.chat.type in ("group", "supergroup"):
         group_id = message.chat.id
         # Get the text after the command
         cap2 = message.text.split(maxsplit=1)[1:]
@@ -1297,5 +1297,6 @@ async def set_cap2_command(client, message):
             await message.reply_text("Please provide a CAP2 caption after the command.")
     else:
         await message.reply_text("This command can only be used in groups.")
+
 
 
