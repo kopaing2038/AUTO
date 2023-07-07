@@ -1,7 +1,7 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 from motor.core import AgnosticDatabase, AgnosticCollection
 
-from ..config import Config
+from bot.config.config import Config
 
 
 DATABASE_URL = Config.DATABASE_URL
