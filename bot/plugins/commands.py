@@ -1391,12 +1391,22 @@ async def set_file_caption_command(client, message):
         await message.reply_text("Please provide a new caption for the files.")
 
 
+
+
 @Bot.on_message(filters.command('set_bot_token') & filters.user(Config.ADMINS))
-async def set_bot_token_command(client, message):
-    if len(message.command) < 2:
-        await message.reply("Please provide the BOT_TOKEN.")
-        return
-    
-    new_token = message.command[1]
-    Config.BOT_TOKEN += new_token
-    await message.reply(f"BOT_TOKEN has been set to: {new_token}")
+async def set_bot_token_plus_command(client, message):
+    # Get the token from the message text
+    command = message.text.split()
+    if len(command) == 2:
+        new_token = command[1]
+        
+        # Update the BOT_TOKEN in the Config class
+        Config.BOT_TOKEN = new_token.split()
+        
+        # Save the updated token to the configuration file or database
+        # This step depends on how you store and retrieve your configurations
+        
+        await message.reply(f"Bot token updated successfully to: {new_token} (split)")
+    else:
+        await message.reply("Invalid command format. Please use /set_bot_token_plus <new_token>")
+
