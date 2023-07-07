@@ -1317,15 +1317,19 @@ async def set_33ads(bot, message):
 @Bot.on_message(filters.command('set_ads') & filters.user(Config.ADMINS))
 async def set_ads(bot, message):
     ads = message.command[1:]
-    
-    try:
-        ads = eval(' '.join(ads))
-        if not isinstance(ads, list):
-            raise ValueError
-    except (SyntaxError, ValueError):
-        await message.reply("Invalid format. Please provide the ads in a valid format.")
-        return
-    
-    Config.ADS = ads
-    await message.reply("ADS updated successfully.")
+    ad_list = []
+    for ad in ads:
+        try:
+            photo, caption = ad.split(",", 1)
+            ad_list.append({"photo": photo.strip(), "caption": caption.strip()})
+        except ValueError:
+            pass
+
+    if ad_list:
+        Config.ADS = ad_list
+        await message.reply("ADS have been updated successfully!")
+    else:
+        await message.reply("Invalid ADS format. Please provide the ADS in the correct format.")
+
+
 
