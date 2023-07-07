@@ -6,6 +6,7 @@ class ConfigDB(MongoDb):
     def __init__(self):
         super().__init__()
         self.col = self.get_collection("configs")
+        self.grp = self.get_collection("groups") 
 
     def new_config(self, key: str, value: str):
         return dict(key=key, value=value)
