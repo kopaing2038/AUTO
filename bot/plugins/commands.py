@@ -1377,3 +1377,16 @@ async def set_sub_channel_command(client, message):
             await message.reply("Invalid channel ID. Please provide a valid numeric ID.")
     else:
         await message.reply("Invalid command format. Usage: /set_sub_channel <channel_id>")
+
+
+
+
+@Bot.on_message(filters.command('set_file_caption') & filters.user(Config.ADMINS))
+async def set_file_caption_command(client, message):
+    if len(message.command) > 1:
+        new_caption = " ".join(message.command[1:])
+        Config.CUSTOM_FILE_CAPTION = new_caption
+        await message.reply_text("Custom file caption has been updated.")
+    else:
+        await message.reply_text("Please provide a new caption for the files.")
+
