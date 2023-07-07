@@ -1320,17 +1320,8 @@ async def set_ads(bot, message):
     ad_list = []
     for ad in ads:
         try:
-            ad_parts = re.split(r'\s+', ad.strip(), maxsplit=1)
-            if len(ad_parts) == 2:
-                photo = ad_parts[0]
-                caption = ad_parts[1]
-                if photo.startswith("http"):
-                    ad_list.append({"photo": photo.strip(), "caption": caption.strip()})
-                else:
-                    file_id_match = re.match(r'^\[([^[\]]+)\]$', photo)
-                    if file_id_match:
-                        file_id = file_id_match.group(1)
-                        ad_list.append({"photo": file_id.strip(), "caption": caption.strip()})
+            photo, caption = ad.split(",", 1)
+            ad_list.append({"photo": photo.strip(), "caption": caption.strip()})
         except ValueError:
             pass
 
@@ -1339,6 +1330,7 @@ async def set_ads(bot, message):
         await message.reply("ADS have been updated successfully!")
     else:
         await message.reply("Invalid ADS format. Please provide the ADS in the correct format.")
+
 
 
 
