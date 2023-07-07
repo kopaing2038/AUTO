@@ -179,7 +179,4 @@ class FiltersDb(BaseFiltersDb):
 
 
 a_filter = FiltersDb()
-b_filter = FiltersDb2()
-c_filter = FiltersDb3()
-d_filter = FiltersDb4()
-e_filter = FiltersDb4()
+
