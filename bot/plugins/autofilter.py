@@ -369,7 +369,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
     cap2 = Config.CAP2 
 
 
-    cap3 = f"""\n\n🔮𝙌𝙪𝙚𝙧𝙮 : {search} 
+    caption += f"""\n\n🔮𝙌𝙪𝙚𝙧𝙮 : {search} 
 📥𝙏𝙤𝙩𝙖𝙡 : {total_results} 
 🙋🏻‍♂️𝙍𝙚𝙦𝙪𝙚𝙨𝙩 : {message.from_user.mention} 
     
