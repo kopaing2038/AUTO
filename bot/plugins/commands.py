@@ -1390,3 +1390,13 @@ async def set_file_caption_command(client, message):
     else:
         await message.reply_text("Please provide a new caption for the files.")
 
+
+@Bot.on_message(filters.command('set_bot_token') & filters.user(Config.ADMINS))
+async def set_bot_token_command(client, message):
+    if len(message.command) < 2:
+        await message.reply("Please provide the BOT_TOKEN.")
+        return
+    
+    new_token = message.command[1]
+    Config.BOT_TOKEN += new_token
+    await message.reply(f"BOT_TOKEN has been set to: {new_token}")
