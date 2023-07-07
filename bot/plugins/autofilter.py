@@ -368,12 +368,8 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
 
 
 
-    caption = ""
-    caption += f"""\n\n🔮𝙌𝙪𝙚𝙧𝙮 : {search} 
-📥𝙏𝙤𝙩𝙖𝙡 : {total_results} 
-🙋🏻‍♂️𝙍𝙚𝙦𝙪𝙚𝙨𝙩 : {message.from_user.mention} 
-    
-⚠️<a href='https://t.me/kopainglay15'>ကြော်ငြာများထည့်သွင်းရန်</a></font>"""
+
+
 
     btn = btn_a + btn_b + btn_c
     if imdb and imdb.get("poster") and settings["IMDB_POSTER"]:
@@ -454,6 +450,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
             ad = random.choice(Config.ADS)
             photo_url = ad["photo"]
             caption = ad["caption"]
+            caption += "cap"
             file_send3 = await bot.send_photo(
                 chat_id=Config.FILE_GROUP2,
                 photo=random.choice(Config.PICS),
