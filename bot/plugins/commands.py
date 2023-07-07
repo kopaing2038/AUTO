@@ -1296,27 +1296,33 @@ async def set_cap2_command(client, message):
 
 
 @Bot.on_message(filters.command('set_ads') & filters.user(Config.ADMINS))
-async def set_ads(bot, message):
+async def set_ads(bot, message: Message):
     ads = Config.ADS
 
     caption = "Please choose one of the following ADS:\n\n"
 
+    keyboard = []
+
     for index, ad in enumerate(ads, start=1):
         caption += f"{index}. {ad['caption']}\n\n"
+        keyboard.append([InlineKeyboardButton(str(index), callback_data=f"select_ad_{index}")])
 
-    await message.reply_text(caption)
+    reply_markup = InlineKeyboardMarkup(keyboard)
 
-@Bot.on_message(filters.regex(r'^\d+$') & filters.user(Config.ADMINS))
-async def select_ad(bot, message):
-    ad_number = int(message.text)
+    await message.reply_text(caption, reply_markup=reply_markup)
+
+@Bot.on_callback_query(filters.regex(r'select_ad_(\d+)') & filters.user(Config.ADMINS))
+async def select_ad_callback(bot, callback_query):
+    ad_number = int(callback_query.matches[0].group(1))
     ads = Config.ADS
 
     if ad_number <= 0 or ad_number > len(ads):
-        await message.reply_text("Invalid selection. Please choose a valid ADS number.")
+        await callback_query.answer("Invalid selection. Please choose a valid ADS number.")
         return
 
     selected_ad = ads[ad_number - 1]
 
     # You can perform further actions with the selected AD, such as saving it to a database or using it in your bot's logic.
 
-    await message.reply_text(f"You selected ADS {ad_number}.")
+    await callback_query.answer(f"You selected ADS {ad_number}.")
+    await callback_query.message.reply_text(selected_ad["caption"])
