@@ -2,7 +2,7 @@ import re
 
 from pymongo.errors import BulkWriteError, DuplicateKeyError
 
-from ..config import Config
+from bot.config.config import Config
 from bot.clone_plugins.botTools import unpack_new_file_id
 from ..utils.logger import LOGGER
 from bot.clone_plugins.database.mongoDb import MongoDb
