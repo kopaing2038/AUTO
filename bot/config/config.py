@@ -132,7 +132,7 @@ class Config:
 ────── • ◆ • ──────""")
 
 
-    ADS: List[dict] = [
+    ADS = [
         {"photo": "https://graph.org/file/57c7be369ccd72eff94ee.jpg", "caption": "Caption for AD 1"},
         {"photo": "https://graph.org/file/7fb891f2249f1400c1fee.jpg", "caption": "Caption for AD 2"},
         {"photo": "https://graph.org/file/708102b70a54d649676d6.jpg", "caption": "Caption for AD 3"},
