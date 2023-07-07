@@ -1312,15 +1312,26 @@ async def set_33ads(bot, message):
     response = f"Please select an ad from the list:\n{ad_list}"
     await bot.send_message(chat_id=message.chat.id, text=response)
 
+
+
 @Bot.on_message(filters.command('set_ads') & filters.user(Config.ADMINS))
 async def set_ads(bot, message):
-    ads = message.command[1:]  # Get the list of ads from the command arguments
+    ads_str = " ".join(message.command[1:])  # Get the JSON string of ads
+    
+    try:
+        ads = json.loads(ads_str)  # Parse the JSON string to a list of ads
+    except json.JSONDecodeError:
+        await message.reply_text("Invalid format for ads. Please provide a valid JSON string.")
+        return
     
     Config.ADS = []  # Clear the existing ads
     
     for ad in ads:
-        photo_url, caption = ad
-        Config.ADS.append({"photo": photo_url, "caption": caption})
+        photo_url = ad.get("photo")
+        caption = ad.get("caption")
+        if photo_url and caption:
+            Config.ADS.append({"photo": photo_url, "caption": caption})
     
     await message.reply_text("Ads have been updated successfully.")
+
 
