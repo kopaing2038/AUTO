@@ -79,7 +79,7 @@ async def give_filter(bot: Bot, message: types.Message):
             **locals(),
         )
     else:
-        cap = f"Query: {search}\nTotal Results: {total_results}"
+        cap = f"Query: {search}\nTotal Results: {total_results} \n\n {config.cap2}"
     if imdb and imdb.get("poster") and settings["IMDB_POSTER"]:  # type: ignore
         try:
             await message.reply_photo(
