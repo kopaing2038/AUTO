@@ -201,7 +201,7 @@ REQUEST BY : {user_link}
     FILE_CHANNEL = int(get_config("FILE_CHANNEL" , "-1001615715585"))
     FILE_GROUP = int(get_config("FILE_CHANNEL2" , "-1001975432612"))
     FILE_CHANNEL3 = int(get_config("FILE_CHANNEL3" , "-1001564382219"))
-    
+    MUSIC_CHANNEL = int(get_config("MUSIC_CHANNEL" , "-1001897618013"))  
 
 LOG_STR = "Current Cusomized Configurations are:-\n"
 LOG_STR += (f"Config.TEMPLATE enabled with value {Config.TEMPLATE}, your files will be send along with this customized caption.\n" if Config.TEMPLATE else "No Config.TEMPLATE Found, Default captions of file will be used.\n")
