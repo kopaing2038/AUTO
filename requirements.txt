@@ -10,4 +10,8 @@ bs4
 Ponytile
 speedtest
 speedtest-cli
-urllib
+youtube-search
+youtube_dl
+youtube-search-python
+pytube
+telegraph

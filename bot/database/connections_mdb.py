@@ -1,14 +1,14 @@
 import pymongo
 
-from bot.config import Config
 
+from bot.config.config import Config
 import logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
 
 myclient = pymongo.MongoClient(Config.DATABASE_URI)
 mydb = myclient[Config.SESSION_NAME]
-mycol = mydb['configs']   
+mycol = mydb['CONNECTION']   
 
 
 async def add_connection(group_id, user_id):
@@ -56,7 +56,7 @@ async def active_connection(user_id):
 
     query = mycol.find_one(
         { "_id": user_id },
-        { "_id": 0, "key": 0 }
+        { "_id": 0, "group_details": 0 }
     )
     if not query:
         return None

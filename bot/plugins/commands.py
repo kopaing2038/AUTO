@@ -2,6 +2,7 @@ import math
 import re
 import random
 import json
+import asyncio
 from bot import Bot
 import pyrogram
 from typing import List
@@ -10,11 +11,10 @@ from pyrogram import errors, filters, types
 import re, asyncio, time, shutil, psutil, os, sys
 from pyrogram import errors, filters, types, enums
 import time
-from bot.database.connections_mdb import active_connection
-#from bot.database.autofilter import delete_files
 from ..config import Config
+from ..config import Script
 from bot.database.configDb import configDB
-from ..database import a_filter, usersDB, b_filter, c_filter, d_filter
+from ..database import a_filter, usersDB, b_filter, c_filter
 from ..utils.botTools import (
     check_fsub,
     format_buttons,
@@ -22,8 +22,6 @@ from ..utils.botTools import (
     get_size,
     unpack_new_file_id,
     FORCE_TEXT,
-    save_group_settings,
-    get_settings,
     humanbytes,
 )
 from ..utils.cache import Cache
@@ -235,88 +233,54 @@ async def start_ch2handler(bot: Bot, msg: types.Message):
 
             await msg.reply(FORCE_TEXT, reply_markup=types.InlineKeyboardMarkup(btn))
 
+    m=await msg.reply_sticker("CAACAgIAAxkBAAEEkwJkqPLz8LokQt6Cb_rB31rMcnxHUAAC9wADVp29CgtyJB1I9A0wHgQ")
+    await asyncio.sleep(1)
+    await m.delete()
     await msg.reply_photo(
         photo=random.choice(Config.PICS),
-        caption=START_TEXT.format(mention=msg.from_user.mention),
+        caption=Script.START_TEXT.format(mention=msg.from_user.mention),
         reply_markup=types.InlineKeyboardMarkup(
             [                
                 [
                     types.InlineKeyboardButton(
-                        "♻️ 𝕁𝕆𝕀ℕ 𝕆𝕌ℝ 𝔾ℝ𝕆𝕌ℙ 𝕋𝕆 𝕌𝕊𝔼 𝕄𝔼 ♻️",
-                        url="https://t.me/+X7DNvf9iCy5jOGJl",
+                        '🔮 sᴇʟᴇᴄᴛ ʏᴏuʀ ʟᴀɴɢ 🔮',
+                        callback_data='botlang'
                     )
                 ],
                 [
                     types.InlineKeyboardButton(
-                        "🔖 GROUP 1",
-                        url="https://t.me/+_1Hs8V60HGs1NzA1",
+                        "🇲🇲 MYANMAR 🇲🇲",
+                        callback_data="myanmar",
                     ),
                     types.InlineKeyboardButton(
-                        "🔖 GROUP 2",
-                        url="https://t.me/+z5lhEpxP5Go4MWM1",
+                        "🇺🇸 ENGLISH 🇺🇸",
+                        callback_data="english",
                     ),
                     types.InlineKeyboardButton(
-                        "🔖 GROUP 3",
-                        url="https://t.me/MKS_RequestGroup",
+                        "🇰🇷 KOREAN 🇰🇷",
+                        callback_data="korean",
                     ),
-                ],
-                [
-
-                    types.InlineKeyboardButton(
-                        "🔖 GROUP 4",
-                        url="https://t.me/Movie_Group_MMSUB",
-                    ),
-                    types.InlineKeyboardButton(
-                        "🔖 GROUP 5",
-                        url="https://t.me/+cHMLAeatqKdlNGVl",
-                    ),
-                    types.InlineKeyboardButton(
-                        "🔖 GROUP 6",
-                        url="https://t.me/+X7DNvf9iCy5jOGJl",
-                    ),
-                ],
+		],
                 [
                     types.InlineKeyboardButton(
-                        "🔖 CHANNEL 1",
-                        url="https://t.me/MKSVIPLINK",
+                        "🇹🇭 THAI 🇹🇭",
+                        callback_data="thai",
                     ),
                     types.InlineKeyboardButton(
-                        "🔖 CHANNEL 2",
-                        url="https://t.me/MKSVIPLINK2",
+                        "🇨🇳 CHINA 🇨🇳",
+                        callback_data="chinese",
                     ),
                     types.InlineKeyboardButton(
-                        "🔖 CHANNEL 3",
-                        url="https://t.me/+3xS_MTfvJSEzZjY1",
+                        "🇯🇵 JAPAN 🇯🇵",
+                        callback_data="japan",
                     ),
                 ],
                 [
                     types.InlineKeyboardButton(
-                        "🔖 CHANNEL 4",
-                        url="https://t.me/MKSMAINCHANNEL",
-                    ),
-                    types.InlineKeyboardButton(
-                        "🔖 CHANNEL 5",
-                        url="https://t.me/MKSMAINCHANNEL2",
-                    ),
-                    types.InlineKeyboardButton(
-                        "🔖 CHANNEL 6",
-                        url="https://t.me/kpmovielist",
-                    ),
-                ],
-                [
-                    types.InlineKeyboardButton(
-                        "🔖 CHANNEL 7",
-                        url="https://t.me/+6lHs-byrjxczY2U1",
-                    ),
-                    types.InlineKeyboardButton(
-                        "🔖 CHANNEL 8",
-                        url="https://t.me/ONGOING_MKS",
-                    ),
-                    types.InlineKeyboardButton(
-                        "🔖 CHANNEL 9",
-                        url="https://t.me/Movie_Zone_KP",
-                    ),
-                ]               
+                        '☺️ 𝚃𝙷𝙰𝙽𝙺 𝚄 ☺️',
+                        callback_data='thank'
+                    )
+                ],            
             ]
 
         ),
@@ -324,120 +288,383 @@ async def start_ch2handler(bot: Bot, msg: types.Message):
     )
 
 
+BUTTONS_START = [
+    [
+        types.InlineKeyboardButton(
+            "♻️ 𝕁𝕆𝕀ℕ 𝕆𝕌ℝ 𝔾ℝ𝕆𝕌ℙ 𝕋𝕆 𝕌𝕊𝔼 𝕄𝔼 ♻️",
+            url="https://t.me/+X7DNvf9iCy5jOGJl",
+        )
+    ],
+    [
+        types.InlineKeyboardButton(
+            "𝕁𝕠𝕚𝕟 ℂ𝕙𝕒𝕟𝕟𝕖𝕝",
+            url="https://t.me/+X7DNvf9iCy5jOGJl",
+        ),
+        types.InlineKeyboardButton(
+            "𝔹𝕆𝕋 𝔾𝕌𝕀𝔻𝔼",
+            url="https://t.me/+X7DNvf9iCy5jOGJl",
+        )
+    ],
+    [
+        types.InlineKeyboardButton(
+            "𝕄𝕐 ℂ𝕙𝕒𝕟𝕟𝕖𝕝",
+            callback_data="allchannel",
+        ),
+        types.InlineKeyboardButton(
+            "𝕄𝕪 𝔾𝕣𝕠𝕦𝕡",
+            callback_data="allgroups",
+        ),
+        types.InlineKeyboardButton(
+            "𝕍𝕀ℙ 𝕊𝕖𝕣𝕚𝕖𝕤 𝕃𝕚𝕤𝕥",
+            callback_data="vip",
+        )
+    ],
+    [
+        types.InlineKeyboardButton(
+            "𝕊𝕋𝔸𝕋𝕌𝕊",
+            callback_data="status",
+        ),
+        types.InlineKeyboardButton(
+            "𝔸𝔹𝕆𝕌𝕋",
+            callback_data="about",
+        ),
+        types.InlineKeyboardButton(
+            "𝔻𝕠𝕟𝕒𝕥𝕖",
+            callback_data="donate",
+        ),
+    ],
+    [
+        types.InlineKeyboardButton(
+            "ℍ𝔼𝕃ℙ",
+            callback_data="help",
+        ),
+        types.InlineKeyboardButton(
+            "𝔻𝔼𝕍𝕊",
+            callback_data="DEVS",
+        ),
+        types.InlineKeyboardButton(
+            "𝔸𝔻𝕄𝕀ℕ",
+            callback_data="owner",
+        ),
+        types.InlineKeyboardButton(
+            "𝔹𝔸ℂ𝕂 🏠",
+            callback_data="back_home"
+        ),
+    ]
+]
+
+
+@Bot.on_callback_query(filters.regex("myanmar"))  # type: ignore
+async def myanmar_home_handler(bot: Bot, query: types.CallbackQuery):
+    await query.answer()
+    media = types.InputMediaPhoto(media=random.choice(Config.PICS))
+    await query.message.edit_media(media=media)
+    await bot.edit_message_caption(
+        chat_id=query.message.chat.id,
+        message_id=query.message.id,
+        caption=Script.MM_START_TEXT.format(mention=query.from_user.mention),
+        reply_markup=types.InlineKeyboardMarkup(BUTTONS_START),
+    )
+
+@Bot.on_callback_query(filters.regex("english"))  # type: ignore
+async def english_home_handler(bot: Bot, query: types.CallbackQuery):
+    await query.answer()
+    media = types.InputMediaPhoto(media=random.choice(Config.PICS))
+    await query.message.edit_media(media=media)
+    await bot.edit_message_caption(
+        chat_id=query.message.chat.id,
+        message_id=query.message.id,
+        caption=Script.ENG_START_TEXT.format(mention=query.from_user.mention),
+        reply_markup=types.InlineKeyboardMarkup(BUTTONS_START),
+    )
+
+@Bot.on_callback_query(filters.regex("korean"))  # type: ignore
+async def korean_home_handler(bot: Bot, query: types.CallbackQuery):
+    await query.answer()
+    media = types.InputMediaPhoto(media=random.choice(Config.PICS))
+    await query.message.edit_media(media=media)
+    await bot.edit_message_caption(
+        chat_id=query.message.chat.id,
+        message_id=query.message.id,
+        caption=Script.KOREAN_START_TEXT.format(mention=query.from_user.mention),
+        reply_markup=types.InlineKeyboardMarkup(BUTTONS_START),
+    )
+
+@Bot.on_callback_query(filters.regex("thai"))  # type: ignore
+async def thai_home_handler(bot: Bot, query: types.CallbackQuery):
+    await query.answer()
+    media = types.InputMediaPhoto(media=random.choice(Config.PICS))
+    await query.message.edit_media(media=media)
+    await bot.edit_message_caption(
+        chat_id=query.message.chat.id,
+        message_id=query.message.id,
+        caption=Script.THAI_START_TEXT.format(mention=query.from_user.mention),
+        reply_markup=types.InlineKeyboardMarkup(BUTTONS_START),
+    )
+
+@Bot.on_callback_query(filters.regex("chinese"))  # type: ignore
+async def chinese_home_handler(bot: Bot, query: types.CallbackQuery):
+    await query.answer()
+    media = types.InputMediaPhoto(media=random.choice(Config.PICS))
+    await query.message.edit_media(media=media)
+    await bot.edit_message_caption(
+        chat_id=query.message.chat.id,
+        message_id=query.message.id,
+        caption=Script.CHN_START_TEXT.format(mention=query.from_user.mention),
+        reply_markup=types.InlineKeyboardMarkup(BUTTONS_START),
+    )
+
+@Bot.on_callback_query(filters.regex("japan"))  # type: ignore
+async def japan_home_handler(bot: Bot, query: types.CallbackQuery):
+    await query.answer()
+    media = types.InputMediaPhoto(media=random.choice(Config.PICS))
+    await query.message.edit_media(media=media)
+    await bot.edit_message_caption(
+        chat_id=query.message.chat.id,
+        message_id=query.message.id,
+        caption=Script.JAPAN_START_TEXT.format(mention=query.from_user.mention),
+        reply_markup=types.InlineKeyboardMarkup(BUTTONS_START),
+    )
+
+@Bot.on_callback_query(filters.regex("botlang"))  # type: ignore
+async def botlang_home_handler(bot: Bot, query: types.CallbackQuery):
+    await query.answer("Sᴇʟᴇᴄᴛ ᴀɴʏ ʟᴀɴɢᴜᴀɢᴇ ғʀᴏᴍ ᴛʜᴇ ʙᴇʟᴏᴡ ʙᴜᴛᴛᴏɴs !", show_alert=True)
+
+
+
+@Bot.on_callback_query(filters.regex("thank"))  # type: ignore
+async def thank_home_handler(bot: Bot, query: types.CallbackQuery):
+    buttons = [
+        [
+            types.InlineKeyboardButton('ᴀᴅᴅ ᴍᴇ', url='https://t.me/botechs_bot?startgroup=true'),
+            types.InlineKeyboardButton(" Home", callback_data="back_home"),
+	],
+        [
+            types.InlineKeyboardButton('ᴄʟᴏsᴇ', callback_data='close_data')
+        ]
+    ]
+    reply_markup = types.InlineKeyboardMarkup(buttons)
+    await bot.edit_message_media(
+        chat_id=query.message.chat.id,
+        message_id=query.message.id,
+        media=types.InputMediaPhoto(media=random.choice(Config.PICS))
+    )
+    await query.message.edit_text(
+        text=Script.THANK_TXT.format(query.from_user.mention),
+        reply_markup=reply_markup,
+        parse_mode=enums.ParseMode.HTML
+    )
+
+@Bot.on_callback_query(filters.regex("DEVS"))  # type: ignore  
+async def DEVS_home_handler(bot: Bot, query: types.CallbackQuery):
+        buttons = [[
+            types.InlineKeyboardButton("𝔹𝕠𝕥 𝕆𝕨𝕟𝕖𝕣", url=f"{Script.OWNER_LINK}"),
+            types.InlineKeyboardButton('ℍ𝕆𝕄𝔼', callback_data="back")            
+        ]]
+        reply_markup = types.InlineKeyboardMarkup(buttons)
+        await query.message.edit_text(
+            text=Script.DEVS_TEXT,
+            reply_markup=reply_markup,
+            parse_mode=enums.ParseMode.HTML
+        )
 
 @Bot.on_callback_query(filters.regex("help"))  # type: ignore
 async def help_handler_query(bot: Bot, query: types.CallbackQuery):
     await query.answer()
-    await query.edit_message_text(
-        HELP_TEXT,
+    media = types.InputMediaPhoto(media=random.choice(Config.PICS))
+    await query.message.edit_media(media=media)
+    await bot.edit_message_caption(
+        chat_id=query.message.chat.id,
+        message_id=query.message.id,
+        caption=Script.HELP_TEXT,
         reply_markup=types.InlineKeyboardMarkup(
-            [[types.InlineKeyboardButton("◀️ Back", callback_data="back_home")]]
+            [
+                [types.InlineKeyboardButton('⚙️ 𝙰𝙳𝙼𝙸𝙽 𝙾𝙽𝙻𝚈 ⚙️', callback_data='adminonly')],
+                [types.InlineKeyboardButton("◀️ Back", callback_data="back_home")],
+            
+            ]
         ),
     )
 
+@Bot.on_callback_query(filters.regex("adminonly"))  # type: ignore
+async def adminonly_handler_query(bot: Bot, query: types.CallbackQuery):   
+    buttons = [
+        [
+            types.InlineKeyboardButton('🔙 𝙱𝙰𝙲𝙺', callback_data='help'),
+            types.InlineKeyboardButton("◀️ HOME", callback_data="back") 
+        ]
+    ]
+    reply_markup = types.InlineKeyboardMarkup(buttons)
+    if query.from_user.id in Config.ADMINS:
+        await query.message.edit_text(text=Script.ADMINONLY_TXT, reply_markup=reply_markup, parse_mode=enums.ParseMode.HTML)
+    else:
+        await query.answer("You're not authorized. ⚠️", show_alert=True)
 
 @Bot.on_callback_query(filters.regex("back"))  # type: ignore
 async def home_handler(bot: Bot, query: types.CallbackQuery):
     await query.answer()
-    await query.edit_message_text(
-        START_TEXT.format(mention=query.from_user.mention),
+    media = types.InputMediaPhoto(media=random.choice(Config.PICS))
+    await query.message.edit_media(media=media)
+    await bot.edit_message_caption(
+        chat_id=query.message.chat.id,
+        message_id=query.message.id,
+        caption=Script.START_TEXT.format(mention=query.from_user.mention),
         reply_markup=types.InlineKeyboardMarkup(
             [
                 [
                     types.InlineKeyboardButton(
-                        "♻️ 𝕁𝕆𝕀ℕ 𝕆𝕌ℝ 𝔾ℝ𝕆𝕌ℙ 𝕋𝕆 𝕌𝕊𝔼 𝕄𝔼 ♻️",
-                        url="https://t.me/+X7DNvf9iCy5jOGJl",
+                        '🔮 sᴇʟᴇᴄᴛ ʏᴏuʀ ʟᴀɴɢ 🔮',
+                        callback_data='botlang'
                     )
                 ],
                 [
                     types.InlineKeyboardButton(
-                        "🔖 GROUP 1",
-                        url="https://t.me/+_1Hs8V60HGs1NzA1",
+                        "🇲🇲 MYANMAR 🇲🇲",
+                        callback_data="myanmar",
                     ),
                     types.InlineKeyboardButton(
-                        "🔖 GROUP 2",
-                        url="https://t.me/+z5lhEpxP5Go4MWM1",
+                        "🇺🇸 ENGLISH 🇺🇸",
+                        callback_data="english",
                     ),
                     types.InlineKeyboardButton(
-                        "🔖 GROUP 3",
-                        url="https://t.me/MKS_RequestGroup",
+                        "🇰🇷 KOREAN 🇰🇷",
+                        callback_data="korean",
                     ),
-                ],
-                [
-
-                    types.InlineKeyboardButton(
-                        "🔖 GROUP 4",
-                        url="https://t.me/Movie_Group_MMSUB",
-                    ),
-                    types.InlineKeyboardButton(
-                        "🔖 GROUP 5",
-                        url="https://t.me/+cHMLAeatqKdlNGVl",
-                    ),
-                    types.InlineKeyboardButton(
-                        "🔖 GROUP 6",
-                        url="https://t.me/+X7DNvf9iCy5jOGJl",
-                    ),
-                ],
+		],
                 [
                     types.InlineKeyboardButton(
-                        "🔖 CHANNEL 1",
-                        url="https://t.me/MKSVIPLINK",
+                        "🇹🇭 THAI 🇹🇭",
+                        callback_data="thai",
                     ),
                     types.InlineKeyboardButton(
-                        "🔖 CHANNEL 2",
-                        url="https://t.me/MKSVIPLINK2",
+                        "🇨🇳 CHINA 🇨🇳",
+                        callback_data="chinese",
                     ),
                     types.InlineKeyboardButton(
-                        "🔖 CHANNEL 3",
-                        url="https://t.me/+3xS_MTfvJSEzZjY1",
+                        "🇯🇵 JAPAN 🇯🇵",
+                        callback_data="japan",
                     ),
                 ],
                 [
                     types.InlineKeyboardButton(
-                        "🔖 CHANNEL 4",
-                        url="https://t.me/MKSMAINCHANNEL",
-                    ),
-                    types.InlineKeyboardButton(
-                        "🔖 CHANNEL 5",
-                        url="https://t.me/MKSMAINCHANNEL2",
-                    ),
-                    types.InlineKeyboardButton(
-                        "🔖 CHANNEL 6",
-                        url="https://t.me/kpmovielist",
-                    ),
-                ],
-                [
-                    types.InlineKeyboardButton(
-                        "🔖 CHANNEL 7",
-                        url="https://t.me/+6lHs-byrjxczY2U1",
-                    ),
-                    types.InlineKeyboardButton(
-                        "🔖 CHANNEL 8",
-                        url="https://t.me/ONGOING_MKS",
-                    ),
-                    types.InlineKeyboardButton(
-                        "🔖 CHANNEL 9",
-                        url="https://t.me/Movie_Zone_KP",
-                    ),
-                ]  
+                        '☺️ 𝚃𝙷𝙰𝙽𝙺 𝚄 ☺️',
+                        callback_data='thank'
+                    )
+                ], 
             ]
-        ),
-        disable_web_page_preview=True,
+        )
     )
 
 
 @Bot.on_message(filters.command("help") & filters.incoming)  # type: ignore
 async def help_handler(bot: Bot, msg: types.Message):
-    await msg.reply(HELP_TEXT)
+    await msg.reply(Script.HELP_TEXT)
 
+@Bot.on_callback_query(filters.regex("vip"))  # type: ignore  
+async def vip_home_handler(bot: Bot, query: types.CallbackQuery):
+        buttons = [[
+                    types.InlineKeyboardButton('💠 VIP English Series 💠', url=f"{Script.E_SERIES_LINK}"),
+                    types.InlineKeyboardButton('💠 VIP Chinese Series💠', url=f"{Script.CHINESE_LINK}")
+                ],
+                [
+                    types.InlineKeyboardButton('💠 VIP Thai Series💠', url=f"{Script.THAI_LINK}"),
+                    types.InlineKeyboardButton('💠 VIP Bollywood Series💠', url=f"{Script.BOLLYWOOD_LINK}")
+                ],
+                [
+                    types.InlineKeyboardButton('💠 VIP Anime Series💠', url=f"{Script.ANIME_LINK}"),
+                    types.InlineKeyboardButton('💠 Korean Series💠', url=f"{Script.K_SERIES_LINK}")
+                ],
+                [
+                    types.InlineKeyboardButton("𝕄𝕐 ℂ𝕙𝕒𝕟𝕟𝕖𝕝", callback_data="allchannel"),
+                    types.InlineKeyboardButton("𝕄𝕪 𝔾𝕣𝕠𝕦𝕡", callback_data="allgroups")                               
+                ],[
+                    types.InlineKeyboardButton("𝐕𝐈𝐏 𝐒𝐞𝐫𝐢𝐞𝐬 𝐌𝐞𝐦𝐛𝐞𝐫ဝင်ရန်", url=f"{Script.VIP_LINK}"),
+                    types.InlineKeyboardButton("◀️ 𝔹𝕃𝔸ℂ𝕂", callback_data="back") 
+                ]]
+        reply_markup = types.InlineKeyboardMarkup(buttons)
+        await query.message.edit_text(
+            text=Script.VIP_TEXT,
+            reply_markup=reply_markup,
+            parse_mode=enums.ParseMode.HTML
+        )
+
+@Bot.on_callback_query(filters.regex("owner"))  # type: ignore  
+async def owner_home_handler(bot: Bot, query: types.CallbackQuery):
+        buttons= [[
+            types.InlineKeyboardButton('❣️ FOUNDER ❣️', url=f"{Script.OWNER_LINK}"),
+            types.InlineKeyboardButton("MODERATORS", url=f"{Script.M_LINK}")
+            ],[
+            types.InlineKeyboardButton("◀️ 𝔹𝕃𝔸ℂ𝕂", callback_data="back")
+        ]]
+        reply_markup =types.InlineKeyboardMarkup(buttons)        
+        await query.message.edit_text(
+            text=Script.OWNER_TXT,
+            reply_markup=reply_markup,
+            parse_mode=enums.ParseMode.HTML
+        )
+
+@Bot.on_callback_query(filters.regex("allchannel"))  # type: ignore  
+async def allchannel_home_handler(bot: Bot, query: types.CallbackQuery):
+        buttons = [[
+            types.InlineKeyboardButton("𝕄𝕪 𝔾𝕣𝕠𝕦𝕡", callback_data="allgroups"),
+            types.InlineKeyboardButton("𝕊𝔼ℝ𝕀𝔼𝕊 𝕃𝕀𝕊𝕋", callback_data="vip")],[
+            types.InlineKeyboardButton("◀️ 𝔹𝕃𝔸ℂ𝕂", callback_data="back")
+        ]]
+        reply_markup = types.InlineKeyboardMarkup(buttons)
+        await query.message.edit_text(
+            text=Script.ALL_CHANNEL,
+            reply_markup=reply_markup,
+            parse_mode=enums.ParseMode.HTML
+        )
+
+@Bot.on_callback_query(filters.regex("about"))  # type: ignore  
+async def about_home_handler(bot: Bot, query: types.CallbackQuery):
+        buttons= [[
+            types.InlineKeyboardButton('❣️ 𝚂𝙾𝚄𝚁𝙲𝙴 𝙲𝙾𝙳𝙴 ❣️', callback_data='source'),
+            types.InlineKeyboardButton("ℍ𝔼𝕃ℙ", callback_data="DEVS")
+            ],[
+            types.InlineKeyboardButton("◀️ 𝔹𝕃𝔸ℂ𝕂", callback_data="back")
+        ]]
+        reply_markup =types.InlineKeyboardMarkup(buttons)        
+        await query.message.edit_text(
+            text=Script.ABOUT_TXT,
+            reply_markup=reply_markup,
+            parse_mode=enums.ParseMode.HTML
+        )
+      
+@Bot.on_callback_query(filters.regex("allgroups"))  # type: ignore  
+async def allgroups_home_handler(bot: Bot, query: types.CallbackQuery):
+        buttons = [[
+            types.InlineKeyboardButton("𝕄𝕐 ℂ𝕙𝕒𝕟𝕟𝕖𝕝", callback_data="allchannel"),
+            types.InlineKeyboardButton("𝕊𝔼ℝ𝕀𝔼𝕊 𝕃𝕀𝕊𝕋", callback_data="vip")],[
+            types.InlineKeyboardButton("◀️ 𝔹𝕃𝔸ℂ𝕂", callback_data="back")
+        ]]
+        reply_markup = types.InlineKeyboardMarkup(buttons)
+        await query.message.edit_text(
+            text=Script.ALL_GROUPS,
+            reply_markup=reply_markup,
+            parse_mode=enums.ParseMode.HTML
+        )
+      
+@Bot.on_callback_query(filters.regex("donate"))  # type: ignore  
+async def donate_home_handler(bot: Bot, query: types.CallbackQuery):
+        buttons = [[
+            types.InlineKeyboardButton("◀️ 𝔹𝕃𝔸ℂ𝕂", callback_data="back")         
+        ]]
+        reply_markup = types.InlineKeyboardMarkup(buttons)
+        await query.message.edit_text(
+            text=Script.DONATE,
+            reply_markup=reply_markup,
+            parse_mode=enums.ParseMode.HTML
+        )
+ 
 
 @Bot.on_message(filters.command("stats"))  # type: ignore
 async def get_stats_at(_, msg: types.Message):
     count1 = await a_filter.col.count_documents({})  # type: ignore
     count2 = await b_filter.col.count_documents({})  # type: ignore
     count3 = await c_filter.col.count_documents({})  # type: ignore
-    count4 = await d_filter.col.count_documents({})  # type: ignore
-    count = count1 + count2 + count3 + count4  # type: ignore
+    count = count1 + count2 + count3   # type: ignore
     size = (await a_filter.db.command("dbstats"))["dataSize"]  # type: ignore
     users = await usersDB.total_users_count()
     free = 536870912 - size
@@ -451,11 +678,26 @@ async def get_stats_at(_, msg: types.Message):
     ram_usage = psutil.virtual_memory().percent
     disk_usage = psutil.disk_usage('/').percent
     buttons = [[types.InlineKeyboardButton('𝚁𝙴𝙵𝚁𝙴𝚂𝙷 ♻️', callback_data='rfrsh')]]
+    mg = await msg.reply("Initialising")
+    await mg.edit("Initialising ✪⍟⍟⍟⍟⍟")
+    asyncio.sleep(1)
+    await mg.edit("Initialising ✪✪⍟⍟⍟⍟")
+    asyncio.sleep(1)
+    await mg.edit("Initialising ✪✪✪⍟⍟⍟")
+    asyncio.sleep(1)
+    await mg.edit("Initialising ✪✪✪✪⍟⍟")
+    asyncio.sleep(1)
+    await mg.edit("Initialising ✪✪✪✪✪⍟")
+    asyncio.sleep(1)
+    await mg.edit("Initialising ✪✪✪✪✪✪")
+    asyncio.sleep(1)
+    await mg.edit("✪Connection Successful✪")
+    asyncio.sleep(1)
+    await mg.delete()
     await msg.reply(
         f"**Stats**\n\nTotal 1 Files: {count1}"
         f"\nTotal 2 Files: {count2}"
         f"\nTotal 3 Files: {count3}"
-        f"\nTotal 4 Files: {count4}"
         f"\n\nTotal All Files: {count}"
         f"\n\nTotal Users: {users}"
         f"\nTotal DB Used: {get_size(size)}"
@@ -476,8 +718,7 @@ async def get_stats(_, msg: types.Message):
     count1 = await a_filter.col.count_documents({})  # type: ignore
     count2 = await b_filter.col.count_documents({})  # type: ignore
     count3 = await c_filter.col.count_documents({})  # type: ignore
-    count4 = await d_filter.col.count_documents({})  # type: ignore
-    count = count1 + count2 + count3 + count4  # type: ignore
+    count = count1 + count2 + count3  # type: ignore
     size = (await a_filter.db.command("dbstats"))["dataSize"]  # type: ignore
     users = await usersDB.total_users_count()
     free = 536870912 - size
@@ -491,11 +732,26 @@ async def get_stats(_, msg: types.Message):
     ram_usage = psutil.virtual_memory().percent
     disk_usage = psutil.disk_usage('/').percent
     buttons = [[types.InlineKeyboardButton('𝚁𝙴𝙵𝚁𝙴𝚂𝙷 ♻️', callback_data='rfrsh')]]
+    mg = await msg.reply("Initialising")
+    await mg.edit("Initialising ✪⍟⍟⍟⍟⍟")
+    asyncio.sleep(1)
+    await mg.edit("Initialising ✪✪⍟⍟⍟⍟")
+    asyncio.sleep(1)
+    await mg.edit("Initialising ✪✪✪⍟⍟⍟")
+    asyncio.sleep(1)
+    await mg.edit("Initialising ✪✪✪✪⍟⍟")
+    asyncio.sleep(1)
+    await mg.edit("Initialising ✪✪✪✪✪⍟")
+    asyncio.sleep(1)
+    await mg.edit("Initialising ✪✪✪✪✪✪")
+    asyncio.sleep(1)
+    await mg.edit("✪Connection Successful✪")
+    asyncio.sleep(1)
+    await mg.delete()
     await msg.reply(
         f"**Stats**\n\nTotal 1 Files: {count1}"
         f"\nTotal 2 Files: {count2}"
         f"\nTotal 3 Files: {count3}"
-        f"\nTotal 4 Files: {count4}"
         f"\n\nTotal All Files: {count}"
         f"\n\nTotal Users: {users}"
         f"\nTotal DB Used: {get_size(size)}"
@@ -516,8 +772,7 @@ async def ref_get_stats(bot: Bot, query: types.CallbackQuery):
     count1 = await a_filter.col.count_documents({})  # type: ignore
     count2 = await b_filter.col.count_documents({})  # type: ignore
     count3 = await c_filter.col.count_documents({})  # type: ignore
-    count4 = await d_filter.col.count_documents({})  # type: ignore
-    count = count1 + count2 + count3 + count4  # type: ignore
+    count = count1 + count2 + count3 # type: ignore
     size = (await a_filter.db.command("dbstats"))["dataSize"]  # type: ignore
     users = await usersDB.total_users_count()
     free = 536870912 - size
@@ -530,12 +785,11 @@ async def ref_get_stats(bot: Bot, query: types.CallbackQuery):
     cpu_usage = psutil.cpu_percent()
     ram_usage = psutil.virtual_memory().percent
     disk_usage = psutil.disk_usage('/').percent
-    buttons = [[types.InlineKeyboardButton('𝚁𝙴𝙵𝚁𝙴𝚂𝙷 ♻️', callback_data='rfrsh')]]
+    buttons = [[types.InlineKeyboardButton('𝚁𝙴𝙵𝚁𝙴𝚂𝙷 ♻️', callback_data='rfrsh'), types.InlineKeyboardButton('◀️ Back', callback_data='back_home')]]
     text = (
         f"**Stats**\n\nTotal 1 Files: {count1}"
         f"\nTotal 2 Files: {count2}"
         f"\nTotal 3 Files: {count3}"
-        f"\nTotal 4 Files: {count4}"
         f"\n\nTotal All Files: {count}"
         f"\n\nTotal Users: {users}"
         f"\nTotal DB Used: {get_size(size)}"
@@ -548,6 +802,75 @@ async def ref_get_stats(bot: Bot, query: types.CallbackQuery):
         f"\nFree Space: {free2}"
         f"\n\nPower By @KOPAINGLAY15"
     )
+    msg = await query.message.edit_text("Initialising")
+    await msg.edit("Initialising ✪⍟⍟⍟⍟⍟")
+    asyncio.sleep(1)
+    await msg.edit("Initialising ✪✪⍟⍟⍟⍟")
+    asyncio.sleep(1)
+    await msg.edit("Initialising ✪✪✪⍟⍟⍟")
+    asyncio.sleep(1)
+    await msg.edit("Initialising ✪✪✪✪⍟⍟")
+    asyncio.sleep(1)
+    await msg.edit("Initialising ✪✪✪✪✪⍟")
+    asyncio.sleep(1)
+    await msg.edit("Initialising ✪✪✪✪✪✪")
+    asyncio.sleep(1)
+    await msg.edit("✪Connection Successful✪")
+    await query.message.edit_text(
+        text,
+        reply_markup=types.InlineKeyboardMarkup(buttons),
+        parse_mode=enums.ParseMode.HTML
+    ) 
+
+@Bot.on_callback_query(filters.regex("status"))  # type: ignore  
+async def status_home_handler(bot: Bot, query: types.CallbackQuery):        
+    count1 = await a_filter.col.count_documents({})  # type: ignore
+    count2 = await b_filter.col.count_documents({})  # type: ignore
+    count3 = await c_filter.col.count_documents({})  # type: ignore
+    count = count1 + count2 + count3 # type: ignore
+    size = (await a_filter.db.command("dbstats"))["dataSize"]  # type: ignore
+    users = await usersDB.total_users_count()
+    free = 536870912 - size
+
+    currentTime = time.strftime("%Hh%Mm%Ss", time.gmtime(time.time() - BOT_START_TIME))
+    total, used, free2 = shutil.disk_usage(".")
+    total = humanbytes(total)
+    used = humanbytes(used)
+    free2 = humanbytes(free2)
+    cpu_usage = psutil.cpu_percent()
+    ram_usage = psutil.virtual_memory().percent
+    disk_usage = psutil.disk_usage('/').percent
+    buttons = [[types.InlineKeyboardButton('𝚁𝙴𝙵𝚁𝙴𝚂𝙷 ♻️', callback_data='rfrsh'), types.InlineKeyboardButton('◀️ Back', callback_data='back_home')]]
+    text = (
+        f"**Stats**\n\nTotal 1 Files: {count1}"
+        f"\nTotal 2 Files: {count2}"
+        f"\nTotal 3 Files: {count3}"
+        f"\n\nTotal All Files: {count}"
+        f"\n\nTotal Users: {users}"
+        f"\nTotal DB Used: {get_size(size)}"
+        f"\nFree: {get_size(free)}"
+        f"\n\nUptime: {currentTime}"
+        f"\nCPU Usage: {cpu_usage}%"
+        f"\nRAM Usage: {ram_usage}%"        
+        f"\nTotal Disk Space: {total}"
+        f"\nUsed Space: {used} ({disk_usage}%)"
+        f"\nFree Space: {free2}"
+        f"\n\nPower By @KOPAINGLAY15"
+    )
+    msg = await query.message.edit_text("Initialising")
+    await msg.edit("Initialising ✪⍟⍟⍟⍟⍟")
+    asyncio.sleep(1)
+    await msg.edit("Initialising ✪✪⍟⍟⍟⍟")
+    asyncio.sleep(1)
+    await msg.edit("Initialising ✪✪✪⍟⍟⍟")
+    asyncio.sleep(1)
+    await msg.edit("Initialising ✪✪✪✪⍟⍟")
+    asyncio.sleep(1)
+    await msg.edit("Initialising ✪✪✪✪✪⍟")
+    asyncio.sleep(1)
+    await msg.edit("Initialising ✪✪✪✪✪✪")
+    asyncio.sleep(1)
+    await msg.edit("✪Connection Successful✪")
     await query.message.edit_text(
         text,
         reply_markup=types.InlineKeyboardMarkup(buttons),
@@ -557,7 +880,18 @@ async def ref_get_stats(bot: Bot, query: types.CallbackQuery):
 @Bot.on_message(filters.command("restart") & filters.user(Config.ADMINS))
 async def stop_button(bot, message):
     msg = await bot.send_message(message.chat.id, text="**🔄 𝙿𝚁𝙾𝙲𝙴𝚂𝚂𝙴𝚂 𝚂𝚃𝙾𝙿𝙴𝙳. 𝙱𝙾𝚃 𝙸𝚂 𝚁𝙴𝚂𝚃𝙰𝚁𝚃𝙸𝙽𝙶...**")
-    await asyncio.sleep(3)
+    await msg.edit("Initialising ✪⍟⍟⍟⍟⍟")
+    asyncio.sleep(1)
+    await msg.edit("Initialising ✪✪⍟⍟⍟⍟")
+    asyncio.sleep(1)
+    await msg.edit("Initialising ✪✪✪⍟⍟⍟")
+    asyncio.sleep(1)
+    await msg.edit("Initialising ✪✪✪✪⍟⍟")
+    asyncio.sleep(1)
+    await msg.edit("Initialising ✪✪✪✪✪⍟")
+    asyncio.sleep(1)
+    await msg.edit("Initialising ✪✪✪✪✪✪")
+    asyncio.sleep(1)
     await msg.edit_text("**✅️ 𝙱𝙾𝚃 𝙸𝚂 𝚁𝙴𝚂𝚃𝙰𝚁𝚃𝙴𝙳. 𝙽𝙾𝚆 𝚈𝙾𝚄 𝙲𝙰𝙽 𝚄𝚂𝙴 𝙼𝙴**")
 
     python = sys.executable
@@ -716,55 +1050,6 @@ async def handleDelete3(bot: Bot, msg: types.Message):
 
         await msg.edit("3 File not found in database")
 
-@Bot.on_message(filters.command("delete4") & filters.user(Config.ADMINS))  # type: ignore
-async def handleDelete4(bot: Bot, msg: types.Message):
-    """4 Delete file from database"""
-    reply = msg.reply_to_message
-    if reply and reply.media:
-        msg = await msg.reply("4 Processing...⏳", quote=True)
-    else:
-        await msg.reply(
-            " 4 Reply to file with /delete which you want to delete", quote=True
-        )
-        return
-
-    for file_type in ("document", "video", "audio", "photo"):
-        media = getattr(reply, file_type, None)
-        if media is not None:
-            break
-    else:
-        await msg.edit("4 This is not supported file format")
-        return
-
-    file_id, file_ref = unpack_new_file_id(media.file_id)
-
-    result = await d_filter.col.delete_one(
-        {
-            "_id": file_id,
-        }
-    )  # type: ignore
-    if file_type == "photo":
-        result = await d_filter.col.delete_one(
-            {
-                "file_ref": media.file_id,
-            }
-        )  # type: ignore
-    if result.deleted_count:
-        await msg.edit(" 4 File is successfully deleted from database")
-    else:
-        if file_type != "photo":
-            file_name = re.sub(r"(_|\-|\.|\+)", " ", str(media.file_name))
-            result = await d_filter.col.delete_many(
-                {
-                    "file_name": file_name,
-                    "file_size": media.file_size,
-                    "mime_type": media.mime_type,
-                }
-            )  # type: ignore
-            if result.deleted_count:
-                return await msg.edit(" 4 File is successfully deleted from database")
-
-        await msg.edit("4 File not found in database")
 
 @Bot.on_message(filters.command('del') & filters.user(Config.ADMINS))
 async def deleteindex(bot, message):
@@ -778,6 +1063,33 @@ async def deleteindex(bot, message):
         await message.reply_text(f"No documents found with chat_id {chat_id} in the database.")
 
 
+@Bot.on_message(filters.command("deletefiles") & filters.user(Config.ADMINS))
+async def deletemultiplefiles(bot, message):
+    chat_type = message.chat.type
+    if chat_type != enums.ChatType.PRIVATE:
+        return await message.reply_text(f"<b>Hey {message.from_user.mention}, This command won't work in groups. It only works on my PM !</b>")
+    else:
+        pass
+    try:
+        keyword = message.text.split(" ", 1)[1]
+    except:
+        return await message.reply_text(f"<b>Hey {message.from_user.mention}, Give me a keyword along with the command to delete files.</b>")
+    k = await bot.send_message(chat_id=message.chat.id, text=f"<b>Fetching Files for your query {keyword} on DB... Please wait...</b>")
+    files, next_offset, total = await b_filter.get_search_results(keyword)
+    await k.edit_text(f"<b>Found {total} files for your query {keyword} !\n\nFile deletion process will start in 5 seconds !</b>")
+    await asyncio.sleep(5)
+    deleted = 0
+    for file in files:
+        await k.edit_text(f"<b>Process started for deleting files from DB. Successfully deleted {str(deleted)} files from DB for your query {keyword} !\n\nPlease wait...</b>")
+        file_ids = file.file_id
+        file_name = file.file_name
+        result = await b_filter.collection.delete_one({
+            '_id': file_ids,
+        })
+        if result.deleted_count:
+            logger.info(f'File Found for your query {keyword}! Successfully deleted {file_name} from database.')
+        deleted += 1
+    await k.edit_text(text=f"<b>Process Completed for file deletion !\n\nSuccessfully deleted {str(deleted)} files from database for your query {keyword}.</b>")
 
 
     
@@ -787,6 +1099,7 @@ async def delete(bot, message):
     btn = [[
         types.InlineKeyboardButton(f"A Filter", callback_data="deletev1"),
         types.InlineKeyboardButton(f"B Filter", callback_data="deletev2"),
+        types.InlineKeyboardButton(f"C Filter", callback_data="deletev3"),
     ],[
         types.InlineKeyboardButton("CLOSE", callback_data="close_data")
     ]]
@@ -1199,12 +1512,6 @@ async def delete_all_index(bot, message):
     )
 
 
-
-
-
-
-
-
 @Bot.on_callback_query(filters.regex(r'^autofilter_delete1'))
 async def adelete_all_index_confirm(bot, message):
     await a_filter.col.drop()
@@ -1295,24 +1602,16 @@ async def set_cap2_command(client, message):
     Config.CAP2 = caption
     await message.reply_text("CAP2 updated successfully.")
 
+@Bot.on_message(filters.command('set_start') & filters.user(Config.ADMINS))
+async def start_text_command(client, message):
+    caption = message.text.split('/set_start', 1)[1].strip()
 
+    if not caption:
+        await message.reply_text("Please provide a caption to set for START_TEXT.")
+        return
 
-#@Bot.on_message(filters.command('set_ads') & filters.user(Config.ADMINS))
-async def set_33ads(bot, message):
-    ads = Config.ADS
-    if len(message.text.split()) > 1:
-        ad_index = int(message.text.split()[1]) - 1
-        if ad_index >= 0 and ad_index < len(ads):
-            caption = ads[ad_index]["caption"]
-            photo = ads[ad_index]["photo"]
-            await bot.send_photo(chat_id=message.chat.id, photo=photo, caption=caption)
-            return
-    ad_list = ""
-    for i, ad in enumerate(ads, start=1):
-        ad_list += f"\n{i}. {ad['caption']}"
-    response = f"Please select an ad from the list:\n{ad_list}"
-    await bot.send_message(chat_id=message.chat.id, text=response)
-
+    Script.START_TEXT = caption
+    await message.reply_text("START_TEXT updated successfully.")
 
 @Bot.on_message(filters.command('set_ads') & filters.user(Config.ADMINS))
 async def set_ads(bot, message):
@@ -1360,11 +1659,16 @@ async def set_admins_plus_command(client, message):
 async def set_template_command(client, message):
     template = " ".join(message.command[1:])
     if not template:
-        await message.reply("Please provide a template.")
+        await message.reply("""Please provide a template.🏷 𝗧𝗶𝘁𝗹𝗲 :</b>: <a href={url}>{title}</a>  <a href={url}/releaseinfo>{year}</a> - #{kind}       
+🌟 𝐑𝐚𝐭𝐢𝐧𝐠    : <a href={url}/ratings>{rating}</a> / 10 ({votes} 𝐮𝐬𝐞𝐫 𝐫𝐚𝐭𝐢𝐧𝐠𝐬.)
+📀 𝐑𝐮𝐧𝐓𝐢𝐦𝐞 : {runtime} Minutes
+📆 𝗥𝗲𝗹𝗲𝗮𝘀𝗲  : {release_date}
+🎭 𝗚𝗲𝗻𝗿𝗲𝘀   : #{genres}
+👥 𝗖𝗮𝘀𝘁  : #{cast}""")
         return
     
     Config.TEMPLATE = template
-    await message.reply("Template has been updated.")
+    await message.reply(f"Template has been updated. {template}")
 
 @Bot.on_message(filters.command('set_sub_channel') & filters.user(Config.ADMINS))
 async def set_sub_channel_command(client, message):
@@ -1410,3 +1714,19 @@ async def set_bot_token_plus_command(client, message):
     else:
         await message.reply("Invalid command format. Please use /set_bot_token_plus <new_token>")
 
+
+
+
+@Bot.on_message(filters.command('set_dbname2') & filters.user(Config.ADMINS))
+async def set_dbname2_command(client, message):
+    # Check if the command has an argument
+    if len(message.command) < 2:
+        await message.reply("Please provide a new value for COLLECTION_NAME2.")
+        return
+    
+    new_collection_name = message.command[1]
+    
+    # Update the value in the Config class
+    Config.COLLECTION_NAME2 = new_collection_name
+    
+    await message.reply(f"COLLECTION_NAME2 dbname2 has been set to: {new_collection_name}")

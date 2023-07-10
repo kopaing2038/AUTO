@@ -61,7 +61,9 @@ async def get_bot():
     crazy = await ai.get_me()
     await ai.stop()
     return crazy
-@Client.on_message(filters.command("clone") & filters.private)
+
+
+@Client.on_message(filters.command("clone2") & filters.private)
 async def ononv_clone(client, message):
     try:
         user_id = message.from_user.id
@@ -86,7 +88,7 @@ async def ononv_clone(client, message):
             ai = Client(
                 f"{bot_token}", Config.API_ID, Config.API_HASH,
                 bot_token=bot_token,
-                plugins={"root": "bot/clone_plugins"},
+                plugins={"root": "bot/clone_file"},
             )
             await ai.start()
             bot = await ai.get_me()
@@ -110,7 +112,7 @@ async def ononv_clone(client, message):
     except Exception as e:
         logging.exception("Error while handling message.")
 
-@Client.on_message(filters.command("clone2") & filters.private)
+@Client.on_message(filters.command("clone") & filters.private)
 async def ono2_clone(client, message):
     try:
         user_id = message.from_user.id

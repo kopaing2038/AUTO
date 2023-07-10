@@ -73,6 +73,7 @@ class BaseFiltersDb(MongoDb):
     async def save_file(self, media):
         """Save file in database"""
         file = await self.file_dict(media)
+        file['chat_id'] = channel_id
         try:
             await self.col.insert_one(file)  # type: ignore
         except DuplicateKeyError:
@@ -85,6 +86,7 @@ class BaseFiltersDb(MongoDb):
                 f'{getattr(media, "file_name", "NO_FILE")} is saved to database'
             )
             return True, 1
+
 
     async def get_search_results(self, query: str, file_type: str = None, max_results: int = 5, offset: int = 0, filter: bool = False, photo: bool = True, video: bool = True):  # type: ignore
         """For given query return (results, next_offset)"""
@@ -180,22 +182,7 @@ class FiltersDb3(BaseFiltersDb):
         super().__init__(Config.COLLECTION_NAME3)
 
 
-class FiltersDb4(BaseFiltersDb):
-    def __init__(self):
-        super().__init__(Config.COLLECTION_NAME4)
-
-class FiltersDb5(BaseFiltersDb):
-    def __init__(self):
-        super().__init__(Config.COLLECTION_NAME5)
-
-
-
-
-
-
-
 a_filter = FiltersDb()
 b_filter = FiltersDb2()
 c_filter = FiltersDb3()
-d_filter = FiltersDb4()
-e_filter = FiltersDb4()
+

@@ -4,7 +4,6 @@ import string
 from bot import bot
 from pyrogram import Client, enums, errors, types
 from pyrogram.file_id import FileId
-from bot.database.users_chats_db import db
 from ..config import Config
 from ..database import configDB as config_db
 from .cache import Cache
@@ -24,19 +23,9 @@ CONFIGURABLE = {
     "PM_IMDB_POSTER": {"help": "Disable / Enable IMDB posters in PM", "name": "PM IMDb Posters"},
     "DOWNLOAD_BUTTON": {"help": "Enable / disable download button", "name": "Download Button"},
     "PHOTO_FILTER": {"help": "Enable / disable photo filter", "name": "Photo Filter"},
-    "PHOTO_FILTER2": {"help": "Enable / disable photo filter", "name": "Photo Filter 2"},
-    "PHOTO_FILTER3": {"help": "Enable / disable photo filter", "name": "Photo Filter 3"},
-    "PHOTO_FILTER4": {"help": "Enable / disable photo filter", "name": "Photo Filter 4"},
-    "PHOTO_FILTER5": {"help": "Enable / disable photo filter", "name": "Photo Filter 5"},
     "V_FILTER": {"help": "Enable / disable Video filter", "name": "Video Filter"},
-    "V_FILTER2": {"help": "Enable / disable Video filter", "name": "Video Filter 2"},
-    "V_FILTER3": {"help": "Enable / disable Video filter", "name": "Video Filter 3"},
-    "V_FILTER4": {"help": "Enable / disable Video filter", "name": "Video Filter 4"},
-    "V_FILTER5": {"help": "Enable / disable Video filter", "name": "Video Filter 5"},
     "CH_POST": {"help": "Enable / disable Ch Post", "name": "Ch POst"},
     "TEXT_LINK": {"help": "Enable / disable Text Link", "name": "Text Link"},
-    
-
 }
 
 
@@ -132,20 +121,6 @@ def get_buttons(settings: dict):
             ]
         )
     return BTN
-
-
-async def get_settings(group_id):
-    settings = Cache.SETTINGS.get(group_id)
-    if not settings:
-        settings = await config_db.get_settings(group_id)
-        Cache.SETTINGS[group_id] = settings
-    return settings
-    
-async def save_group_settings(group_id, key, value):
-    current = await config_db.get_settings(group_id)
-    current[key] = value
-    Cache.SETTINGS[group_id] = current
-    await config_db.update_settings(group_id, current)
 
 async def parse_link(chat_id: int, msg_id: int) -> str:
     username = Cache.USERNAMES.get(chat_id)

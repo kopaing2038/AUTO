@@ -181,6 +181,6 @@ async def style(c, m):
         cls = Fonts.frozen
     new_text = cls(m.message.reply_to_message.text)
     try:
-        await m.message.edit_text(new_text, reply_markup=m.message.reply_markup)
+        await m.message.edit_text(f"`{new_text}`\n\n👆 Click To Copy", reply_markup=m.message.reply_markup)
     except:
         pass

@@ -30,18 +30,19 @@ def get_config(key: str, default: str = None, is_bool: bool = False) -> Union[st
 class Config:
 
 
-    BOT_TOKEN = get_config("BOT_TOKEN", "5482704567:AAH4hOppkPz71lO4MePmSw5kbkHGkWYzVKE")
+    BOT_TOKEN = get_config("BOT_TOKEN", "5928645003:AAEgOEz7ugFSWHlp-eXL1H1lZGmvO0ClTn4")
     API_ID = int(get_config("API_ID", "7880210"))
     API_HASH = get_config("API_HASH", "1bb4b2ff1489cc06af37cba448c8cce9")
+
     DATABASE_URL = get_config("DATABASE_URL", "mongodb+srv://vipseriesfilter:vipseriesfilter@vipseriesfilter.fubxjlh.mongodb.net/?retryWrites=true&w=majority")
-    SESSION_NAME2 = get_config("DATABASE_NAME", "Movie3v")
+    SESSION_NAME2 = get_config("DATABASE_NAME2", "Movie3v")
     DATABASE_URI = get_config("DATABASE_URL", "mongodb+srv://pmbot1:pmbot1@cluster0.esuavhf.mongodb.net/?retryWrites=true&w=majority")
-    SESSION_NAME = get_config("DATABASE_NAME", "CH11BOT")
+    SESSION_NAME = get_config("DATABASE_NAME", "LASTBOT")
     COLLECTION_NAME = get_config("COLLECTION_NAME", "Movie")
     COLLECTION_NAME2 = get_config("COLLECTION_NAME2", "Movie2")
     COLLECTION_NAME3 = get_config("COLLECTION_NAME3", "Movie3")
     COLLECTION_NAME4 = get_config("COLLECTION_NAME4", "Movie4")
-
+    
     BOT_NAME = get_config("BOT_NAME", "FILTER_BOT")
     FILE_GROUP = int(environ.get('FILE_GROUP', -1001975432612))
     FILE_GROUP2 = int(environ.get('FILE_GROUP', "-1001804560420"))
@@ -50,8 +51,9 @@ class Config:
 
     UPDATES_CHANNEL = int(environ. get('UPDATES_CHANNEL', '-1001646572603'))
     #BANNED_CHANNELS = list(set(int(x) for x in str(getenv("BANNED_CHANNELS", "-1001362659779")).split()))
-    BIN_CHANNEL = int(environ. get('BIN_CHANNEL', '-1001965839568'))
+    BIN_CHANNEL = int(environ. get('BIN_CHANNEL', '-1001161641413'))
 
+    CACHE_TIME = int(environ.get('CACHE_TIME', 300))
     FLOOD = int(environ.get("FLOOD", "10"))
     RENAME_MODE = bool(environ.get("RENAME_MODE"))
   
@@ -85,18 +87,7 @@ class Config:
         
 """,
     )
-    TEMPLATE4 = get_config(
-        "IMDB_TEMPLATE",
-        """<b>🏷 𝗧𝗶𝘁𝗹𝗲 :</b>{title}</a>  {year}</a> -
-        
-🌟 𝐑𝐚𝐭𝐢𝐧𝐠    : {rating}</a> / 10 𝐮𝐬𝐞𝐫 𝐫𝐚𝐭𝐢𝐧𝐠𝐬.)
-📀 𝐑𝐮𝐧𝐓𝐢𝐦𝐞 : {runtime} Minutes
 
-
-<a href='https://t.me/+TIwZJBnFDP1kM2Q1'>©️ 𝗙𝗜𝗟𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a><a href='https://t.me/+X7DNvf9iCy5jOGJl'>©️ 𝗝𝗢𝗜𝗡 𝗚𝗥𝗢𝗨𝗣</a>\n<a href='https://t.me/+6lHs-byrjxczY2U1'>©️ 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟</a>
-        
-""",
-    )
 
     CHANNELS_KP1 = make_list(get_config("CHANNELS_KP1", "-1001658013895"), True)  # type: ignore
     CHANNELS_KP2 = make_list(get_config("CHANNELS_KP2", "-1001458641629"), True)  # type: ignore
@@ -113,12 +104,30 @@ class Config:
     IMDB_TEMPLATES = get_config("FILE_CAPTION", "<code>{file_name}</code>")
     #IMDB_TEMPLATES = get_config("IMDB_TEMPLATE", f"{TEMPLATE}")
 
-    ADMINS = make_list(get_config("ADMINS", "1113630298 1639765266"), True)  # type: ignore
+    ADMINS = make_list(get_config("ADMINS", "1113630298 1639765266 1854576276"), True)  # type: ignore
     ADMINS += [626664225]
     SUDO_USERS = ADMINS
 
+    auth_users = [int(user) if re.search(user, get_config("AUTH_USERS", "")) else user for user in environ.get('AUTH_USERS', '').split()]
+    AUTH_USERS = (auth_users + ADMINS) if auth_users else []
+    auth_channel = get_config("AUTH_CHANNEL")
+    AUTH_CHANNEL = int(auth_channel) if auth_channel and re.search(auth_channel, get_config("AUTH_USERS", "")) else None
+    AUTH_GROUPS = make_list(get_config("AUTH_GROUPS", ""), convert_int=True) if get_config("AUTH_GROUPS") else None
+    #MUSIC_AUTH_GROUPS = make_list(get_config("MUSIC_AUTH_GROUPS", "-1001334066914"), convert_int=True) if get_config("MUSIC_AUTH_GROUPS") else None
+    MUSIC_AUTH_GROUPS = make_list(get_config("MUSIC_AUTH_GROUPS", "-1001334066914"), convert_int=True) if get_config("MUSIC_AUTH_GROUPS") else []
+
     LONG_IMDB_DESCRIPTION = get_config("LONG_IMDB_DESCRIPTION", False, True)  # type: ignore
     MAX_LIST_ELM = int(get_config("MAX_LIST_ELM", 5))  # type: ignore
+
+    START_TEXT = f"""Hey {{}} 👋
+
+I am an Advanced AutoFilter Bot
+
+I'm a group manager bot, built only for CIMENA group
+
+@KOPAINGLAY15"""
+
+    HELP_TEXT = START_TEXT
     
     CAP2 = get_config(f"""────── • ADS • ──────
 
@@ -183,25 +192,14 @@ REQUEST BY : {user_link}
     PM_IMDB = True
     PM_IMDB_POSTER = True
     PHOTO_FILTER = False
-    PHOTO_FILTER2 = False
-    PHOTO_FILTER3 = False
-    PHOTO_FILTER4 = False
-    PHOTO_FILTER5 = False
     V_FILTER = False
-    V_FILTER2 = False
-    V_FILTER3 = False
-    V_FILTER4 = False
-    V_FILTER5 = False
     CH_POST = False
     TEXT_LINK = False
     
     GROUP_CAPTIONS = {} 
-
+    MUSIC_CHANNEL = int(get_config("MUSIC_CHANNEL" , "-1001897618013")) 
     USE_CAPTION_FILTER = get_config("USE_CAPTION_FILTER", True, True)  # type: ignore
     FILE_CHANNEL = int(get_config("FILE_CHANNEL" , "-1001615715585"))
     FILE_GROUP = int(get_config("FILE_CHANNEL2" , "-1001975432612"))
     FILE_CHANNEL3 = int(get_config("FILE_CHANNEL3" , "-1001564382219"))
-    MUSIC_CHANNEL = int(get_config("MUSIC_CHANNEL" , "-1001897618013"))  
-
-LOG_STR = "Current Cusomized Configurations are:-\n"
-LOG_STR += (f"Config.TEMPLATE enabled with value {Config.TEMPLATE}, your files will be send along with this customized caption.\n" if Config.TEMPLATE else "No Config.TEMPLATE Found, Default captions of file will be used.\n")
+    
