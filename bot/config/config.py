@@ -36,6 +36,7 @@ class Config:
 
     DATABASE_URL = get_config("DATABASE_URL", "mongodb+srv://vipseriesfilter:vipseriesfilter@vipseriesfilter.fubxjlh.mongodb.net/?retryWrites=true&w=majority")
     SESSION_NAME2 = get_config("DATABASE_NAME2", "Movie3v")
+    DATABASE_URI = get_config("DATABASE_URL", "mongodb+srv://pmbot1:pmbot1@cluster0.esuavhf.mongodb.net/?retryWrites=true&w=majority")
     SESSION_NAME = get_config("DATABASE_NAME", "CH11BOT")
     COLLECTION_NAME = get_config("COLLECTION_NAME", "Movie")
     COLLECTION_NAME2 = get_config("COLLECTION_NAME2", "Movie2")
