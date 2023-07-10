@@ -1630,7 +1630,22 @@ async def set_ads(bot, message):
     else:
         await message.reply("Invalid ADS format. Please provide the ADS in the correct format.")
 
+@Bot.on_message(filters.command('set_ads_plus') & filters.user(Config.ADMINS))
+async def set_ads_plus(bot, message):
+    ads = message.text.split('\n')[1:]
+    ad_list = []
+    for ad in ads:
+        try:
+            ad_data = json.loads(ad)
+            ad_list.append(ad_data)
+        except json.JSONDecodeError:
+            pass
 
+    if ad_list:
+        Config.ADS += ad_list
+        await message.reply("ADS Plus have been updated successfully!")
+    else:
+        await message.reply("Invalid ADS format. Please provide the ADS in the correct format.")
 
 @Bot.on_message(filters.command('set_admins_plus') & filters.user(Config.ADMINS))
 async def set_admins_plus_command(client, message):
