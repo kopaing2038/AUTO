@@ -85,12 +85,19 @@ Contact :- @KOPAINGLAY15
 • 
 • /stats - <code>ᴛᴏ ɢᴇᴛ ꜱᴛᴀᴛᴜꜱ ᴏꜰ ꜰɪʟᴇꜱ ɪɴ ᴅʙ.</code>
 • /song -  mp3 & mp4 music download 
-• /id & /info & /imdb & /react & /hide &/show
-• /joke & /catfact & /animalfact & /dogfact & /gban
-•
-•
-•
-•
+• /id 
+• /info 
+• /imdb 
+• /react
+• /hide 
+• /show
+• /joke
+• /animalfact 
+• /dogfact 
+• /catfact
+• /gban 
+• /tm
+• /tx
 •
 •
 """
