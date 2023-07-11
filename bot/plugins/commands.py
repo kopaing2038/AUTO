@@ -1676,6 +1676,32 @@ async def set_admins_plus_command(client, message):
     else:
         await message.reply("No valid admin IDs were provided.")
 
+@Bot.on_message(filters.command('remove_admins_plus') & filters.user(Config.ADMINS))
+async def remove_admins_plus_command(client, message):
+    admins = message.command[1:]
+    admin_ids = []
+    if not admins:
+        await message.reply("Please provide a list of admin IDs.")
+        return
+    for admin in admins:
+        try:
+            admin_id = int(admin)
+            admin_ids.append(admin_id)
+        except ValueError:
+            # Invalid admin ID, skip it
+            continue
+
+    if admin_ids:
+        settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
+        existing_admins = settings.get("SUDO_USERS", [])
+        updated_admins = [admin for admin in existing_admins if admin not in admin_ids]  # Remove the specified admin IDs from the existing list
+        settings["SUDO_USERS"] = updated_admins
+        await config_db.update_config(f"SETTINGS_{message.chat.id}", settings)
+        await message.reply(f"Admins removed {admin_ids} successfully.")
+    else:
+        await message.reply("No valid admin IDs were provided.")
+
+
 @Bot.on_message(filters.command('show_admins_plus') & filters.user(Config.ADMINS))
 async def show_admins_plus_command(client, message):
     chat_id = message.chat.id
