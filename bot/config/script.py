@@ -327,7 +327,10 @@ Contact :- @KOPAINGLAY15
 • /set_file_caption -  {caption} text
 • /set_template - set imdb template 
 • /set_admins_plus - ADMIN ID
+• /show_admins_plus - ADMIN ID
+• /remove_admins_plus - ADMIN ID
 • /set_ads - url link
+• /show_ads - 
 • /set_start -   {mention} text
 • /set_cap2 - caption cap2 text
 • /set_pics - pic url link
