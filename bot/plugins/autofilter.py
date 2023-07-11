@@ -342,7 +342,8 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
             ]
 
     if imdb:
-        cap += Config.TEMPLATE.format(
+        #cap += settings["TEMPLATE"].format(query=search, **imdb, **locals())
+        cap += settings["TEMPLATE"].format(
             query=search,
             **imdb,
             **locals(),
@@ -395,7 +396,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                     caption=cap[:1024],
                     reply_markup=types.InlineKeyboardMarkup(btn),
                 )
-                ad1 = random.choice(Config.ADS)
+                ad1 = random.choice(settings["ADS"])
                 photo_url = ad1["photo"]
                 caption = ad1["caption"] + "\n\n" + cap2
                 await message.reply_photo(
@@ -418,7 +419,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                     caption=cap[:1024],
                     reply_markup=types.InlineKeyboardMarkup(btn),
                 )
-                ad1 = random.choice(Config.ADS)
+                ad1 = random.choice(settings["ADS"])
                 photo_url = ad1["photo"]
                 caption = ad1["caption"] + "\n\n" + cap2
                 await message.reply_photo(
@@ -434,7 +435,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 )
     else:
         if not settings["TEXT_LINK"]:
-            ad = random.choice(Config.ADS)
+            ad = random.choice(settings["ADS"])
             photo_url = ad["photo"]
             caption = ad["caption"] + "\n\n" + cap2
             await message.reply_photo(
@@ -444,7 +445,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 quote=True
             )
         else:
-            ad = random.choice(Config.ADS)
+            ad = random.choice(settings["ADS"])
             photo_url = ad["photo"]
             caption = ad["caption"] + "\n\n" + cap2
             file_send3 = await bot.send_photo(
