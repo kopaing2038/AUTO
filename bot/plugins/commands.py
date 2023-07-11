@@ -13,7 +13,10 @@ from pyrogram import errors, filters, types, enums
 import time
 from ..config import Config
 from ..config import Script
-from bot.database.configDb import configDB
+from bot.database.connections_mdb import add_connection
+import pymongo
+from pymongo import MongoClient
+from ..database import configDB as config_db
 from ..database import a_filter, usersDB, b_filter, c_filter
 from ..utils.botTools import (
     check_fsub,
@@ -23,6 +26,7 @@ from ..utils.botTools import (
     unpack_new_file_id,
     FORCE_TEXT,
     humanbytes,
+    update_config,
 )
 from ..utils.cache import Cache
 from ..utils.imdbHelpers import get_poster
@@ -1564,31 +1568,6 @@ async def set_pics_command(client, message):
     Config.PICS = pic_urls  # Replace the previous PICS with the newly supplied URLs
     await message.reply_text("URLs updated successfully.")
 
-#@Bot.on_message(filters.command('set_database') & filters.user(Config.ADMINS))
-async def set_database_command(client, message):
-    if len(message.command) < 2:
-        await message.reply_text("Please provide a DATABASE_URI to set.")
-        return
-    
-    database_uri = message.command[1]
-    Config.DATABASE_URI = database_uri
-    await message.reply_text("DATABASE_URI updated successfully.")
-
-
-@Bot.on_message(filters.command('set_database') & filters.user(Config.ADMINS))
-async def set_database_command(client, message):
-    # Extract the database URI from the command arguments
-    database_uri = ' '.join(message.command[1:])
-
-    # Update the DATABASE_URI in the Config class
-    Config.DATABASE_URI = database_uri
-
-    # Save the updated value to the .env file
-    with open('.env', 'a') as env_file:
-        env_file.write(f"DATABASE_URL={database_uri}\n")
-
-    # Reply to the user with a success message
-    await message.reply("Database URI has been updated successfully!")
 
 
 @Bot.on_message(filters.command('set_cap2') & filters.user(Config.ADMINS))
@@ -1613,6 +1592,7 @@ async def start_text_command(client, message):
     Script.START_TEXT = caption
     await message.reply_text("START_TEXT updated successfully.")
 
+
 @Bot.on_message(filters.command('set_ads') & filters.user(Config.ADMINS))
 async def set_ads(bot, message):
     ads = message.text.split('\n')[1:]
@@ -1625,10 +1605,12 @@ async def set_ads(bot, message):
             pass
 
     if ad_list:
-        Config.ADS = ad_list
-        await message.reply("ADS have been updated successfully!")
+        settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
+        settings["ADS"] = ad_list
+        await config_db.update_config(f"SETTINGS_{message.chat.id}", settings)
+        await message.reply("ADS settings updated successfully!")
     else:
-        await message.reply("Invalid ADS format. Please provide the ADS in the correct format.")
+        await message.reply("Invalid ADS format. Please provide valid JSON-formatted ADS.")
 
 @Bot.on_message(filters.command('set_ads_plus') & filters.user(Config.ADMINS))
 async def set_ads_plus(bot, message):
@@ -1642,10 +1624,32 @@ async def set_ads_plus(bot, message):
             pass
 
     if ad_list:
-        Config.ADS += ad_list
-        await message.reply("ADS Plus have been updated successfully!")
+        settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
+        existing_ads = settings.get("ADS", [])
+        updated_ads = existing_ads + ad_list  # Append the new ADS to the existing ADS list
+        settings["ADS"] = updated_ads
+        await config_db.update_config(f"SETTINGS_{message.chat.id}", settings)
+        await message.reply("ADS settings updated successfully!")
     else:
-        await message.reply("Invalid ADS format. Please provide the ADS in the correct format.")
+        await message.reply("Invalid ADS format. Please provide valid JSON-formatted ADS.")
+
+
+@Bot.on_message(filters.command('show_ads') & filters.user(Config.ADMINS))
+async def show_ads(bot, message):
+    chat_id = message.chat.id
+    settings = await config_db.get_settings(f"SETTINGS_{chat_id}")
+    ads = settings.get("ADS", [])
+    
+    if ads:
+        ad_strings = [json.dumps(ad) for ad in ads]
+        ads_text = '\n'.join(ad_strings)
+        await message.reply_text(f"Ads for this group:\n{ads_text}")
+    else:
+        await message.reply_text("No ads found for this group.")
+
+
+
+
 
 @Bot.on_message(filters.command('set_admins_plus') & filters.user(Config.ADMINS))
 async def set_admins_plus_command(client, message):
@@ -1661,14 +1665,29 @@ async def set_admins_plus_command(client, message):
         except ValueError:
             # Invalid admin ID, skip it
             continue
+
+    if admin_ids:
+        settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
+        existing_admins = settings.get("SUDO_USERS", [])
+        updated_admins = existing_admins + admin_ids  # Append the new admin IDs to the existing list
+        settings["SUDO_USERS"] = updated_admins
+        await config_db.update_config(f"SETTINGS_{message.chat.id}", settings)
+        await message.reply(f"Admins added {admin_ids} successfully.")
+    else:
+        await message.reply("No valid admin IDs were provided.")
+
+@Bot.on_message(filters.command('show_admins_plus') & filters.user(Config.ADMINS))
+async def show_admins_plus_command(client, message):
+    chat_id = message.chat.id
+    settings = await config_db.get_settings(f"SETTINGS_{chat_id}")
+    admins = settings.get("SUDO_USERS", [])
     
-    # Add the admin IDs to your configuration
-    Config.ADMINS += admin_ids
-    
-    # Save the updated configuration if necessary
-    
-    # Reply to the user
-    await message.reply(f"Admins added {admin_ids} successfully.")
+    if admins:
+        admin_list = '\n'.join(str(admin_id) for admin_id in admins)
+        await message.reply(f"Admin IDs:\n{admin_list}")
+    else:
+        await message.reply("No admins found.")
+
 
 @Bot.on_message(filters.command('set_template') & filters.user(Config.ADMINS))
 async def set_template_command(client, message):
@@ -1681,16 +1700,20 @@ async def set_template_command(client, message):
 🎭 𝗚𝗲𝗻𝗿𝗲𝘀   : #{genres}
 👥 𝗖𝗮𝘀𝘁  : #{cast}""")
         return
-    
-    Config.TEMPLATE = template
-    await message.reply(f"Template has been updated. {template}")
+
+    settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
+    settings["TEMPLATE"] = template
+    await config_db.update_config(f"SETTINGS_{message.chat.id}", settings)
+    await message.reply(f"Template has been updated.\n\n {template}")
+
 
 @Bot.on_message(filters.command('set_sub_channel') & filters.user(Config.ADMINS))
 async def set_sub_channel_command(client, message):
     if len(message.command) == 2:
         try:
             sub_channel_id = int(message.command[1])
-            Config.FORCE_SUB_CHANNEL = sub_channel_id
+            settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
+            settings["FORCE_SUB_CHANNEL"] = sub_channel_id
             await message.reply(f"FORCE_SUB_CHANNEL has been set to {sub_channel_id}")
         except ValueError:
             await message.reply("Invalid channel ID. Please provide a valid numeric ID.")
@@ -1700,48 +1723,20 @@ async def set_sub_channel_command(client, message):
 
 
 
-@Bot.on_message(filters.command('set_file_caption') & filters.user(Config.ADMINS))
+@Bot.on_message(filters.command('set_caption') & filters.user(Config.ADMINS))
 async def set_file_caption_command(client, message):
     if len(message.command) > 1:
         new_caption = " ".join(message.command[1:])
-        Config.CUSTOM_FILE_CAPTION = new_caption
-        await message.reply_text("Custom file caption has been updated.")
+        settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
+        settings["CUSTOM_FILE_CAPTION"] = new_caption
+        await config_db.update_config(f"SETTINGS_{message.chat.id}", settings)
+        await message.reply_text(f"Custom file caption has been updated.\n\n {new_caption}")
     else:
         await message.reply_text("Please provide a new caption for the files.")
 
 
 
 
-@Bot.on_message(filters.command('set_bot_token') & filters.user(Config.ADMINS))
-async def set_bot_token_plus_command(client, message):
-    # Get the token from the message text
-    command = message.text.split()
-    if len(command) == 2:
-        new_token = command[1]
-        
-        # Update the BOT_TOKEN in the Config class
-        Config.BOT_TOKEN = new_token.split()
-        
-        # Save the updated token to the configuration file or database
-        # This step depends on how you store and retrieve your configurations
-        
-        await message.reply(f"Bot token updated successfully to: {new_token} (split)")
-    else:
-        await message.reply("Invalid command format. Please use /set_bot_token_plus <new_token>")
 
 
 
-
-@Bot.on_message(filters.command('set_dbname2') & filters.user(Config.ADMINS))
-async def set_dbname2_command(client, message):
-    # Check if the command has an argument
-    if len(message.command) < 2:
-        await message.reply("Please provide a new value for COLLECTION_NAME2.")
-        return
-    
-    new_collection_name = message.command[1]
-    
-    # Update the value in the Config class
-    Config.COLLECTION_NAME2 = new_collection_name
-    
-    await message.reply(f"COLLECTION_NAME2 dbname2 has been set to: {new_collection_name}")
