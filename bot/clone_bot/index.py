@@ -11,17 +11,12 @@ from bot.config.config import Config
 from bot.database import a_filter
 from bot.utils.cache import Cache
 from bot.utils.logger import LOGGER
-from pyrogram import types
-
-from bot.client import Client
 
 logger = LOGGER("INDEX")
 
 
 lock = asyncio.Lock()
 _REGEX = r"(https://)?(t\.me/|telegram\.me/|telegram\.dog/)(c/)?(\d+|[a-zA-Z_0-9]+)/(\d+)$"
-
-
 
 
 @Bot.on_callback_query(filters.regex(r"^index"))  # type: ignore
@@ -57,6 +52,49 @@ async def index_files(bot: Bot, query: types.CallbackQuery):
         chat = chat
     await index_files_to_db(int(lst_msg_id), chat, msg, bot)  # type: ignore
 
+
+async def iter_messages(
+    client: Bot,
+    chat_id: Union[int, str],
+    limit: int,
+    offset: int = 0,
+) -> Optional[AsyncGenerator["types.Message", None]]:
+    """Iterate through a chat sequentially.
+    This convenience method does the same as repeatedly calling :meth:`~pyrogram.Client.get_messages` in a loop, thus saving
+    you from the hassle of setting up boilerplate code. It is useful for getting the whole chat messages with a
+    single call.
+    Parameters:
+        client (``Bot``):
+            The Bot instance used for making API calls.
+        chat_id (``int`` | ``str``):
+            Unique identifier (int) or username (str) of the target chat.
+            For your personal cloud (Saved Messages) you can simply use "me" or "self".
+            For a contact that exists in your Telegram address book you can use his phone number (str).
+        limit (``int``):
+            Identifier of the last message to be returned.
+        offset (``int``, *optional*):
+            Identifier of the first message to be returned.
+            Defaults to 0.
+    Returns:
+        ``AsyncGenerator``: An asynchronous generator yielding :obj:`~pyrogram.types.Message` objects.
+    Example:
+        .. code-block:: python
+            async for message in iter_messages(client, "pyrogram", 1, 15000):
+                print(message.text)
+    """
+    current = offset
+
+    while True:
+        new_diff = min(200, limit - current)
+        if new_diff <= 0:
+            return
+        messages = await client.get_messages(
+            chat_id, list(range(current, current + new_diff + 1))
+        )
+        for message in messages:
+            yield message
+            current += 1
+        await asyncio.sleep(10)
 
 
 @Bot.on_message(((filters.forwarded & ~filters.text) | (filters.regex(_REGEX)) & filters.text) & filters.private & filters.incoming & filters.user(Config.ADMINS))  # type: ignore
@@ -139,64 +177,59 @@ async def index_files_to_db(lst_msg_id: int, chat: int, msg: types.Message, bot:
         try:
             current = Cache.CURRENT
             Cache.CANCEL = False
-            while True:
-                new_diff = min(200, current - lst_msg_id)
-                if new_diff <= 0:
-                    break
-                messages = await bot.get_messages(chat, list(range(lst_msg_id, lst_msg_id + new_diff + 1)))
-                for message in messages:
-                    if Cache.CANCEL:
-                        inserted, errored = await a_filter.insert_pending()
-                        if inserted:
-                            total_files += inserted
-                        if errored:
-                            duplicate += errored
-                        await msg.edit(
-                            f"Successfully Cancelled!!\n\nSaved <code>{total_files} / {current}</code> files to database!\nDuplicate Files Skipped: <code>{duplicate}</code>\nDeleted Messages Skipped: <code>{deleted}</code>\nNon-Media messages skipped: <code>{no_media + unsupported}</code>(Unsupported Media - `{unsupported}`)\nErrors Occurred: <code>{errors}</code>"
-                        )
-                        return
-                    lst_msg_id += 1
-                    if lst_msg_id % 200 == 0:
-                        can = [[InlineKeyboardButton("Cancel", callback_data="index_cancel")]]
-                        reply = InlineKeyboardMarkup(can)
-                        await msg.edit_text(
-                            text=f"Total messages fetched: <code>{lst_msg_id}</code>\nTotal messages saved: <code>{total_files}</code>\nDuplicate Files Skipped: <code>{duplicate}</code>\nDeleted Messages Skipped: <code>{deleted}</code>\nNon-Media messages skipped: <code>{no_media + unsupported}</code>(Unsupported Media - `{unsupported}`)\nErrors Occurred: <code>{errors}</code>",
-                            reply_markup=reply,
-                        )
-                    if message.empty:
-                        deleted += 1
-                        continue
-                    elif not message.media:
-                        no_media += 1
-                        continue
-                    elif message.media.media_type not in [
-                        enums.MessageMediaType.VIDEO,
-                        enums.MessageMediaType.AUDIO,
-                        enums.MessageMediaType.DOCUMENT,
-                        enums.MessageMediaType.PHOTO
-                    ]:
-                        unsupported += 1
-                        continue
-                    media = getattr(message, message.media.media_type, None)
-                    if not media:
-                        unsupported += 1
-                        continue
-                    media.file_type = message.media.media_type
-                    if media.file_type == enums.MessageMediaType.PHOTO:
-                        media.file_name = message.caption.split('\n')[0] if message.caption else ""
-                        media.mime_type = "image/jpg"
-                    elif media.file_type == enums.MessageMediaType.DOCUMENT and message.document is not None:
-                        media.file_name = message.document.file_name if message.document.file_name else ""
-                        media.mime_type = message.document.mime_type if message.document.mime_type else ""
-                    media.caption = message.caption if message.caption else ""
-                    media.chat_id = message.chat.id
-                    media.channel_name = message.chat.username or message.chat.title
-                    media.message_id = message.message_id
-                    inserted, errored = await a_filter.insert_many(media)
+            async for message in iter_messages(bot, chat, lst_msg_id, Cache.CURRENT):
+                if Cache.CANCEL:
+                    inserted, errored = await a_filter.insert_pending()
                     if inserted:
                         total_files += inserted
                     if errored:
                         duplicate += errored
+                    await msg.edit(
+                        f"Successfully Cancelled!!\n\nSaved <code>{total_files} / {current}</code> files to database!\nDuplicate Files Skipped: <code>{duplicate}</code>\nDeleted Messages Skipped: <code>{deleted}</code>\nNon-Media messages skipped: <code>{no_media + unsupported}</code>(Unsupported Media - `{unsupported}`)\nErrors Occurred: <code>{errors}</code>"
+                    )
+                    break
+                current += 1
+                if current % 200 == 0:
+                    can = [[InlineKeyboardButton("Cancel", callback_data="index_cancel")]]
+                    reply = InlineKeyboardMarkup(can)
+                    await msg.edit_text(
+                        text=f"Total messages fetched: <code>{current}</code>\nTotal messages saved: <code>{total_files}</code>\nDuplicate Files Skipped: <code>{duplicate}</code>\nDeleted Messages Skipped: <code>{deleted}</code>\nNon-Media messages skipped: <code>{no_media + unsupported}</code>(Unsupported Media - `{unsupported}`)\nErrors Occurred: <code>{errors}</code>",
+                        reply_markup=reply,
+                    )
+                if message.empty:
+                    deleted += 1
+                    continue
+                elif not message.media:
+                    no_media += 1
+                    continue
+                elif message.media.media_type not in [
+                    enums.MessageMediaType.VIDEO,
+                    enums.MessageMediaType.AUDIO,
+                    enums.MessageMediaType.DOCUMENT,
+                    enums.MessageMediaType.PHOTO
+                ]:
+                    unsupported += 1
+                    continue
+                media = getattr(message, message.media.media_type, None)
+                if not media:
+                    unsupported += 1
+                    continue
+                media.file_type = message.media.media_type
+                if media.file_type == enums.MessageMediaType.PHOTO:
+                    media.file_name = message.caption.split('\n')[0] if message.caption else ""
+                    media.mime_type = "image/jpg"
+                elif media.file_type == enums.MessageMediaType.DOCUMENT and message.document is not None:
+                    media.file_name = message.document.file_name if message.document.file_name else ""
+                    media.mime_type = message.document.mime_type if message.document.mime_type else ""
+                media.caption = message.caption if message.caption else ""
+                media.chat_id = message.chat.id
+                media.channel_name = message.chat.username or message.chat.title
+                media.message_id = message.message_id
+                inserted, errored = await a_filter.insert_many(media)
+                if inserted:
+                    total_files += inserted
+                if errored:
+                    duplicate += errored
 
         except Exception as e:
             logger.exception(e)
@@ -210,4 +243,3 @@ async def index_files_to_db(lst_msg_id: int, chat: int, msg: types.Message, bot:
             await msg.edit(
                 f"Successfully saved <code>{total_files} / {current}</code> to database!\nDuplicate Files Skipped: <code>{duplicate}</code>\nDeleted Messages Skipped: <code>{deleted}</code>\nNon-Media messages skipped: <code>{no_media + unsupported}</code>(Unsupported Media - `{unsupported}`)\nErrors Occurred: <code>{errors}</code>"
             )
-
