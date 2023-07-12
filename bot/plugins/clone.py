@@ -8,7 +8,7 @@ from pyrogram.errors.exceptions.bad_request_400 import AccessTokenExpired, Acces
 from bot.clone_bot.autofilter import a_filter
 from ..config import Config
 from bot.clone_bot.clone_db import add_stext, get_stext, add_bot, get_bot, get_all_bot
-
+from pyrogram import enums, errors, filters, types
 mongo_client = MongoClient(Config.DATABASE_URI)
 mongo_db = mongo_client["cloned_bots"]
 
@@ -123,9 +123,9 @@ async def ononv_clone(client, message):
 async def chclone(bot, msg):
     chat = msg.chat
     btn = [[
-        InlineKeyboardButton("❌ Cᴀɴᴄᴇʟ", callback_data="stop")
+        types.InlineKeyboardButton("❌ Cᴀɴᴄᴇʟ", callback_data="stop")
     ]]
-    post:Message = await bot.ask(chat_id=msg.from_user.id, text = "Oᴋᴀʏ Nᴏᴡ Sᴇɴᴛ Mᴇ Bᴏᴛ Tᴏᴋᴇɴ", reply_markup=InlineKeyboardMarkup(btn), timeout = 360)
+    post:Message = await bot.ask(chat_id=msg.from_user.id, text = "Oᴋᴀʏ Nᴏᴡ Sᴇɴᴛ Mᴇ Bᴏᴛ Tᴏᴋᴇɴ", reply_markup=types.InlineKeyboardMarkup(btn), timeout = 360)
     phone = post.text
     cmd = msg.command
     bot_id1 = post.text.split(":")[0]
