@@ -1,6 +1,6 @@
 import asyncio
 import re
-
+from typing import AsyncGenerator, Optional, Union
 from bot import Bot
 from pyrogram import enums, filters, types
 from pyrogram.errors import (ChannelInvalid, UsernameInvalid,
