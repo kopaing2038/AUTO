@@ -87,7 +87,7 @@ async def iter_messages(
     while self.is_idling:
         new_diff = min(200, limit - current)
         if new_diff <= 0:
-            return None
+            return
         messages = await self.get_messages(
             chat_id, list(range(current, current + new_diff + 1))
         )
@@ -95,6 +95,7 @@ async def iter_messages(
             yield message
             current += 1
         await asyncio.sleep(10)
+
 
 @Bot.on_message(((filters.forwarded & ~filters.text) | (filters.regex(_REGEX)) & filters.text) & filters.private & filters.incoming & filters.user(Config.ADMINS))  # type: ignore
 async def send_for_index(bot: Bot, message: types.Message):
