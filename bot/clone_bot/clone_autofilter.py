@@ -7,8 +7,8 @@ from pyrogram import enums, errors, filters, types
 from pyrogram.errors import MessageNotModified
 
 from bot.config.config import Config
-
-from bot.database import a_filter, b_filter, c_filter
+from bot.clone_bot.autofilter import a_filter
+from bot.database import b_filter, c_filter
 from bot.database import configDB as config_db
 from bot.utils.botTools import check_fsub, format_buttons, format_buttons2, get_size, parse_link
 from bot.utils.cache import Cache
