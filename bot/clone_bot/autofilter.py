@@ -168,10 +168,12 @@ class BaseFiltersDb(MongoDb):
         return total, files
 
 
+bot_username = "YourBotUsername" 
+
 class FiltersDb(BaseFiltersDb):
-    def __init__(self, bot):
+    def __init__(self, bot, username):
         self.bot = bot
-        super().__init__(f"{self.bot.username}")
+        self.username = username
+        super().__init__(f"{self.username}")
 
-a_filter = FiltersDb(bot)
-
+a_filter = FiltersDb(bot, bot_username)
