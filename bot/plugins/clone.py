@@ -5,7 +5,7 @@ from pymongo import MongoClient
 from pyrogram import Client, filters
 from pyrogram.types import Message
 from pyrogram.errors.exceptions.bad_request_400 import AccessTokenExpired, AccessTokenInvalid
-
+from bot.clone_bot.autofilter import a_filter
 from ..config import Config
 
 mongo_client = MongoClient(Config.DATABASE_URI)
