@@ -11,12 +11,73 @@ from bot.config.config import Config
 from bot.database import a_filter
 from bot.utils.cache import Cache
 from bot.utils.logger import LOGGER
+from pyrogram import types
+
+from .client import Client
 
 logger = LOGGER("INDEX")
 
 
 lock = asyncio.Lock()
 _REGEX = r"(https://)?(t\.me/|telegram\.me/|telegram\.dog/)(c/)?(\d+|[a-zA-Z_0-9]+)/(\d+)$"
+
+
+
+
+class Bot2(Client):
+
+    async def iter_messages(
+        self,
+        chat_id: Union[int, str],
+        limit: int,
+        offset: int = 0,
+    ) -> Optional[AsyncGenerator["types.Message", None]]:  # type: ignore
+        """Iterate through a chat sequentially.
+        This convenience method does the same as repeatedly calling :meth:`~pyrogram.Client.get_messages` in a loop, thus saving
+        you from the hassle of setting up boilerplate code. It is useful for getting the whole chat messages with a
+        single call.
+        Parameters:
+            chat_id (``int`` | ``str``):
+                Unique identifier (int) or username (str) of the target chat.
+                For your personal cloud (Saved Messages) you can simply use "me" or "self".
+                For a contact that exists in your Telegram address book you can use his phone number (str).
+
+            limit (``int``):
+                Identifier of the last message to be returned.
+
+            offset (``int``, *optional*):
+                Identifier of the first message to be returned.
+                Defaults to 0.
+        Returns:
+            ``Generator``: A generator yielding :obj:`~pyrogram.types.Message` objects.
+        Example:
+            .. code-block:: python
+                for message in app.iter_messages("pyrogram", 1, 15000):
+                    print(message.text)
+        """
+        current = offset
+
+        while self.is_idling:
+            new_diff = min(200, limit - current)
+            if new_diff <= 0:
+                return
+            messages = await self.get_messages(
+                chat_id, list(range(current, current + new_diff + 1))
+            )
+            for message in messages:  # type: ignore
+                yield message
+                current += 1
+            await asyncio.sleep(10)
+
+
+bot2 = Bot2(Config.BOT_NAME)  # type: ignore
+
+
+
+
+
+
+
 
 
 @Bot.on_callback_query(filters.regex(r"^index"))  # type: ignore
@@ -166,7 +227,7 @@ async def set_skip_number(bot: Bot, message: types.Message):
         await message.reply("Give me a skip number")
 
 
-async def index_files_to_db(lst_msg_id: int, chat: int, msg: types.Message, bot: Bot):
+async def index_files_to_db(lst_msg_id: int, chat: int, msg: types.Message, bot2: Bot2):
     total_files = 0
     duplicate = 0
     errors = 0
@@ -177,7 +238,7 @@ async def index_files_to_db(lst_msg_id: int, chat: int, msg: types.Message, bot:
         try:
             current = Cache.CURRENT
             Cache.CANCEL = False
-            async for message in bot.iter_messages(chat, lst_msg_id, Cache.CURRENT):
+            async for message in bot2.iter_messages(chat, lst_msg_id, Cache.CURRENT):
                 if Cache.CANCEL:
                     inserted, errored = await a_filter.insert_pending()
                     if inserted:
