@@ -8,7 +8,7 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 from bot import Bot
 from bot.config.config import Config
-from bot.database import a_filter
+from bot.clone_bot.autofilter import a_filter
 from bot.utils.cache import Cache
 from bot.utils.logger import LOGGER
 
