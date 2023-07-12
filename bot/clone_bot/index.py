@@ -1,7 +1,7 @@
 import asyncio
 import re
 from typing import AsyncGenerator, Optional, Union
-from pyrogram import filters, types
+from pyrogram import Client, filters, types
 from pyrogram.errors import (ChannelInvalid, UsernameInvalid,
                              UsernameNotModified)
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
