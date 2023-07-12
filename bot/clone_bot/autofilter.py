@@ -6,6 +6,16 @@ from bot.utils.botTools import unpack_new_file_id
 from bot.utils.logger import LOGGER
 from bot.database.mongoDb import MongoDb
 
+from bot import bot  # Import the 'bot' object from the 'bot' module
+from bot.plugins.clone import clone_start
+
+# Initialize the 'bot' object
+bot.start()
+bot.run_until_disconnected()
+
+# Call ClonedMe.initialize() with the 'bot' object
+ClonedMe.initialize(bot)
+
 logger = LOGGER("AUTO_FILTER_DB")
 
 class ClonedMe(object):
