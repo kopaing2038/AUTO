@@ -40,6 +40,7 @@ class ConfigDB(MongoDb):
                 "FORCE_SUB_CHANNEL": Config.FORCE_SUB_CHANNEL,
                 "CUSTOM_FILE_CAPTION": Config.CUSTOM_FILE_CAPTION,
                 "SUDO_USERS": Config.SUDO_USERS,
+                "SONG": Config.SONG,
                 
             }
         return {}
