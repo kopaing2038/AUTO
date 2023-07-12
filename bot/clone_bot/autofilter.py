@@ -5,13 +5,19 @@ from bot.config.config import Config
 from bot.utils.botTools import unpack_new_file_id
 from bot.utils.logger import LOGGER
 from bot.database.mongoDb import MongoDb
-
+from bot import Bot
 logger = LOGGER("AUTO_FILTER_DB")
 
 class ClonedMe(object):
     ME = None
     U_NAME = None
     B_NAME = None
+
+    @classmethod
+    def initialize(cls, bot: Bot):
+        cls.ME = bot.id
+        cls.U_NAME = bot.username
+        cls.B_NAME = bot.first_name
 
 
 class BaseFiltersDb(MongoDb):
