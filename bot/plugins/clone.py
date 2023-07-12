@@ -96,7 +96,7 @@ async def ononv_clone(client, message):
             )
             await ai.start()
             bot = await ai.get_me()
-
+ 
             details = {
                 'bot_id': bot.id,
                 'is_bot': True,
@@ -108,7 +108,7 @@ async def ononv_clone(client, message):
             mongo_db.bots.insert_one(details)
 
 
-
+            add_bot(user_id, user_name)
             clonedme.ME = bot.id
             clonedme.U_NAME = bot.username
             clonedme.B_NAME = bot.first_name
