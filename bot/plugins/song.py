@@ -300,8 +300,8 @@ async def download_video(url, query, message, req, client, user_name, user_id):
 
 
 
-@Client.on_message(filters.private & filters.text & filters.incoming)
-async def psvv_filter(bot: Client, msg):
+@Bot.on_message(filters.private & filters.text & filters.incoming)
+async def psvv_filter(bot, msg):
     content = msg.text
     user = msg.from_user.first_name
     user_id = msg.from_user.id
