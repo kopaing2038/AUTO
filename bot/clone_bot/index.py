@@ -13,7 +13,7 @@ from bot.utils.cache import Cache
 from bot.utils.logger import LOGGER
 from pyrogram import types
 
-from .client import Client
+from bot.client import Client
 
 logger = LOGGER("INDEX")
 
