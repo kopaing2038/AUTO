@@ -16,10 +16,10 @@ class ClonedMe(object):
     U_NAME = None
     B_NAME = None
 
-    bot = Bot()
-    ClonedMe.ME = bot.id
-    ClonedMe.U_NAME = bot.username
-    ClonedMe.B_NAME = bot.first_name
+bot = Bot()
+ClonedMe.ME = bot.id
+ClonedMe.U_NAME = bot.username
+ClonedMe.B_NAME = bot.first_name
 
 
 class BaseFiltersDb(MongoDb):
