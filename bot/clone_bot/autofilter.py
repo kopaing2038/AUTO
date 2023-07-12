@@ -19,7 +19,7 @@ class ClonedMe(object):
 bot = Bot("my_bot")
 
 
-ClonedMe.ME = bot.id
+ClonedMe.ME = bot.bot_id
 ClonedMe.U_NAME = bot.username
 ClonedMe.B_NAME = bot.first_name
 
