@@ -23,15 +23,24 @@ from pytube import Search
 from pyrogram.errors import FloodWait, MessageNotModified
 from pyrogram.types import Message
 from yt_dlp import YoutubeDL
+from bot.database import configDB as config_db
 
 query_text = ""
 download_links = {}
 
-@Bot.on_message(filters.command(["song"]) & ~filters.channel)
+
+@Bot.on_message(filters.command(["song", "music", "mp3", "mp4"]) & filters.group)
+async def group_song_command_handler(client, message):
+	settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
+	if settings['SONG']:
+		await song(client, message)
+
+
+
 async def song(client, message):
-    if message.chat.id in Config.MUSIC_AUTH_GROUPS:
-        await message.reply_text("You are not authorized to use this command in this group.")
-        return
+    #if message.chat.id in Config.MUSIC_AUTH_GROUPS:
+        #await message.reply_text("You are not authorized to use this command in this group.")
+        #return
     global query_text
     query = ' '.join(message.command[1:])
     user_id = message.from_user.id
