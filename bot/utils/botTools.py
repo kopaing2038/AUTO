@@ -24,8 +24,10 @@ CONFIGURABLE = {
     "DOWNLOAD_BUTTON": {"help": "Enable / disable download button", "name": "Download Button"},
     "PHOTO_FILTER": {"help": "Enable / disable photo filter", "name": "Photo Filter"},
     "V_FILTER": {"help": "Enable / disable Video filter", "name": "Video Filter"},
+    "PM_FILTER": {"help": "Enable / disable DM filter", "name": "DM Filter"},
     "CH_POST": {"help": "Enable / disable Ch Post", "name": "Ch POst"},
     "TEXT_LINK": {"help": "Enable / disable Text Link", "name": "Text Link"},
+    "SONG": {"help": "Enable / disable SONG", "name": "SONG"},
 }
 
 
