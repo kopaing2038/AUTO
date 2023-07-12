@@ -7,6 +7,7 @@ from pyrogram.types import Message
 from pyrogram.errors.exceptions.bad_request_400 import AccessTokenExpired, AccessTokenInvalid
 from bot.clone_bot.autofilter import a_filter
 from ..config import Config
+from bot.clone_bot.clone_db import add_stext, get_stext, add_bot, get_bot, get_all_bot
 
 mongo_client = MongoClient(Config.DATABASE_URI)
 mongo_db = mongo_client["cloned_bots"]
@@ -118,6 +119,32 @@ async def ononv_clone(client, message):
     except Exception as e:
         logging.exception("Error while handling message.")
 
+@Client.on_message(filters.command("clone3") & filters.private)
+async def chclone(bot, message):
+    chat = msg.chat
+    btn = [[
+        InlineKeyboardButton("❌ Cᴀɴᴄᴇʟ", callback_data="stop")
+    ]]
+    post:Message = await bot.ask(chat_id=msg.from_user.id, text = "Oᴋᴀʏ Nᴏᴡ Sᴇɴᴛ Mᴇ Bᴏᴛ Tᴏᴋᴇɴ", reply_markup=InlineKeyboardMarkup(btn), timeout = 360)
+    phone = post.text
+    cmd = msg.command
+    bot_id1 = post.text.split(":")[0]
+    try:
+        text1 = await msg.reply("<b>Tʀʏɪɴɢ Tᴏ Cᴏɴɴᴇᴄᴛ Yᴏᴜʀ Bᴏᴛ...</b>")
+                  
+        client = Client(bot_id1 + "_0", API_ID, API_HASH, bot_token=phone, plugins={"root": "Clone"})
+        await client.start()
+        idle()
+        user = await client.get_me()
+        user_mention = msg.from_user.mention
+        user_id = msg.from_user.id
+        add_bot(user_id, phone)
+        await bot.send_message(chat_id=LOG_CHANNEL, text=f"A New Bot Has Be Created :\n\nCreator : {user_mention}\nBot : @{user.username}")
+        await text1.edit(f"<b>Hᴇʏ Bʀᴏ Yᴏᴜ Bᴏᴛ Hᴀs Bᴇᴇɴ Sᴛᴀʀᴛᴇᴅ As @{user.username} ✅ \n\nAᴅᴅ Tᴏ Yᴏᴜʀ Gʀᴏᴜᴘ Aɴᴅ Eɴᴊᴏʏ.. 📣</b>")
+     
+    except Exception as e:
+        
+        await text1.edit(f"**❌ Eʀʀᴏʀ :**\n\n`{str(e)}`\n\nIғ Hᴀᴠᴇ Aɴʏ Dᴏᴜʙᴛ Asᴋ Iɴ Sᴜᴘᴘᴏʀᴛ ❗")
 
 @Client.on_message(filters.command("clone") & filters.private)
 async def ono2_clone(client, message):
