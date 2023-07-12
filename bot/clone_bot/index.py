@@ -1,7 +1,7 @@
 import asyncio
 import re
 from typing import AsyncGenerator, Optional, Union
-from pyrogram import enums, filters, types
+from pyrogram import filters, types
 from pyrogram.errors import (ChannelInvalid, UsernameInvalid,
                              UsernameNotModified)
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
@@ -54,7 +54,7 @@ async def index_files(bot: Bot, query: types.CallbackQuery):
 
 
 async def iter_messages(
-    client: Bot,
+    client: types.Client,
     chat_id: Union[int, str],
     limit: int,
     offset: int = 0,
@@ -64,14 +64,15 @@ async def iter_messages(
     you from the hassle of setting up boilerplate code. It is useful for getting the whole chat messages with a
     single call.
     Parameters:
-        client (``Bot``):
-            The Bot instance used for making API calls.
+        client (:obj:`~pyrogram.Client`): The Pyrogram client instance.
         chat_id (``int`` | ``str``):
             Unique identifier (int) or username (str) of the target chat.
             For your personal cloud (Saved Messages) you can simply use "me" or "self".
-            For a contact that exists in your Telegram address book you can use his phone number (str).
+            For a contact that exists in your Telegram address book, you can use his phone number (str).
+
         limit (``int``):
             Identifier of the last message to be returned.
+
         offset (``int``, *optional*):
             Identifier of the first message to be returned.
             Defaults to 0.
@@ -79,7 +80,7 @@ async def iter_messages(
         ``AsyncGenerator``: An asynchronous generator yielding :obj:`~pyrogram.types.Message` objects.
     Example:
         .. code-block:: python
-            async for message in iter_messages(client, "pyrogram", 1, 15000):
+            async for message in iter_messages(app, "pyrogram", 1, 15000):
                 print(message.text)
     """
     current = offset
@@ -108,7 +109,7 @@ async def send_for_index(bot: Bot, message: types.Message):
         last_msg_id = int(match.group(5))
         if chat_id.isnumeric():
             chat_id = int(("-100" + chat_id))
-    elif message.forward_from_chat.type == enums.ChatType.CHANNEL:
+    elif message.forward_from_chat.type == types.enums.ChatType.CHANNEL:
         last_msg_id = message.forward_from_message_id
         chat_id = message.forward_from_chat.username or message.forward_from_chat.id
     else:
@@ -203,10 +204,10 @@ async def index_files_to_db(lst_msg_id: int, chat: int, msg: types.Message, bot:
                     no_media += 1
                     continue
                 elif message.media.media_type not in [
-                    enums.MessageMediaType.VIDEO,
-                    enums.MessageMediaType.AUDIO,
-                    enums.MessageMediaType.DOCUMENT,
-                    enums.MessageMediaType.PHOTO
+                    types.enums.MessageMediaType.VIDEO,
+                    types.enums.MessageMediaType.AUDIO,
+                    types.enums.MessageMediaType.DOCUMENT,
+                    types.enums.MessageMediaType.PHOTO
                 ]:
                     unsupported += 1
                     continue
@@ -215,10 +216,10 @@ async def index_files_to_db(lst_msg_id: int, chat: int, msg: types.Message, bot:
                     unsupported += 1
                     continue
                 media.file_type = message.media.media_type
-                if media.file_type == enums.MessageMediaType.PHOTO:
+                if media.file_type == types.enums.MessageMediaType.PHOTO:
                     media.file_name = message.caption.split('\n')[0] if message.caption else ""
                     media.mime_type = "image/jpg"
-                elif media.file_type == enums.MessageMediaType.DOCUMENT and message.document is not None:
+                elif media.file_type == types.enums.MessageMediaType.DOCUMENT and message.document is not None:
                     media.file_name = message.document.file_name if message.document.file_name else ""
                     media.mime_type = message.document.mime_type if message.document.mime_type else ""
                 media.caption = message.caption if message.caption else ""
