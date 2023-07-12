@@ -120,7 +120,7 @@ async def ononv_clone(client, message):
         logging.exception("Error while handling message.")
 
 @Client.on_message(filters.command("clone3") & filters.private)
-async def chclone(bot, message):
+async def chclone(bot, msg):
     chat = msg.chat
     btn = [[
         InlineKeyboardButton("❌ Cᴀɴᴄᴇʟ", callback_data="stop")
