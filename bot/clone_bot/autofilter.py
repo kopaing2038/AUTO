@@ -171,7 +171,7 @@ class BaseFiltersDb(MongoDb):
 
 class FiltersDb(BaseFiltersDb):
     def __init__(self):
-        collection_name = str(bot_id)
+        collection_name = str()
         super().__init__(collection_name)
 
 a_filter = FiltersDb()
