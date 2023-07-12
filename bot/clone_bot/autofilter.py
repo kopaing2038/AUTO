@@ -16,7 +16,8 @@ class ClonedMe(object):
     U_NAME = None
     B_NAME = None
 
-bot = Bot()
+bot = Bot()  # Create an instance of the Bot class
+
 ClonedMe.ME = bot.id
 ClonedMe.U_NAME = bot.username
 ClonedMe.B_NAME = bot.first_name
@@ -182,7 +183,8 @@ class BaseFiltersDb(MongoDb):
 
 class FiltersDb(BaseFiltersDb):
     def __init__(self):
-        super().__init__(f"{bot.id}")
+        super().__init__(f"{ClonedMe.U_NAME}")
+
 
 
 
