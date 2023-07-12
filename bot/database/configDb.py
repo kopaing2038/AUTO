@@ -32,6 +32,7 @@ class ConfigDB(MongoDb):
                 "DOWNLOAD_BUTTON": True,
                 "PHOTO_FILTER": Config.PHOTO_FILTER,
                 "V_FILTER": Config.V_FILTER,
+                "PM_FILTER": Config.PM_FILTER,
                 "CH_POST": Config.CH_POST,
                 "TEXT_LINK": Config.TEXT_LINK,
                 "ADS": Config.ADS,
@@ -39,6 +40,7 @@ class ConfigDB(MongoDb):
                 "FORCE_SUB_CHANNEL": Config.FORCE_SUB_CHANNEL,
                 "CUSTOM_FILE_CAPTION": Config.CUSTOM_FILE_CAPTION,
                 "SUDO_USERS": Config.SUDO_USERS,
+                
             }
         return {}
 
