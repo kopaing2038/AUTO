@@ -119,15 +119,13 @@ async def ononv_clone(client, message):
     except Exception as e:
         logging.exception("Error while handling message.")
 
-from pyrogram import types
-
 @Client.on_message(filters.command("clone3") & filters.private)
 async def chclone(bot, msg):
     chat = msg.chat
     btn = [[
         types.InlineKeyboardButton("❌ Cᴀɴᴄᴇʟ", callback_data="stop")
     ]]
-    post: types.Message = await bot.send_message(chat_id=msg.from_user.id, text="Oᴋᴀʏ Nᴏᴡ Sᴇɴᴛ Mᴇ Bᴏᴛ Tᴏᴋᴇɴ", reply_markup=types.InlineKeyboardMarkup(btn), timeout=360)
+    post: Message = await bot.send_message(chat_id=msg.from_user.id, text="Oᴋᴀʏ Nᴏᴡ Sᴇɴᴛ Mᴇ Bᴏᴛ Tᴏᴋᴇɴ", reply_markup=types.InlineKeyboardMarkup(btn))
     phone = post.text
     cmd = msg.command
     bot_id1 = post.text.split(":")[0]
