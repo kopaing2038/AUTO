@@ -6,16 +6,6 @@ from bot.utils.botTools import unpack_new_file_id
 from bot.utils.logger import LOGGER
 from bot.database.mongoDb import MongoDb
 
-from bot import bot  # Import the 'bot' object from the 'bot' module
-from bot.plugins.clone import clone_start
-
-# Initialize the 'bot' object
-bot.start()
-bot.run_until_disconnected()
-
-# Call ClonedMe.initialize() with the 'bot' object
-ClonedMe.initialize(bot)
-
 logger = LOGGER("AUTO_FILTER_DB")
 
 class ClonedMe(object):
@@ -23,20 +13,9 @@ class ClonedMe(object):
     U_NAME = None
     B_NAME = None
 
-    @classmethod
-    def initialize(cls, bot):
-        cls.ME = bot.id
-        cls.U_NAME = bot.username
-        cls.B_NAME = bot.first_name
 
-ClonedMe.initialize(bot)
-
-mongo_client = MongoClient(Config.DATABASE_URI)
-mongo_db = mongo_client[ClonedMe.U_NAME]
-
-class BaseFiltersDb(MongoDb):
+class BaseFiltersDb:
     def __init__(self, collection_name):
-        super().__init__()
         self.col = self.get_collection(collection_name)
         self.data = []
 
@@ -44,31 +23,28 @@ class BaseFiltersDb(MongoDb):
         file = await self.file_dict(media)
         self.data.append(file)
         if len(self.data) >= 200:
-            try:
-                insert = await self.col.insert_many(self.data, ordered=False)
-            except BulkWriteError as e:
-                inserted = e.details["nInserted"]
-            else:
-                inserted = len(insert.inserted_ids)
-            duplicate = len(self.data) - inserted
-            self.data.clear()
+            inserted, duplicate = await self._insert_many_data()
             return inserted, duplicate
 
-        logger.info(f'{getattr(media, "file_name", "NO_FILE")} is updated in the database')
+        print(f'{getattr(media, "file_name", "NO_FILE")} is updated in the database')
         return None, None
 
     async def insert_pending(self):
         if self.data:
-            try:
-                insert = await self.col.insert_many(self.data, ordered=False)
-            except BulkWriteError as e:
-                inserted = e.details["nInserted"]
-            else:
-                inserted = len(insert.inserted_ids)
-            duplicate = len(self.data) - inserted
-            self.data.clear()
+            inserted, duplicate = await self._insert_many_data()
             return inserted, duplicate
         return 0, 0
+
+    async def _insert_many_data(self):
+        try:
+            insert = await self.col.insert_many(self.data, ordered=False)
+        except BulkWriteError as e:
+            inserted = e.details["nInserted"]
+        else:
+            inserted = len(insert.inserted_ids)
+        duplicate = len(self.data) - inserted
+        self.data.clear()
+        return inserted, duplicate
 
     async def file_dict(self, media):
         file_id, file_ref = unpack_new_file_id(media.file_id)
@@ -93,30 +69,16 @@ class BaseFiltersDb(MongoDb):
             caption=media.caption.html if media.caption else None,
         )
 
-    async def save_file(self, media):
-        """Save file in the database"""
-
-        file = await self.file_dict(media)
-        try:
-            await self.col.insert_one(file)
-        except DuplicateKeyError:
-            logger.warning(
-                f'{getattr(media, "file_name", "NO_FILE")} is already saved in the database'
-            )
-            return False, 0
-        else:
-            logger.info(
-                f'{getattr(media, "file_name", "NO_FILE")} is saved to the database'
-            )
-            return True, 1
-
     async def get_search_results(
-            self, query: str, file_type: str = None, max_results: int = 5,
-            offset: int = 0, filter: bool = False, photo: bool = True,
-            video: bool = True
+        self,
+        query: str,
+        file_type: str = None,
+        max_results: int = 5,
+        offset: int = 0,
+        filter: bool = False,
+        photo: bool = True,
+        video: bool = True
     ):
-        """Return search results for the given query"""
-
         query = query.strip()
 
         if not query:
@@ -131,16 +93,12 @@ class BaseFiltersDb(MongoDb):
         except re.error:
             return []
 
-        if Config.USE_CAPTION_FILTER:
-            filter_ = {"$or": [{"file_name": regex}, {"caption": regex}]}
+        if not photo:
+            filter_ = {"$and": [{"file_name": regex}, {"file_type": {"$ne": "photo"}}]}
+        elif not video:
+            filter_ = {"$and": [{"file_name": regex}, {"file_type": {"$ne": "video"}}]}
         else:
             filter_ = {"file_name": regex}
-
-        if not photo:
-            filter_ = {"$and": [filter_, {"file_type": {"$ne": "photo"}}]}
-
-        if not video:
-            filter_ = {"$and": [filter_, {"file_type": {"$ne": "video"}}]}
 
         total_results = await self.col.count_documents(filter_)
         next_offset = offset + max_results
@@ -156,40 +114,6 @@ class BaseFiltersDb(MongoDb):
 
         return files, next_offset, total_results
 
-    async def get_file_details(self, file_id: str):
-        return await self.col.find_one({"_id": file_id})
-
-    async def count_documents(self, filter_: dict) -> int:
-        return await self.col.count_documents(filter_)
-
-    async def get_distinct_chat_ids(self):
-        return await self.col.distinct("chat_id")
-
-    async def delete_many(self, chat_id: str):
-        result = await self.col.delete_many({"chat_id": chat_id})
-        return result
-
-    async def delete_files(self, query, filter=True):
-        query = query.strip()
-        if filter:
-            query = query.replace(' ', r'(\s|\.|\+|\-|_)')
-            raw_pattern = r'(\s|_|\-|\.|\+)' + query + r'(\s|_|\-|\.|\+)'
-        if not query:
-            raw_pattern = '.'
-        elif ' ' not in query:
-            raw_pattern = r'(\b|[\.\+\-_])' + query + r'(\b|[\.\+\-_])'
-        else:
-            raw_pattern = query.replace(' ', r'.*[\s\.\+\-_]')
-
-        try:
-            regex = re.compile(raw_pattern, flags=re.IGNORECASE)
-        except re.error:
-            return []
-        file_filter = {'file_name': regex}
-        total = await self.count_documents(file_filter)
-        files = await self.col.find(file_filter).to_list(None)
-        return total, files
-
 
 class FiltersDb(BaseFiltersDb):
     def __init__(self):
@@ -197,3 +121,4 @@ class FiltersDb(BaseFiltersDb):
 
 
 a_filter = FiltersDb()
+
