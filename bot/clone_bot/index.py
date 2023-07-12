@@ -54,7 +54,7 @@ async def index_files(bot: Bot, query: types.CallbackQuery):
 
 
 async def iter_messages(
-    client: types.Client,
+    client: Client,
     chat_id: Union[int, str],
     limit: int,
     offset: int = 0,
