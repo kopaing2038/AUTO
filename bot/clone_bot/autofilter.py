@@ -18,10 +18,11 @@ class ClonedMe(object):
 
 bot = Bot("my_bot")
 
-
-ClonedMe.ME = bot.bot_id
-ClonedMe.U_NAME = bot.username
-ClonedMe.B_NAME = bot.first_name
+bot_doc = mongo_db.cloned_bots.find_one({"username": bot.username})
+if bot_doc:
+    ClonedMe.ME = bot_doc["bot_id"]["$numberLong"]
+    ClonedMe.U_NAME = bot_doc["username"]
+    ClonedMe.B_NAME = bot_doc["name"]
 
 
 class BaseFiltersDb(MongoDb):
@@ -179,7 +180,6 @@ class BaseFiltersDb(MongoDb):
         total = await self.count_documents(file_filter)  # Use 'self' to access the instance variable
         files = await self.col.find(file_filter).to_list(None)
         return total, files
-
 
 
 class FiltersDb(BaseFiltersDb):
