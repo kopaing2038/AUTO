@@ -6,7 +6,7 @@ import logging
 import random
 import pyrogram
 from bot import Bot
-
+from bot.plugins.autofilter import ch1_give_filter
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
 
@@ -164,45 +164,47 @@ async def psvv_filter(bot: Client, msg):
         # If the message was sent by an admin, send their reply to the user who sent the original message
         if msg.reply_to_message:
             user_msg = msg.reply_to_message.text
-            original_user_id = msg.reply_to_message.from_user.id
+            user_id = msg.reply_to_message.from_msg.id
             
-            try:
-                await bot.send_message(chat_id=original_user_id, text=f"Admin replied: {user_msg}")
-            except pyrogram.errors.exceptions.bad_request_400.UserIsBot:
-                pass  # Ignore the error if the user is a bot
-        return
-    
+            await bot.send_message(chat_id=msg.reply_to_message.from_msg.id, text=f"Admin replied: {user_msg}")
+        return	
+
+
     await bot.send_message(
         chat_id=Config.LOG_CHANNEL,
         text=f"<b>#𝐏𝐌_𝐌𝐒𝐆\n\n@{bot.me.username}\n\nNᴀᴍᴇ : {user}\n\nID : {user_id}\n\nMᴇssᴀɢᴇ : {content}</b>")
 	
+    #if not await botcheck_fsub(bot, msg):
+        #return	
+   
+    settings = await config_db.get_settings(f"SETTINGS_{msg.chat.id}")
+    if settings['PM_FILTER']:
+        kd = await ch1_give_filter(bot, msg) 
+        return
+    
     btn = [
         [InlineKeyboardButton("Group 1", url="https://t.me/MKS_REQUESTGROUP"),
-         InlineKeyboardButton("Group 2", url="https://t.me/+z5lhEpxP5Go4MWM1")],
+	InlineKeyboardButton("Group 2", url="https://t.me/+z5lhEpxP5Go4MWM1")],
         [InlineKeyboardButton("All Link ", url="https://t.me/Movie_Zone_KP/3")],
     ]
     btn2 = [
         [InlineKeyboardButton("Group 3", url="https://t.me/Movie_Group_MMSUB"),
-         InlineKeyboardButton("Group 4", url="https://t.me/+cHMLAeatqKdlNGVl")],
+	InlineKeyboardButton("Group 4", url="https://t.me/+cHMLAeatqKdlNGVl")],
         [InlineKeyboardButton("All Link ", url="https://t.me/Movie_Zone_KP/3")],
     ]
     
-    bt = [
-        {
-            "caption": f"""Yᴏᴜʀ ᴍᴇssᴀɢᴇ ʜᴀs ʙᴇᴇɴ sᴇɴᴛ ᴛᴏ ᴍʏ ᴍᴏᴅᴇʀᴀᴛᴏʀs!
+    bt = [ 
+        {"caption": f"""Yᴏᴜʀ ᴍᴇssᴀɢᴇ ʜᴀs ʙᴇᴇɴ sᴇɴᴛ ᴛᴏ ᴍʏ ᴍᴏᴅᴇʀᴀᴛᴏʀs!
 ===========================
 Can't find movies here. Search in the group given below    
 @Movie_Group_MMSUB""", 
-            "reply_markup": InlineKeyboardMarkup(btn)
-        },
-        {
-            "caption": f"""သင့်စာကို မင်မင်ထံ ပေးပို့လိုက်ပါပြီး။ !
-
+         "reply_markup": InlineKeyboardMarkup(btn)},
+        {"caption": f"""သင့်စာကို မင်မင်ထံ ပေးပို့လိုက်ပါပြီး။ !
+	
 ===========================
 ဤနေရာတွေ ဇာတ်ကားများရှာမရပါ အောက်တွင်ပေးထားသော Group ထဲတွင်ရှာပါ 
 @MKS_REQUESTGROUP""",
-            "reply_markup": InlineKeyboardMarkup(btn2)
-        },
+         "reply_markup": InlineKeyboardMarkup(btn2)},
     ]
 
     ad = random.choice(bt)
