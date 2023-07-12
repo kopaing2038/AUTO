@@ -15,6 +15,7 @@ async def main():
     bot.loop.create_task(check_pending(bot))
     LOGGER(__name__).info(f"Banned Users list updated {Cache.BANNED}")
     LOGGER(__name__).info("Listening for updates from API..")
+    await clone_start()
     await idle()
     await bot.stop()
 
