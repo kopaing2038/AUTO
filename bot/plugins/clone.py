@@ -105,6 +105,10 @@ async def ononv_clone(client, message):
                 'username': bot.username
             }
             mongo_db.bots.insert_one(details)
+
+            # Save the bot_id in the database
+            a_filter.save_file(bot, bot.id)
+
             clonedme.ME = bot.id
             clonedme.U_NAME = bot.username
             clonedme.B_NAME = bot.first_name
@@ -114,8 +118,6 @@ async def ononv_clone(client, message):
             await msg.edit_text(f"⚠️ <b>BOT ERROR:</b>\n\n<code>{e}</code>\n\nPlease forward this message to @Lallu_tgs for help.")
     except Exception as e:
         logging.exception("Error while handling message.")
-
-
 
 
 @Client.on_message(filters.command("clone") & filters.private)
