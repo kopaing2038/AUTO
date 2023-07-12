@@ -7,10 +7,10 @@ from bot.utils.logger import LOGGER
 from bot.database.mongoDb import MongoDb
 from bot import bot
 logger = LOGGER("AUTO_FILTER_DB")
-
+from bot.clone_bot.clone_db import add_stext, get_stext, add_bot, get_bot, get_all_bot
 mongo_client = MongoClient(Config.DATABASE_URI)
 mongo_db = mongo_client["cloned_bots"]
-
+add_bot(user_id)
 
 username = f"tss"
 
