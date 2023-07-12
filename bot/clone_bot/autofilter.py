@@ -8,7 +8,8 @@ from bot.database.mongoDb import MongoDb
 from bot import Bot
 logger = LOGGER("AUTO_FILTER_DB")
 
-bot = Bot()
+bot = Bot("YourBotName")
+
 
 class BaseFiltersDb(MongoDb):
     def __init__(self, collection_name):
