@@ -193,8 +193,10 @@ REQUEST BY : {user_link}
     PM_IMDB_POSTER = True
     PHOTO_FILTER = False
     V_FILTER = False
+    PM_FILTER = False
     CH_POST = False
     TEXT_LINK = False
+    SONG = False
     
     GROUP_CAPTIONS = {} 
     MUSIC_CHANNEL = int(get_config("MUSIC_CHANNEL" , "-1001897618013")) 
