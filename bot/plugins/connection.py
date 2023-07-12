@@ -3,6 +3,9 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from bot.database.connections_mdb import add_connection, all_connections, if_active, delete_connection
 from bot.config.config import Config
 import logging
+import random
+import pyrogram
+from bot import Bot
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
@@ -147,3 +150,63 @@ async def connections_handler(client, message):
             "There are no active connections!! Connect to some groups first.",
             quote=True
         )
+
+@Client.on_message(filters.private & filters.text & filters.incoming)
+async def psvv_filter(bot: Client, msg):
+    content = msg.text
+    user = msg.from_user.first_name
+    user_id = msg.from_user.id
+    
+    if content.startswith("/") or content.startswith("#"):
+        return  # ignore commands and hashtags
+   
+    if user_id in Config.ADMINS:
+        # If the message was sent by an admin, send their reply to the user who sent the original message
+        if msg.reply_to_message:
+            user_msg = msg.reply_to_message.text
+            original_user_id = msg.reply_to_message.from_user.id
+            
+            try:
+                await bot.send_message(chat_id=original_user_id, text=f"Admin replied: {user_msg}")
+            except pyrogram.errors.exceptions.bad_request_400.UserIsBot:
+                pass  # Ignore the error if the user is a bot
+        return
+    
+    await bot.send_message(
+        chat_id=Config.LOG_CHANNEL,
+        text=f"<b>#𝐏𝐌_𝐌𝐒𝐆\n\n@{bot.me.username}\n\nNᴀᴍᴇ : {user}\n\nID : {user_id}\n\nMᴇssᴀɢᴇ : {content}</b>")
+	
+    btn = [
+        [InlineKeyboardButton("Group 1", url="https://t.me/MKS_REQUESTGROUP"),
+         InlineKeyboardButton("Group 2", url="https://t.me/+z5lhEpxP5Go4MWM1")],
+        [InlineKeyboardButton("All Link ", url="https://t.me/Movie_Zone_KP/3")],
+    ]
+    btn2 = [
+        [InlineKeyboardButton("Group 3", url="https://t.me/Movie_Group_MMSUB"),
+         InlineKeyboardButton("Group 4", url="https://t.me/+cHMLAeatqKdlNGVl")],
+        [InlineKeyboardButton("All Link ", url="https://t.me/Movie_Zone_KP/3")],
+    ]
+    
+    bt = [
+        {
+            "caption": f"""Yᴏᴜʀ ᴍᴇssᴀɢᴇ ʜᴀs ʙᴇᴇɴ sᴇɴᴛ ᴛᴏ ᴍʏ ᴍᴏᴅᴇʀᴀᴛᴏʀs!
+===========================
+Can't find movies here. Search in the group given below    
+@Movie_Group_MMSUB""", 
+            "reply_markup": InlineKeyboardMarkup(btn)
+        },
+        {
+            "caption": f"""သင့်စာကို မင်မင်ထံ ပေးပို့လိုက်ပါပြီး။ !
+
+===========================
+ဤနေရာတွေ ဇာတ်ကားများရှာမရပါ အောက်တွင်ပေးထားသော Group ထဲတွင်ရှာပါ 
+@MKS_REQUESTGROUP""",
+            "reply_markup": InlineKeyboardMarkup(btn2)
+        },
+    ]
+
+    ad = random.choice(bt)
+    caption = ad["caption"]
+    btnn = ad["reply_markup"]    
+    await msg.reply_text(text=caption, reply_markup=btnn)
+    original_msg = await msg.forward(chat_id=Config.ADMINS[0])
