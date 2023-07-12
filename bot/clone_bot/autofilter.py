@@ -174,4 +174,4 @@ class FiltersDb(BaseFiltersDb):
         collection_name = str(bot_id)
         super().__init__(collection_name)
 
-a_filter = FiltersDb(bot_id)
+a_filter = FiltersDb()
