@@ -13,7 +13,7 @@ mongo_db = mongo_client["cloned_bots"]
 
 
 
-username = add_bot(user_id, user_name)
+username = f"yej"
 
 
 
