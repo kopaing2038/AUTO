@@ -106,8 +106,7 @@ async def ononv_clone(client, message):
             }
             mongo_db.bots.insert_one(details)
 
-            # Save the bot_id in the database
-            a_filter.save_file(bot, bot.id)
+
 
             clonedme.ME = bot.id
             clonedme.U_NAME = bot.username
