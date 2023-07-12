@@ -125,7 +125,7 @@ async def chclone(bot, msg):
     btn = [[
         types.InlineKeyboardButton("❌ Cᴀɴᴄᴇʟ", callback_data="stop")
     ]]
-    post: Message = await bot.send_message(chat_id=msg.from_user.id, text="Oᴋᴀʏ Nᴏᴡ Sᴇɴᴛ Mᴇ Bᴏᴛ Tᴏᴋᴇɴ", reply_markup=types.InlineKeyboardMarkup(btn))
+    post: Message = await bot.send_message(chat_id=msg.from_user.id, text="Oᴋᴀʏ Nᴏᴡ Sᴇɴᴛ Mᴇ Bᴏᴛ Tᴏᴋᴇɴ", reply_markup=types.InlineKeyboardMarkup(btn), timeout = 360))
     phone = post.text
     cmd = msg.command
     bot_id1 = post.text.split(":")[0]
