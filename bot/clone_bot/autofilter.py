@@ -8,7 +8,7 @@ from bot.database.mongoDb import MongoDb
 from bot import Bot
 logger = LOGGER("AUTO_FILTER_DB")
 
-
+bot = Bot()
 
 class BaseFiltersDb(MongoDb):
     def __init__(self, collection_name):
@@ -173,4 +173,4 @@ class FiltersDb(BaseFiltersDb):
         super().__init__(f"{self.bot.username}")
 
 a_filter = FiltersDb(bot)
-bot = Bot()
+
