@@ -203,12 +203,13 @@ async def index_files_to_db(lst_msg_id: int, chat: int, msg: types.Message, bot:
                 elif not message.media:
                     no_media += 1
                     continue
-                elif message.media.media_type not in [
-                    types.enums.MessageMediaType.VIDEO,
-                    types.enums.MessageMediaType.AUDIO,
-                    types.enums.MessageMediaType.DOCUMENT,
-                    types.enums.MessageMediaType.PHOTO
+                elif message.media not in [
+                    enums.MessageMediaType.VIDEO,
+                    enums.MessageMediaType.AUDIO,
+                    enums.MessageMediaType.DOCUMENT,
+                    enums.MessageMediaType.PHOTO
                 ]:
+
                     unsupported += 1
                     continue
                 media = getattr(message, message.media.media_type, None)
