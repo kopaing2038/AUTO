@@ -7,7 +7,7 @@ from .utils.cache import Cache
 from .utils.idle import idle
 from .utils.initialization import check_pending
 from .utils.logger import LOGGER
-
+from bot.plugins.clone import clone_start
 
 async def main():
     await bot.start()
