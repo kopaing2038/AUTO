@@ -12,7 +12,7 @@ mongo_client = MongoClient(Config.DATABASE_URI)
 mongo_db = mongo_client["cloned_bots"]
 
 
-username = mongo_db.cloned_bots.find_one({"username": ""})
+username = 
 
 
 
@@ -175,8 +175,8 @@ class BaseFiltersDb(MongoDb):
 
 class FiltersDb(BaseFiltersDb):
     def __init__(self):
-        collection_name =username
-        super().__init__(collection_name)
+        super().__init__(Config.COLLECTION_NAME)
+
 
 
 a_filter = FiltersDb()
