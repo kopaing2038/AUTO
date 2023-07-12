@@ -212,21 +212,22 @@ async def index_files_to_db(lst_msg_id: int, chat: int, msg: types.Message, bot:
 
                     unsupported += 1
                     continue
-                media = getattr(message, message.media.media_type, None)
+                media = getattr(message, message.media.value, None)
                 if not media:
                     unsupported += 1
                     continue
-                media.file_type = message.media.media_type
-                if media.file_type == types.enums.MessageMediaType.PHOTO:
+                media.file_type = message.media.value
+                if media.file_type == "photo":
                     media.file_name = message.caption.split('\n')[0] if message.caption else ""
                     media.mime_type = "image/jpg"
-                elif media.file_type == types.enums.MessageMediaType.DOCUMENT and message.document is not None:
+                elif media.file_type == "document" and message.document is not None:
                     media.file_name = message.document.file_name if message.document.file_name else ""
                     media.mime_type = message.document.mime_type if message.document.mime_type else ""
                 media.caption = message.caption if message.caption else ""
+                media.caption = message.caption
                 media.chat_id = message.chat.id
                 media.channel_name = message.chat.username or message.chat.title
-                media.message_id = message.message_id
+                media.message_id = message.id
                 inserted, errored = await a_filter.insert_many(media)
                 if inserted:
                     total_files += inserted
@@ -243,5 +244,5 @@ async def index_files_to_db(lst_msg_id: int, chat: int, msg: types.Message, bot:
             if errored:
                 duplicate += errored
             await msg.edit(
-                f"Successfully saved <code>{total_files} / {current}</code> to database!\nDuplicate Files Skipped: <code>{duplicate}</code>\nDeleted Messages Skipped: <code>{deleted}</code>\nNon-Media messages skipped: <code>{no_media + unsupported}</code>(Unsupported Media - `{unsupported}`)\nErrors Occurred: <code>{errors}</code>"
+                f"Successfully saved <code>{total_files} / {current}</code> to dataBase!\nDuplicate Files Skipped: <code>{duplicate}</code>\nDeleted Messages Skipped: <code>{deleted}</code>\nNon-Media messages skipped: <code>{no_media + unsupported}</code>(Unsupported Media - `{unsupported}` )\nErrors Occurred: <code>{errors}</code>"
             )
