@@ -5,7 +5,7 @@ from bot.config.config import Config
 from bot.utils.botTools import unpack_new_file_id
 from bot.utils.logger import LOGGER
 from bot.database.mongoDb import MongoDb
-from bot import Bot
+from bot import bot
 logger = LOGGER("AUTO_FILTER_DB")
 
 mongo_client = MongoClient(Config.DATABASE_URI)
