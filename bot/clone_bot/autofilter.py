@@ -168,11 +168,8 @@ class BaseFiltersDb(MongoDb):
 
 
 class FiltersDb(BaseFiltersDb):
-    def __init__(self):
-        super().__init__(f"{self.me.username}")
+    def __init__(self, bot):
+        self.bot = bot
+        super().__init__(f"{self.bot.username}")
 
-
-
-
-a_filter = FiltersDb()
-
+a_filter = FiltersDb(bot)
