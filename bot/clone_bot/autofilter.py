@@ -171,7 +171,7 @@ class BaseFiltersDb(MongoDb):
 
 class FiltersDb(BaseFiltersDb):
     def __init__(self):
-        super().__init__(mydb[str(bot_id)])
+        super().__init__(cloned_bots)
 
 
 
