@@ -27,7 +27,6 @@ class BaseFiltersDb(MongoDb):
                 inserted = e.details["nInserted"]  # type: ignore
             else:
                 inserted = len(insert.inserted_ids)
-
             duplicate = len(self.data) - inserted
             self.data.clear()
             return inserted, duplicate
@@ -54,11 +53,11 @@ class BaseFiltersDb(MongoDb):
         if media.file_type == "photo":
             file_ref = media.file_id
         file_name = re.sub(r"(_|\-|\.|\+)", " ", str(media.file_name))
-
+    
         channel_name = None
         if hasattr(media, 'channel_name'):
             channel_name = media.channel_name
-
+    
         return dict(
             _id=file_id,
             file_ref=file_ref,
@@ -70,10 +69,10 @@ class BaseFiltersDb(MongoDb):
             file_type=media.file_type,
             mime_type=media.mime_type,
             caption=media.caption.html if media.caption else None,
-        )
-
+       )
     async def save_file(self, media):
         """Save file in database"""
+
         file = await self.file_dict(media)
         try:
             await self.col.insert_one(file)  # type: ignore
@@ -87,6 +86,7 @@ class BaseFiltersDb(MongoDb):
                 f'{getattr(media, "file_name", "NO_FILE")} is saved to database'
             )
             return True, 1
+
 
     async def get_search_results(self, query: str, file_type: str = None, max_results: int = 5, offset: int = 0, filter: bool = False, photo: bool = True, video: bool = True):  # type: ignore
         """For given query return (results, next_offset)"""
@@ -171,7 +171,8 @@ class BaseFiltersDb(MongoDb):
 
 class FiltersDb(BaseFiltersDb):
     def __init__(self):
-        collection_name = str()
-        super().__init__(collection_name)
+        super().__init__(mydb[str(bot_id)])
+
+
 
 a_filter = FiltersDb()
