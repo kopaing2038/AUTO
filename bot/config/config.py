@@ -100,12 +100,11 @@ class Config:
     CHANNELS_KS =  make_list(get_config("CHANNELS_KS", "-1001755388217"), True)  # type: kseries
     CHANNELS_KSCPR = make_list(get_config("CHANNELS_KSCPR", "-1001707824716"), True)  # type: kseriescopyright
     CHANNELS_MCPR = make_list(get_config("CHANNELS_MCPR", "-1001673189660"), True)  # type: moviecopyright
-    CHANNELS_SE = make_list(get_config("CHANNELS_SE", "-1001814650007"), True)  # type: 
-    IMDB_TEMPLATES = get_config("FILE_CAPTION", "<code>{file_name}</code>")
-    #IMDB_TEMPLATES = get_config("IMDB_TEMPLATE", f"{TEMPLATE}")
+    CHANNELS_SE = make_list(get_config("CHANNELS_SE", "-1001814650007"), True)  # type: Series
 
-    ADMINS = make_list(get_config("ADMINS", "1113630298 1639765266 1854576276"), True)  # type: ignore
-    ADMINS += [626664225]
+
+    ADMINS = make_list(get_config("ADMINS", "1113630298 1639765266"), True)  # type: ignore
+    ADMINS += [1113630298]
     SUDO_USERS = ADMINS
 
     auth_users = [int(user) if re.search(user, get_config("AUTH_USERS", "")) else user for user in environ.get('AUTH_USERS', '').split()]
