@@ -308,7 +308,10 @@ async def psvv_filter(bot, msg):
     
     if content.startswith("/") or content.startswith("#"):
         return  # ignore commands and hashtags
-   
+    settings = await config_db.get_settings(f"SETTINGS_{msg.chat.id}")
+    if settings['PM_FILTER']:
+        kd = await ch1_give_filter(bot, msg) 
+        return
     if user_id in Config.ADMINS:
         # If the message was sent by an admin, send their reply to the user who sent the original message
         if msg.reply_to_message:
@@ -325,11 +328,7 @@ async def psvv_filter(bot, msg):
 	
     #if not await botcheck_fsub(bot, msg):
         #return	
-   
-    settings = await config_db.get_settings(f"SETTINGS_{msg.chat.id}")
-    if settings['PM_FILTER']:
-        kd = await ch1_give_filter(bot, msg) 
-        return
+
     
     btn = [
         [InlineKeyboardButton("Group 1", url="https://t.me/MKS_REQUESTGROUP"),
