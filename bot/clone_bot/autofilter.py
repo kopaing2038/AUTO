@@ -173,3 +173,4 @@ class FiltersDb(BaseFiltersDb):
         super().__init__(f"{self.bot.username}")
 
 a_filter = FiltersDb(bot)
+bot = Bot()
