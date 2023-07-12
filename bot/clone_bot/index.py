@@ -1,12 +1,12 @@
 import asyncio
 import re
 from typing import AsyncGenerator, Optional, Union
-from bot import Bot
 from pyrogram import enums, filters, types
 from pyrogram.errors import (ChannelInvalid, UsernameInvalid,
                              UsernameNotModified)
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
+from bot import Bot
 from bot.config.config import Config
 from bot.database import a_filter
 from bot.utils.cache import Cache
@@ -35,7 +35,7 @@ async def index_files(bot: Bot, query: types.CallbackQuery):
         return
 
     if lock.locked():
-        return await query.answer("Wait until previous process complete.", show_alert=True)
+        return await query.answer("Wait until the previous process completes.", show_alert=True)
     msg = query.message
 
     await query.answer("Processing...⏳", show_alert=True)
@@ -48,7 +48,7 @@ async def index_files(bot: Bot, query: types.CallbackQuery):
     )
     try:
         chat = int(chat)
-    except:
+    except ValueError:
         chat = chat
     await index_files_to_db(int(lst_msg_id), chat, msg, bot)  # type: ignore
 
@@ -117,7 +117,7 @@ async def send_for_index(bot: Bot, message: types.Message):
         await bot.get_chat(chat_id)
     except ChannelInvalid:
         return await message.reply(
-            "This may be a private channel / group. Make me an admin over there to index the files."
+            "This may be a private channel/group. Make me an admin over there to index the files."
         )
     except (UsernameInvalid, UsernameNotModified):
         return await message.reply("Invalid Link specified.")
@@ -128,10 +128,10 @@ async def send_for_index(bot: Bot, message: types.Message):
         k = await bot.get_messages(chat_id, last_msg_id)
     except:
         return await message.reply(
-            "Make Sure That Iam An Admin In The Channel, if channel is private"
+            "Make sure that I am an admin in the channel, if the channel is private."
         )
     if k.empty:  # type: ignore
-        return await message.reply("This may be group and iam not a admin of the group.")
+        return await message.reply("This may be a group, and I am not an admin of the group.")
 
     if message.from_user.id in Config.ADMINS:
         buttons = [
@@ -142,12 +142,12 @@ async def send_for_index(bot: Bot, message: types.Message):
                 )
             ],
             [
-                InlineKeyboardButton("close", callback_data="close_data"),
+                InlineKeyboardButton("Close", callback_data="close_data"),
             ],
         ]
         reply_markup = InlineKeyboardMarkup(buttons)
         return await message.reply(
-            f"Do you Want To Index This Channel/ Group ?\n\nChat ID/ Username: <code>{chat_id}</code>\nLast Message ID: <code>{last_msg_id}</code>",
+            f"Do you want to index this channel/group?\n\nChat ID/Username: <code>{chat_id}</code>\nLast Message ID: <code>{last_msg_id}</code>",
             reply_markup=reply_markup,
         )
 
@@ -158,12 +158,13 @@ async def set_skip_number(bot: Bot, message: types.Message):
         _, skip = message.text.split(" ")
         try:
             skip = int(skip)
-        except:
+        except ValueError:
             return await message.reply("Skip number should be an integer.")
         await message.reply(f"Successfully set SKIP number as {skip}")
         Cache.CURRENT = int(skip)  # type: ignore
     else:
         await message.reply("Give me a skip number")
+
 
 async def index_files_to_db(lst_msg_id: int, chat: int, msg: types.Message, bot: Bot):
     total_files = 0
@@ -176,7 +177,7 @@ async def index_files_to_db(lst_msg_id: int, chat: int, msg: types.Message, bot:
         try:
             current = Cache.CURRENT
             Cache.CANCEL = False
-            async for message in iter_messages(chat, lst_msg_id, Cache.CURRENT):
+            async for message in bot.iter_messages(chat, lst_msg_id, Cache.CURRENT):
                 if Cache.CANCEL:
                     inserted, errored = await a_filter.insert_pending()
                     if inserted:
