@@ -187,14 +187,14 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
 
             if not files_c:
                 english_chars = re.findall("[a-zA-Z]+", message.text)
+                photo_search = "https://telegra.ph/file/19602f3dea66d7238ed69.jpg"
+                nosearch = f"Sᴏʀʀʏ. {message.from_user.mention}  {search}  ကိုရှာမတွေ့ပါ။!ရှာမတွေရတဲ့ အကြောင်းရင်းမှာ\n\n◉  ဤ Group တွင် ကိုးရီးယားစီးရီးများနဲ့ တစ်ကားထဲအပြီး ဇာတ်ကားများကိုသာရရှိနိုင်ပါသည်။\n\n◉ ကျွန်ုပ်တို့၏ Database တွင်မရှိတာ၊ မတင်ရသေးတာ၊ မြန်မာစာတန်းထိုးမရသေးတာတစ်ခုခုပါ။ 💾\n\n◉ ဒါမှမဟုတ် သင့်ရဲ့ စာလုံးပေါင်း မှားနေတာ ဖြစ်နိုင်တယ် google မှာ စာလုံးပေါင်းစစ်ဆေးကြည့်ပါ။ 🔍."
                 if english_chars:
                     search = " ".join(english_chars)
-                    m = await message.reply_text(               
-                        f"Sᴏʀʀʏ. {message.from_user.mention} ရှာဖွေမှု {search}  ကိုရှာမတွေ့ပါ။! \n\n အကြောင်းပြချက်မှာ :\n\n"  
-                        "◉ ကိုးရီးယားစီးရီးများနဲ့ တစ်ကားထဲအပြီး ဇာတ်ကားများကိုသာရရှိနိုင်ပါသည်။\n\n"                  
-                        "◉ ကျွန်ုပ်တို့၏ Database မှာမရှိပါ။ 💾\n\n"
-                        "◉ ဒါမှမဟုတ် သင့်ရဲ့ စာလုံးပေါင်း မှားနေတာ ဖြစ်နိုင်တယ်။  ဒါကြောင့် google မှာ စာလုံးပေါင်းစစ်ဆေးကြည့်ပါ။ 🔍.",
-                        reply_markup=types.InlineKeyboardMarkup(
+                    m = await message.reply_photo(
+                        photo=photo_search,
+                        caption=nosearch,
+                        reply_markup=types.InlineKeyboardMarkup(           
                             [
                                 [types.InlineKeyboardButton(f"Sᴩᴇʟʟɪɴɢ Oɴ Gᴏᴏɢʟᴇ 🔍", url=f"https://www.google.com/search?q={search.replace(' ', '+')}")]
                             ]
