@@ -12,7 +12,7 @@ mongo_client = MongoClient(Config.DATABASE_URI)
 mongo_db = mongo_client["cloned_bots"]
 
 
-username = "net"
+username = f"{bot.me.username}"
 
 
 
