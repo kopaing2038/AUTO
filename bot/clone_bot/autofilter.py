@@ -117,7 +117,7 @@ class BaseFiltersDb:
 
 class FiltersDb(BaseFiltersDb):
     def __init__(self):
-        super().__init__("{ClonedMe.U_NAME}")
+        super().__init__(ClonedMe.U_NAME)
 
 
 
