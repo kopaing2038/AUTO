@@ -8,21 +8,6 @@ from bot.database.mongoDb import MongoDb
 from bot import Bot
 logger = LOGGER("AUTO_FILTER_DB")
 
-mongo_client = MongoClient(Config.DATABASE_URI)
-mongo_db = mongo_client["cloned_bots"]
-
-class ClonedMe(object):
-    ME = None
-    U_NAME = None
-    B_NAME = None
-
-bot = Bot("my_bot")
-
-bot_doc = mongo_db.cloned_bots.find_one({"username": bot.username})
-if bot_doc:
-    ClonedMe.ME = bot_doc["bot_id"]["$numberLong"]
-    ClonedMe.U_NAME = bot_doc["username"]
-    ClonedMe.B_NAME = bot_doc["name"]
 
 
 class BaseFiltersDb(MongoDb):
@@ -184,7 +169,7 @@ class BaseFiltersDb(MongoDb):
 
 class FiltersDb(BaseFiltersDb):
     def __init__(self):
-        super().__init__(f"{ClonedMe.U_NAME}")
+        super().__init__(f"{self.me.username}")
 
 
 
