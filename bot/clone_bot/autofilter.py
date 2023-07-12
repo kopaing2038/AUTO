@@ -8,7 +8,12 @@ from bot.database.mongoDb import MongoDb
 from bot import Bot
 logger = LOGGER("AUTO_FILTER_DB")
 
-bot = Bot("YourBotName")
+mongo_client = MongoClient(Config.DATABASE_URI)
+mongo_db = mongo_client["cloned_bots"]
+
+
+bot.username = mongo_db.cloned_bots.find_one({"username": bot.username})
+
 
 
 class BaseFiltersDb(MongoDb):
@@ -168,12 +173,10 @@ class BaseFiltersDb(MongoDb):
         return total, files
 
 
-bot_username = "YourBotUsername" 
-
 class FiltersDb(BaseFiltersDb):
-    def __init__(self, bot, username):
-        self.bot = bot
-        self.username = username
-        super().__init__(f"{self.username}")
+    def __init__(self):
+        collection_name = bot.username
+        super().__init__(collection_name)
 
-a_filter = FiltersDb(bot, bot_username)
+
+a_filter = FiltersDb()
