@@ -3,7 +3,7 @@ from pyrogram import Client, filters, enums
 from pyrogram.errors.exceptions.bad_request_400 import UserNotParticipant, MediaEmpty, PhotoInvalidDimensions, WebpageMediaEmpty
 from bot.config import Config
 #from bot.utils.imdbHelpers import get_poster
-from bot.plugins.kopaing.imdb_info import extract_user
+from bot.plugins.kopaing.imdb_info import extract_user, get_file_id
 from pyrogram.types import User
 import time
 from datetime import datetime
