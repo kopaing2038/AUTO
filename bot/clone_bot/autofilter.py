@@ -1,7 +1,6 @@
 import re
-
 from pymongo.errors import BulkWriteError, DuplicateKeyError
-
+from pymongo import MongoClient
 from bot.config.config import Config
 from bot.utils.botTools import unpack_new_file_id
 from bot.utils.logger import LOGGER
@@ -9,7 +8,8 @@ from bot.database.mongoDb import MongoDb
 
 logger = LOGGER("AUTO_FILTER_DB")
 
-
+mongo_client = MongoClient(Config.DATABASE_URI)
+mongo_db = mongo_client["cloned_bots"]
 
 class BaseFiltersDb(MongoDb):
     def __init__(self, collection_name):
@@ -54,11 +54,11 @@ class BaseFiltersDb(MongoDb):
         if media.file_type == "photo":
             file_ref = media.file_id
         file_name = re.sub(r"(_|\-|\.|\+)", " ", str(media.file_name))
-    
+
         channel_name = None
         if hasattr(media, 'channel_name'):
             channel_name = media.channel_name
-    
+
         return dict(
             _id=file_id,
             file_ref=file_ref,
@@ -70,10 +70,10 @@ class BaseFiltersDb(MongoDb):
             file_type=media.file_type,
             mime_type=media.mime_type,
             caption=media.caption.html if media.caption else None,
-       )
-    async def save_file(self, media, bot_id):
+        )
+
+    async def save_file(self, media):
         """Save file in database"""
-        mycol = mydb[str(bot_id)]
         file = await self.file_dict(media)
         try:
             await self.col.insert_one(file)  # type: ignore
@@ -87,8 +87,6 @@ class BaseFiltersDb(MongoDb):
                 f'{getattr(media, "file_name", "NO_FILE")} is saved to database'
             )
             return True, 1
-
-
 
     async def get_search_results(self, query: str, file_type: str = None, max_results: int = 5, offset: int = 0, filter: bool = False, photo: bool = True, video: bool = True):  # type: ignore
         """For given query return (results, next_offset)"""
@@ -172,11 +170,8 @@ class BaseFiltersDb(MongoDb):
 
 
 class FiltersDb(BaseFiltersDb):
-    def __init__(self):
-        super().__init__(Config.COLLECTION_NAME4)
+    def __init__(self, bot_id):
+        collection_name = str(bot_id)
+        super().__init__(collection_name)
 
-
-
-
-a_filter = FiltersDb()
-
+a_filter = FiltersDb(bot_id)
