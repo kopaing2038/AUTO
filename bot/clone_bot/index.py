@@ -84,7 +84,7 @@ async def iter_messages(
     """
     current = offset
 
-    while self.is_idling:
+    while True:
         new_diff = min(200, limit - current)
         if new_diff <= 0:
             return
