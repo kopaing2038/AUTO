@@ -73,7 +73,6 @@ class BaseFiltersDb(MongoDb):
     async def save_file(self, media):
         """Save file in database"""
         file = await self.file_dict(media)
-        file['chat_id'] = channel_id
         try:
             await self.col.insert_one(file)  # type: ignore
         except DuplicateKeyError:
