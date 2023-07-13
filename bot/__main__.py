@@ -15,10 +15,10 @@ async def main():
     bot.loop.create_task(check_pending(bot))
     LOGGER(__name__).info(f"Banned Users list updated {Cache.BANNED}")
     LOGGER(__name__).info("Listening for updates from API..")
-    await clone_start()
+    #await clone_start()
     await idle()
     await bot.stop()
-    await clone_stop()
+    #await clone_stop()
 
 
 if __name__ == "__main__":
