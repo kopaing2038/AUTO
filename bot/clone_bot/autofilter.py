@@ -163,12 +163,12 @@ class BaseFiltersDb:
         return total, files
 
 class FiltersDb(BaseFiltersDb):
-    async def __init__(self):
-        settings = await config_db.get_settings()
+    def __init__(self):
+        settings = config_db.get_settings()
         bot_id = settings.get("COLLECTION_NAME4")
         super().__init__(bot_id)
 
 
 
-a_filter = await FiltersDb()
+a_filter = FiltersDb()
 
