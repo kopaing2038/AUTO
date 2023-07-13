@@ -18,8 +18,7 @@ mongo_db = mongo_client["cloned_bots"]
 
 myclient = pymongo.MongoClient(Config.DATABASE_URI)
 mydb = myclient[Config.SESSION_NAME]
-message = ...
-userid = message.from_user.id if message.from_user else None
+
 
 class BaseFiltersDb:
     def __init__(self, collection_name):
@@ -167,7 +166,7 @@ class BaseFiltersDb:
 
 class FiltersDb(BaseFiltersDb):
     def __init__(self):
-        group_id = active_connection(str(userid))
+        group_id = active_connection(str(group_id))
         super().__init__(str(group_id) if group_id is not None else '')
 
 
