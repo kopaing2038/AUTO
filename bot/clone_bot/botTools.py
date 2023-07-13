@@ -7,8 +7,8 @@ from pyrogram.file_id import FileId
 
 from ..config import Config
 from ..database import configDB as config_db
-from .cache import Cache
-from .logger import LOGGER
+from bot.utils.cache import Cache
+from bot.utils.logger import LOGGER
 
 log = LOGGER(__name__)
 
