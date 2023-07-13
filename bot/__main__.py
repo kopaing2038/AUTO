@@ -18,7 +18,7 @@ async def main():
     await clone_start()
     await idle()
     await bot.stop()
-    #await clone_stop()
+    await clone_stop()
 
 
 if __name__ == "__main__":
