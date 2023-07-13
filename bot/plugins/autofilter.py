@@ -210,7 +210,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
     #m=await message.reply_text("🔍")
     #await asyncio.sleep(2)
     #await m.delete()
-    m=await message.reply_sticker("CAACAgIAAxkBAAEEk9pkr8egXAMqKEU-DiONtJopFTJMjgAChwADcF5aD-0hyj6AAzRUHgQ")
+    m=await message.reply_sticker("CAACAgUAAxkBAAEEk9tkr8jbdwlGGEEtRGELR3Z3WYg8_gACpQADyJRkFHhDhV4BRbZGHgQ")
     await asyncio.sleep(1)
     await m.delete()
 
@@ -432,9 +432,9 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 ),
                 quote=True
             )
-            m=await message.reply_sticker("CAACAgIAAxkBAAEEk-Bkr8koho72EvQQQFqzjjQpcN-AdQACCA4AAsMaIUnVXsJ4ltHnNB4E")
-            await asyncio.sleep(3)
-            await m.delete()
+        m=await message.reply_sticker("CAACAgIAAxkBAAEEk-Bkr8koho72EvQQQFqzjjQpcN-AdQACCA4AAsMaIUnVXsJ4ltHnNB4E")
+        await asyncio.sleep(3)
+        await m.delete()
 
 
 @Bot.on_callback_query(filters.regex(r"^chnext2"))  # type: ignore
