@@ -11,6 +11,8 @@ from ..config import Config
 from bot.clone_bot.clone_db import add_stext, get_stext, add_bot, get_bot, get_all_bot
 from pyrogram import enums, errors, filters, types
 
+
+
 from pymongo.errors import DuplicateKeyError
 from marshmallow.exceptions import ValidationError
 
@@ -37,7 +39,14 @@ async def savefiles(bot_id):
     except Exception as e:
         print(f"Error while saving Bot ID: {e}")
 
+    COLLECTION_NAME4 = {bot_id} 
 
+    if not COLLECTION_NAME4:
+        await message.reply_text("Please provide a COLLECTION_NAME4 to set for COLLECTION_NAME4.")
+        return
+
+    Config.COLLECTION_NAME4 = caption
+    await message.reply_text("CAP2 updated successfully.")
 
 #@Client.on_message((filters.regex(r'\d[0-9]{8,10}:[0-9A-Za-z_-]{35}')) & filters.private)
 async def on_clone(self, message):
@@ -84,6 +93,7 @@ async def get_bot():
     return crazy
 
 
+
 @Client.on_message(filters.command("clone2") & filters.private)
 async def ononv_clone(client, message):
     try:
@@ -124,6 +134,10 @@ async def ononv_clone(client, message):
                 'username': bot.username
             }
             mongo_db.bots.insert_one(details)
+
+            # Set COLLECTION_NAME4 based on bot_id
+            Config.COLLECTION_NAME4 = str(bot_id[0])  # Convert bot_id to string and assign it
+            await message.reply(f"Collection name set to: {bot_id[0]}")
 
             clonedme.ME = bot.id
             clonedme.U_NAME = bot.username
