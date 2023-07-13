@@ -166,7 +166,7 @@ class BaseFiltersDb:
 
 class FiltersDb(BaseFiltersDb):
     def __init__(self):
-        group_id = await active_connection(str(userid))
+        group_id = active_connection(str(userid))
         super().__init__(str(group_id) if group_id is not None else '')
 
 
