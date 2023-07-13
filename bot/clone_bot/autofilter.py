@@ -163,16 +163,11 @@ class BaseFiltersDb:
         return total, files
 
 class FiltersDb(BaseFiltersDb):
-    async def __init__(self, message):
-        settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
+    async def __init__(self):
+        settings = await config_db.get_settings()
         bot_id = settings.get("COLLECTION_NAME4")
-        if not bot_id:
-            raise ValueError("Bot ID not found in settings")
-        await config_db.update_config(f"SETTINGS_{message.chat.id}", settings)
         super().__init__(bot_id)
 
 
 
-message = ...  # Replace ... with the actual message object
-
-a_filter = FiltersDb(message)
+a_filter = FiltersDb()
