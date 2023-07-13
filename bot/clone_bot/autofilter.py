@@ -165,11 +165,11 @@ class BaseFiltersDb:
 
 
 class FiltersDb(BaseFiltersDb):
-    def __init__(self):
+    def __init__(self, group_id):
         group_id = active_connection(str(group_id))
         super().__init__(str(group_id) if group_id is not None else '')
 
 
 
 
-a_filter = FiltersDb()
+a_filter = FiltersDb(group_id)
