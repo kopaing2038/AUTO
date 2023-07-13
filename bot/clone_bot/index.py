@@ -20,10 +20,11 @@ _REGEX = r"(https://)?(t\.me/|telegram\.me/|telegram\.dog/)(c/)?(\d+|[a-zA-Z_0-9
 
 
 
-@Bot.on_message(filters.command("index") & filters.private & filters.user(Config.ADMINS))
+@Bot.on_message(filters.command("index") & filters.private & filters.user(Config.ADMINS) & filters.group)
 async def send_for_index_commend(bot: Bot, message: types.Message):
     if len(message.command) != 2:
         return await message.reply("Invalid command format. Usage: `/index [channel_link] [last_message_id]`")
+
 
     channel_link = message.command[1]
 
