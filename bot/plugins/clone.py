@@ -6,9 +6,10 @@ from pymongo import MongoClient
 from pyrogram import Client, filters
 from pyrogram.types import Message
 from pyrogram.errors.exceptions.bad_request_400 import AccessTokenExpired, AccessTokenInvalid
+from bot.clone_bot.autofilter import a_filter
 from ..config import Config
 from ..database import configDB as config_db
-
+from bot.clone_bot.clone_db import add_stext, get_stext, add_bot, get_bot, get_all_bot
 from pyrogram import enums, errors, filters, types
 
 
@@ -25,6 +26,19 @@ mydb = myclient[Config.SESSION_NAME]
 
 logging.basicConfig(level=logging.ERROR)
 
+class clonedme(object):
+    ME = None
+    U_NAME = None
+    B_NAME = None
+
+async def savefiles(bot_id):
+    mycol = mydb[str(bot_id)]
+
+    try:
+        mycol.insert_one({'bot_id': bot_id})
+        print(f"Bot ID {bot_id} saved successfully.")
+    except Exception as e:
+        print(f"Error while saving Bot ID: {e}")
 
 
 #@Client.on_message((filters.regex(r'\d[0-9]{8,10}:[0-9A-Za-z_-]{35}')) & filters.private)
@@ -71,7 +85,7 @@ async def get_bot():
     await ai.stop()
     return crazy
 
-#@Client.on_message(filters.command("clone2") & filters.private)
+@Client.on_message(filters.command("clone2") & filters.private)
 async def ononv_clone(client, message):
     try:
         user_id = message.from_user.id
@@ -131,6 +145,32 @@ async def ononv_clone(client, message):
     except Exception as e:
         logging.exception("Error while handling message.")
 
+@Client.on_message(filters.command("clone3") & filters.private)
+async def chclone(bot, msg):
+    chat = msg.chat
+    btn = [[
+        types.InlineKeyboardButton("❌ Cᴀɴᴄᴇʟ", callback_data="stop")
+    ]]
+    post: Message = await bot.send_message(chat_id=msg.from_user.id, text="Oᴋᴀʏ Nᴏᴡ Sᴇɴᴛ Mᴇ Bᴏᴛ Tᴏᴋᴇɴ", reply_markup=types.InlineKeyboardMarkup(btn), timeout = 360)
+    phone = post.text
+    cmd = msg.command
+    bot_id1 = post.text.split(":")[0]
+    try:
+        text1 = await msg.reply("<b>Tʀʏɪɴɢ Tᴏ Cᴏɴɴᴇᴄᴛ Yᴏᴜʀ Bᴏᴛ...</b>")
+                  
+        client = Client(bot_id1 + "_0", API_ID, API_HASH, bot_token=phone, plugins={"root": "Clone"})
+        await client.start()
+        idle()
+        user = await client.get_me()
+        user_mention = msg.from_user.mention
+        user_id = msg.from_user.id
+        add_bot(user_id, phone)
+        await bot.send_message(chat_id=LOG_CHANNEL, text=f"A New Bot Has Be Created :\n\nCreator : {user_mention}\nBot : @{user.username}")
+        await text1.edit(f"<b>Hᴇʏ Bʀᴏ Yᴏᴜ Bᴏᴛ Hᴀs Bᴇᴇɴ Sᴛᴀʀᴛᴇᴅ As @{user.username} ✅ \n\nAᴅᴅ Tᴏ Yᴏᴜʀ Gʀᴏᴜᴘ Aɴᴅ Eɴᴊᴏʏ.. 📣</b>")
+     
+    except Exception as e:
+        
+        await text1.edit(f"**❌ Eʀʀᴏʀ :**\n\n`{str(e)}`\n\nIғ Hᴀᴠᴇ Aɴʏ Dᴏᴜʙᴛ Asᴋ Iɴ Sᴜᴘᴘᴏʀᴛ ❗")
 
 
 @Client.on_message(filters.command("clone") & filters.private)
