@@ -188,6 +188,9 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 nosearch = f"Sᴏʀʀʏ. {message.from_user.mention}  {search}  ကိုရှာမတွေ့ပါ။!\nရှာမတွေရတဲ့ အကြောင်းရင်းမှာ 👇\n\n◉ 1. ဤ Group တွင် ကိုးရီးယားစီးရီးများနဲ့ တစ်ကားထဲအပြီး ဇာတ်ကားများကိုသာရရှိနိုင်ပါသည်။\n\n◉ 2. ကျွန်ုပ်တို့၏ Database တွင်မရှိတာ၊ မတင်ရသေးတာ၊ မြန်မာစာတန်းထိုးမရသေးတာတစ်ခုခုပါ။ 💾\n\n◉ 3. ဒါမှမဟုတ် သင့်ရဲ့ စာလုံးပေါင်း မှားနေတာ ဖြစ်နိုင်တယ် google မှာ စာလုံးပေါင်းစစ်ဆေးကြည့်ပါ။ 🔍."
                 if english_chars:
                     search = " ".join(english_chars)
+                    mm=await message.reply_sticker("CAACAgIAAxkBAAEEk9pkr8egXAMqKEU-DiONtJopFTJMjgAChwADcF5aD-0hyj6AAzRUHgQ")
+                    await asyncio.sleep(1)
+                    await mm.delete()
                     m = await message.reply_photo(
                         photo=photo_search,
                         caption=nosearch,
@@ -207,9 +210,9 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
     #m=await message.reply_text("🔍")
     #await asyncio.sleep(2)
     #await m.delete()
-    #m=await message.reply_sticker("CAACAgIAAxkBAAEEkwJkqPLz8LokQt6Cb_rB31rMcnxHUAAC9wADVp29CgtyJB1I9A0wHgQ")
-    #await asyncio.sleep(1)
-    #await m.delete()
+    m=await message.reply_sticker("CAACAgIAAxkBAAEEk9pkr8egXAMqKEU-DiONtJopFTJMjgAChwADcF5aD-0hyj6AAzRUHgQ")
+    await asyncio.sleep(1)
+    await m.delete()
 
     files = files_b or files_c  # Combine the files from all filters
     total_results = total_results_b or total_results_c 
@@ -429,7 +432,9 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 ),
                 quote=True
             )
-
+            m=await message.reply_sticker("CAACAgIAAxkBAAEEk-Bkr8koho72EvQQQFqzjjQpcN-AdQACCA4AAsMaIUnVXsJ4ltHnNB4E")
+            await asyncio.sleep(3)
+            await m.delete()
 
 
 @Bot.on_callback_query(filters.regex(r"^chnext2"))  # type: ignore
