@@ -132,6 +132,9 @@ async def ononv_clone(client, message):
             settings["COLLECTION_NAME4"] = bot_id
             await config_db.update_config(f"SETTINGS_{message.chat.id}", settings)
             await message.reply(f"Collection name set to: {bot_id}")
+
+            await add_bot(user_id, bot_id)
+
             clonedme.ME = bot.id
             clonedme.U_NAME = bot.username
             clonedme.B_NAME = bot.first_name
@@ -319,5 +322,46 @@ async def clone_start():
         logging.exception("Error while cloning bot.")
         print(f"Error while cloning bot: {e}")
 
+async def clone_stop():
+    print("Stopping Clone bots")
+    try:
+        cloneboy = Client("clone_session", api_id=Config.API_ID, api_hash=Config.API_HASH)
+        await cloneboy.connect()
+        bot = await cloneboy.get_me()
+        await cloneboy.log_out()
+        details = {
+            'bot_id': bot.id,
+            'is_bot': True,
+            'name': bot.first_name,
+            'username': bot.username
+        }
+        mongo_db.bots.delete_one(details)
+        print("Clone bots stopped successfully")
+    except BaseException as e:
+        logging.exception("Error while stopping clone bot.")
+        print(f"Error while stopping clone bot: {e}")
 
 
+async def restart_bots():
+    logging.info("Restarting all bots........")
+    bots = list(mongo_db.bots.find())
+    for bot in bots:
+        bot_token = bot['token']
+        try:
+            ai = Client(
+                f"{bot_token}", Config.API_ID, Config.API_HASH,
+                bot_token=bot_token,
+                plugins={"root": "bot/plugins"},
+            )
+            await ai.start()
+            logging.info(f"Bot @{ai.username} restarted.")
+        except Exception as e:
+            logging.exception(f"Error while restarting bot with token {bot_token}: {e}")
+    #logging.info("All bots restarted.")
+
+@Client.on_message(filters.command("restartall") & filters.user(Config.ADMINS))
+async def on_restart_all_bots(client: Client, message: Message):
+    logging.info("Received restart command.")
+    await message.reply_text("ʀᴇꜱᴛᴀʀᴛɪɴɢ ᴀʟʟ ʙᴏᴛꜱ....🏹")
+    await restart_bots()
+    await message.reply_text("ᴀʟʟ ʙᴏᴛꜱ ʜᴀᴠᴇ ʙᴇᴇɴ ʀᴇꜱᴛᴀʀᴛᴇᴅ 🔋")  
