@@ -168,8 +168,7 @@ class BaseFiltersDb(MongoDb):
 
 class FiltersDb(BaseFiltersDb):
     def __init__(self):
-        loop = asyncio.get_event_loop()
-        bot_id = loop.run_until_complete(config_db.get_settings("COLLECTION_NAME4"))
+        bot_id = config_db.get_settings("COLLECTION_NAME4")
         super().__init__(bot_id)
 
 a_filter = FiltersDb()
