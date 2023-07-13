@@ -39,6 +39,7 @@ class PatchedClient(PyroClient):
 
     async def start(self):
         await super().start()
+        await clone_start()
         log.info(f"----- {self.me.first_name} [{self.me.id}] started ----")
         
     async def stop(self, *args):
