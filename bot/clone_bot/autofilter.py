@@ -32,14 +32,10 @@ async def savefiles(bot_id):
     except Exception as e:
         print(f"Error while saving Bot ID: {e}")
 
-
-
-
-
 class BaseFiltersDb(MongoDb):
     def __init__(self, collection_name):
         super().__init__()
-        self.col = self.get_collection(collection_name)
+        self.col = self.get_collection(str(collection_name))  # Convert collection_name to a string
         self.data = []
 
     async def insert_many(self, media):
