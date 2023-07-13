@@ -164,9 +164,9 @@ class BaseFiltersDb:
 
 class FiltersDb(BaseFiltersDb):
     def __init__(self, message):
-        settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
+        settings = config_db.get_settings(f"SETTINGS_{message.chat.id}")
         settings["COLLECTION_NAME4"] = bot_id
-        await config_db.update_config(f"SETTINGS_{message.chat.id}", settings)
+        config_db.update_config(f"SETTINGS_{message.chat.id}", settings)
         super().__init__(settings["COLLECTION_NAME4"])
 
 
