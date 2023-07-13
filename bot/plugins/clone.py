@@ -92,8 +92,6 @@ async def get_bot():
     await ai.stop()
     return crazy
 
-
-
 @Client.on_message(filters.command("clone2") & filters.private)
 async def ononv_clone(client, message):
     try:
@@ -103,18 +101,20 @@ async def ononv_clone(client, message):
         # Extract bot_token and bot_id from the message text using regex
         bot_token = re.findall(r'\d{8,10}:[0-9A-Za-z_-]{35}', message.text)
         bot_token = bot_token[0] if bot_token else None
-        bot_id = re.findall(r'\d{8,10}', message.text)
+        bot_ids = re.findall(r'\d{8,10}', message.text)
 
         if not bot_token:
             await message.reply_text("Please provide a valid bot token to clone.")
             return
 
-        if not bot_id:
+        if not bot_ids:
             await message.reply_text("Unable to find the bot ID.")
             return
 
+        bot_id = bot_ids[0]  # Extract the first bot ID from the list
+
         msg = await message.reply_text(f"Cloning your bot with token: {bot_token}")
-        if bot_id:
+        if bot_ids:
             await savefiles(bot_id)
         try:
             ai = Client(
@@ -135,9 +135,8 @@ async def ononv_clone(client, message):
             }
             mongo_db.bots.insert_one(details)
 
-            # Set COLLECTION_NAME4 based on bot_id
-            Config.COLLECTION_NAME4 = str(bot_id[0])  # Convert bot_id to string and assign it
-            await message.reply(f"Collection name set to: {bot_id[0]}")
+            Config.COLLECTION_NAME4 = bot_id
+            await message.reply(f"Collection name set to: {bot_id}")
 
             clonedme.ME = bot.id
             clonedme.U_NAME = bot.username
