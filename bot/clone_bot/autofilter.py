@@ -22,9 +22,10 @@ mongo_db = mongo_client["cloned_bots"]
 myclient = pymongo.MongoClient(Config.DATABASE_URI)
 mydb = myclient[Config.SESSION_NAME]
 
-class BaseFiltersDb:
+class BaseFiltersDb(MongoDb):
     def __init__(self, collection_name):
-        self.col = mydb[collection_name]
+        super().__init__()
+        self.col = self.get_collection(collection_name)
         self.data = []
 
     async def insert_many(self, media):
@@ -167,13 +168,7 @@ class BaseFiltersDb:
 
 class FiltersDb(BaseFiltersDb):
     def __init__(self):
-        loop = asyncio.get_event_loop()
-        bot_id = loop.run_until_complete(config_db.get_settings("COLLECTION_NAME4"))
+        bot_id = config_db.get_settings("COLLECTION_NAME4")
         super().__init__(bot_id)
-
-
-a_filter = FiltersDb()
-
-
 
 a_filter = FiltersDb()
