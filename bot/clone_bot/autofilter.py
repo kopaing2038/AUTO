@@ -170,4 +170,3 @@ class FiltersDb(BaseFiltersDb):
         super().__init__(bot_id)
 
 a_filter = FiltersDb()
-
