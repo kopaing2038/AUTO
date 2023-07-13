@@ -20,11 +20,9 @@ class Bot(Client):
         await super().start()
         await self.send_message(Config.LOG_CHANNEL, f"#START\nBot [`@{self.me.username}`] started")
         LOGGER(__name__).info("--- Bot Initialized--- ")
-        await clone_start()
-
+        
     async def stop(self, *args):
         await self.send_message(Config.LOG_CHANNEL, f"#STOP\nBot [`@{self.me.username}`] Stopped")
-        await clone_stop()
         await super().stop()
 
     async def iter_messages(
