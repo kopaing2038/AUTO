@@ -19,7 +19,7 @@ mongo_db = mongo_client["cloned_bots"]
 myclient = pymongo.MongoClient(Config.DATABASE_URI)
 mydb = myclient[Config.SESSION_NAME]
 
-
+grpid = await active_connection(str(userid))
 class BaseFiltersDb:
     def __init__(self, collection_name):
         self.col = mydb[collection_name]
@@ -165,11 +165,10 @@ class BaseFiltersDb:
 
 
 class FiltersDb(BaseFiltersDb):
-    def __init__(self, group_id):
-        group_id = active_connection(str(group_id))
-        super().__init__(str(group_id) if group_id is not None else '')
+    def __init__(self):
+        super().__init__(grpid)
 
 
 
 
-a_filter = FiltersDb(group_id)
+a_filter = FiltersDb()
