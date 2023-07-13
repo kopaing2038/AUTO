@@ -29,7 +29,7 @@ async def clone_give_filter(bot: Bot, message: types.Message):
         settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
         search = message.text
         files, offset, total_results = await a_filter.get_search_results(
-            search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER'], video=settings['VD_FILTER']
+            search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER'], video=settings['V_FILTER']
         )
         if not files:
             return
