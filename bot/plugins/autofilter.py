@@ -377,6 +377,9 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                     ),
                     quote=True,
                 )
+                m=await message.reply_sticker("CAACAgIAAxkBAAEEk-Bkr8koho72EvQQQFqzjjQpcN-AdQACCA4AAsMaIUnVXsJ4ltHnNB4E")
+                await asyncio.sleep(3)
+                await m.delete()
             except (errors.MediaEmpty, errors.PhotoInvalidDimensions, errors.WebpageMediaEmpty):
                 pic = imdb.get("poster")
                 poster = pic.replace(".jpg", "._V1_UX360.jpg")
@@ -432,9 +435,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 ),
                 quote=True
             )
-        m=await message.reply_sticker("CAACAgIAAxkBAAEEk-Bkr8koho72EvQQQFqzjjQpcN-AdQACCA4AAsMaIUnVXsJ4ltHnNB4E")
-        await asyncio.sleep(3)
-        await m.delete()
+
 
 
 @Bot.on_callback_query(filters.regex(r"^chnext2"))  # type: ignore
