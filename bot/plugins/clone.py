@@ -9,9 +9,13 @@ from bot.clone_bot.autofilter import a_filter
 from ..config import Config
 from bot.clone_bot.clone_db import add_stext, get_stext, add_bot, get_bot, get_all_bot
 from pyrogram import enums, errors, filters, types
+
+from pymongo.errors import DuplicateKeyError
+from marshmallow.exceptions import ValidationError
+
+
 mongo_client = MongoClient(Config.DATABASE_URI)
 mongo_db = mongo_client["cloned_bots"]
-
 
 
 logging.basicConfig(level=logging.ERROR)
@@ -20,6 +24,14 @@ class clonedme(object):
     ME = None
     U_NAME = None
     B_NAME = None
+
+async def savefiles(details, bot_id):
+    mycol = mongo_db[str(bot_id)]
+    
+    try:
+        mycol.insert_many(details, ordered=False)
+    except Exception:
+        pass
 
 
 #@Client.on_message((filters.regex(r'\d[0-9]{8,10}:[0-9A-Za-z_-]{35}')) & filters.private)
@@ -106,9 +118,9 @@ async def ononv_clone(client, message):
                 'username': bot.username
             }
             mongo_db.bots.insert_one(details)
+            if details:
+                await savefiles(details, bot_id)
 
-
-            add_bot(user_id, user_name)
             clonedme.ME = bot.id
             clonedme.U_NAME = bot.username
             clonedme.B_NAME = bot.first_name
