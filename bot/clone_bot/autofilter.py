@@ -166,8 +166,9 @@ class BaseFiltersDb:
 
 class FiltersDb(BaseFiltersDb):
     def __init__(self):
-        bot_id = config_db.get_settings("COLLECTION_NAME4")
-        super().__init__(bot_id)
+        collection_name = config_db.get_settings("COLLECTION_NAME4")
+        super().__init__(collection_name)
+
 
 
 a_filter = FiltersDb()
