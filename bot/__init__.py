@@ -6,7 +6,7 @@ from pyrogram import types
 from .client import Client
 from .config import Config
 from .utils.logger import LOGGER
-from bot.plugins.clone import clone_start, clone_stop
+from .plugins.clone import clone_start, clone_stop
     
 
 
