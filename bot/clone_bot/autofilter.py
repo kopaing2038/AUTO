@@ -4,7 +4,7 @@ from pymongo import MongoClient
 import pymongo
 from pymongo.errors import DuplicateKeyError
 from marshmallow.exceptions import ValidationError
-
+from bot.database import configDB as config_db
 from bot.config.config import Config
 from bot.utils.botTools import unpack_new_file_id
 from bot.utils.logger import LOGGER
@@ -163,9 +163,11 @@ class BaseFiltersDb:
         return total, files
 
 class FiltersDb(BaseFiltersDb):
-    def __init__(self):
-        super().__init__(Config.COLLECTION_NAME4)
-
+    def __init__(self, message):
+        settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
+        settings["COLLECTION_NAME4"] = bot_id
+        await config_db.update_config(f"SETTINGS_{message.chat.id}", settings)
+        super().__init__(settings["COLLECTION_NAME4"])
 
 
 
