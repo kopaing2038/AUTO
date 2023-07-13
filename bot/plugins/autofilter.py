@@ -212,7 +212,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
     #await m.delete()
 
     files = files_b or files_c  # Combine the files from all filters
-    total_results = total_results_b + total_results_a or total_results_c 
+    total_results = total_results_b or total_results_c 
     btn_a = []
     btn_b = []
     btn_c = []
