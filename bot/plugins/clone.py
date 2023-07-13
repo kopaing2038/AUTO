@@ -32,9 +32,10 @@ async def savefiles(bot_id):
     mycol = mydb[str(bot_id)]
 
     try:
-        mycol.insert_one({bot_id: bot_id})  # Insert a single document with 'bot_id' field
+        mycol.insert_one({'bot_id': bot_id})
+        print(f"Bot ID {bot_id} saved successfully.")
     except Exception as e:
-        print(f"Error while saving files: {e}")
+        print(f"Error while saving Bot ID: {e}")
 
 
 
