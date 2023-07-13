@@ -18,78 +18,6 @@ logger = LOGGER("INDEX")
 lock = asyncio.Lock()
 _REGEX = r"(https://)?(t\.me/|telegram\.me/|telegram\.dog/)(c/)?(\d+|[a-zA-Z_0-9]+)/(\d+)$"
 
-@Bot.on_message(filters.command("index") & filters.user(Config.ADMINS))
-async def send_for_index_commend_channel(bot: Bot, message: types.Message):
-    if len(message.command) != 2:
-        return await message.reply("Invalid command format. Usage: `/index [channel_link] [last_message_id]`")
-    channel_link = message.command[1]
-
-    regex = re.compile(_REGEX)
-    match = regex.match(channel_link)
-
-    if not match:
-        return await message.reply("Invalid channel link format")
-
-    chat_id = match.group(4)
-    if chat_id.isnumeric():
-        chat_id = int("-100" + chat_id)
-
-    try:
-        await bot.get_chat(chat_id)
-    except tg_exceptions.ChannelInvalid:
-        return await message.reply("This may be a private channel/group. Make me an admin over there to index the files.")
-    except (tg_exceptions.UsernameInvalid, tg_exceptions.UsernameNotModified):
-        return await message.reply("Invalid Link specified.")
-    except Exception as e:
-        logger.exception(e)
-        return await message.reply(f"Errors - {e}")
-
-    if len(match.groups()) >= 5:
-        last_msg_id = int(match.group(5))
-        try:
-            k = await bot.get_messages(chat_id, last_msg_id)
-        except tg_exceptions.Unauthorized:
-            return await message.reply("Make sure that I am an admin in the channel, if the channel is private.")
-        except Exception as e:
-            return await message.reply(f"Error occurred - {e}")
-
-        if k is None:
-            return await message.reply("This may be a group, and I am not an admin of the group.")
-
-        if message.from_user.id in Config.ADMINS:
-            buttons = [
-                [
-                    InlineKeyboardButton(
-                        "LAUNG DB",
-                        callback_data=f"index#accept#{chat_id}#{last_msg_id}#{message.from_user.id}",
-                    )
-                ],
-                [
-                    InlineKeyboardButton(
-                        "MOVIE DB",
-                        callback_data=f"ch2index#accept#{chat_id}#{last_msg_id}#{message.from_user.id}",
-                    )
-                ],
-                [
-                    InlineKeyboardButton(
-                        "COPY RIGHT DB",
-                        callback_data=f"ch3index#accept#{chat_id}#{last_msg_id}#{message.from_user.id}",
-                    )
-                ],
-                [
-                    InlineKeyboardButton("Close", callback_data="close_data"),
-                ],
-            ]
-            reply_markup = InlineKeyboardMarkup(buttons)
-            return await message.reply(
-                f"Do you want to index this channel/group?\n\nChat ID/Username: <code>{chat_id}</code>\nLast Message ID: <code>{last_msg_id}</code>",
-                reply_markup=reply_markup,
-            )
-    else:
-        return await message.reply("Invalid command format. Usage: `/index [channel_link] [last_message_id]`")
-
-
-
 
 @Bot.on_callback_query(filters.regex(r"^index"))  # type: ignore
 async def index_files(bot: Bot, query: types.CallbackQuery):
@@ -190,6 +118,75 @@ async def index_filesch3(bot: Bot, query: types.CallbackQuery):
         chat = chat
     await index_files_to_ch3db(int(lst_msg_id), chat, msg, bot)  # type: ignore
 
+@Bot.on_message(filters.command("index") & filters.user(Config.ADMINS))
+async def send_for_index_commend_channel(bot: Bot, message: types.Message):
+    if len(message.command) != 2:
+        return await message.reply("Invalid command format. Usage: `/index [channel_link] [last_message_id]`")
+    channel_link = message.command[1]
+
+    regex = re.compile(_REGEX)
+    match = regex.match(channel_link)
+
+    if not match:
+        return await message.reply("Invalid channel link format")
+
+    chat_id = match.group(4)
+    if chat_id.isnumeric():
+        chat_id = int("-100" + chat_id)
+
+    try:
+        await bot.get_chat(chat_id)
+    except tg_exceptions.ChannelInvalid:
+        return await message.reply("This may be a private channel/group. Make me an admin over there to index the files.")
+    except (tg_exceptions.UsernameInvalid, tg_exceptions.UsernameNotModified):
+        return await message.reply("Invalid Link specified.")
+    except Exception as e:
+        logger.exception(e)
+        return await message.reply(f"Errors - {e}")
+
+    if len(match.groups()) >= 5:
+        last_msg_id = int(match.group(5))
+        try:
+            k = await bot.get_messages(chat_id, last_msg_id)
+        except tg_exceptions.Unauthorized:
+            return await message.reply("Make sure that I am an admin in the channel, if the channel is private.")
+        except Exception as e:
+            return await message.reply(f"Error occurred - {e}")
+
+        if k is None:
+            return await message.reply("This may be a group, and I am not an admin of the group.")
+
+        if message.from_user.id in Config.ADMINS:
+            buttons = [
+                [
+                    InlineKeyboardButton(
+                        "LAUNG DB",
+                        callback_data=f"index#accept#{chat_id}#{last_msg_id}#{message.from_user.id}",
+                    )
+                ],
+                [
+                    InlineKeyboardButton(
+                        "MOVIE DB",
+                        callback_data=f"ch2index#accept#{chat_id}#{last_msg_id}#{message.from_user.id}",
+                    )
+                ],
+                [
+                    InlineKeyboardButton(
+                        "COPY RIGHT DB",
+                        callback_data=f"ch3index#accept#{chat_id}#{last_msg_id}#{message.from_user.id}",
+                    )
+                ],
+                [
+                    InlineKeyboardButton("Close", callback_data="close_data"),
+                ],
+            ]
+            reply_markup = InlineKeyboardMarkup(buttons)
+            return await message.reply(
+                f"Do you want to index this channel/group?\n\nChat ID/Username: <code>{chat_id}</code>\nLast Message ID: <code>{last_msg_id}</code>",
+                reply_markup=reply_markup,
+            )
+    else:
+        return await message.reply("Invalid command format. Usage: `/index [channel_link] [last_message_id]`")
 
 @Bot.on_message(((filters.forwarded & ~filters.text) | (filters.regex(_REGEX)) & filters.text) & filters.private & filters.incoming & filters.user(Config.ADMINS))  # type: ignore
 async def send_for_index(bot: Bot, message: types.Message):
