@@ -19,7 +19,6 @@ mongo_db = mongo_client["cloned_bots"]
 myclient = pymongo.MongoClient(Config.DATABASE_URI)
 mydb = myclient[Config.SESSION_NAME]
 
-grpid = active_connection()
 class BaseFiltersDb:
     def __init__(self, collection_name):
         self.col = mydb[collection_name]
@@ -163,10 +162,9 @@ class BaseFiltersDb:
         files = await self.col.find(file_filter).to_list(None)
         return total, files
 
-
 class FiltersDb(BaseFiltersDb):
     def __init__(self):
-        super().__init__(grpid)
+        super().__init__(Config.COLLECTION_NAME4)
 
 
 
