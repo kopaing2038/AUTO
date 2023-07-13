@@ -3,6 +3,7 @@ from pymongo.errors import BulkWriteError, DuplicateKeyError
 from pymongo import MongoClient
 import pymongo
 from pymongo.errors import DuplicateKeyError
+from pyrogram import Client, filters, types, enums
 from marshmallow.exceptions import ValidationError
 from bot.database import configDB as config_db
 from bot.config.config import Config
@@ -13,6 +14,7 @@ from bot import bot
 from bot.database.connections_mdb import active_connection
 logger = LOGGER("AUTO_FILTER_DB")
 from bot.clone_bot.clone_db import add_stext, get_stext, add_bot, get_bot, get_all_bot
+
 mongo_client = MongoClient(Config.DATABASE_URI)
 mongo_db = mongo_client["cloned_bots"]
 
@@ -168,6 +170,7 @@ class FiltersDb(BaseFiltersDb):
         bot_id = settings.get("COLLECTION_NAME4")
         super().__init__(bot_id)
 
-message = ...
+message = types.Message(...)
+
 a_filter = FiltersDb(message)
 
