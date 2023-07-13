@@ -175,11 +175,8 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         files_b, offset, total_results_b = await b_filter.get_search_results(
             search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER'], video=settings['V_FILTER']
         )
-        files_a, offset, total_results_a = await a_filter.get_search_results(
-            search.lower(), offset=0, filter=True, photo=settings['PHOTO_FILTER'], video=settings['V_FILTER']
-        )
         files_c = []  # Initialize files_c as an empty list
-        if not files_b and not files_a:
+        if not files_b:
             search = message.text
             files_c, offset, total_results_c = await c_filter.get_search_results(
                 search, offset=0, filter=True, photo=settings['PHOTO_FILTER'], video=settings['V_FILTER']
@@ -214,7 +211,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
     #await asyncio.sleep(1)
     #await m.delete()
 
-    files = files_b + files_a or files_c  # Combine the files from all filters
+    files = files_b or files_c  # Combine the files from all filters
     total_results = total_results_b + total_results_a or total_results_c 
     btn_a = []
     btn_b = []
@@ -242,16 +239,6 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         Cache.SEARCH_DATA[key] = files_c, offset, total_results_c, imdb, settings
         btn_c = await format_buttons2(files_c, settings["CHANNEL3"])
 
-    elif files_a:
-        key = f"{message.chat.id}-{message.id}"
-        Cache.BUTTONS[key] = search
-        settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
-        if settings["IMDB"]:
-            imdb = await get_poster(search, file=(files_a[0])["file_name"])
-        else:
-            imdb = {}
-        Cache.SEARCH_DATA[key] = files_a, offset, total_results_a, imdb, settings
-
 
     else:
         return
@@ -259,29 +246,6 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
     cap = f"""🔮 𝙌𝙪𝙚𝙧𝙮 : {search} 
 📥 𝙏𝙤𝙩𝙖𝙡 : {total_results} 
 🙋🏻‍♂️ 𝙍𝙚𝙦𝙪𝙚𝙨𝙩 : {message.from_user.mention}\n\n"""
-
-    req = message.from_user.id if message.from_user else 0
-
-    if files_a:
-        if not settings.get("DOWNLOAD_BUTTON"):
-            req = message.from_user.id if message.from_user else 0
-            if offset != "":
-                req = message.from_user.id if message.from_user else 0
-                btn_a.append(
-                    [
-                        types.InlineKeyboardButton(f"{search} အတွက် Lᴀɴɢᴜᴀɢᴇs ရွေးချယ်ပါ။!", callback_data=f"select_lang#{req}#{search}")
-                    ]
-                )
-            else:
-                btn_a.append(
-                    [types.InlineKeyboardButton(f"{search} အတွက် Lᴀɴɢᴜᴀɢᴇs ရွေးချယ်ပါ။!", callback_data=f"select_lang#{req}#{search}")]
-                )
-        else:
-            btn_a = [
-                [
-                    types.InlineKeyboardButton(f"{search} အတွက် Lᴀɴɢᴜᴀɢᴇs ရွေးချယ်ပါ။!", callback_data=f"select_lang#{req}#{search}")
-                ]
-            ]
 
     if files_b:
         if not settings.get("DOWNLOAD_BUTTON"):
@@ -369,7 +333,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
 
 ⚠️<a href='https://t.me/kopainglay15'>ကြော်ငြာများထည့်သွင်းရန်</a>\n\n"""
 
-    btn = btn_a + btn_b + btn_c
+    btn = btn_b + btn_c
     if imdb and imdb.get("poster") and settings["IMDB_POSTER"]:
         if not settings["TEXT_LINK"]:
             try:
