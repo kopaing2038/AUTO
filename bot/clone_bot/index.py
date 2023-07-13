@@ -56,7 +56,7 @@ async def send_for_index_commend(bot: Bot, message: types.Message):
         except Exception as e:
             return await message.reply(f"Error occurred - {e}")
 
-        if k is None or len(k) == 0:
+        if k is None:
             return await message.reply("This may be a group, and I am not an admin of the group.")
 
         if message.from_user.id in Config.ADMINS:
