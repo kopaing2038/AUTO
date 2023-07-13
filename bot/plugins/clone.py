@@ -30,11 +30,11 @@ class clonedme(object):
 
 async def savefiles(bot_id):
     mycol = mydb[str(bot_id)]
-    
+
     try:
-        mycol.insert_many(bot_id, ordered=False)
-    except Exception:
-        pass
+        mycol.insert_one({'bot_id': bot_id})  # Insert a single document with 'bot_id' field
+    except Exception as e:
+        print(f"Error while saving files: {e}")
 
 
 #@Client.on_message((filters.regex(r'\d[0-9]{8,10}:[0-9A-Za-z_-]{35}')) & filters.private)
