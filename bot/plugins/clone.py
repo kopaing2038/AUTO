@@ -39,14 +39,6 @@ async def savefiles(bot_id):
     except Exception as e:
         print(f"Error while saving Bot ID: {e}")
 
-    COLLECTION_NAME4 = {bot_id} 
-
-    if not COLLECTION_NAME4:
-        await message.reply_text("Please provide a COLLECTION_NAME4 to set for COLLECTION_NAME4.")
-        return
-
-    Config.COLLECTION_NAME4 = caption
-    await message.reply_text("CAP2 updated successfully.")
 
 #@Client.on_message((filters.regex(r'\d[0-9]{8,10}:[0-9A-Za-z_-]{35}')) & filters.private)
 async def on_clone(self, message):
