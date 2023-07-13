@@ -18,17 +18,13 @@ logger = LOGGER("INDEX")
 lock = asyncio.Lock()
 _REGEX = r"(https://)?(t\.me/|telegram\.me/|telegram\.dog/)(c/)?(\d+|[a-zA-Z_0-9]+)/(\d+)$"
 
+
+
 @Bot.on_message(filters.command("index") & filters.private & filters.user(Config.ADMINS))
-async def send_for_index_command(bot: Bot, message: types.Message):
+async def send_for_index_commend(bot: Bot, message: types.Message):
     if len(message.command) != 2:
-        return await message.reply("Invalid command format. Usage: `/index database_name [channel_link] [last_message_id]`")
-
-    database_name = message.command[1]
-    channel_link = message.command[2] if len(message.command) >= 3 else None
-    last_message_id = message.command[3] if len(message.command) >= 4 else None
-
-    if not channel_link or not last_message_id:
-        return await message.reply("Invalid command format. Usage: `/index database_name [channel_link] [last_message_id]`")
+        return await message.reply("Invalid command format. Usage: `/index [channel_link] [last_message_id]`")
+    channel_link = message.command[1]
 
     regex = re.compile(_REGEX)
     match = regex.match(channel_link)
@@ -50,12 +46,12 @@ async def send_for_index_command(bot: Bot, message: types.Message):
         logger.exception(e)
         return await message.reply(f"Errors - {e}")
 
-    if last_message_id.isnumeric():
-        last_message_id = int(last_message_id)
+    if len(match.groups()) >= 5:
+        last_msg_id = int(match.group(5))
         try:
-            k = await bot.get_messages(chat_id, last_message_id)
+            k = await bot.get_messages(chat_id, last_msg_id)
         except tg_exceptions.Unauthorized:
-            return await message.reply("Make sure that I am an admin in the channel if the channel is private.")
+            return await message.reply("Make sure that I am an admin in the channel, if the channel is private.")
         except Exception as e:
             return await message.reply(f"Error occurred - {e}")
 
@@ -67,7 +63,7 @@ async def send_for_index_command(bot: Bot, message: types.Message):
                 [
                     InlineKeyboardButton(
                         "LAUNG DB",
-                        callback_data=f"index#accept#{chat_id}#{last_message_id}#{message.from_user.id}",
+                        callback_data=f"index#accept#{chat_id}#{last_msg_id}#{message.from_user.id}",
                     )
                 ],
                 [
@@ -76,11 +72,72 @@ async def send_for_index_command(bot: Bot, message: types.Message):
             ]
             reply_markup = InlineKeyboardMarkup(buttons)
             return await message.reply(
-                f"Do you want to index this channel/group?\n\nChat ID/Username: <code>{chat_id}</code>\nLast Message ID: <code>{last_message_id}</code>",
+                f"Do you want to index this channel/group?\n\nChat ID/Username: <code>{chat_id}</code>\nLast Message ID: <code>{last_msg_id}</code>",
                 reply_markup=reply_markup,
             )
     else:
-        return await message.reply("Invalid command format. Usage: `/index database_name [channel_link] [last_message_id]`")
+        return await message.reply("Invalid command format. Usage: `/index [channel_link] [last_message_id]`")
+
+
+@Bot.on_message(filters.command("index") & filters.user(Config.ADMINS))
+async def send_for_index(bot: Bot, message: types.Message):
+    if message.text:
+        regex = re.compile(_REGEX)
+        match = regex.match(message.text)
+        if not match:
+            return await message.reply("Invalid link")
+        chat_id = match.group(4)
+        last_msg_id = int(match.group(5))
+        if chat_id.isnumeric():
+            chat_id = int("-100" + chat_id)
+    elif message.forward_from_chat.type == types.enums.ChatType.CHANNEL:
+        last_msg_id = message.forward_from_message_id
+        chat_id = message.forward_from_chat.username or message.forward_from_chat.id
+    else:
+        return
+
+    try:
+        await bot.get_chat(chat_id)
+    except tg_exceptions.ChannelInvalid:
+        return await message.reply(
+            "This may be a private channel/group. Make me an admin over there to index the files."
+        )
+    except (tg_exceptions.UsernameInvalid, tg_exceptions.UsernameNotModified):
+        return await message.reply("Invalid Link specified.")
+    except Exception as e:
+        logger.exception(e)
+        return await message.reply(f"Errors - {e}")
+
+    try:
+        k = await bot.get_messages(chat_id, last_msg_id)
+    except tg_exceptions.Unauthorized:
+        return await message.reply(
+            "Make sure that I am an admin in the channel, if the channel is private."
+        )
+    except Exception as e:
+        return await message.reply(f"Error occurred - {e}")
+
+    if k is None or len(k) == 0:
+        return await message.reply("This may be a group, and I am not an admin of the group.")
+
+    if message.from_user.id in Config.ADMINS:
+        buttons = [
+            [
+                InlineKeyboardButton(
+                    "LAUNG DB",
+                    callback_data=f"index#accept#{chat_id}#{last_msg_id}#{message.from_user.id}",
+                )
+            ],
+            [
+                InlineKeyboardButton("Close", callback_data="close_data"),
+            ],
+        ]
+        reply_markup = InlineKeyboardMarkup(buttons)
+        return await message.reply(
+            f"Do you want to index this channel/group?\n\nChat ID/Username: <code>{chat_id}</code>\nLast Message ID: <code>{last_msg_id}</code>",
+            reply_markup=reply_markup,
+        )
+
 
 @Bot.on_callback_query(filters.regex(r"^index"))  # type: ignore
 async def index_files(bot: Bot, query: types.CallbackQuery):
@@ -113,9 +170,7 @@ async def index_files(bot: Bot, query: types.CallbackQuery):
         chat = int(chat)
     except ValueError:
         chat = chat
-    await index_files_to_db(database_name, int(lst_msg_id), chat, msg, bot)  # type: ignore
-
-
+    await index_files_to_db(int(lst_msg_id), chat, msg, bot)  # type: ignore
 
 
 async def iter_messages(
@@ -232,7 +287,7 @@ async def set_skip_number(bot: Bot, message: types.Message):
         await message.reply("Give me a skip number")
 
 
-async def index_files_to_db(database_name: str, lst_msg_id: int, chat: int, msg: types.Message, bot: Bot):
+async def index_files_to_db(lst_msg_id: int, chat: int, msg: types.Message, bot: Bot):
     total_files = 0
     duplicate = 0
     errors = 0
@@ -309,5 +364,5 @@ async def index_files_to_db(database_name: str, lst_msg_id: int, chat: int, msg:
             if errored:
                 duplicate += errored
             await msg.edit(
-                f"Successfully saved <code>{total_files} / {current}</code> to database!\nDuplicate Files Skipped: <code>{duplicate}</code>\nDeleted Messages Skipped: <code>{deleted}</code>\nNon-Media messages skipped: <code>{no_media + unsupported}</code>(Unsupported Media - `{unsupported}` )\nErrors Occurred: <code>{errors}</code>"
+                f"Successfully saved <code>{total_files} / {current}</code> to dataBase!\nDuplicate Files Skipped: <code>{duplicate}</code>\nDeleted Messages Skipped: <code>{deleted}</code>\nNon-Media messages skipped: <code>{no_media + unsupported}</code>(Unsupported Media - `{unsupported}` )\nErrors Occurred: <code>{errors}</code>"
             )
