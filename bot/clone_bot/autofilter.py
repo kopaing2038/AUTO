@@ -1,4 +1,5 @@
 import re
+import asyncio
 from pymongo.errors import BulkWriteError, DuplicateKeyError
 from pymongo import MongoClient
 import pymongo
@@ -166,8 +167,12 @@ class BaseFiltersDb:
 
 class FiltersDb(BaseFiltersDb):
     def __init__(self):
-        collection_name = config_db.get_settings("COLLECTION_NAME4")
-        super().__init__(collection_name)
+        loop = asyncio.get_event_loop()
+        bot_id = loop.run_until_complete(config_db.get_settings("COLLECTION_NAME4"))
+        super().__init__(bot_id)
+
+
+a_filter = FiltersDb()
 
 
 
