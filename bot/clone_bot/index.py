@@ -22,11 +22,10 @@ _REGEX = r"(https://)?(t\.me/|telegram\.me/|telegram\.dog/)(c/)?(\d+|[a-zA-Z_0-9
 
 @Bot.on_message(filters.command("index") & filters.private & filters.user(Config.ADMINS))
 async def send_for_index_commend(bot: Bot, message: types.Message):
-    if len(message.command) != 3:
+    if len(message.command) != 2:
         return await message.reply("Invalid command format. Usage: `/index [channel_link] [last_message_id]`")
 
     channel_link = message.command[1]
-    last_msg_id = message.command[2]
 
     regex = re.compile(_REGEX)
     match = regex.match(channel_link)
@@ -37,7 +36,6 @@ async def send_for_index_commend(bot: Bot, message: types.Message):
     chat_id = match.group(4)
     if chat_id.isnumeric():
         chat_id = int("-100" + chat_id)
-    last_msg_id = int(last_msg_id)
 
     try:
         await bot.get_chat(chat_id)
@@ -49,33 +47,38 @@ async def send_for_index_commend(bot: Bot, message: types.Message):
         logger.exception(e)
         return await message.reply(f"Errors - {e}")
 
-    try:
-        k = await bot.get_messages(chat_id, last_msg_id)
-    except tg_exceptions.Unauthorized:
-        return await message.reply("Make sure that I am an admin in the channel, if the channel is private.")
-    except Exception as e:
-        return await message.reply(f"Error occurred - {e}")
+    if len(match.groups()) >= 5:
+        last_msg_id = int(match.group(5))
+        try:
+            k = await bot.get_messages(chat_id, last_msg_id)
+        except tg_exceptions.Unauthorized:
+            return await message.reply("Make sure that I am an admin in the channel, if the channel is private.")
+        except Exception as e:
+            return await message.reply(f"Error occurred - {e}")
 
-    if k is None or len(k) == 0:
-        return await message.reply("This may be a group, and I am not an admin of the group.")
+        if k is None or len(k) == 0:
+            return await message.reply("This may be a group, and I am not an admin of the group.")
 
-    if message.from_user.id in Config.ADMINS:
-        buttons = [
-            [
-                InlineKeyboardButton(
-                    "LAUNG DB",
-                    callback_data=f"index#accept#{chat_id}#{last_msg_id}#{message.from_user.id}",
-                )
-            ],
-            [
-                InlineKeyboardButton("Close", callback_data="close_data"),
-            ],
-        ]
-        reply_markup = InlineKeyboardMarkup(buttons)
-        return await message.reply(
-            f"Do you want to index this channel/group?\n\nChat ID/Username: <code>{chat_id}</code>\nLast Message ID: <code>{last_msg_id}</code>",
-            reply_markup=reply_markup,
-        )
+        if message.from_user.id in Config.ADMINS:
+            buttons = [
+                [
+                    InlineKeyboardButton(
+                        "LAUNG DB",
+                        callback_data=f"index#accept#{chat_id}#{last_msg_id}#{message.from_user.id}",
+                    )
+                ],
+                [
+                    InlineKeyboardButton("Close", callback_data="close_data"),
+                ],
+            ]
+            reply_markup = InlineKeyboardMarkup(buttons)
+            return await message.reply(
+                f"Do you want to index this channel/group?\n\nChat ID/Username: <code>{chat_id}</code>\nLast Message ID: <code>{last_msg_id}</code>",
+                reply_markup=reply_markup,
+            )
+    else:
+        return await message.reply("Invalid command format. Usage: `/index [channel_link] [last_message_id]`")
+
 
 @Bot.on_message(filters.command("index") & filters.user(Config.ADMINS))
 async def send_for_index(bot: Bot, message: types.Message):
