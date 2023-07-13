@@ -167,9 +167,7 @@ class BaseFiltersDb(MongoDb):
         return total, files
 
 class FiltersDb(BaseFiltersDb):
-    def __init__(self, chat_id):
-        settings = config_db.get_settings(f"SETTINGS_{chat_id}")
-        bot_id = settings.get("COLLECTION_NAME4", "")
-        super().__init__(bot_id)
+    def __init__(self):
+        super().__init__(Config.COLLECTION_NAME4)
 
-a_filter = FiltersDb(self.message.chat.id)
+a_filter = FiltersDb()
