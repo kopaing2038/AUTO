@@ -18,7 +18,7 @@ class Bot(Client):
 
     async def start(self):
         await super().start()
-        async clone_start():
+        async clone_start()
         tz = pytz.timezone('Asia/Yangon')
         today = date.today()
         now = datetime.now(tz)
