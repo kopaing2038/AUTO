@@ -12,8 +12,21 @@ mongo_client = MongoClient(Config.DATABASE_URI)
 mongo_db = mongo_client["cloned_bots"]
 
 
+class clonedme(object):
+    ME = None
+    U_NAME = None
+    B_NAME = None
 
-username = f"yej"
+async def savefiles(bot_id):
+    mycol = mydb[str(bot_id)]
+
+    try:
+        mycol.insert_one({'bot_id': bot_id})
+        print(f"Bot ID {bot_id} saved successfully.")
+    except Exception as e:
+        print(f"Error while saving Bot ID: {e}")
+
+
 
 
 
@@ -174,10 +187,15 @@ class BaseFiltersDb(MongoDb):
         return total, files
 
 
+#class FiltersDb(BaseFiltersDb):
+    #def __init__(self):
+       # super().__init__(Config.COLLECTION_NAME)
+
 class FiltersDb(BaseFiltersDb):
     def __init__(self):
-        super().__init__(Config.COLLECTION_NAME)
+        mycol = mydb[str(clonedme.ME)]  # Use clonedme.ME to access the bot_id
 
+        super().__init__(mycol)
 
 
 a_filter = FiltersDb()
