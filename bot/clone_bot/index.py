@@ -20,32 +20,29 @@ _REGEX = r"(https://)?(t\.me/|telegram\.me/|telegram\.dog/)(c/)?(\d+|[a-zA-Z_0-9
 
 
 
-@Bot.on_message(filters.command("index") & filters.user(Config.ADMINS) & filters.regex(_REGEX) & filters.text)
+@Bot.on_message(filters.command("index") & filters.private & filters.user(Config.ADMINS))
 async def send_for_index_commend(bot: Bot, message: types.Message):
-    if message.command:
-        regex = re.compile(_REGEX)
-        try:
-            match = regex.match(str(message.command))
-        except TypeError:
-            return await message.reply("Invalid command")
-        if not match:
-            return await message.reply("Invalid link")
-        chat_id = match.group(4)
-        last_msg_id = int(match.group(5))
-        if chat_id.isnumeric():
-            chat_id = int("-100" + chat_id)
-    elif message.forward_from_chat.type == types.enums.ChatType.CHANNEL:
-        last_msg_id = message.forward_from_message_id
-        chat_id = message.forward_from_chat.username or message.forward_from_chat.id
-    else:
-        return
+    if len(message.command) != 2:
+        return await message.reply("Invalid command format. Usage: `/index [channel_link] [last_message_id]`")
+
+    channel_link = message.command[1]
+    last_msg_id = message.command[2]
+
+    regex = re.compile(_REGEX)
+    match = regex.match(channel_link)
+
+    if not match:
+        return await message.reply("Invalid channel link format")
+
+    chat_id = match.group(4)
+    if chat_id.isnumeric():
+        chat_id = int("-100" + chat_id)
+    last_msg_id = int(last_msg_id)
 
     try:
         await bot.get_chat(chat_id)
     except tg_exceptions.ChannelInvalid:
-        return await message.reply(
-            "This may be a private channel/group. Make me an admin over there to index the files."
-        )
+        return await message.reply("This may be a private channel/group. Make me an admin over there to index the files.")
     except (tg_exceptions.UsernameInvalid, tg_exceptions.UsernameNotModified):
         return await message.reply("Invalid Link specified.")
     except Exception as e:
@@ -55,9 +52,7 @@ async def send_for_index_commend(bot: Bot, message: types.Message):
     try:
         k = await bot.get_messages(chat_id, last_msg_id)
     except tg_exceptions.Unauthorized:
-        return await message.reply(
-            "Make sure that I am an admin in the channel, if the channel is private."
-        )
+        return await message.reply("Make sure that I am an admin in the channel, if the channel is private.")
     except Exception as e:
         return await message.reply(f"Error occurred - {e}")
 
