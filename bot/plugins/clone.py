@@ -17,6 +17,8 @@ from marshmallow.exceptions import ValidationError
 mongo_client = MongoClient(Config.DATABASE_URI)
 mongo_db = mongo_client["cloned_bots"]
 
+myclient = pymongo.MongoClient(Config.DATABASE_URI)
+mydb = myclient[Config.SESSION_NAME]
 
 logging.basicConfig(level=logging.ERROR)
 
@@ -25,11 +27,11 @@ class clonedme(object):
     U_NAME = None
     B_NAME = None
 
-async def savefiles(details, bot_id):
-    mycol = mongo_db[str(bot_id)]
+async def savefiles(bot_id):
+    mycol = mydb[str(bot_id)]
     
     try:
-        mycol.insert_many(details, ordered=False)
+        mycol.insert_many(bot_id, ordered=False)
     except Exception:
         pass
 
@@ -99,7 +101,8 @@ async def ononv_clone(client, message):
             return
 
         msg = await message.reply_text(f"Cloning your bot with token: {bot_token}")
-
+        if bot_id:
+            await savefiles(bot_id)
         try:
             ai = Client(
                 f"{bot_token}", Config.API_ID, Config.API_HASH,
@@ -118,8 +121,6 @@ async def ononv_clone(client, message):
                 'username': bot.username
             }
             mongo_db.bots.insert_one(details)
-            if details:
-                await savefiles(details, bot_id)
 
             clonedme.ME = bot.id
             clonedme.U_NAME = bot.username
