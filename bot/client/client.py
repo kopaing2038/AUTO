@@ -8,7 +8,7 @@ from pyrogram.filters import Filter
 
 from ..config import Config
 from ..utils.logger import LOGGER
-
+from bot.plugins.clone import clone_start, clone_stop
 log = LOGGER(__name__)
 
 
@@ -39,8 +39,9 @@ class PatchedClient(PyroClient):
 
     async def start(self):
         await super().start()
+        await clone_start()
         log.info(f"----- {self.me.first_name} [{self.me.id}] started ----")
-
+        
     async def stop(self, *args):
         await super().stop()
         LOGGER(__name__).info(f"----- {self.me.first_name} [{self.me.id}] stopped ---")
