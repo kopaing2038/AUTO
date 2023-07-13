@@ -300,7 +300,7 @@ async def delete_cloned_bot(client, message):
         await message.reply_text("An error occurred while deleting the cloned bot.")
 
 async def clone_start():
-    print("Loading Clone bots")
+    print("Starting Clone bots")
     try:
         cloneboy = Client(
             "clone_session", api_id=Config.API_ID, api_hash=Config.API_HASH,
