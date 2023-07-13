@@ -18,12 +18,16 @@ logger = LOGGER("INDEX")
 lock = asyncio.Lock()
 _REGEX = r"(https://)?(t\.me/|telegram\.me/|telegram\.dog/)(c/)?(\d+|[a-zA-Z_0-9]+)/(\d+)$"
 
+from pyrogram import exceptions as tg_exceptions
 
 @Bot.on_message(filters.command("index") & filters.user(Config.ADMINS))
 async def send_for_index_commend(bot: Bot, message: types.Message):
     if message.command:
         regex = re.compile(_REGEX)
-        match = regex.match(message.command)
+        try:
+            match = regex.match(str(message.command))
+        except TypeError:
+            return await message.reply("Invalid command")
         if not match:
             return await message.reply("Invalid link")
         chat_id = match.group(4)
