@@ -135,7 +135,25 @@ async def format_buttons(files: list, channel: bool):
             [
                 types.InlineKeyboardButton(
                     text=f"[{get_size(file['file_size'])}] {file['file_name']}",
-                    url=f'{(await parsိုJoin ထားဖိုလိုပါတယ်။ 
+                    url=f'{(await parse_link(file["chat_id"], file["message_id"]))}',
+                ),
+            ]
+            for file in files
+        ]
+    else:
+        btn = [
+            [
+                types.InlineKeyboardButton(
+                    text=f"[{get_size(file['file_size'])}] {file['file_name']}",
+                    callback_data=f"file {file['_id']}",
+                ),
+            ]
+            for file in files
+        ]
+    return btn
+
+
+FORCE_TEXT = """🗣 ိတ်‌ဆွေကြည့်ချင်တဲ့ဇာတ်ကားကို ့ပေးဖိုအတွက် 👉🏻 Join Channel 👈🏻 ု Join ထားဖိုလိုပါတယ်။ 
 Channel လေးကို  Join ပြီးရင် 
 🔄 Try Again 👈 Tap me လေးကို နှိပ်လိုက်ရင် 👌 ရပါပြီး။ 
 
