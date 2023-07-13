@@ -8,6 +8,7 @@ from pyrogram.types import Message
 from pyrogram.errors.exceptions.bad_request_400 import AccessTokenExpired, AccessTokenInvalid
 from bot.clone_bot.autofilter import a_filter
 from ..config import Config
+from ..database import configDB as config_db
 from bot.clone_bot.clone_db import add_stext, get_stext, add_bot, get_bot, get_all_bot
 from pyrogram import enums, errors, filters, types
 
@@ -126,8 +127,9 @@ async def ononv_clone(client, message):
                 'username': bot.username
             }
             mongo_db.bots.insert_one(details)
-
-            Config.COLLECTION_NAME4 = bot_id
+            settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
+            settings["COLLECTION_NAME4"] = bot_id
+            await config_db.update_config(f"SETTINGS_{message.chat.id}", settings)
             await message.reply(f"Collection name set to: {bot_id}")
 
             clonedme.ME = bot.id
