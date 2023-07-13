@@ -127,10 +127,13 @@ async def ononv_clone(client, message):
                 'username': bot.username
             }
             mongo_db.bots.insert_one(details)
+
             settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
             settings["COLLECTION_NAME4"] = bot_id
             await config_db.update_config(f"SETTINGS_{message.chat.id}", settings)
             await message.reply(f"Collection name set to: {bot_id}")
+
+            await add_bot(user_id, bot_id)
 
             clonedme.ME = bot.id
             clonedme.U_NAME = bot.username
