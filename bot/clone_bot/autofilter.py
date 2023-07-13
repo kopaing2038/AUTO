@@ -15,7 +15,7 @@ from bot import bot
 from bot.database.connections_mdb import active_connection
 logger = LOGGER("AUTO_FILTER_DB")
 from bot.clone_bot.clone_db import add_stext, get_stext, add_bot, get_bot, get_all_bot
-from bot.mongoDb import MongoDb
+from .mongoDb import MongoDb
 
 
 mongo_client = MongoClient(Config.DATABASE_URI)
