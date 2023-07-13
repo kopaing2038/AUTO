@@ -6,8 +6,7 @@ from pyrogram import types
 from .client import Client
 from .config import Config
 from .utils.logger import LOGGER
-from datetime import date, datetime 
-import pytz
+
 
 
 class Bot(Client):
@@ -18,19 +17,11 @@ class Bot(Client):
 
     async def start(self):
         await super().start()
-        tz = pytz.timezone('Asia/Yangon')
-        today = date.today()
-        now = datetime.now(tz)
-        time = now.strftime("%H:%M:%S %p")
-        await self.send_message(Config.LOG_CHANNEL, f"#START\nBot [ @{self.me.username} ] \n\n📅 Dᴀᴛᴇ : <code>{today}</code>\n⏰ Tɪᴍᴇ : <code>{time}</code>\n🌐 Tɪᴍᴇᴢᴏɴᴇ : <code>Asia/Yangon</code>\n\nstarted")
+        await self.send_message(Config.LOG_CHANNEL, f"#START\nBot [`@{self.me.username}`] started")
         LOGGER(__name__).info("--- Bot Initialized--- ")
-        
+
     async def stop(self, *args):
-        tz = pytz.timezone('Asia/Yangon')
-        today = date.today()
-        now = datetime.now(tz)
-        time = now.strftime("%H:%M:%S %p")
-        await self.send_message(Config.LOG_CHANNEL, f"#STOP\nBot [ @{self.me.username} ] \n\n📅 Dᴀᴛᴇ : <code>{today}</code>\n⏰ Tɪᴍᴇ : <code>{time}</code>\n🌐 Tɪᴍᴇᴢᴏɴᴇ : <code>Asia/Yangon</code>\n\n Stopped")
+        await self.send_message(Config.LOG_CHANNEL, f"#STOP\nBot [`@{self.me.username}`] Stopped")
         await super().stop()
 
     async def iter_messages(
