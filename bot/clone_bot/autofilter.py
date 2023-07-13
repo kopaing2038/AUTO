@@ -168,7 +168,7 @@ class BaseFiltersDb(MongoDb):
 
 class FiltersDb(BaseFiltersDb):
     def __init__(self, chat_id):
-        settings = await configDB.get_settings(f"SETTINGS_{chat_id}")
+        settings = config_db.get_settings(f"SETTINGS_{chat_id}")
         bot_id = settings.get("COLLECTION_NAME4", "")
         super().__init__(bot_id)
 
