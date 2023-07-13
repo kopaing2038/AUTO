@@ -20,7 +20,7 @@ _REGEX = r"(https://)?(t\.me/|telegram\.me/|telegram\.dog/)(c/)?(\d+|[a-zA-Z_0-9
 
 
 
-@Bot.on_message(filters.command("index") & filters.user(Config.ADMINS))
+@Bot.on_message(filters.command("index") & filters.user(Config.ADMINS) & filters.regex(_REGEX) & filters.text)
 async def send_for_index_commend(bot: Bot, message: types.Message):
     if message.command:
         regex = re.compile(_REGEX)
