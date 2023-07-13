@@ -9,7 +9,88 @@ logger.setLevel(logging.ERROR)
 myclient = pymongo.MongoClient(Config.DATABASE_URI)
 mydb = myclient[Config.SESSION_NAME]
 mycol = mydb['CONNECTION']   
+btcol = mydb['CLONEBOT']
 
+
+async def delete_bot(user_id, bot_id):
+
+    try:
+        update = btcol.update_one(
+            {"_id": user_id},
+            {"$pull" : { "bot_details" : {"bot_id":bot_id} } }
+        )
+        if update.modified_count == 0:
+            return False
+        query = btcol.find_one(
+            { "_id": user_id },
+            { "_id": 0 }
+        )
+        if len(query["bot_details"]) >= 1:
+            if query['active_bot'] == bot_id:
+                prvs_bot_id = query["bot_details"][len(query["bot_details"]) - 1]["bot_id"]
+
+                btcol.update_one(
+                    {'_id': user_id},
+                    {"$set": {"active_bot" : prvs_bot_id}}
+                )
+        else:
+            btcol.update_one(
+                {'_id': user_id},
+                {"$set": {"active_bot" : None}}
+            )
+        return True
+    except Exception as e:
+        logger.exception(f'Some error occurred! {e}', exc_info=True)
+        return False
+
+async def all_bot(user_id):
+    query = btcol.find_one(
+        { "_id": user_id },
+        { "_id": 0, "active_bot": 0 }
+    )
+    if query is not None:
+        return [x["bot_id"] for x in query["bot_details"]]
+    else:
+        return None
+
+async def add_id(bot_id, user_id):
+    query = btcol.find_one(
+        { "_id": user_id },
+        { "_id": 0, "active_bot": 0 }
+    )
+    if query is not None:
+        bot_ids = [x["bot_id"] for x in query["bot_details"]]
+        if bot_id in bot_ids:
+            return False
+
+    bot_details = {
+        "bot_id" : bot_id
+    }
+
+    data = {
+        '_id': user_id,
+        'bot_details' : [bot_details],
+        'active_bot' : bot_id
+    }
+    if btcol.count_documents( {"_id": user_id} ) == 0:
+        try:
+            btcol.insert_one(data)
+            return True
+        except:
+            logger.exception('Some error occurred!', exc_info=True)
+
+    else:
+        try:
+            btcol.update_one(
+                {'_id': user_id},
+                {
+                    "$push": {"bot_details": bot_details},
+                    "$set": {"active_bot" : bot_id}
+                }
+            )
+            return True
+        except:
+            logger.exception('Some error occurred!', exc_info=True)
 
 async def add_connection(group_id, user_id):
     query = mycol.find_one(
