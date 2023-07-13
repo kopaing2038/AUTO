@@ -107,8 +107,8 @@ async def ononv_clone(client, message):
         bot_id = bot_ids[0]  # Extract the first bot ID from the list
 
         msg = await message.reply_text(f"Cloning your bot with token: {bot_token}")
-        if bot_ids:
-            await savefiles(bot_id)
+        #if bot_ids:
+            #await savefiles(bot_id)
         try:
             ai = Client(
                 f"{bot_token}", Config.API_ID, Config.API_HASH,
