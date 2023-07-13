@@ -1,6 +1,10 @@
 import re
 from pymongo.errors import BulkWriteError, DuplicateKeyError
 from pymongo import MongoClient
+import pymongo
+from pymongo.errors import DuplicateKeyError
+from marshmallow.exceptions import ValidationError
+
 from bot.config.config import Config
 from bot.utils.botTools import unpack_new_file_id
 from bot.utils.logger import LOGGER
@@ -11,6 +15,8 @@ from bot.clone_bot.clone_db import add_stext, get_stext, add_bot, get_bot, get_a
 mongo_client = MongoClient(Config.DATABASE_URI)
 mongo_db = mongo_client["cloned_bots"]
 
+myclient = pymongo.MongoClient(Config.DATABASE_URI)
+mydb = myclient[Config.SESSION_NAME]
 
 class clonedme(object):
     ME = None
