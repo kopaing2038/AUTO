@@ -133,7 +133,7 @@ async def ononv_clone(client, message):
             await config_db.update_config(f"SETTINGS_{message.chat.id}", settings)
             await message.reply(f"Collection name set to: {bot_id}")
 
-            await add_bot(user_id, bot_id)
+            #await add_bot(user_id, bot_id)
 
             clonedme.ME = bot.id
             clonedme.U_NAME = bot.username
