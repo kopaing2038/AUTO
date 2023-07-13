@@ -11,7 +11,7 @@ from bot.plugins.clone import clone_start, clone_stop
 
 async def main():
     await bot.start()
-    await clone_start()
+    
     Cache.BANNED = await usersDB.get_banned_users()
     bot.loop.create_task(check_pending(bot))
     LOGGER(__name__).info(f"Banned Users list updated {Cache.BANNED}")
