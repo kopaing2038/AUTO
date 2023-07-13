@@ -170,4 +170,5 @@ class FiltersDb(BaseFiltersDb):
 
 
 
-a_filter = FiltersDb()
+a_filter = await FiltersDb()
+
