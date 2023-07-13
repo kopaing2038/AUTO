@@ -18,7 +18,7 @@ mongo_db = mongo_client["cloned_bots"]
 
 myclient = pymongo.MongoClient(Config.DATABASE_URI)
 mydb = myclient[Config.SESSION_NAME]
-
+userid = message.from_user.id if message.from_user else None
 
 class BaseFiltersDb:
     def __init__(self, collection_name):
