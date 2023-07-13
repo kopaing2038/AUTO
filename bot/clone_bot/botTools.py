@@ -21,7 +21,7 @@ CONFIGURABLE = {
     "PM_IMDB_POSTER": {"help": "Disable / Enable IMDB posters in PM", "name": "PM IMDb Posters"},
     "DOWNLOAD_BUTTON": {"help": "Enable / disable download button", "name": "Download Button"},
     "PHOTO_FILTER": {"help": "Enable / disable photo filter", "name": "Photo Filter"},
-    "VD_FILTER": {"help": "Enable / disable VD filter", "name": "VD Filter"},
+    "V_FILTER": {"help": "Enable / disable VD filter", "name": "V Filter"},
 }
 
 
