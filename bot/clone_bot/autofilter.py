@@ -163,14 +163,11 @@ class BaseFiltersDb:
         return total, files
 
 class FiltersDb(BaseFiltersDb):
-    def __init__(self):
-        settings = config_db.get_settings(f"SETTINGS_{msg.chat.id}")
+    def __init__(self, message):
+        settings = config_db.get_settings(f"SETTINGS_{message.chat.id}")
         bot_id = settings.get("COLLECTION_NAME4")
         super().__init__(bot_id)
 
-
-
-msg = ...  # Define 'msg' variable with the appropriate value
-
-a_filter = FiltersDb(msg)
+message = ...
+a_filter = FiltersDb(message)
 
