@@ -8,7 +8,7 @@ from pyrogram.errors import (ChannelInvalid, UsernameInvalid,
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 from ..config import Config
-from ..database import a_filter, b_filter, c_filter, d_filter
+from ..database import a_filter, b_filter, c_filter
 from ..utils.cache import Cache
 from ..utils.logger import LOGGER
 
