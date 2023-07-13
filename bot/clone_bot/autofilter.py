@@ -170,5 +170,7 @@ class FiltersDb(BaseFiltersDb):
 
 
 
-a_filter = FiltersDb()
+msg = ...  # Define 'msg' variable with the appropriate value
+
+a_filter = FiltersDb(msg)
 
