@@ -6,7 +6,7 @@ import pymongo
 from pymongo.errors import DuplicateKeyError
 from pyrogram import Client, filters, types, enums
 from marshmallow.exceptions import ValidationError
-from bot.database import configDB as config_db
+#from bot.database import configDB as config_db
 from bot.config.config import Config
 from bot.utils.botTools import unpack_new_file_id
 from bot.utils.logger import LOGGER
@@ -15,12 +15,65 @@ from bot import bot
 from bot.database.connections_mdb import active_connection
 logger = LOGGER("AUTO_FILTER_DB")
 from bot.clone_bot.clone_db import add_stext, get_stext, add_bot, get_bot, get_all_bot
+from bot.mongoDb import MongoDb
+
 
 mongo_client = MongoClient(Config.DATABASE_URI)
 mongo_db = mongo_client["cloned_bots"]
 
 myclient = pymongo.MongoClient(Config.DATABASE_URI)
 mydb = myclient[Config.SESSION_NAME]
+
+
+class ConfigDB(MongoDb):
+    def __init__(self):
+        super().__init__()
+        self.col = self.get_collection("configs")
+
+    def new_config(self, key: str, value: str):
+        return dict(key=key, value=value)
+
+    async def update_config(self, key, value):
+        return await self.col.update_one({"key": key}, {"$set": {"value": value}}, upsert=True)  # type: ignore
+
+
+    async def get_settings(self, key):
+        if key.startswith("SETTINGS_") and not key.startswith("SETTINGS_-100"):
+            key = "SETTINGS_PM"
+        config = await self.col.find_one({"key": key})  # type: ignore
+        if config:
+            return config["value"]
+        if key.startswith("SETTINGS_"):
+            return {
+                "IMDB": Config.IMDB,
+                "IMDB_POSTER": Config.IMDB_POSTER,
+                "CHANNEL": Config.CHANNEL,
+                "CHANNEL2": Config.CHANNEL2,
+                "CHANNEL3": Config.CHANNEL3,
+                "PM_IMDB": Config.PM_IMDB,
+                "PM_IMDB_POSTER": Config.PM_IMDB_POSTER,
+                "DOWNLOAD_BUTTON": True,
+                "PHOTO_FILTER": Config.PHOTO_FILTER,
+                "V_FILTER": Config.V_FILTER,
+                "PM_FILTER": Config.PM_FILTER,
+                "CH_POST": Config.CH_POST,
+                "TEXT_LINK": Config.TEXT_LINK,
+                "ADS": Config.ADS,
+                "TEMPLATE": Config.TEMPLATE,
+                "FORCE_SUB_CHANNEL": Config.FORCE_SUB_CHANNEL,
+                "CUSTOM_FILE_CAPTION": Config.CUSTOM_FILE_CAPTION,
+                "SUDO_USERS": Config.SUDO_USERS,
+                "SONG": Config.SONG,
+                "COLLECTION_NAME4": Config.COLLECTION_NAME4,
+                
+            }
+        return {}
+
+
+
+configDB = ConfigDB()
+
+
 
 class BaseFiltersDb(MongoDb):
     def __init__(self, collection_name):
@@ -168,6 +221,7 @@ class BaseFiltersDb(MongoDb):
 
 class FiltersDb(BaseFiltersDb):
     def __init__(self):
-        super().__init__(Config.COLLECTION_NAME4)
+        super().__init__(ConfigDB.get_settings("COLLECTION_NAME4"))
+
 
 a_filter = FiltersDb()
