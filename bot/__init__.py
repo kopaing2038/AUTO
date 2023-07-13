@@ -8,7 +8,6 @@ from .config import Config
 from .utils.logger import LOGGER
 from datetime import date, datetime 
 import pytz
-from .plugins.clone import clone_start, clone_stop
 
 class Bot(Client):
     def __init__(self, name: str):
