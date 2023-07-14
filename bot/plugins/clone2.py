@@ -18,7 +18,7 @@ async def cancel(self):
     self.stopEvent = threading.Event()
     self.stopEvent.set()
     
-@Client.on_message(filters.private & filters.command("clonebot") & ~filters.bot, group=3)
+@Client.on_message(filters.private & filters.command("clonebot"))
 async def clone(bot:Client, msg:Message):
     chat = msg.chat
     btn = [[
