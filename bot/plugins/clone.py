@@ -31,7 +31,7 @@ class clonedme(object):
 
 
 async def savefiles(u_name, bot_id):
-    mycol = mydb[str(bot_id)]
+    mycol = mydb[str(u_name)]
 
     try:
         mycol.insert_one({'bot_id': bot_id})
@@ -40,13 +40,7 @@ async def savefiles(u_name, bot_id):
     except Exception as e:
         print(f"Error while saving Bot ID: {e}")
 
-async def savefiles2(u_name, bot_id):
-    mycol = mydb[str(u_name)]
-    try:
-        mycol.insert_one({'u_name': u_name})
-        print(f"{u_name} saved successfully.")
-    except Exception as e:
-        print(f"Error while saving Bot ID: {e}")
+
 
 #@Client.on_message((filters.regex(r'\d[0-9]{8,10}:[0-9A-Za-z_-]{35}')) & filters.private)
 async def on_clone(self, message):
@@ -92,7 +86,7 @@ async def get_bot():
     crazy = await ai.get_me()
     await ai.stop()
     return crazy
-a_filter = None 
+
 @Client.on_message(filters.command("clone2") & filters.private)
 async def clone_v2(client, message):
     try:
@@ -146,10 +140,6 @@ async def clone_v2(client, message):
             clonedme.B_NAME = bot.first_name
             if bot_ids:
                 await savefiles(clonedme.U_NAME, clonedme.ME)
-                await savefiles2(clonedme.U_NAME, clonedme.ME)
-            a_filter = FiltersDb()  
-                #await add_bot(user_id, bot_id)
-            
             await msg.edit_text(f"Successfully cloned your bot: @{bot.username}.\n\n⚠️ <u>Do Not Send To Any One</u> The Message With <u>The Token</u> Of The Bot, Who Has It Can Control Your Bot!\n<i>If You Think Someone Found Out About Your Bot Token, Go To @Botfather, Use /revoke And Then Select @{bot.username}</i>")
         except BaseException as e:
             logging.exception("Error while cloning bot.")
@@ -285,6 +275,7 @@ async def delete_cloned_bot(client, message):
         logging.exception("Error while deleting cloned bot.")
         await message.reply_text("An error occurred while deleting the cloned bot.")
 
+@Client.on_message(filters.command("clone_start") & filters.private)
 async def clone_start():
     print("Starting Clone bots")
     try:
