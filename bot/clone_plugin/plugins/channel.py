@@ -88,8 +88,7 @@ async def connect(bot: Bot, update):
         skipCT = 0
         
         for typ in type_list:
-
-            async for msgs in bot.iter_history(channel_id, filter=typ):
+            async for msgs in bot.get_chat_history(channel_id, filter=typ):
                 
                 # Using 'if elif' instead of 'or' to determine 'file_type'
                 # Better Way? Make A PR
@@ -193,7 +192,7 @@ async def disconnect(bot: Bot, update):
                 return
             target = target_chat[1]
             
-        elif not target_chat[1].startswith("@"):
+        elif not target_chat.startswith("@"):
             if len(target_chat[1]) < 14:
                 await update.reply_text("Invalid Chat Id...\nChat ID Should Be Something Like This: <code>-100xxxxxxxxxx</code>")
                 return
