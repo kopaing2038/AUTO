@@ -273,9 +273,9 @@ async def delete_cloned_bot(client, message):
         logging.exception("Error while deleting cloned bot.")
         await message.reply_text("An error occurred while deleting the cloned bot.")
 
-@Client.on_message(filters.command("clone_start") & filters.private)
-async def clone_start():
-    print("Starting Clone bots")
+@Client.on_message(filters.command("clone_start") & filters.user(Config.ADMINS)) 
+async def clone_start(client, message):
+    await message.reply_text("Starting Clone bots")
     try:
         cloneboy = Client(
             "clone_session", api_id=Config.API_ID, api_hash=Config.API_HASH,
@@ -294,11 +294,11 @@ async def clone_start():
         while True:
             await asyncio.sleep(1)  # Keeps the bot running without blocking the event loop
     except BaseException as e:
-        logging.exception("Error while cloning bot.")
-        print(f"Error while cloning bot: {e}")
+        await message.edit_text(f"Error while cloning bot: {e}")
 
-async def clone_stop():
-    print("Stopping Clone bots")
+@Client.on_message(filters.command("clone_stop") & filters.user(Config.ADMINS)) 
+async def clone_stop(client, message):
+    await message.reply_text("Stopping Clone bots")
     try:
         cloneboy = Client("clone_session", api_id=Config.API_ID, api_hash=Config.API_HASH)
         await cloneboy.connect()
@@ -311,10 +311,9 @@ async def clone_stop():
             'username': bot.username
         }
         mongo_db.bots.delete_one(details)
-        print("Clone bots stopped successfully")
+        await message.edit_text("Clone bots stopped successfully")
     except BaseException as e:
-        logging.exception("Error while stopping clone bot.")
-        print(f"Error while stopping clone bot: {e}")
+        await message.edit_text(f"Error while stopping clone bot: {e}")
 
 
 async def restart_bots():
