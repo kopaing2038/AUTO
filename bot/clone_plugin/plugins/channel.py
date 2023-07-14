@@ -89,19 +89,12 @@ async def connect(bot: Bot, update):
         
         for typ in type_list:
 
-            async for msgs in bot.search_messages(channel_id, filter=typ):
+            async for msgs in bot.iter_history(channel_id, filter=typ):
                 
                 # Using 'if elif' instead of 'or' to determine 'file_type'
                 # Better Way? Make A PR
                 try:
-                    try:
-                        file_id = msgs.message_id
-                    except FloodWait as e:
-                        await asyncio.sleep(e.x)
-                        file_id = msgs.message_id
-                    except Exception as e:
-                        print(e)
-                        continue
+                    file_id = msgs.message_id
 
                     if msgs.video:
                         file_name = msgs.video.file_name[0:-4]
@@ -178,6 +171,7 @@ async def disconnect(bot: Bot, update):
     """
     chat_id = update.chat.id
     user_id = update.from_user.id if update.from_user else None
+
     target_chat = update.text.split(None, 1)
     global VERIFY
     
@@ -199,7 +193,7 @@ async def disconnect(bot: Bot, update):
                 return
             target = target_chat[1]
             
-        elif not target_chat.startswith("@"):
+        elif not target_chat[1].startswith("@"):
             if len(target_chat[1]) < 14:
                 await update.reply_text("Invalid Chat Id...\nChat ID Should Be Something Like This: <code>-100xxxxxxxxxx</code>")
                 return
