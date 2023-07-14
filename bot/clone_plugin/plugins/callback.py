@@ -6,7 +6,7 @@ from pyrogram import Client, filters, enums
 from pyrogram.errors import FloodWait, UserNotParticipant
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
 
-from bot import start_uptime, Translation
+from bot.clone_plugin.translation import Translation
 from bot.clone_plugin.plugins.auto_filter import ( 
     FIND, 
     INVITE_LINK, 
