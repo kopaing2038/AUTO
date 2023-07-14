@@ -142,7 +142,7 @@ async def callback(client: Client, query: CallbackQuery):
 
         if bot_ids is None:
             await query.message.edit_text(
-                "There are no active connections!! Connect to some groups first.",
+                "There are no active connections!! Connect to some groups first."
             )
             return await query.answer('𝙿𝙻𝙴𝙰𝚂𝙴 𝚂𝙷𝙰𝚁𝙴 𝙰𝙽𝙳 𝚂𝚄𝙿𝙿𝙾𝚁𝚃')
 
