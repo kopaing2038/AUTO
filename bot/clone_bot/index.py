@@ -92,7 +92,9 @@ async def clone_send_for_index_command_gp(bot: Bot, message: types.Message):
         chat_id = int("-100" + chat_id)
     
     try:
-        chat_info = await bot.get_chat(chat_id)
+        chat = await bot.get_chat(chat_id)
+        if not chat.type == "group":
+            return await message.reply("This command is only applicable to groups.")
     except ChannelInvalid:
         return await message.reply("This may be a private channel/group. Make me an admin over there to index the files.")
     except (UsernameInvalid, UsernameNotModified):
@@ -101,33 +103,33 @@ async def clone_send_for_index_command_gp(bot: Bot, message: types.Message):
         logger.exception(e)
         return await message.reply(f"Error - {e}")
     
-    if chat_info.type != "group":
-        return await message.reply("This is not a group. Please provide a valid group link.")
-    
-    try:
-        last_msg_id = int(last_message_id)
-        await bot.get_messages(chat_id, last_msg_id)
-    except (ChannelInvalid, UsernameInvalid):
-        return await message.reply("Make sure that I am an admin in the group, if the group is private.")
-    except Exception as e:
-        return await message.reply(f"Error occurred - {e}")
-    
-    buttons = [
-        [
-            InlineKeyboardButton(
-                "MOVIE DB",
-                callback_data=f"clone_index#accept#{chat_id}#{last_msg_id}#{message.from_user.id}",
-            )
-        ],
-        [
-            InlineKeyboardButton("Close", callback_data="close_data"),
-        ],
-    ]
-    reply_markup = InlineKeyboardMarkup(buttons)
-    return await message.reply(
-        f"Do you want to index this group?\n\nChat ID/Username: <code>{chat_id}</code>\nLast Message ID: <code>{last_msg_id}</code>",
-        reply_markup=reply_markup,
-    )
+    if len(match.groups()) >= 5:
+        try:
+            last_msg_id = int(last_message_id)
+            await bot.get_messages(chat_id, last_msg_id)
+        except (ChannelInvalid, UsernameInvalid):
+            return await message.reply("Make sure that I am an admin in the channel, if the channel is private.")
+        except Exception as e:
+            return await message.reply(f"Error occurred - {e}")
+        
+        buttons = [
+            [
+                InlineKeyboardButton(
+                    "MOVIE DB",
+                    callback_data=f"clone_index#accept#{chat_id}#{last_msg_id}#{message.from_user.id}",
+                )
+            ],
+            [
+                InlineKeyboardButton("Close", callback_data="close_data"),
+            ],
+        ]
+        reply_markup = InlineKeyboardMarkup(buttons)
+        return await message.reply(
+            f"Do you want to index this group?\n\nChat ID/Username: <code>{chat_id}</code>\nLast Message ID: <code>{last_msg_id}</code>",
+            reply_markup=reply_markup,
+        )
+    else:
+        return await message.reply("Invalid command format. Usage: `/index [channel_link] [last_message_id]`")
 
 @Bot.on_message(((filters.forwarded & ~filters.text) | (filters.regex(_REGEX)) & filters.text) & filters.private & filters.incoming & filters.user(Config.ADMINS))
 async def clone_send_for_index(bot: Bot, message: types.Message):
