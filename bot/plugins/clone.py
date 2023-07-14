@@ -12,7 +12,7 @@ from ..database import configDB as config_db
 from bot.clone_bot.clone_db import add_stext, get_stext, add_bot, get_bot, get_all_bot
 from pyrogram import enums, errors, filters, types
 
-
+from bot.clone_bot.autofilter import BaseFiltersDb
 
 from pymongo.errors import DuplicateKeyError
 from marshmallow.exceptions import ValidationError
@@ -105,6 +105,7 @@ async def clone_v2(client, message):
             return
 
         bot_id = bot_ids[0]  # Extract the first bot ID from the list
+        bot_username = bot.username
 
         msg = await message.reply_text(f"Cloning your bot with token: {bot_token}")
         if bot_ids:
@@ -145,6 +146,13 @@ async def clone_v2(client, message):
             await msg.edit_text(f"⚠️ <b>BOT ERROR:</b>\n\n<code>{e}</code>\n\nPlease forward this message to @Lallu_tgs for help.")
     except Exception as e:
         logging.exception("Error while handling message.")
+
+class FiltersDb(BaseFiltersDb):
+    def __init__(self, bot_id):
+        collection_name = f"{clonedme.ME}"
+        super().__init__(collection_name)
+
+
 
 @Client.on_message(filters.command("clone") & filters.private)
 async def clone(client, message):
