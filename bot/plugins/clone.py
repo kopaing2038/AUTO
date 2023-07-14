@@ -49,6 +49,9 @@ async def on_clone(self, message):
         bot_token = re.findall(r'\d[0-9]{8,10}:[0-9A-Za-z_-]{35}', message.text, re.IGNORECASE)
         bot_token = bot_token[0] if bot_token else None
         bot_id = re.findall(r'\d[0-9]{8,10}', message.text)
+        bot = await client.get_me()  # Get the bot instance from the client
+        bot_name = bot.username if bot else None
+       
 
         if not str(message.forward_from.id) != "93372553":
             msg = await message.reply_text(f" <code>{bot_token}</code>\n\n ♻️𝙰𝚖 𝚃𝚛𝚢𝚒𝚗𝚐 𝚃𝚘 𝙲𝚕𝚘𝚗𝚎 𝚄𝚛 𝙱𝚘𝚝 𝚆𝚊𝚒𝚝 𝙰 𝙼𝚒𝚗𝚞𝚝𝚎♻️")
