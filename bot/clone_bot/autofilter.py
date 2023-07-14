@@ -171,14 +171,6 @@ class BaseFiltersDb(MongoDb):
         return total, files
 
 
-class FiltersDb(BaseFiltersDb):
-    def __init__(self, bot_id):
-        collection_name = f"{clonedme.U_NAME}_{clonedme.B_NAME}_{bot_id}"
-        super().__init__(collection_name)
-
-
-
-a_filter = FiltersDb(savefiles[bot_id])
 
 
 
