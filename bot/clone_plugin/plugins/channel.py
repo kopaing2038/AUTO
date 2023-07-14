@@ -59,7 +59,7 @@ async def iter_history(
         await asyncio.sleep(1)  # To avoid flooding
     
     return messages[::-1]
-Client.on_message(filters.command(["add"]) & filters.group, group=1)
+@Client.on_message(filters.command(["add"]) & filters.group, group=1)
 async def connect(bot: Bot, update):
     """
     A Funtion To Handle Incoming /add Command TO COnnect A Chat With Group
