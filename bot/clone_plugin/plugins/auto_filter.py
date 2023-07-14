@@ -7,7 +7,7 @@ from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup, 
 from pyrogram.errors import ButtonDataInvalid, FloodWait
 
 from bot.clone_plugin.plugins.database.database import Database 
-from bot import bot 
+from bot import Bot
 
 
 FIND = {}
