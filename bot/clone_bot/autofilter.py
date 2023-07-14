@@ -174,7 +174,7 @@ class FiltersDb(BaseFiltersDb):
 
 
 #filters_db = FiltersDb(bot_id, bot_username)
-a_filter = FiltersDb(bot_id, bot_username))
+a_filter = FiltersDb(bot_id, bot_username)
 
 
 
