@@ -85,66 +85,6 @@ async def get_bot():
     await ai.stop()
     return crazy
 
-session_names = {}
-
-@Client.on_message(filters.command("clone2") & filters.private)
-async def clone_v2_accept(client, message):
-    try:
-        user_id = message.from_user.id
-        user_name = message.from_user.first_name
-
-        # Extract bot_token and bot_id from the message text using regex
-        bot_token = re.findall(r'\d{8,10}:[0-9A-Za-z_-]{35}', message.text)
-        bot_token = bot_token[0] if bot_token else None
-        bot_id = re.findall(r'\d{8,10}', message.text)
-
-        if not bot_token:
-            await callback_query.answer("Please provide a valid bot token to clone.")
-            return
-
-        if not bot_ids:
-            await callback_query.answer("Unable to find the bot ID.")
-            return
-
-        msg = await callback_query.message.reply_text(f"Cloning your bot with token: {bot_token}")
-
-        try:
-            ai = Client(
-                session_name=f"clone_{bot_ids}",
-                api_id=Config.API_ID,
-                api_hash=Config.API_HASH,
-                bot_token=bot_token,
-                plugins={"root": "bot/clone_bot"},
-            )
-            await ai.start()
-            bot = await ai.get_me()
-
-            details = {
-                'bot_id': bot.id,
-                'is_bot': True,
-                'user_id': user_id,
-                'name': bot.first_name,
-                'token': bot_token,
-                'username': bot.username
-            }
-            mongo_db.bots.insert_one(details)
-
-            settings = await config_db.get_settings(f"SETTINGS_{callback_query.message.chat.id}")
-            settings["COLLECTION_NAME4"] = bot_ids
-            await config_db.update_config(f"SETTINGS_{callback_query.message.chat.id}", settings)
-            await callback_query.message.reply(f"Collection name set to: {bot_ids}")
-
-            clonedme.ME = bot.id
-            clonedme.U_NAME = bot.username
-            clonedme.B_NAME = bot.first_name
-            if bot_ids:
-                await savefiles(clonedme.U_NAME, clonedme.ME)
-            await msg.edit_text(f"Successfully cloned your bot: @{bot.username}.\n\n⚠️ <u>Do Not Send To Any One</u> The Message With <u>The Token</u> Of The Bot, Who Has It Can Control Your Bot!\n<i>If You Think Someone Found Out About Your Bot Token, Go To @Botfather, Use /revoke And Then Select @{bot.username}</i>")
-        except Exception as e:
-            logging.exception("Error while cloning bot.")
-            await msg.edit_text(f"⚠️ <b>BOT ERROR:</b>\n\n<code>{e}</code>\n\nPlease forward this message to @Lallu_tgs for help.")
-    except Exception as e:
-        logging.exception("Error while handling message.")
 
 
 @Client.on_message(filters.command("clone") & filters.private)
@@ -195,6 +135,66 @@ async def clone(client, message):
             await msg.edit_text(f"⚠️ <b>BOT ERROR:</b>\n\n<code>{e}</code>\n\nPlease forward this message to @Lallu_tgs for help.")
     except Exception as e:
         logging.exception("Error while handling message.")
+
+@Client.on_message(filters.command("clone2") & filters.private)
+async def clone_v2_accept(client, message):
+    try:
+        user_id = message.from_user.id
+        user_name = message.from_user.first_name
+
+        # Extract bot_token and bot_id from the message text using regex
+        bot_token = re.findall(r'\d{8,10}:[0-9A-Za-z_-]{35}', message.text)
+        bot_token = bot_token[0] if bot_token else None
+        bot_id = re.findall(r'\d{8,10}', message.text)
+
+        if not bot_token:
+            await callback_query.answer("Please provide a valid bot token to clone.")
+            return
+
+        if not bot_id:
+            await callback_query.answer("Unable to find the bot ID.")
+            return
+
+        msg = await callback_query.message.reply_text(f"Cloning your bot with token: {bot_token}")
+
+        try:
+            ai = Client(
+                session_name=f"clone_{bot_id}",
+                api_id=Config.API_ID,
+                api_hash=Config.API_HASH,
+                bot_token=bot_token,
+                plugins={"root": "bot/clone_bot"},
+            )
+            await ai.start()
+            bot = await ai.get_me()
+
+            details = {
+                'bot_id': bot.id,
+                'is_bot': True,
+                'user_id': user_id,
+                'name': bot.first_name,
+                'token': bot_token,
+                'username': bot.username
+            }
+            mongo_db.bots.insert_one(details)
+
+            settings = await config_db.get_settings(f"SETTINGS_{callback_query.message.chat.id}")
+            settings["COLLECTION_NAME4"] = bot_id
+            await config_db.update_config(f"SETTINGS_{callback_query.message.chat.id}", settings)
+            await callback_query.message.reply(f"Collection name set to: {bot_id}")
+
+            clonedme.ME = bot.id
+            clonedme.U_NAME = bot.username
+            clonedme.B_NAME = bot.first_name
+            if bot_id:
+                await savefiles(clonedme.U_NAME, clonedme.ME)
+            await msg.edit_text(f"Successfully cloned your bot: @{bot.username}.\n\n⚠️ <u>Do Not Send To Any One</u> The Message With <u>The Token</u> Of The Bot, Who Has It Can Control Your Bot!\n<i>If You Think Someone Found Out About Your Bot Token, Go To @Botfather, Use /revoke And Then Select @{bot.username}</i>")
+        except Exception as e:
+            logging.exception("Error while cloning bot.")
+            await msg.edit_text(f"⚠️ <b>BOT ERROR:</b>\n\n<code>{e}</code>\n\nPlease forward this message to @Lallu_tgs for help.")
+    except Exception as e:
+        logging.exception("Error while handling message.")
+
 
 @Client.on_message(filters.command("clonedbots") & filters.private)
 async def cloned_bots_list(client, message):
@@ -278,11 +278,21 @@ async def clone_start(client, message):
     await message.reply_text("Starting Clone bots")
     try:
         cloneboy = Client(
-            "clone_session", api_id=Config.API_ID, api_hash=Config.API_HASH,
+            "clone_session", 
+            api_id=Config.API_ID, 
+            api_hash=Config.API_HASH,
             bot_token="YOUR_BOT_TOKEN",
             plugins={"root": "bot/plugins"},
         )
-        await cloneboy.start()
+        clonebot = Client(
+            "clone_bot_session",
+            api_id=Config.API_ID,
+            api_hash=Config.API_HASH,
+            bot_token="YOUR_BOT_TOKEN",
+            plugins={"root": "bot/clone_bot"},
+        )
+        await asyncio.gather(cloneboy.start(), clonebot.start())
+        
         bot = await cloneboy.get_me()
         details = {
             'bot_id': bot.id,
@@ -291,9 +301,10 @@ async def clone_start(client, message):
             'username': bot.username
         }
         mongo_db.bots.insert_one(details)
+        
         while True:
             await asyncio.sleep(1)  # Keeps the bot running without blocking the event loop
-    except BaseException as e:
+    except Exception as e:
         await message.edit_text(f"Error while cloning bot: {e}")
 
 @Client.on_message(filters.command("clone_stop") & filters.user(Config.ADMINS)) 
