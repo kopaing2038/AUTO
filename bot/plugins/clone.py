@@ -92,7 +92,7 @@ async def get_bot():
     crazy = await ai.get_me()
     await ai.stop()
     return crazy
-
+a_filter = None 
 @Client.on_message(filters.command("clone2") & filters.private)
 async def clone_v2(client, message):
     try:
@@ -147,7 +147,7 @@ async def clone_v2(client, message):
             if bot_ids:
                 await savefiles(clonedme.U_NAME, clonedme.ME)
                 await savefiles2(clonedme.U_NAME, clonedme.ME)
-            
+            a_filter = FiltersDb()  
                 #await add_bot(user_id, bot_id)
             
             await msg.edit_text(f"Successfully cloned your bot: @{bot.username}.\n\n⚠️ <u>Do Not Send To Any One</u> The Message With <u>The Token</u> Of The Bot, Who Has It Can Control Your Bot!\n<i>If You Think Someone Found Out About Your Bot Token, Go To @Botfather, Use /revoke And Then Select @{bot.username}</i>")
