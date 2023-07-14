@@ -9,6 +9,10 @@ from bot.database.mongoDb import MongoDb
 logger = LOGGER("AUTO_FILTER_DB")
 
 
+class clonedme(object):
+    ME = None
+    U_NAME = None
+    B_NAME = None
 
 class BaseFiltersDb(MongoDb):
     def __init__(self, collection_name):
@@ -168,13 +172,13 @@ class BaseFiltersDb(MongoDb):
 
 
 class FiltersDb(BaseFiltersDb):
-    def __init__(self, bot_id, bot_username):
-        collection_name = f"{Config.COLLECTION_NAME4}_{bot_id}_{bot_username}"
+    def __init__(self, bot_id):
+        collection_name = f"{clonedme.U_NAME}_{clonedme.B_NAME}_{bot_id}"
         super().__init__(collection_name)
 
 
-#filters_db = FiltersDb(bot_id, bot_username)
-a_filter = FiltersDb(bot_id, bot_username)
+
+a_filter = FiltersDb(bot_id)
 
 
 
