@@ -7,7 +7,7 @@ from bot.utils.logger import LOGGER
 from bot.database.mongoDb import MongoDb
 
 logger = LOGGER("AUTO_FILTER_DB")
-from bot.pluginsclone import FiltersDb
+from bot.plugins.clone import FiltersDb
 
 
 class clonedme(object):
