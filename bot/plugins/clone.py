@@ -139,7 +139,7 @@ async def clone_v2(client, message):
             clonedme.B_NAME = bot.first_name
 
             if bot_ids:
-                a_filter = FiltersDb(bot_id, clonedme.U_NAME)
+                await a_filter(bot_id, clonedme.U_NAME)
                 await savefiles(clonedme.U_NAME)
                 #await add_bot(user_id, bot_id)
             
