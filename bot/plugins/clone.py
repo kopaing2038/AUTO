@@ -85,6 +85,8 @@ async def get_bot():
     await ai.stop()
     return crazy
 
+session_names = {}
+
 @Client.on_message(filters.command("clone2") & filters.private)
 async def clone_v2_accept(client, message):
     user_id = message.from_user.id
@@ -103,7 +105,6 @@ async def clone_v2_accept(client, message):
         await message.reply_text("Unable to find the bot ID.")
         return
 
-
     callback_data = f"accept_{user_id}_{bot_ids[0]}"
     accept_button = types.InlineKeyboardMarkup(
         [[types.InlineKeyboardButton("Accept", callback_data=callback_data)],
@@ -112,10 +113,14 @@ async def clone_v2_accept(client, message):
     await message.reply_text("Admin accept waiting", reply_markup=accept_button)
 
 
-@Client.on_callback_query(filters.regex(r"^accept_"))
+@Bot.on_callback_query(filters.regex(r"^accept_"))
 async def clone_v2(client, callback_query):
     try:
         user_id, bot_id = callback_query.data.split("_")[1:]
+
+
+        session_name = f"clone_{user_id}_{bot_id}"
+        session_names[user_id] = session_name
         user_id = callback_query.from_user.id
         user_name = callback_query.from_user.first_name
 
