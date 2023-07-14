@@ -95,6 +95,7 @@ async def clone_v2(client, message):
         bot_token = re.findall(r'\d{8,10}:[0-9A-Za-z_-]{35}', message.text)
         bot_token = bot_token[0] if bot_token else None
         bot_ids = re.findall(r'\d{8,10}', message.text)
+        bot_name = bot.user.name if bot else None
 
         if not bot_token:
             await message.reply_text("Please provide a valid bot token to clone.")
@@ -109,7 +110,7 @@ async def clone_v2(client, message):
 
         msg = await message.reply_text(f"Cloning your bot with token: {bot_token}")
         if bot_ids:
-            a_filter = FiltersDb(bot_id, bot_username)
+            a_filter = FiltersDb(bot_id, bot_name)
             await savefiles(bot_id)
         try:
             ai = Client(
