@@ -13,6 +13,8 @@ db = Database()
 logger = LOGGER(__name__)
 VERIFY = {}
 
+from pyrogram.raw import functions
+
 async def iter_history(
     client: Client,
     chat_id: int,
@@ -35,24 +37,29 @@ async def iter_history(
     """
     current_id = offset_id
     messages = []
-
+    
     while True:
-        try:
-            messages_chunk = await client.get_chat_messages(chat_id, limit=limit, offset_id=current_id)
-            messages.extend(messages_chunk)
-        except Exception as e:
-            logger.exception(e, exc_info=True)
-            return []
-
-        if not messages_chunk:
+        result = await client.send(
+            functions.messages.GetHistory(
+                peer=chat_id,
+                limit=limit,
+                offset_id=current_id,
+                add_offset=0,
+                max_id=0,
+                min_id=0,
+                hash=0
+            )
+        )
+        
+        if not result.messages:
             break
-
-        current_id = messages_chunk[-1].message_id - 1
-
+        
+        messages.extend(result.messages)
+        current_id = messages[-1].id
+        
         await asyncio.sleep(1)  # To avoid flooding
-
+    
     return messages[::-1]
-
 
 
 
