@@ -378,7 +378,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                     quote=True,
                 )
                 m=await message.reply_sticker("CAACAgIAAxkBAAEEk-Bkr8koho72EvQQQFqzjjQpcN-AdQACCA4AAsMaIUnVXsJ4ltHnNB4E")
-                await asyncio.sleep(3)
+                await asyncio.sleep(5)
                 await m.delete()
             except (errors.MediaEmpty, errors.PhotoInvalidDimensions, errors.WebpageMediaEmpty):
                 pic = imdb.get("poster")
