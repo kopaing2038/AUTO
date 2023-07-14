@@ -4,14 +4,14 @@ import asyncio
 
 from pyrogram import Client, filters, enums
 from pyrogram.errors import UserAlreadyParticipant, FloodWait
-
-from bot import VERIFY, LOGGER # pylint: disable=import-error
-from bot.bot import Bot # pylint: disable=import-error
-from bot.database import Database # pylint: disable=import-error
-from bot.plugins.auto_filter import recacher # pylint: disable=import-error
+from bot.utils.logger import LOGGER
+from bot import Bot 
+from bot.clone_plugin.database.database import Database 
+from bot.clone_plugin.plugins.auto_filter import recacher
 
 db = Database()
 logger = LOGGER(__name__)
+VERIFY = {}
 
 @Client.on_message(filters.command(["add"]) & filters.group, group=1)
 async def connect(bot: Bot, update):
