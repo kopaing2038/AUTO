@@ -36,10 +36,11 @@ async def iter_history(
         ``AsyncGenerator``: An asynchronous generator yielding :obj:`~pyrogram.types.Message` objects.
     """
     current_id = offset_id
+    messages = []
 
     while True:
         try:
-            messages = await client.get_chat_history(
+            new_messages = await client.get_chat_history(
                 chat_id,
                 limit=limit,
                 offset_id=current_id,
@@ -48,15 +49,21 @@ async def iter_history(
             logger.exception(e, exc_info=True)
             return
 
-        if not messages:
+        if not new_messages:
             return
 
-        for message in reversed(messages):
-            yield message
+        messages.extend(new_messages)
 
         current_id = messages[0].message_id - 1
 
         await asyncio.sleep(1)  # To avoid flooding
+
+        for message in reversed(messages):
+            yield message
+
+        messages = []
+
+
 
 @Client.on_message(filters.command(["add"]) & filters.group, group=1)
 async def connect(bot: Bot, update):
