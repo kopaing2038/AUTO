@@ -8,7 +8,7 @@ from pyrogram.types import *
 from pyromod import listen
 from bot.config.config import Config
 from bot.database.clone_db import add_stext, get_stext, add_bot, get_bot, get_all_bot
-from utils import cancel
+#from utils import cancel
 
 
 async def cancel(self):
