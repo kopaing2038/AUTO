@@ -80,7 +80,8 @@ async def clone_send_for_index_command(bot: Bot, message: types.Message):
 @Bot.on_message(filters.command("index_gp") & filters.user(Config.ADMINS))
 async def clone_send_for_index_command_gp(bot: Bot, message: types.Message): 
     if len(message.command) != 2:
-        return await message.reply("Invalid command format. Usage: `/index [channel_link] [last_message_id]`")
+        return await message.reply("Invalid command format. Usage: `/index_gp [channel_link] [last_message_id]`")
+    
     channel_link = message.command[1]
 
     regex = re.compile(_REGEX)
@@ -94,9 +95,7 @@ async def clone_send_for_index_command_gp(bot: Bot, message: types.Message):
         chat_id = int("-100" + chat_id)
 
     try:
-        chat_info = await bot.get_chat(chat_id)
-        if chat_info.type != "supergroup":
-            return await message.reply("This command is only applicable for groups.")
+        await bot.get_chat(chat_id)
     except tg_exceptions.ChannelInvalid:
         return await message.reply("This may be a private channel/group. Make me an admin over there to index the files.")
     except (tg_exceptions.UsernameInvalid, tg_exceptions.UsernameNotModified):
@@ -135,7 +134,8 @@ async def clone_send_for_index_command_gp(bot: Bot, message: types.Message):
                 reply_markup=reply_markup,
             )
     else:
-        return await message.reply("Invalid command format. Usage: `/index [channel_link] [last_message_id]`")
+        return await message.reply("Invalid command format. Usage: `/index_gp [channel_link] [last_message_id]`")
+
 
 
 @Bot.on_message(((filters.forwarded & ~filters.text) | (filters.regex(_REGEX)) & filters.text) & filters.private & filters.incoming & filters.user(Config.ADMINS))
