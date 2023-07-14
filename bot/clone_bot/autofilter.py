@@ -7,13 +7,9 @@ from bot.utils.logger import LOGGER
 from bot.database.mongoDb import MongoDb
 
 logger = LOGGER("AUTO_FILTER_DB")
-from bot.plugins.clone import FiltersDb
 
 
-class clonedme(object):
-    ME = None
-    U_NAME = None
-    B_NAME = None
+
 
 class BaseFiltersDb(MongoDb):
     def __init__(self, collection_name):
@@ -171,7 +167,9 @@ class BaseFiltersDb(MongoDb):
         files = await self.col.find(file_filter).to_list(None)
         return total, files
 
-
+class FiltersDb(BaseFiltersDb):
+    def __init__(self):
+        super().__init__(Config.COLLECTION_NAME4)
 
 a_filter = FiltersDb()
 
