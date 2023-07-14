@@ -8,7 +8,7 @@ from bot.utils.logger import LOGGER
 from bot import Bot 
 from bot.clone_plugin.database.database import Database 
 from bot.clone_plugin.plugins.auto_filter import recacher
-from pyrogram import Client, functions
+from pyrogram.raw import functions
 
 db = Database()
 logger = LOGGER(__name__)
