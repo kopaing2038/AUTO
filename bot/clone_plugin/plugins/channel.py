@@ -15,7 +15,7 @@ VERIFY = {}
 
 
 
-async def iter_history(
+def iter_history(
     client: Client,
     chat_id: int,
     limit: int,
@@ -40,7 +40,7 @@ async def iter_history(
 
     while True:
         try:
-            new_messages = await client.get_chat_history(
+            new_messages = client.get_chat_history(
                 chat_id,
                 limit=limit,
                 offset_id=current_id,
@@ -56,7 +56,7 @@ async def iter_history(
 
         current_id = messages[0].message_id - 1
 
-        await asyncio.sleep(1)  # To avoid flooding
+        asyncio.sleep(1)  # To avoid flooding
 
         for message in reversed(messages):
             yield message
