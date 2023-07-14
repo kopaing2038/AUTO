@@ -112,7 +112,7 @@ async def clone_v2_accept(client, message):
     await message.reply_text("Admin accept waiting", reply_markup=accept_button)
 
 
-@Bot.on_callback_query(filters.regex(r"^accept_"))
+@Client.on_callback_query(filters.regex(r"^accept_"))
 async def clone_v2(client, callback_query):
     try:
         user_id, bot_id = callback_query.data.split("_")[1:]
