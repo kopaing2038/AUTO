@@ -5,7 +5,7 @@ from bot.config.config import Config
 from bot.clone_bot.botTools import unpack_new_file_id
 from bot.utils.logger import LOGGER
 from bot.database.mongoDb import MongoDb
-
+from bot import bot
 import pymongo
 from pymongo import MongoClient
 logger = LOGGER("AUTO_FILTER_DB")
