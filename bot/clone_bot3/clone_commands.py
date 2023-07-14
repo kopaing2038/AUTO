@@ -5,9 +5,9 @@ from bot import Bot
 from pyrogram import errors, filters, types
 
 from ..config import Config
-from bot.clone_bot.autofilter import a_filter
+from bot.clone_bot3.autofilter import a_filter
 from bot.database.usersDb import usersDB
-from bot.clone_bot.botTools import (
+from bot.clone_bot3.botTools import (
     check_fsub,
     format_buttons,
     get_size,
