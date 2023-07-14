@@ -4,7 +4,7 @@
 
 from pyrogram import filters, Client, enums
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
-from bot.clone_plugin import Translation
+from bot.clone_plugin.translation import Translation
 from bot.utils.logger import LOGGER
 from bot.clone_plugin.database.database import Database 
 
