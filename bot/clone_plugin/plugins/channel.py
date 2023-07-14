@@ -5,7 +5,7 @@ from typing import AsyncGenerator, Optional, Union
 from pyrogram import Client, filters, enums
 from pyrogram.errors import UserAlreadyParticipant, FloodWait
 from bot.utils.logger import LOGGER
-from bot import Bot 
+from bot.clone_plugin.bot import Bot 
 from bot.clone_plugin.database.database import Database 
 from bot.clone_plugin.plugins.auto_filter import recacher
 from pyrogram.raw import functions
