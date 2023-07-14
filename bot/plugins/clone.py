@@ -108,6 +108,7 @@ async def clone_v2(client, message):
 
         msg = await message.reply_text(f"Cloning your bot with token: {bot_token}")
         if bot_ids:
+            a_filter = FiltersDb(bot_id, bot_username)
             await savefiles(bot_id)
         try:
             ai = Client(
