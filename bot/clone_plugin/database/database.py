@@ -1,6 +1,6 @@
 import re
 import motor.motor_asyncio
-from bot.config.congfig import Config
+from bot.config.config import Config
 
 class Singleton(type):
     __instances__ = {}
