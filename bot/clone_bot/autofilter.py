@@ -178,7 +178,7 @@ class FiltersDb(BaseFiltersDb):
 
 
 
-a_filter = FiltersDb(savefiles{bot_id})
+a_filter = FiltersDb(savefiles[bot_id])
 
 
 
