@@ -103,16 +103,19 @@ async def clone_v2_accept(client, message):
         await message.reply_text("Unable to find the bot ID.")
         return
 
+
+    callback_data = f"accept_{user_id}_{bot_ids[0]}"
     accept_button = types.InlineKeyboardMarkup(
-        [[types.InlineKeyboardButton("Accept", callback_data=f"accept_{bot_ids[0]}_{bot_token}_{user_name}_{user_id}")],
+        [[types.InlineKeyboardButton("Accept", callback_data=callback_data)],
          [types.InlineKeyboardButton("Cancel", callback_data="cancel")]]
     )
     await message.reply_text("Admin accept waiting", reply_markup=accept_button)
 
- 
-@Client.on_callback_query(filters.regex(r"^accept_"))
+
+@Bot.on_callback_query(filters.regex(r"^accept_"))
 async def clone_v2(client, callback_query):
     try:
+        user_id, bot_id = callback_query.data.split("_")[1:]
         user_id = callback_query.from_user.id
         user_name = callback_query.from_user.first_name
 
