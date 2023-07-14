@@ -13,14 +13,12 @@ db = Database()
 logger = LOGGER(__name__)
 VERIFY = {}
 
-
-
-def iter_history(
+async def iter_history(
     client: Client,
     chat_id: int,
     limit: int,
     offset_id: int = 0,
-) -> AsyncGenerator["types.Message", None]:
+) -> list:
     """Iterate over the message history of a chat.
     Parameters:
         client (``pyrogram.Client``): The Pyrogram client instance.
@@ -33,37 +31,27 @@ def iter_history(
             Use a positive value to start from a specific message or a negative value to start from the most recent messages.
             Defaults to 0 (most recent messages).
     Returns:
-        ``AsyncGenerator``: An asynchronous generator yielding :obj:`~pyrogram.types.Message` objects.
+        ``list``: A list of :obj:`~pyrogram.types.Message` objects in reverse order.
     """
     current_id = offset_id
     messages = []
-
+    
     while True:
         try:
-            new_messages = client.get_chat_history(
-                chat_id,
-                limit=limit,
-                offset_id=current_id,
-            )
+            iter_messages = await client.iter_chat_history(chat_id, limit=limit, offset_id=current_id)
+            messages.extend(iter_messages)
         except Exception as e:
             logger.exception(e, exc_info=True)
-            return
+            return []
 
-        if not new_messages:
-            return
+        if not iter_messages:
+            break
 
-        messages.extend(new_messages)
+        current_id = iter_messages[-1].message_id - 1
 
-        current_id = messages[0].message_id - 1
-
-        asyncio.sleep(1)  # To avoid flooding
-
-        for message in reversed(messages):
-            yield message
-
-        messages = []
-
-
+        await asyncio.sleep(1)  # To avoid flooding
+    
+    return messages[::-1]
 
 @Client.on_message(filters.command(["add"]) & filters.group, group=1)
 async def connect(bot: Bot, update):
@@ -138,30 +126,31 @@ async def connect(bot: Bot, update):
         type_list = [mf.VIDEO, mf.DOCUMENT, mf.AUDIO]
         data = []
         skipCT = 0
-        
+
         for typ in type_list:
-            async for msgs in iter_history(bot, channel_id, limit=200):
-                
+            messages = await iter_history(bot, channel_id, limit=200)
+            
+            for message in messages:
                 # Filter messages based on type
-                if typ == mf.VIDEO and msgs.video:
-                    file_id = msgs.video.file_id
-                    file_name = msgs.video.file_name[0:-4]
-                    file_caption = msgs.caption if msgs.caption else ""
-                    file_size = msgs.video.file_size
+                if typ == mf.VIDEO and message.video:
+                    file_id = message.video.file_id
+                    file_name = message.video.file_name[0:-4]
+                    file_caption = message.caption if message.caption else ""
+                    file_size = message.video.file_size
                     file_type = "video"
                     
-                elif typ == mf.AUDIO and msgs.audio:
-                    file_id = msgs.audio.file_id
-                    file_name = msgs.audio.file_name[0:-4]
-                    file_caption = msgs.caption if msgs.caption else ""
-                    file_size = msgs.audio.file_size
+                elif typ == mf.AUDIO and message.audio:
+                    file_id = message.audio.file_id
+                    file_name = message.audio.file_name[0:-4]
+                    file_caption = message.caption if message.caption else ""
+                    file_size = message.audio.file_size
                     file_type = "audio"
                     
-                elif typ == mf.DOCUMENT and msgs.document:
-                    file_id = msgs.document.file_id
-                    file_name = msgs.document.file_name[0:-4]
-                    file_caption = msgs.caption if msgs.caption else ""
-                    file_size = msgs.document.file_size
+                elif typ == mf.DOCUMENT and message.document:
+                    file_id = message.document.file_id
+                    file_name = message.document.file_name[0:-4]
+                    file_caption = message.caption if message.caption else ""
+                    file_size = message.document.file_size
                     file_type = "document"
                     
                 else:
@@ -173,7 +162,7 @@ async def connect(bot: Bot, update):
                     except Exception:
                         pass
                     
-                file_link = msgs.link
+                file_link = message.link
                 group_id = chat_id
                 unique_id = ''.join(
                     random.choice(
@@ -196,20 +185,18 @@ async def connect(bot: Bot, update):
                 )
                 
                 data.append(dicted)
-
-        print(f"{skipCT} Files Been Skipped Due To File Name Been None..... #BlameTG")
-    except Exception as e:
-        await wait_msg.edit_text("Couldnt Fetch Files From Channel... Please look Into Logs For More Details")
-        raise e
-    
-    await db.add_filters(data)
-    await db.add_chat(chat_id, channel_id, channel_name)
-    await recacher(chat_id, True, True, bot, update)
-    
-    await wait_msg.edit_text(f"Channel Was Successfully Added With <code>{len(data)}</code> Files..")
-
-
-
+            
+            print(f"{skipCT} Files Been Skipped Due To File Name Been None..... #BlameTG")
+            
+        except Exception as e:
+            await wait_msg.edit_text("Couldnt Fetch Files From Channel... Please look Into Logs For More Details")
+            raise e
+        
+        await db.add_filters(data)
+        await db.add_chat(chat_id, channel_id, channel_name)
+        await recacher(chat_id, True, True, bot, update)
+        
+        await wait_msg.edit_text(f"Channel Was Successfully Added With <code>{len(data)}</code> Files..")
 
 @Client.on_message(filters.command(["del"]) & filters.group, group=1)
 async def disconnect(bot: Bot, update):
