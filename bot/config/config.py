@@ -34,15 +34,15 @@ class Config:
     API_ID = int(get_config("API_ID", "7880210"))
     API_HASH = get_config("API_HASH", "1bb4b2ff1489cc06af37cba448c8cce9")
 
-    DATABASE_URL = get_config("DATABASE_URL", "mongodb+srv://vipseriesfilter:vipseriesfilter@vipseriesfilter.fubxjlh.mongodb.net/?retryWrites=true&w=majority")
-    SESSION_NAME2 = get_config("DATABASE_NAME2", "Movie3v")
     DATABASE_URI = get_config("DATABASE_URL", "mongodb+srv://pmbot1:pmbot1@cluster0.esuavhf.mongodb.net/?retryWrites=true&w=majority")
     SESSION_NAME = get_config("DATABASE_NAME", "CH11BOT")
     COLLECTION_NAME = get_config("COLLECTION_NAME", "Movie")
     COLLECTION_NAME2 = get_config("COLLECTION_NAME2", "Movie2")
     COLLECTION_NAME3 = get_config("COLLECTION_NAME3", "Movie3")
     COLLECTION_NAME4 = get_config("COLLECTION_NAME4", "Movie4")
-    
+    COLLECTION_NAME5 = get_config("COLLECTION_NAME5", "Movie5")
+    COLLECTION_NAME6 = get_config("COLLECTION_NAME6", "Movie6")
+
     BOT_NAME = get_config("BOT_NAME", "FILTER_BOT")
     FILE_GROUP = int(environ.get('FILE_GROUP', -1001975432612))
     FILE_GROUP2 = int(environ.get('FILE_GROUP', "-1001804560420"))
