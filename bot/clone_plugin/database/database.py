@@ -1,6 +1,6 @@
 import re
-import motor.motor_asyncio # pylint: disable=import-error
-from bot import DB_URI # pylint: disable=import-error
+import motor.motor_asyncio
+from bot.config.congfig import Config
 
 class Singleton(type):
     __instances__ = {}
@@ -15,7 +15,7 @@ class Singleton(type):
 class Database(metaclass=Singleton):
 
     def __init__(self):
-        self._client = motor.motor_asyncio.AsyncIOMotorClient(DB_URI)
+        self._client = motor.motor_asyncio.AsyncIOMotorClient(Config.DATABASE_URI)
         self.db = self._client["Adv_Auto_Filter"]
         self.col = self.db["Main"]
         self.acol = self.db["Active_Chats"]
