@@ -17,10 +17,8 @@ from marshmallow.exceptions import ValidationError
 
 
 mongo_client = MongoClient(Config.DATABASE_URI)
-mongo_db = mongo_client["cloned_bots"]
-
-myclient = pymongo.MongoClient(Config.DATABASE_URI)
-mydb = myclient[Config.SESSION_NAME]
+myclonedb = mongo_client[Config.SESSION_NAME]
+mongo_db = myclonedb["cloned_bots"]
 
 logging.basicConfig(level=logging.ERROR)
 
@@ -31,7 +29,7 @@ class clonedme(object):
 
 
 async def savefiles(u_name, bot_id):
-    mycol = mydb[str(u_name)]
+    mycol = myclonedb[str(u_name)]
 
     try:
         mycol.insert_one({'bot_id': bot_id})
