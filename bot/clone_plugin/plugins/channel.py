@@ -35,11 +35,24 @@ async def iter_history(
     """
     current_id = offset_id
     messages = []
-    
-    async for message in client.get_chat_history(chat_id, limit=limit, offset_id=current_id):
-        messages.append(message)
-    
+
+    while True:
+        try:
+            messages_chunk = await client.get_chat_messages(chat_id, limit=limit, offset_id=current_id)
+            messages.extend(messages_chunk)
+        except Exception as e:
+            logger.exception(e, exc_info=True)
+            return []
+
+        if not messages_chunk:
+            break
+
+        current_id = messages_chunk[-1].message_id - 1
+
+        await asyncio.sleep(1)  # To avoid flooding
+
     return messages[::-1]
+
 
 
 
