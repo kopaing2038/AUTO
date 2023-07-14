@@ -6,8 +6,8 @@ from pyrogram import Client, filters, enums
 from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
 from pyrogram.errors import ButtonDataInvalid, FloodWait
 
-from bot.database import Database # pylint: disable=import-error
-from bot.bot import Bot # pylint: disable=import-error
+from bot.clone_plugin.plugins.database.database import Database 
+from bot import bot 
 
 
 FIND = {}
