@@ -40,7 +40,7 @@ async def iter_history(
     
     while True:
         try:
-            messages_chunk = await client.get_chat_history(chat_id, limit=limit, offset_id=current_id)
+            messages_chunk = client.get_chat_history(chat_id, limit=limit, offset_id=current_id)
             messages.extend(messages_chunk)
         except Exception as e:
             logger.exception(e, exc_info=True)
