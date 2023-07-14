@@ -5,11 +5,27 @@ from bot.config.config import Config
 from bot.clone_bot.botTools import unpack_new_file_id
 from bot.utils.logger import LOGGER
 from bot.database.mongoDb import MongoDb
-
+from bot import bot
 logger = LOGGER("AUTO_FILTER_DB")
 
 
+myclient = pymongo.MongoClient(Config.DATABASE_URI)
+mydb = myclient[Config.SESSION_NAME]
 
+logging.basicConfig(level=logging.ERROR)
+
+class clonedme(object):
+    ME = None
+    U_NAME = None
+    B_NAME = None
+
+async def savefiles2(u_name, bot_id):
+    mycol = mydb[str(u_name)]
+    try:
+        mycol.insert_one({'u_name': u_name})
+        print(f"{u_name} saved successfully.")
+    except Exception as e:
+        print(f"Error while saving Bot ID: {e}")
 
 class BaseFiltersDb(MongoDb):
     def __init__(self, collection_name):
@@ -169,7 +185,7 @@ class BaseFiltersDb(MongoDb):
 
 class FiltersDb(BaseFiltersDb):
     def __init__(self):
-        super().__init__(Config.COLLECTION_NAME4)
+        super().__init__(f"{bot.me.username}")
 
 a_filter = FiltersDb()
 
