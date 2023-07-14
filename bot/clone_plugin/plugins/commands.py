@@ -4,8 +4,9 @@
 
 from pyrogram import filters, Client, enums
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
-from bot import Translation, LOGGER # pylint: disable=import-error
-from bot.database import Database # pylint: disable=import-error
+from bot.clone_plugin import Translation
+from bot.utils.logger import LOGGER
+from bot.clone_plugin.database.database import Database 
 
 db = Database()
 
