@@ -20,7 +20,7 @@ async def clone(bot: Client, msg: Message):
     btn = [[
         InlineKeyboardButton("❌ Cᴀɴᴄᴇʟ", callback_data="stop")
     ]]
-    post: Message = await bot.ask(chat_id=msg.from_user.id, text="Oᴋᴀʏ Nᴏᴡ Sᴇɴᴛ Mᴇ Bᴏᴛ Tᴏᴋᴇɴ", reply_markup=InlineKeyboardMarkup(btn), timeout=360)
+    post: Message = await bot.send_message(chat_id=msg.from_user.id, text="Oᴋᴀʏ Nᴏᴡ Sᴇɴᴛ Mᴇ Bᴏᴛ Tᴏᴋᴇɴ", reply_markup=InlineKeyboardMarkup(btn), timeout=360)
     phone = post.text
     cmd = msg.command
     bot_id1 = post.text.split(":")[0]
@@ -172,30 +172,7 @@ async def callback(client: Client, query: CallbackQuery):
                 "Hello"
             )
 
-
     elif "start_text" in query.data:
-        bot_id = query.data.split(":")[1]
-        post: Message = await client.ask(chat_id=query.from_user.id, text="<i>Okay Now Send Text To Set Your Start Text 🙌</i>", timeout=360)
-        st_text = post.text
-        try:
-            st2 = await query.message.reply("<i>Saving Your Text...</i>")
-            set_pic = await add_stext(bot_id, st_text)
-            await st2.edit(
-                "<i>Your Start Text Was Successfully Updated</i>",
-                reply_markup=InlineKeyboardMarkup(
-                    [
-                        [
-                            InlineKeyboardButton('🔙 Bᴀᴄᴋ', callback_data=f"botcb:{bot_id}")
-                        ]
-                    ]
-                )
-            )
-        except Exception as e:
-            await st2.delete()
-            await query.message.reply(f"**❌ Eʀʀᴏʀ :**\n\n`{str(e)}`\n\nIf you have any doubts, ask in support ❗")
-
-
-    elif "if_text" in query.data:
         bot_id = query.data.split(":")[1]
         await query.answer()
         await query.message.edit(
