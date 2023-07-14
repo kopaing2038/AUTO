@@ -14,7 +14,6 @@ logger = LOGGER("AUTO_FILTER_DB")
 myclient = pymongo.MongoClient(Config.DATABASE_URI)
 mydb = myclient[Config.SESSION_NAME]
 
-logging.basicConfig(level=logging.ERROR)
 
 class clonedme(object):
     ME = None
