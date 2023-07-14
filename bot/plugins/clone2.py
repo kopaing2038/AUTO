@@ -10,10 +10,9 @@ from bot.config.config import Config
 from bot.database.clone_db import add_stext, get_stext, add_bot, get_bot, get_all_bot
 #from utils import cancel
 from pyrogram import Client, filters
-from pyrogram.types import Message
+from pyrogram.types import Message, CallbackQuery
 from pyrogram.errors.exceptions.bad_request_400 import AccessTokenExpired, AccessTokenInvalid
 from pyrogram import enums, errors, filters, types
-
 
 async def cancel(self):
     self.stopEvent = threading.Event()
