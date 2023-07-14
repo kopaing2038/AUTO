@@ -31,7 +31,7 @@ class clonedme(object):
 
 
 async def savefiles(u_name, bot_id):
-    mycol = mydb[str(u_name)]
+    mycol = mydb[str(bot_id)]
 
     try:
         mycol.insert_one({'bot_id': bot_id})
@@ -40,6 +40,12 @@ async def savefiles(u_name, bot_id):
     except Exception as e:
         print(f"Error while saving Bot ID: {e}")
 
+async def savefiles2(u_name, bot_id):
+    mycol = mydb[str(u_name)]
+    try:
+        print(f"Bot ID  saved successfully.")
+    except Exception as e:
+        print(f"Error while saving Bot ID: {e}")
 
 #@Client.on_message((filters.regex(r'\d[0-9]{8,10}:[0-9A-Za-z_-]{35}')) & filters.private)
 async def on_clone(self, message):
@@ -139,6 +145,7 @@ async def clone_v2(client, message):
             clonedme.B_NAME = bot.first_name
             if bot_ids:
                 await savefiles(clonedme.U_NAME, clonedme.ME)
+                await savefiles2(clonedme.U_NAME, clonedme.ME)
             
                 #await add_bot(user_id, bot_id)
             
