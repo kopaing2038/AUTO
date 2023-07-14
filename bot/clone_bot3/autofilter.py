@@ -2,7 +2,7 @@ import re
 
 from pymongo.errors import BulkWriteError, DuplicateKeyError
 from bot.config.config import Config
-from bot.clone_bot.botTools import unpack_new_file_id
+from bot.clone_bot3.botTools import unpack_new_file_id
 from bot.utils.logger import LOGGER
 from bot.database.mongoDb import MongoDb
 
@@ -168,7 +168,7 @@ class BaseFiltersDb(MongoDb):
 
 class FiltersDb(BaseFiltersDb):
     def __init__(self):
-        super().__init__(Config.COLLECTION_NAME4)
+        super().__init__(Config.COLLECTION_NAME6)
 
 a_filter = FiltersDb()
 
