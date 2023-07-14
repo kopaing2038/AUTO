@@ -78,62 +78,65 @@ async def clone_send_for_index_command(bot: Bot, message: types.Message):
 
 
 @Bot.on_message(filters.command("index_gp") & filters.user(Config.ADMINS))
-async def clone_send_for_index_command_gp(bot: Bot, message: types.Message):
-    if len(message.command) != 3:
+async def clone_send_for_index_command_gp(bot: Bot, message: types.Message): 
+    if len(message.command) != 2:
         return await message.reply("Invalid command format. Usage: `/index [channel_link] [last_message_id]`")
-    
     channel_link = message.command[1]
-    last_message_id = message.command[2]
-    
+
     regex = re.compile(_REGEX)
     match = regex.match(channel_link)
-    
+
     if not match:
         return await message.reply("Invalid channel link format")
-    
+
     chat_id = match.group(4)
     if chat_id.isnumeric():
         chat_id = int("-100" + chat_id)
-    
+
     try:
-        chat = await bot.get_chat(chat_id)
-        if not chat.type == "group":
-            return await message.reply("This command is only applicable to groups.")
-    except ChannelInvalid:
+        chat_info = await bot.get_chat(chat_id)
+        if chat_info.type != "supergroup":
+            return await message.reply("This command is only applicable for groups.")
+    except tg_exceptions.ChannelInvalid:
         return await message.reply("This may be a private channel/group. Make me an admin over there to index the files.")
-    except (UsernameInvalid, UsernameNotModified):
+    except (tg_exceptions.UsernameInvalid, tg_exceptions.UsernameNotModified):
         return await message.reply("Invalid Link specified.")
     except Exception as e:
         logger.exception(e)
-        return await message.reply(f"Error - {e}")
-    
+        return await message.reply(f"Errors - {e}")
+
     if len(match.groups()) >= 5:
+        last_msg_id = int(match.group(5))
         try:
-            last_msg_id = int(last_message_id)
-            await bot.get_messages(chat_id, last_msg_id)
-        except (ChannelInvalid, UsernameInvalid):
+            k = await bot.get_messages(chat_id, last_msg_id)
+        except tg_exceptions.Unauthorized:
             return await message.reply("Make sure that I am an admin in the channel, if the channel is private.")
         except Exception as e:
             return await message.reply(f"Error occurred - {e}")
-        
-        buttons = [
-            [
-                InlineKeyboardButton(
-                    "MOVIE DB",
-                    callback_data=f"clone_index#accept#{chat_id}#{last_msg_id}#{message.from_user.id}",
-                )
-            ],
-            [
-                InlineKeyboardButton("Close", callback_data="close_data"),
-            ],
-        ]
-        reply_markup = InlineKeyboardMarkup(buttons)
-        return await message.reply(
-            f"Do you want to index this group?\n\nChat ID/Username: <code>{chat_id}</code>\nLast Message ID: <code>{last_msg_id}</code>",
-            reply_markup=reply_markup,
-        )
+
+        if k is None:
+            return await message.reply("This may be a group, and I am not an admin of the group.")
+
+        if message.from_user.id in Config.ADMINS:
+            buttons = [
+                [
+                    InlineKeyboardButton(
+                        "MOVIE DB",
+                        callback_data=f"clone_index#accept#{chat_id}#{last_msg_id}#{message.from_user.id}",
+                    )
+                ],
+                [
+                    InlineKeyboardButton("Close", callback_data="close_data"),
+                ],
+            ]
+            reply_markup = InlineKeyboardMarkup(buttons)
+            return await message.reply(
+                f"Do you want to index this channel/group?\n\nChat ID/Username: <code>{chat_id}</code>\nLast Message ID: <code>{last_msg_id}</code>",
+                reply_markup=reply_markup,
+            )
     else:
         return await message.reply("Invalid command format. Usage: `/index [channel_link] [last_message_id]`")
+
 
 @Bot.on_message(((filters.forwarded & ~filters.text) | (filters.regex(_REGEX)) & filters.text) & filters.private & filters.incoming & filters.user(Config.ADMINS))
 async def clone_send_for_index(bot: Bot, message: types.Message):
