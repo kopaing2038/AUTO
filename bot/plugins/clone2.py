@@ -20,7 +20,7 @@ async def clone(bot: Client, msg: Message):
     btn = [[
         InlineKeyboardButton("❌ Cᴀɴᴄᴇʟ", callback_data="stop")
     ]]
-    post: Message = await bot.send_message(chat_id=msg.from_user.id, text="Oᴋᴀʏ Nᴏᴡ Sᴇɴᴛ Mᴇ Bᴏᴛ Tᴏᴋᴇɴ", reply_markup=InlineKeyboardMarkup(btn), timeout=360)
+    post: Message = await bot.send_message(chat_id=msg.from_user.id, text="Oᴋᴀʏ Nᴏᴡ Sᴇɴᴛ Mᴇ Bᴏᴛ Tᴏᴋᴇɴ", reply_markup=InlineKeyboardMarkup(btn))
     phone = post.text
     cmd = msg.command
     bot_id1 = post.text.split(":")[0]
@@ -142,7 +142,7 @@ async def callback(client: Client, query: CallbackQuery):
 
         if bot_ids is None:
             await query.message.edit_text(
-                "There are no active connections!! Connect to some groups first."
+                "There are no active connections!! Connect to some groups first.",
             )
             return await query.answer('𝙿𝙻𝙴𝙰𝚂𝙴 𝚂𝙷𝙰𝚁𝙴 𝙰𝙽𝙳 𝚂𝚄𝙿𝙿𝙾𝚁𝚃')
 
