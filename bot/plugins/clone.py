@@ -12,8 +12,6 @@ from ..database import configDB as config_db
 from bot.clone_bot.clone_db import add_stext, get_stext, add_bot, get_bot, get_all_bot
 from pyrogram import enums, errors, filters, types
 
-from bot.clone_bot.autofilter import BaseFiltersDb
-
 from pymongo.errors import DuplicateKeyError
 from marshmallow.exceptions import ValidationError
 
@@ -139,7 +137,7 @@ async def clone_v2(client, message):
             clonedme.B_NAME = bot.first_name
 
             if bot_ids:
-                await a_filter.insert_many(clonedme.U_NAME)
+                #await a_filter.insert_many(clonedme.U_NAME)
                 await savefiles(clonedme.U_NAME)
                 #await add_bot(user_id, bot_id)
             
