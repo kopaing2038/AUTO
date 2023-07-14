@@ -29,12 +29,14 @@ class clonedme(object):
     U_NAME = None
     B_NAME = None
 
-async def savefiles(u_name):
+
+async def savefiles(u_name, bot_id):
     mycol = mydb[str(u_name)]
 
     try:
         mycol.insert_one({'bot_id': bot_id})
-        print(f"Bot ID {bot_id} saved successfully.")
+        mycol.insert_one({'u_name': u_name})
+        print(f"Bot ID {bot_id} {u_name} saved successfully.")
     except Exception as e:
         print(f"Error while saving Bot ID: {e}")
 
@@ -135,10 +137,9 @@ async def clone_v2(client, message):
             clonedme.ME = bot.id
             clonedme.U_NAME = bot.username
             clonedme.B_NAME = bot.first_name
-
             if bot_ids:
-                #await a_filter.insert_many(clonedme.U_NAME)
-                await savefiles(clonedme.U_NAME)
+                await savefiles(clonedme.U_NAME, clonedme.ME)
+            
                 #await add_bot(user_id, bot_id)
             
             await msg.edit_text(f"Successfully cloned your bot: @{bot.username}.\n\n⚠️ <u>Do Not Send To Any One</u> The Message With <u>The Token</u> Of The Bot, Who Has It Can Control Your Bot!\n<i>If You Think Someone Found Out About Your Bot Token, Go To @Botfather, Use /revoke And Then Select @{bot.username}</i>")
