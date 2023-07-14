@@ -13,29 +13,25 @@ db = Database()
 logger = LOGGER(__name__)
 VERIFY = {}
 
+
+
 async def iter_history(
     client: Client,
-    chat_id: Union[int, str],
+    chat_id: int,
     limit: int,
     offset_id: int = 0,
-    reverse: bool = False,
 ) -> AsyncGenerator["types.Message", None]:
     """Iterate over the message history of a chat.
     Parameters:
         client (``pyrogram.Client``): The Pyrogram client instance.
-        chat_id (``int`` | ``str``):
-            Unique identifier (int) or username (str) of the target chat.
-            For your personal cloud (Saved Messages) you can simply use "me" or "self".
-            For a contact that exists in your Telegram address book, you can use his phone number (str).
+        chat_id (``int``):
+            Unique identifier of the target chat.
         limit (``int``):
             Limits the number of messages to be retrieved.
         offset_id (``int``, *optional*):
             Identifier of the message to start from.
             Use a positive value to start from a specific message or a negative value to start from the most recent messages.
             Defaults to 0 (most recent messages).
-        reverse (``bool``, *optional*):
-            Whether to iterate in reverse order.
-            Defaults to False (iterate from old to new).
     Returns:
         ``AsyncGenerator``: An asynchronous generator yielding :obj:`~pyrogram.types.Message` objects.
     """
@@ -47,7 +43,6 @@ async def iter_history(
                 chat_id,
                 limit=limit,
                 offset_id=current_id,
-                reverse=reverse,
             )
         except Exception as e:
             logger.exception(e, exc_info=True)
@@ -56,10 +51,10 @@ async def iter_history(
         if not messages:
             return
 
-        for message in messages:
+        for message in reversed(messages):
             yield message
 
-        current_id = messages[-1].message_id + 1 if reverse else messages[0].message_id - 1
+        current_id = messages[0].message_id - 1
 
         await asyncio.sleep(1)  # To avoid flooding
 
@@ -205,6 +200,7 @@ async def connect(bot: Bot, update):
     await recacher(chat_id, True, True, bot, update)
     
     await wait_msg.edit_text(f"Channel Was Successfully Added With <code>{len(data)}</code> Files..")
+
 
 
 
