@@ -147,10 +147,7 @@ async def clone_v2(client, message):
     except Exception as e:
         logging.exception("Error while handling message.")
 
-class FiltersDb(BaseFiltersDb):
-    def __init__(self, bot_id):
-        collection_name = f"{clonedme.ME}"
-        super().__init__(collection_name)
+
 
 
 
