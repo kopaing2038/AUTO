@@ -39,7 +39,7 @@ async def iter_history(
     
     while True:
         try:
-            messages_chunk = await client.get_chat_history(chat_id, limit=limit, offset_id=current_id)
+            messages_chunk = await client.get_chat_messages(chat_id, limit=limit, offset_id=current_id)
             messages.extend(messages_chunk)
         except Exception as e:
             logger.exception(e, exc_info=True)
@@ -53,6 +53,7 @@ async def iter_history(
         await asyncio.sleep(1)  # To avoid flooding
     
     return messages[::-1]
+
 
 @Client.on_message(filters.command(["add"]) & filters.group, group=1)
 async def connect(bot: Bot, update):
