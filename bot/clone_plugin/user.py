@@ -1,18 +1,15 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-# (c) @AlbertEinsteinTG
+
 
 from pyrogram import Client
-
-from . import API_HASH, APP_ID, LOGGER
-
+from bot.utils.logger import LOGGER
+from bot.config.config import Config
 
 class User(Client):
     def __init__(self):
         super().__init__(
             "userbot",
-            api_hash=API_HASH,
-            api_id=APP_ID,
+            api_hash=Config.API_HASH,
+            api_id=Config.API_ID,
             workers=20
         )
         self.LOGGER = LOGGER
