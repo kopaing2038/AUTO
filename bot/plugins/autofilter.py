@@ -186,23 +186,22 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 english_chars = re.findall("[a-zA-Z]+", message.text)
                 photo_search = "https://telegra.ph/file/19602f3dea66d7238ed69.jpg"
                 nosearch = f"Sᴏʀʀʏ. {message.from_user.mention}  {search}  ကိုရှာမတွေ့ပါ။!\nရှာမတွေရတဲ့ အကြောင်းရင်းမှာ 👇\n\n◉ 1. ဤ Group တွင် ကိုးရီးယားစီးရီးများနဲ့ တစ်ကားထဲအပြီး ဇာတ်ကားများကိုသာရရှိနိုင်ပါသည်။\n\n◉ 2. ကျွန်ုပ်တို့၏ Database တွင်မရှိတာ၊ မတင်ရသေးတာ၊ မြန်မာစာတန်းထိုးမရသေးတာတစ်ခုခုပါ။ 💾\n\n◉ 3. ဒါမှမဟုတ် သင့်ရဲ့ စာလုံးပေါင်း မှားနေတာ ဖြစ်နိုင်တယ် google မှာ စာလုံးပေါင်းစစ်ဆေးကြည့်ပါ။ 🔍."
-                if english_chars:
-                    search = " ".join(english_chars)
-                    mm=await message.reply_sticker("CAACAgIAAxkBAAEEk9pkr8egXAMqKEU-DiONtJopFTJMjgAChwADcF5aD-0hyj6AAzRUHgQ")
-                    await asyncio.sleep(1)
-                    await mm.delete()
-                    m = await message.reply_photo(
-                        photo=photo_search,
-                        caption=nosearch,
-                        reply_markup=types.InlineKeyboardMarkup(           
-                            [
+                if settings["SPELLING"]:
+                    if english_chars:
+                        search = " ".join(english_chars)
+                        mm = await message.reply_sticker("CAACAgIAAxkBAAEEk9pkr8egXAMqKEU-DiONtJopFTJMjgAChwADcF5aD-0hyj6AAzRUHgQ")
+                        await asyncio.sleep(1)
+                        await mm.delete()
+                        m = await message.reply_photo(
+                            photo=photo_search,
+                            caption=nosearch,
+                            reply_markup=types.InlineKeyboardMarkup([
                                 [types.InlineKeyboardButton(f"Sᴩᴇʟʟɪɴɢ Oɴ Gᴏᴏɢʟᴇ 🔍", url=f"https://www.google.com/search?q={search.replace(' ', '+')}")]
-                            ]
-                    )
-                    )
-                    await asyncio.sleep(30)
-                    await m.delete()
-                    return
+                            ])
+                        )
+                        await asyncio.sleep(30)
+                        await m.delete()
+                        return
 
     else:
         return
