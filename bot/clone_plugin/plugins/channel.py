@@ -1,7 +1,7 @@
 import random
 import string
 import asyncio
-
+from typing import AsyncGenerator, Optional, Union
 from pyrogram import Client, filters, enums
 from pyrogram.errors import UserAlreadyParticipant, FloodWait
 from bot.utils.logger import LOGGER
