@@ -228,5 +228,3 @@ async def clone_start():
     await cloneboy.idle()
 
 
-# Start the clone bots
-asyncio.get_event_loop().run_until_complete(clone_start())
