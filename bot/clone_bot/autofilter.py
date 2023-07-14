@@ -5,7 +5,7 @@ from bot.config.config import Config
 from bot.clone_bot.botTools import unpack_new_file_id
 from bot.utils.logger import LOGGER
 from bot.database.mongoDb import MongoDb
-
+from bot.plugins.clone import savefiles
 logger = LOGGER("AUTO_FILTER_DB")
 
 
@@ -178,7 +178,7 @@ class FiltersDb(BaseFiltersDb):
 
 
 
-a_filter = FiltersDb(bot_id)
+a_filter = FiltersDb(savefiles{bot_id})
 
 
 
