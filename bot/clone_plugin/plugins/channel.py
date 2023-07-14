@@ -16,7 +16,7 @@ VERIFY = {}
 @Client.on_message(filters.command(["add"]) & filters.group, group=1)
 async def connect(bot: Bot, update):
     """
-    A Funtion To Handle Incoming /add Command TO COnnect A Chat With Group
+    A Function To Handle Incoming /add Command TO Connect A Chat With Group
     """
     chat_id = update.chat.id
     user_id = update.from_user.id if update.from_user else None
@@ -60,18 +60,8 @@ async def connect(bot: Bot, update):
         await update.reply_text(f"Make Sure Im Admin At <code>{target}</code> And Have Permission For <i>Inviting Users via Link</i> And Try Again.....!!!\n\n<i><b>Error Logged:</b></i> <code>{e}</code>", parse_mode='html')
         return
     
-    userbot_info = await bot.USER.get_me()
-    
-    # Joins to targeted chat using above exported invite link
-    # If aldready joined, code just pass on to next code
-    try:
-        await bot.USER.join_chat(join_link)
-    except UserAlreadyParticipant:
-        pass
-    except Exception as e:
-        logger.exception(e, exc_info=True)
-        await update.reply_text(f"{userbot_info.mention} Couldnt Join The Channel <code>{target}</code> Make Sure Userbot Is Not Banned There Or Add It Manually And Try Again....!!\n\n<i><b>Error Logged:</b></i> <code>{e}</code>", parse_mode='html')
-        return
+    # Get information about the bot
+    bot_info = await bot.get_me()
     
     try:
         c_chat = await bot.get_chat(target)
@@ -86,10 +76,10 @@ async def connect(bot: Bot, update):
     in_db = await db.in_db(chat_id, channel_id)
     
     if in_db:
-        await update.reply_text("Channel Aldready In Db...!!!")
+        await update.reply_text("Channel Already In Db...!!!")
         return
     
-    wait_msg = await update.reply_text("Please Wait Till I Add All Your Files From Channel To Db\n\n<i>This May Take 10 or 15 Mins Depending On Your No. Of Files In Channel.....</i>\n\nUntil Then Please Dont Sent Any Other Command Or This Operation May Be Intrupted....")
+    wait_msg = await update.reply_text("Please Wait Till I Add All Your Files From Channel To Db\n\n<i>This May Take 10 or 15 Mins Depending On Your No. Of Files In Channel.....</i>\n\nUntil Then Please Dont Sent Any Other Command Or This Operation May Be Interrupted....")
     
     try:
         mf = enums.MessagesFilter
@@ -99,36 +89,33 @@ async def connect(bot: Bot, update):
         
         for typ in type_list:
 
-            async for msgs in bot.USER.search_messages(channel_id, filter=typ): #Thanks To @PrgOfficial For Suggesting
+            async for msgs in bot.search_messages(channel_id, filter=typ):
                 
                 # Using 'if elif' instead of 'or' to determine 'file_type'
                 # Better Way? Make A PR
                 try:
                     try:
-                        file_id = await bot.get_messages(channel_id, message_ids=msgs.id)
+                        file_id = msgs.message_id
                     except FloodWait as e:
-                        await asyncio.sleep(e.value)
-                        file_id = await bot.get_messages(channel_id, message_ids=msgs.id)
+                        await asyncio.sleep(e.x)
+                        file_id = msgs.message_id
                     except Exception as e:
                         print(e)
                         continue
 
                     if msgs.video:
-                        file_id = file_id.video.file_id
                         file_name = msgs.video.file_name[0:-4]
                         file_caption  = msgs.caption if msgs.caption else ""
                         file_size = msgs.video.file_size
                         file_type = "video"
                     
                     elif msgs.audio:
-                        file_id = file_id.audio.file_id
                         file_name = msgs.audio.file_name[0:-4]
                         file_caption  = msgs.caption if msgs.caption else ""
                         file_size = msgs.audio.file_size
                         file_type = "audio"
                     
                     elif msgs.document:
-                        file_id = file_id.document.file_id
                         file_name = msgs.document.file_name[0:-4]
                         file_caption  = msgs.caption if msgs.caption else ""
                         file_size = msgs.document.file_size
@@ -181,13 +168,13 @@ async def connect(bot: Bot, update):
     await db.add_chat(chat_id, channel_id, channel_name)
     await recacher(chat_id, True, True, bot, update)
     
-    await wait_msg.edit_text(f"Channel Was Sucessfully Added With <code>{len(data)}</code> Files..")
+    await wait_msg.edit_text(f"Channel Was Successfully Added With <code>{len(data)}</code> Files..")
 
 
 @Client.on_message(filters.command(["del"]) & filters.group, group=1)
 async def disconnect(bot: Bot, update):
     """
-    A Funtion To Handle Incoming /del Command TO Disconnect A Chat With A Group
+    A Function To Handle Incoming /del Command TO Disconnect A Chat With A Group
     """
     chat_id = update.chat.id
     user_id = update.from_user.id if update.from_user else None
@@ -222,15 +209,15 @@ async def disconnect(bot: Bot, update):
         await update.reply_text("Invalid Input...\nYou Should Specify Valid chat_id(-100xxxxxxxxxx) or @username")
         return
     
-    userbot = await bot.USER.get_me()
-    userbot_name = userbot.first_name
-    userbot_id = userbot.id
+    bot_info = await bot.get_me()
+    bot_name = bot_info.first_name
+    bot_id = bot_info.id
     
     try:
-        channel_info = await bot.USER.get_chat(target)
+        channel_info = await bot.get_chat(target)
         channel_id = channel_info.id
     except Exception:
-        await update.reply_text(f"My UserBot [{userbot_name}](tg://user?id={userbot_id}) Couldnt Fetch Details Of `{target}` Make Sure Userbot Is Not Banned There Or Add It Manually And Try Again....!!")
+        await update.reply_text(f"My Bot [{bot_name}](tg://user?id={bot_id}) Couldnt Fetch Details Of `{target}` Make Sure Bot Is Not Banned There Or Add It Manually And Try Again....!!")
         return
     
     in_db = await db.in_db(chat_id, channel_id)
@@ -246,13 +233,13 @@ async def disconnect(bot: Bot, update):
     await db.del_chat(chat_id, channel_id)
     await recacher(chat_id, True, True, bot, update)
     
-    await wait_msg.edit_text("Sucessfully Deleted All Files From DB....")
+    await wait_msg.edit_text("Successfully Deleted All Files From DB....")
 
 
 @Client.on_message(filters.command(["delall"]) & filters.group, group=1)
 async def delall(bot: Bot, update):
     """
-    A Funtion To Handle Incoming /delall Command TO Disconnect All Chats From A Group
+    A Function To Handle Incoming /delall Command TO Disconnect All Chats From A Group
     """
     chat_id=update.chat.id
     user_id = update.from_user.id if update.from_user else None
@@ -272,13 +259,13 @@ async def delall(bot: Bot, update):
     await db.delete_all(chat_id)
     await recacher(chat_id, True, True, bot, update)
     
-    await update.reply_text("Sucessfully Deleted All Connected Chats From This Group....")
+    await update.reply_text("Successfully Deleted All Connected Chats From This Group....")
 
 
 @Client.on_message(filters.channel & (filters.video | filters.audio | filters.document), group=0)
 async def new_files(bot: Bot, update):
     """
-    A Funtion To Handle Incoming New Files In A Channel ANd Add Them To Respective Channels..
+    A Function To Handle Incoming New Files In A Channel And Add Them To Respective Channels..
     """
     channel_id = update.chat.id
     
@@ -346,4 +333,3 @@ async def new_files(bot: Bot, update):
             data.append(data_packets)
         await db.add_filters(data)
     return
-
