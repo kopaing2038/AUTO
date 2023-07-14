@@ -89,44 +89,14 @@ session_names = {}
 
 @Client.on_message(filters.command("clone2") & filters.private)
 async def clone_v2_accept(client, message):
-    user_id = message.from_user.id
-    user_name = message.from_user.first_name
-
-    # Extract bot_token and bot_id from the message text using regex
-    bot_token = re.findall(r'\d{8,10}:[0-9A-Za-z_-]{35}', message.text)
-    bot_token = bot_token[0] if bot_token else None
-    bot_ids = re.findall(r'\d{8,10}', message.text)
-
-    if not bot_token:
-        await message.reply_text("Please provide a valid bot token to clone.")
-        return
-
-    if not bot_ids:
-        await message.reply_text("Unable to find the bot ID.")
-        return
-
-    callback_data = f"accept_{user_id}_{bot_ids[0]}"
-    accept_button = types.InlineKeyboardMarkup(
-        [[types.InlineKeyboardButton("Accept", callback_data=callback_data)],
-         [types.InlineKeyboardButton("Cancel", callback_data="cancel")]]
-    )
-    await message.reply_text("Admin accept waiting", reply_markup=accept_button)
-
-
-@Client.on_callback_query(filters.regex(r"^accept_"))
-async def clone_v2(client, callback_query):
     try:
-        user_id, bot_id = callback_query.data.split("_")[1:]
+        user_id = message.from_user.id
+        user_name = message.from_user.first_name
 
-
-        session_name = f"clone_{user_id}_{bot_id}"
-        session_names[user_id] = session_name
-        user_id = callback_query.from_user.id
-        user_name = callback_query.from_user.first_name
-
-        data = callback_query.data.split("_")
-        bot_ids = data[1]
-        bot_token = data[2]
+        # Extract bot_token and bot_id from the message text using regex
+        bot_token = re.findall(r'\d{8,10}:[0-9A-Za-z_-]{35}', message.text)
+        bot_token = bot_token[0] if bot_token else None
+        bot_id = re.findall(r'\d{8,10}', message.text)
 
         if not bot_token:
             await callback_query.answer("Please provide a valid bot token to clone.")
