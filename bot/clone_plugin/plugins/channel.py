@@ -59,8 +59,7 @@ async def iter_history(
         
         await asyncio.sleep(1)  # To avoid flooding
     
-    return messages[::-1]
-
+    return messages[::-1]  
 
 
 @Client.on_message(filters.command(["add"]) & filters.group, group=1)
