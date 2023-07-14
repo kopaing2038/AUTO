@@ -31,8 +31,8 @@ class clonedme(object):
     U_NAME = None
     B_NAME = None
 
-async def savefiles(bot_id):
-    mycol = mydb[str(bot_id)]
+async def savefiles(u_name):
+    mycol = mydb[str(u_name)]
 
     try:
         mycol.insert_one({'bot_id': bot_id})
@@ -49,8 +49,6 @@ async def on_clone(self, message):
         bot_token = re.findall(r'\d[0-9]{8,10}:[0-9A-Za-z_-]{35}', message.text, re.IGNORECASE)
         bot_token = bot_token[0] if bot_token else None
         bot_id = re.findall(r'\d[0-9]{8,10}', message.text)
-        bot = await client.get_me()  # Get the bot instance from the client
-        bot_name = bot.username if bot else None
        
 
         if not str(message.forward_from.id) != "93372553":
@@ -98,7 +96,7 @@ async def clone_v2(client, message):
         bot_token = re.findall(r'\d{8,10}:[0-9A-Za-z_-]{35}', message.text)
         bot_token = bot_token[0] if bot_token else None
         bot_ids = re.findall(r'\d{8,10}', message.text)
-        bot_name = bot.user.name if bot else None
+        bot_name = None
 
         if not bot_token:
             await message.reply_text("Please provide a valid bot token to clone.")
@@ -109,12 +107,9 @@ async def clone_v2(client, message):
             return
 
         bot_id = bot_ids[0]  # Extract the first bot ID from the list
-        bot_username = bot.username
 
         msg = await message.reply_text(f"Cloning your bot with token: {bot_token}")
-        if bot_ids:
-            a_filter = FiltersDb(bot_id, bot_name)
-            await savefiles(bot_id)
+
         try:
             ai = Client(
                 f"{bot_token}", Config.API_ID, Config.API_HASH,
@@ -138,20 +133,22 @@ async def clone_v2(client, message):
             settings["COLLECTION_NAME4"] = bot_id
             await config_db.update_config(f"SETTINGS_{message.chat.id}", settings)
             await message.reply(f"Collection name set to: {bot_id}")
-
-            #await add_bot(user_id, bot_id)
-
+            
             clonedme.ME = bot.id
             clonedme.U_NAME = bot.username
             clonedme.B_NAME = bot.first_name
+
+            if bot_ids:
+                a_filter = FiltersDb(bot_id, clonedme.U_NAME)
+                await savefiles(clonedme.U_NAME)
+                #await add_bot(user_id, bot_id)
+            
             await msg.edit_text(f"Successfully cloned your bot: @{bot.username}.\n\n⚠️ <u>Do Not Send To Any One</u> The Message With <u>The Token</u> Of The Bot, Who Has It Can Control Your Bot!\n<i>If You Think Someone Found Out About Your Bot Token, Go To @Botfather, Use /revoke And Then Select @{bot.username}</i>")
         except BaseException as e:
             logging.exception("Error while cloning bot.")
             await msg.edit_text(f"⚠️ <b>BOT ERROR:</b>\n\n<code>{e}</code>\n\nPlease forward this message to @Lallu_tgs for help.")
     except Exception as e:
         logging.exception("Error while handling message.")
-
-
 
 
 
