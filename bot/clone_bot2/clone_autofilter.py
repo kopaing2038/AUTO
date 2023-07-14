@@ -5,9 +5,9 @@ from bot import Bot
 from pyrogram import enums, errors, filters, types
 
 from ..config import Config
-from bot.clone_bot.autofilter import a_filter
+from bot.clone_bot2.autofilter import a_filter
 from bot.database import configDB as config_db
-from bot.clone_bot.botTools import check_fsub, format_buttons, get_size, parse_link
+from bot.clone_bot2.botTools import check_fsub, format_buttons, get_size, parse_link
 from bot.utils.cache import Cache
 from bot.utils.imdbHelpers import get_poster
 from bot.utils.logger import LOGGER
