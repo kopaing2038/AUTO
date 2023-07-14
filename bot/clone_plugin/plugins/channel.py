@@ -13,6 +13,7 @@ db = Database()
 logger = LOGGER(__name__)
 VERIFY = {}
 
+
 async def iter_history(
     client: Client,
     chat_id: int,
@@ -187,16 +188,16 @@ async def connect(bot: Bot, update):
                 data.append(dicted)
             
             print(f"{skipCT} Files Been Skipped Due To File Name Been None..... #BlameTG")
-            
-        except Exception as e:
-            await wait_msg.edit_text("Couldnt Fetch Files From Channel... Please look Into Logs For More Details")
-            raise e
-        
-        await db.add_filters(data)
-        await db.add_chat(chat_id, channel_id, channel_name)
-        await recacher(chat_id, True, True, bot, update)
-        
-        await wait_msg.edit_text(f"Channel Was Successfully Added With <code>{len(data)}</code> Files..")
+    except Exception as e:
+        await wait_msg.edit_text("Couldnt Fetch Files From Channel... Please look Into Logs For More Details")
+        raise e
+    
+    await db.add_filters(data)
+    await db.add_chat(chat_id, channel_id, channel_name)
+    await recacher(chat_id, True, True, bot, update)
+    
+    await wait_msg.edit_text(f"Channel Was Successfully Added With <code>{len(data)}</code> Files..")
+
 
 @Client.on_message(filters.command(["del"]) & filters.group, group=1)
 async def disconnect(bot: Bot, update):
