@@ -7,6 +7,7 @@ from bot.utils.logger import LOGGER
 from bot.database.mongoDb import MongoDb
 from bot.plugins.clone import savefiles
 logger = LOGGER("AUTO_FILTER_DB")
+from bot.pluginsclone import FiltersDb
 
 
 class clonedme(object):
@@ -172,5 +173,5 @@ class BaseFiltersDb(MongoDb):
 
 
 
-
+a_filter = FiltersDb()
 
