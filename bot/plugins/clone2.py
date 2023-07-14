@@ -3,6 +3,7 @@ import re
 import time
 import asyncio
 import threading
+import pyrogram
 from pyrogram import *
 from pyrogram.types import *
 from pyromod import listen
