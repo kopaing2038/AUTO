@@ -53,8 +53,8 @@ async def start(bot, update):
     bot_uptime = time.strftime("%Hh %Mm %Ss", time.gmtime(time.time() - bot_start_time))
     joinButton = InlineKeyboardMarkup(
         [
-            [InlineKeyboardButton("JOIN", url="https://t.me/LegendBot_AI")],
-            [InlineKeyboardButton("Try", url="https://t.me/LegendBot_OP")],
+            [InlineKeyboardButton("JOIN", url="https://t.me/MKSVIPLINK2")],
+            [InlineKeyboardButton("Try", url="https://t.me/MKSMAINCHANNEL")],
         ]
     )
     # https://git.io/Jye7k
