@@ -37,7 +37,7 @@ async def speedtest_function(bot: Bot, message: Message):
 **__Upload Speed:__** {upload_speed:.2f} Mbps
     
 <u>**Client:**</u>
-**__ISP:__** {message.chat.username}
+**__ISP:__** {message.from_user.username}
 **__Country:__** {result.get('client', {}).get('country', '')}
 
 <u>**Server:**</u>
