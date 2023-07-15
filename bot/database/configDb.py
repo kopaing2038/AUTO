@@ -43,7 +43,7 @@ class ConfigDB(MongoDb):
                 "SONG": Config.SONG,
                 "COLLECTION_NAME4": Config.COLLECTION_NAME4,
                 "SPELLING": Confog.SPELLING,
-                "PHOTO_CAP", Config.PHOTO_CAP
+                "PHOTO_CAP": Config.PHOTO_CAP
                 
             }
         return {}
