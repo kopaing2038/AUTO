@@ -724,7 +724,7 @@ async def handle_file(bot: Bot, query: types.CallbackQuery):
         settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
         invite_link = await bot.create_chat_invite_link(file_info["chat_id"])
         caption1 = f"Hi {query.from_user.mention} \n\nအချောလေး ရှာတဲ့ [{file_info['file_name']}]({await parse_link(file_info['chat_id'], file_info['message_id'])}) ဇာတ်ကား အဆင့်သင့်ပါ ⬇️\n\nဝင်မရရင် <a href='{invite_link.invite_link}'>🍿 ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ🍿</a> ကို Join ပါ \n\n <a href='{invite_link.invite_link}'>{file_info['channel_name']}</a>"
-        if not settings["DOWNLOAD_BUTTON"]:
+        if not settings["CH_BUTTON"]:
             m = await query.message.reply_text(f"Hi {query.from_user.mention} အချောလေး [{file_info['file_name']}] ကိုတင်ပေးနေတယ် ခဏစောင့်ပေးပါ")  
             #asyncio.sleep(1)
             await m.edit(              
@@ -812,7 +812,7 @@ async def ch2_handle_file(bot: Bot, query: types.CallbackQuery):
         invite_link = await bot.create_chat_invite_link(file_info["chat_id"])
         caption1 = f"Hi {query.from_user.mention} \n\nအချောလေး ရှာတဲ့ <a href='{file_send.link}'>{file_info['file_name']}</a> ဇာတ်ကား အဆင့်သင့်ပါ ⬇️\n\nဝင်မရရင် <a href='https://t.me/+6Rq1ZLh5UExiNTUx'>🍿 ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 🍿</a> ကို Join ပါ \n\n <a href='{invite_link.invite_link}'>{file_info['channel_name']}</a>"
         settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
-        if not settings["DOWNLOAD_BUTTON"]:
+        if not settings["CH_BUTTON"]:
             m = await query.message.reply_text(f"Hi {query.from_user.mention} အချောလေး [{file_info['file_name']}] ကိုတင်ပေးနေတယ် ခဏစောင့်ပေးပါ") 
             #asyncio.sleep(1)
             await m.edit(              
