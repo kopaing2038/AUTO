@@ -5,7 +5,7 @@ import shutil
 import logging
 import sqlite3
 import pyrogram
-from speedtest_cli import Speedtest
+from speedtest import Speedtest
 from bot.config.config import Config
 from pyrogram import Client, StopPropagation, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
