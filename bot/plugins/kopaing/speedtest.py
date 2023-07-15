@@ -22,8 +22,13 @@ async def testspeed(m):
 async def speedtest_function(bot: Bot, message: Message):
     m = await message.reply_text("Running Speed test")
     result = await testspeed(m)
-    download_speed = result['download'] / 1000000 if 'download' in result else 0
-    upload_speed = result['upload'] / 1000000 if 'upload' in result else 0
+    if isinstance(result, dict):
+        download_speed = result.get('download', 0) / 1000000
+        upload_speed = result.get('upload', 0) / 1000000
+    else:
+        download_speed = 0
+        upload_speed = 0
+
     output = f"""**Speedtest Results**
 
 <u>**Speed:**</u>
@@ -33,14 +38,14 @@ async def speedtest_function(bot: Bot, message: Message):
     
 <u>**Client:**</u>
 **__ISP:__** {message.from_user.username}
-**__Country:__** {result['client']['country']}
+**__Country:__** {result.get('client', {}).get('country', '')}
 
 <u>**Server:**</u>
-**__Name:__** {result['server']['name']}
-**__Country:__** {result['server']['country']}, {result['server']['cc']}
-**__Sponsor:__** {result['server']['sponsor']}
-**__Latency:__** {result['server']['latency']}  
-**__Ping:__** {result['ping']}"""
+**__Name:__** {result.get('server', {}).get('name', '')}
+**__Country:__** {result.get('server', {}).get('country', '')}, {result.get('server', {}).get('cc', '')}
+**__Sponsor:__** {result.get('server', {}).get('sponsor', '')}
+**__Latency:__** {result.get('server', {}).get('latency', '')}  
+**__Ping:__** {result.get('ping', '')}"""
 
     msg = await bot.send_message(
         chat_id=message.chat.id,
