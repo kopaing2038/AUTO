@@ -30,6 +30,9 @@ CONFIGURABLE = {
     "SONG": {"help": "Enable / disable SONG", "name": "SONG"},
     "SPELLING": {"help": "Enable / disable Spelling ", "name": "SPELLING"},
     "PHOTO_CAP": {"help": "Enable / disable Photo Cap", "name": "PHOTO_CAP"},
+    "CH_BUTTON": {"help": "Enable / disable CH_BUTTON", "name": "CH_BUTTON"},
+    "FILECH_BUTTON": {"help": "Enable / disable FILECH_BUTTON", "name": "FILECH_BUTTON"},
+
 }
 
 
