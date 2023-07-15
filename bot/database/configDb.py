@@ -29,7 +29,7 @@ class ConfigDB(MongoDb):
                 "CHANNEL3": Config.CHANNEL3,
                 "PM_IMDB": Config.PM_IMDB,
                 "PM_IMDB_POSTER": Config.PM_IMDB_POSTER,
-                "DOWNLOAD_BUTTON": False,
+                "DOWNLOAD_BUTTON": True,
                 "PHOTO_FILTER": Config.PHOTO_FILTER,
                 "V_FILTER": Config.V_FILTER,
                 "PM_FILTER": Config.PM_FILTER,
