@@ -95,8 +95,11 @@ async def speedtest(_, message):
     speed = await message.reply_text("<i>Initializing Speedtest...</i>")
     test = Speedtest()
     servers = test.get_servers()
-    # Select a server by index or ID
-    server = servers[0]  # Replace 0 with the index or ID of the desired server
+    if not servers:
+        await speed.edit_text("<b>No servers available for testing.</b>")
+        return
+    server = servers[0] 
+
     test.download(server)
     test.upload(server)
     test.results.share()
