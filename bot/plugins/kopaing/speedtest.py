@@ -13,17 +13,17 @@ async def testspeed(m):
         speedtester.get_best_server()
         speedtester.download()
         speedtester.upload()
-        speed_result = speedtester.results.dict()
+        result = speedtester.results.dict()
     except Exception as e:
         return await m.edit(str(e))
-    return speed_result
+    return result
 
 @Bot.on_message(filters.command(["speedtest"]) & ~filters.channel)
 async def speedtest_function(bot: Bot, message: Message):
     m = await message.reply_text("Running Speed test")
     result = await testspeed(m)
-    download_speed = result['download'] / 1000000
-    upload_speed = result['upload'] / 1000000
+    download_speed = result['download'] / 1000000 if 'download' in result else 0
+    upload_speed = result['upload'] / 1000000 if 'upload' in result else 0
     output = f"""**Speedtest Results**
 
 <u>**Speed:**</u>
