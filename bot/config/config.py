@@ -60,17 +60,8 @@ class Config:
     PICS = (get_config('PICS', 'https://graph.org/file/10337fadbffa79c148340.jpg https://graph.org/file/d36571680767216fc2087.jpg https://graph.org/file/d0c149634f817daadfa7f.jpg https://graph.org/file/25f15ce7d53d0e3e751a5.jpg')).split()
     TEMPLATE = get_config(
         "IMDB_TEMPLATE",
-        """<b>🏷 𝗧𝗶𝘁𝗹𝗲 :</b>: <a href={url}>{title}</a>  <a href={url}/releaseinfo>{year}</a> - #{kind}
-        
-🌟 𝐑𝐚𝐭𝐢𝐧𝐠    : <a href={url}/ratings>{rating}</a> / 10 ({votes} 𝐮𝐬𝐞𝐫 𝐫𝐚𝐭𝐢𝐧𝐠𝐬.)
-📀 𝐑𝐮𝐧𝐓𝐢𝐦𝐞 : {runtime} Minutes
-📆 𝗥𝗲𝗹𝗲𝗮𝘀𝗲  : {release_date}
-🎭 𝗚𝗲𝗻𝗿𝗲𝘀   : #{genres}
-
-👥 𝗖𝗮𝘀𝘁  : #{cast}
-
-
-        
+        """<b>🏷 𝗧𝗶𝘁𝗹𝗲 :</b>: <a href={url}>{title}</a>  <a href={url}/releaseinfo>{year}</a> - #{kind} - {runtime} Minutes - {release_date}
+   
 """,
     )
 
