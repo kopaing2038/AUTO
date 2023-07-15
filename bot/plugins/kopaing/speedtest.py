@@ -3,7 +3,7 @@ import speedtest_cli
 from pyrogram import filters, Client
 from bot import Bot
 from pyrogram.types import Message, InlineKeyboardButton
-
+from speedtest import Speedtest
 SUDOERS = filters.user()
 
 async def testspeed(m):
@@ -21,7 +21,12 @@ async def testspeed(m):
 @Bot.on_message(filters.command(["speedtest"]) & ~filters.channel)
 async def speedtest_function(bot: Bot, message: Message):
     m = await message.reply_text("Running Speed test")
-    result = await testspeed(m)
+    test = Speedtest()
+    test.get_best_server()
+    test.download()
+    test.upload()
+    test.results.share()
+    result = test.results.dict()
     download_speed = result['download'] / 1000000
     upload_speed = result['upload'] / 1000000
     output = f"""**Speedtest Results**
