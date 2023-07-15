@@ -206,15 +206,12 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
     else:
         return
 
-    #m=await message.reply_text("🔍")
-    #await asyncio.sleep(2)
-    #await m.delete()
-    m=await message.reply_sticker("CAACAgUAAxkBAAEEk9tkr8jbdwlGGEEtRGELR3Z3WYg8_gACpQADyJRkFHhDhV4BRbZGHgQ")
+    m = await message.reply_sticker("CAACAgUAAxkBAAEEk9tkr8jbdwlGGEEtRGELR3Z3WYg8_gACpQADyJRkFHhDhV4BRbZGHgQ")
     await asyncio.sleep(1)
     await m.delete()
 
     files = files_b or files_c  # Combine the files from all filters
-    total_results = total_results_b or total_results_c 
+    total_results = total_results_b or total_results_c
     btn_a = []
     btn_b = []
     btn_c = []
@@ -241,7 +238,6 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         Cache.SEARCH_DATA[key] = files_c, offset, total_results_c, imdb, settings
         btn_c = await format_buttons2(files_c, settings["CHANNEL3"])
 
-
     else:
         return
 
@@ -251,7 +247,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
 
     if files_b:
         if not settings.get("DOWNLOAD_BUTTON"):
-            btn_b = await format_buttons(files_b, settings["CHANNEL2"])            
+            btn_b = await format_buttons(files_b, settings["CHANNEL2"])
             if offset != "":
                 req = message.from_user.id if message.from_user else 0
                 btn_b.append(
@@ -308,26 +304,13 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
             ]
 
     if imdb:
-        #cap += settings["TEMPLATE"].format(query=search, **imdb, **locals())
         cap += settings["TEMPLATE"].format(
             query=search,
             **imdb,
             **locals(),
         )
-
     else:
         cap += f""
-
-
-    #buttons = []
-
-    #k = 1
-    #for file in files:
-        #cap += f"{k}. [{file['file_name']} {get_size(file['file_size'])}]({await parse_link(file['chat_id'], file['message_id'])})\n\n"
-       # k += 1
-
-
-
 
     cap2 = f"""🔮 𝙌𝙪𝙚𝙧𝙮 : {search} 
 📥 𝙏𝙤𝙩𝙖𝙡 : {total_results} 
@@ -376,7 +359,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                     ),
                     quote=True,
                 )
-                m=await message.reply_sticker("CAACAgIAAxkBAAEEk-Bkr8koho72EvQQQFqzjjQpcN-AdQACCA4AAsMaIUnVXsJ4ltHnNB4E")
+                m = await message.reply_sticker("CAACAgIAAxkBAAEEk-Bkr8koho72EvQQQFqzjjQpcN-AdQACCA4AAsMaIUnVXsJ4ltHnNB4E")
                 await asyncio.sleep(5)
                 await m.delete()
             except (errors.MediaEmpty, errors.PhotoInvalidDimensions, errors.WebpageMediaEmpty):
@@ -404,15 +387,23 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 )
     else:
         if not settings["TEXT_LINK"]:
-            ad = random.choice(settings["ADS"])
-            photo_url = ad["photo"]
-            caption = ad["caption"] + "\n\n" + cap2
-            await message.reply_photo(
-                photo=photo_url,
-                caption=caption,
-                reply_markup=types.InlineKeyboardMarkup(btn),
-                quote=True
-            )
+            if settings["PHOTO_CAP"]:
+                ad = random.choice(settings["ADS"])
+                photo_url = ad["photo"]
+                caption = ad["caption"] + "\n\n" + cap2
+                await message.reply_photo(
+                    photo=photo_url,
+                    caption=caption,
+                    reply_markup=types.InlineKeyboardMarkup(btn),
+                    quote=True
+                )
+            else:
+                await message.reply_text(
+                    cap,
+                    reply_markup=types.InlineKeyboardMarkup(btn),
+                    quote=True,
+                    disable_web_page_preview=True,
+                )
         else:
             ad = random.choice(settings["ADS"])
             photo_url = ad["photo"]
@@ -434,8 +425,6 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 ),
                 quote=True
             )
-
-
 
 @Bot.on_callback_query(filters.regex(r"^chnext2"))  # type: ignore
 async def chnext2_next_page(bot: Bot, query: types.CallbackQuery):
@@ -694,17 +683,17 @@ async def ch3next_next_page(bot: Bot, query: types.CallbackQuery):
 @Bot.on_callback_query(filters.regex("^file"))
 async def handle_file(bot: Bot, query: types.CallbackQuery):
     _, file_id = query.data.split()
-    file_info_a = await a_filter.get_file_details(file_id) if file_id else None
+   # file_info_a = await a_filter.get_file_details(file_id) if file_id else None
     file_info_b = await b_filter.get_file_details(file_id) if file_id else None
-    file_info_c = await c_filter.get_file_details(file_id) if file_id else None
+    #file_info_c = await c_filter.get_file_details(file_id) if file_id else None
 
     file_info = {}
-    if file_info_a:
-        file_info.update(file_info_a)
+    #if file_info_a:
+        #file_info.update(file_info_a)
     if file_info_b:
         file_info.update(file_info_b)
-    if file_info_c:
-        file_info.update(file_info_c)
+    #if file_info_c:
+        #file_info.update(file_info_c)
 
     if not file_info:
         return await query.answer("ဖိုင်ကို ရှာမတွေ့သော အမှား ", True)
@@ -736,6 +725,7 @@ async def handle_file(bot: Bot, query: types.CallbackQuery):
         caption1 = f"Hi {query.from_user.mention} \n\nအချောလေး ရှာတဲ့ [{file_info['file_name']}]({await parse_link(file_info['chat_id'], file_info['message_id'])}) ဇာတ်ကား အဆင့်သင့်ပါ ⬇️\n\nဝင်မရရင် <a href='{invite_link.invite_link}'>🍿 ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ🍿</a> ကို Join ပါ \n\n <a href='{invite_link.invite_link}'>{file_info['channel_name']}</a>"
         if not settings["DOWNLOAD_BUTTON"]:
             m = await query.message.reply_text(f"Hi {query.from_user.mention} အချောလေး [{file_info['file_name']}] ကိုတင်ပေးနေတယ် ခဏစောင့်ပေးပါ")  
+            asyncio.sleep(1)
             await m.edit(              
                 caption1,
                 reply_markup=types.InlineKeyboardMarkup(
@@ -767,15 +757,15 @@ async def handle_file(bot: Bot, query: types.CallbackQuery):
 @Bot.on_callback_query(filters.regex("^ch2file"))
 async def ch2_handle_file(bot: Bot, query: types.CallbackQuery):
     _, file_id = query.data.split()
-    file_info_a = await a_filter.get_file_details(file_id) if file_id else None
-    file_info_b = await b_filter.get_file_details(file_id) if file_id else None
+    #file_info_a = await a_filter.get_file_details(file_id) if file_id else None
+    #file_info_b = await b_filter.get_file_details(file_id) if file_id else None
     file_info_c = await c_filter.get_file_details(file_id) if file_id else None
 
     file_info = {}
-    if file_info_a:
-        file_info.update(file_info_a)
-    if file_info_b:
-        file_info.update(file_info_b)
+    #if file_info_a:
+        #file_info.update(file_info_a)
+    #if file_info_b:
+        #file_info.update(file_info_b)
     if file_info_c:
         file_info.update(file_info_c)
 
@@ -823,6 +813,7 @@ async def ch2_handle_file(bot: Bot, query: types.CallbackQuery):
         settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
         if not settings["DOWNLOAD_BUTTON"]:
             m = await query.message.reply_text(f"Hi {query.from_user.mention} အချောလေး [{file_info['file_name']}] ကိုတင်ပေးနေတယ် ခဏစောင့်ပေးပါ") 
+            asyncio.sleep(1)
             await m.edit(              
                 caption1,
                 reply_markup=types.InlineKeyboardMarkup(
