@@ -186,6 +186,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 english_chars = re.findall("[a-zA-Z]+", message.text)
                 photo_search = "https://telegra.ph/file/19602f3dea66d7238ed69.jpg"
                 nosearch = f"Sᴏʀʀʏ. {message.from_user.mention}  {search}  ကိုရှာမတွေ့ပါ။!\nရှာမတွေရတဲ့ အကြောင်းရင်းမှာ 👇\n\n◉ 1. ဤ Group တွင် ကိုးရီးယားစီးရီးများနဲ့ တစ်ကားထဲအပြီး ဇာတ်ကားများကိုသာရရှိနိုင်ပါသည်။\n\n◉ 2. ကျွန်ုပ်တို့၏ Database တွင်မရှိတာ၊ မတင်ရသေးတာ၊ မြန်မာစာတန်းထိုးမရသေးတာတစ်ခုခုပါ။ 💾\n\n◉ 3. ဒါမှမဟုတ် သင့်ရဲ့ စာလုံးပေါင်း မှားနေတာ ဖြစ်နိုင်တယ် google မှာ စာလုံးပေါင်းစစ်ဆေးကြည့်ပါ။ 🔍."
+                settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
                 if settings["SPELLING"]:
                     if english_chars:
                         search = " ".join(english_chars)
@@ -725,7 +726,7 @@ async def handle_file(bot: Bot, query: types.CallbackQuery):
         caption1 = f"Hi {query.from_user.mention} \n\nအချောလေး ရှာတဲ့ [{file_info['file_name']}]({await parse_link(file_info['chat_id'], file_info['message_id'])}) ဇာတ်ကား အဆင့်သင့်ပါ ⬇️\n\nဝင်မရရင် <a href='{invite_link.invite_link}'>🍿 ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ🍿</a> ကို Join ပါ \n\n <a href='{invite_link.invite_link}'>{file_info['channel_name']}</a>"
         if not settings["DOWNLOAD_BUTTON"]:
             m = await query.message.reply_text(f"Hi {query.from_user.mention} အချောလေး [{file_info['file_name']}] ကိုတင်ပေးနေတယ် ခဏစောင့်ပေးပါ")  
-            asyncio.sleep(1)
+            #asyncio.sleep(1)
             await m.edit(              
                 caption1,
                 reply_markup=types.InlineKeyboardMarkup(
@@ -813,7 +814,7 @@ async def ch2_handle_file(bot: Bot, query: types.CallbackQuery):
         settings = await config_db.get_settings(f"SETTINGS_{query.message.chat.id}")
         if not settings["DOWNLOAD_BUTTON"]:
             m = await query.message.reply_text(f"Hi {query.from_user.mention} အချောလေး [{file_info['file_name']}] ကိုတင်ပေးနေတယ် ခဏစောင့်ပေးပါ") 
-            asyncio.sleep(1)
+            #asyncio.sleep(1)
             await m.edit(              
                 caption1,
                 reply_markup=types.InlineKeyboardMarkup(
