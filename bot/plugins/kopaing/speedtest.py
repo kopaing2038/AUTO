@@ -2,7 +2,8 @@ import asyncio
 from pyrogram import filters, Client
 from bot import Bot
 from pyrogram.types import Message, InlineKeyboardButton
-from speedtest import Speedtest  # Updated import statement
+from my_speedtest import Speedtest
+
 SUDOERS = filters.user()
 
 @Bot.on_message(filters.command(["speedtest"]) & ~filters.channel)
