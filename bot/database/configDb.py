@@ -36,14 +36,14 @@ class ConfigDB(MongoDb):
                 "CH_POST": Config.CH_POST,
                 "TEXT_LINK": Config.TEXT_LINK,
                 "ADS": Config.ADS,
-                "SPELLING": Config.SPELLING,
-                "PHOTO_CAP": Config.PHOTO_CAP,
                 "TEMPLATE": Config.TEMPLATE,
                 "FORCE_SUB_CHANNEL": Config.FORCE_SUB_CHANNEL,
                 "CUSTOM_FILE_CAPTION": Config.CUSTOM_FILE_CAPTION,
                 "SUDO_USERS": Config.SUDO_USERS,
                 "SONG": Config.SONG,
                 "COLLECTION_NAME4": Config.COLLECTION_NAME4,
+                "SPELLING": Config.SPELLING,
+                "PHOTO_CAP": Config.PHOTO_CAP,
                 
             }
         return {}
