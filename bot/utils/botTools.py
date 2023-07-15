@@ -28,6 +28,8 @@ CONFIGURABLE = {
     "CH_POST": {"help": "Enable / disable Ch Post", "name": "Ch POst"},
     "TEXT_LINK": {"help": "Enable / disable Text Link", "name": "Text Link"},
     "SONG": {"help": "Enable / disable SONG", "name": "SONG"},
+    "SPELLING": {"help": "Enable / disable Spelling ", "name": "SPELLING"},
+    "PHOTO_CAP": {"help": "Enable / disable Photo Cap", "name": "PHOTO_CAP"},
 }
 
 
@@ -152,7 +154,7 @@ async def format_buttons(files: list, channel: bool):
         btn = [
             [
                 types.InlineKeyboardButton(
-                    text=f"◉ {file['file_name']} {get_size(file['file_size'])}",
+                    text=f"◉ {file['file_name']} 📲 {get_size(file['file_size'])}",
                     url=f'{(await parse_link(file["chat_id"], file["message_id"]))}',
                 ),
             ]
@@ -162,21 +164,12 @@ async def format_buttons(files: list, channel: bool):
         btn = [
             [
                 types.InlineKeyboardButton(
-                    text=f"◉ {file['file_name']} {get_size(file['file_size'])}",
+                    text=f"◉ {file['file_name']} 📲 {get_size(file['file_size'])}",
                     callback_data=f"file {file['_id']}",
                 ),
             ]
             for file in files
         ]
-
-   # for row in btn:
-      #  for button in row:
-          #  caption = button.text.lower()
-          #  caption = caption.translate(str.maketrans(
-           #     "abcdefghijklmnopqrstuvwxyz0123456789",
-          #      "ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖᵠʳˢᵗᵘᵛʷˣʸᶻ⁰¹²³⁴⁵⁶⁷⁸⁹"
-           # ))
-           # button.text = caption
 
     return btn
 
@@ -185,7 +178,7 @@ async def format_buttons2(files: list, channel: bool):
         btn = [
             [
                 types.InlineKeyboardButton(
-                    text=f"◉ {ch2file['file_name']} {get_size(ch2file['file_size'])}",
+                    text=f"◉ {ch2file['file_name']} 📲 {get_size(ch2file['file_size'])}",
                     url=f'{(await parse_link(ch2file["chat_id"], ch2file["message_id"]))}',
                 ),
             ]
@@ -195,21 +188,12 @@ async def format_buttons2(files: list, channel: bool):
         btn = [
             [
                 types.InlineKeyboardButton(
-                    text=f"◉ {ch2file['file_name']} {get_size(ch2file['file_size'])}",
+                    text=f"◉ {ch2file['file_name']} 📲 {get_size(ch2file['file_size'])}",
                     callback_data=f"ch2file {ch2file['_id']}",
                 ),
             ]
             for ch2file in files
         ]
-
-   # for row in btn:
-        #for button in row:
-            #caption = button.text.lower()
-           # caption = caption.translate(str.maketrans(
-               # "abcdefghijklmnopqrstuvwxyz0123456789",
-               # "ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖᵠʳˢᵗᵘᵛʷˣʸᶻ⁰¹²³⁴⁵⁶⁷⁸⁹"
-           # ))
-          #  button.text = caption
 
     return btn
 
