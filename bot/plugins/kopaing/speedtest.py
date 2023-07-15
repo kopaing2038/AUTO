@@ -2,20 +2,8 @@ import asyncio
 from pyrogram import filters, Client
 from bot import Bot
 from pyrogram.types import Message, InlineKeyboardButton
-from speedtest import Speedtest
+from speedtest_cli import Speedtest  # Updated import statement
 SUDOERS = filters.user()
-
-async def testspeed(m):
-    try:
-        m = await m.edit("Running SpeedTest")
-        speedtester = speedtest_cli.Speedtest()
-        speedtester.get_best_server()
-        speedtester.download()
-        speedtester.upload()
-        result = speedtester.results.dict()
-    except Exception as e:
-        return await m.edit(str(e))
-    return result
 
 @Bot.on_message(filters.command(["speedtest"]) & ~filters.channel)
 async def speedtest_function(bot: Bot, message: Message):
