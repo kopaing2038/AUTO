@@ -202,8 +202,8 @@ REQUEST BY : {user_link}
     CH_POST = False
     TEXT_LINK = False
     SONG = False
-    #SPELLING = True
-    #PHOTO_CAP = False
+    SPELLING = True
+    PHOTO_CAP = False
 
     GROUP_CAPTIONS = {} 
     MUSIC_CHANNEL = int(get_config("MUSIC_CHANNEL" , "-1001897618013")) 
