@@ -93,7 +93,8 @@ async def start(bot, update):
 async def speedtest(_, message):
     speed = await message.reply_text("<i>Initializing Speedtest...</i>")
     test = Speedtest()
-    #test.get_best_server()
+    test.get_servers()  # Fetches all available servers
+    test.select_server(server_id)  # Replace `server_id` with the ID of the server you want to use
     test.download()
     test.upload()
     test.results.share()
@@ -108,7 +109,13 @@ async def speedtest(_, message):
 ┠ <b>Data Sent:</b> <code>{get_readable_file_size(int(result['bytes_sent']))}</code>
 ┖ <b>Data Received:</b> <code>{get_readable_file_size(int(result['bytes_received']))}</code>
 
-
+➲ <b><i>SPEEDTEST SERVER</i></b>
+┠ <b>Name:</b> <code>{result['server']['name']}</code>
+┠ <b>Country:</b> <code>{result['server']['country']}, {result['server']['cc']}</code>
+┠ <b>Sponsor:</b> <code>{result['server']['sponsor']}</code>
+┠ <b>Latency:</b> <code>{result['server']['latency']}</code>
+┠ <b>Latitude:</b> <code>{result['server']['lat']}</code>
+┖ <b>Longitude:</b> <code>{result['server']['lon']}</code>
 
 ➲ <b><i>CLIENT DETAILS</i></b>
 ┠ <b>IP Address:</b> <code>{result['client']['ip']}</code>
