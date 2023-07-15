@@ -42,7 +42,7 @@ class ConfigDB(MongoDb):
                 "SUDO_USERS": Config.SUDO_USERS,
                 "SONG": Config.SONG,
                 "COLLECTION_NAME4": Config.COLLECTION_NAME4,
-                "SPELLING": Confog.SPELLING,
+                "SPELLING": Config.SPELLING,
                 "PHOTO_CAP": Config.PHOTO_CAP
                 
             }
