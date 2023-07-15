@@ -410,14 +410,14 @@ async def clone_start(client, message):
             plugins={"root": "bot/clone_bot"},
         )
         clonebot = Client(
-            "clone_bot_session",
+            "clone_bot2_session",
             api_id=Config.API_ID,
             api_hash=Config.API_HASH,
             bot_token="YOUR_BOT_TOKEN",
             plugins={"root": "bot/clone_bot2"},
         )
         clonebot = Client(
-            "clone_bot_session",
+            "clone_bot3_session",
             api_id=Config.API_ID,
             api_hash=Config.API_HASH,
             bot_token="YOUR_BOT_TOKEN",
