@@ -186,6 +186,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 english_chars = re.findall("[a-zA-Z]+", message.text)
                 photo_search = "https://telegra.ph/file/19602f3dea66d7238ed69.jpg"
                 nosearch = f"Sᴏʀʀʏ. {message.from_user.mention}  {search}  ကိုရှာမတွေ့ပါ။!\nရှာမတွေရတဲ့ အကြောင်းရင်းမှာ 👇\n\n◉ 1. ဤ Group တွင် ကိုးရီးယားစီးရီးများနဲ့ တစ်ကားထဲအပြီး ဇာတ်ကားများကိုသာရရှိနိုင်ပါသည်။\n\n◉ 2. ကျွန်ုပ်တို့၏ Database တွင်မရှိတာ၊ မတင်ရသေးတာ၊ မြန်မာစာတန်းထိုးမရသေးတာတစ်ခုခုပါ။ 💾\n\n◉ 3. ဒါမှမဟုတ် သင့်ရဲ့ စာလုံးပေါင်း မှားနေတာ ဖြစ်နိုင်တယ် google မှာ စာလုံးပေါင်းစစ်ဆေးကြည့်ပါ။ 🔍."
+                settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
                 if settings["SPELLING"]:
                     if english_chars:
                         search = " ".join(english_chars)
