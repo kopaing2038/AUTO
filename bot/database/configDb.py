@@ -29,7 +29,7 @@ class ConfigDB(MongoDb):
                 "CHANNEL3": Config.CHANNEL3,
                 "PM_IMDB": Config.PM_IMDB,
                 "PM_IMDB_POSTER": Config.PM_IMDB_POSTER,
-                "DOWNLOAD_BUTTON": True,
+                "DOWNLOAD_BUTTON": False,
                 "PHOTO_FILTER": Config.PHOTO_FILTER,
                 "V_FILTER": Config.V_FILTER,
                 "PM_FILTER": Config.PM_FILTER,
@@ -43,7 +43,9 @@ class ConfigDB(MongoDb):
                 "SONG": Config.SONG,
                 "COLLECTION_NAME4": Config.COLLECTION_NAME4,
                 "SPELLING": Config.SPELLING,
-                "PHOTO_CAP": Config.PHOTO_CAP
+                "PHOTO_CAP": Config.PHOTO_CAP,
+                "CH_BUTTON": Config.CH_BUTTON,
+                "FILECH_BUTTON": Config.FILECH_BUTTON,
                 
             }
         return {}
