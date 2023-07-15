@@ -94,9 +94,11 @@ async def start(bot, update):
 async def speedtest(_, message):
     speed = await message.reply_text("<i>Initializing Speedtest...</i>")
     test = Speedtest()
-    test.get_best_server()
-    test.download()
-    test.upload()
+    servers = test.get_servers()
+    # Select a server by index or ID
+    server = servers[0]  # Replace 0 with the index or ID of the desired server
+    test.download(server)
+    test.upload(server)
     test.results.share()
     result = test.results.dict()
     path = result['share']
