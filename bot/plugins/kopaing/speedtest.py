@@ -19,16 +19,19 @@ async def testspeed(m):
     return result
 
 @Bot.on_message(filters.command(["speedtest"]) & ~filters.channel)
-async def speedtest_function(bot: Bot, message: Message):
+async def speedtest_function(bot: Bot, message):
     m = await message.reply_text("Running Speed test")
     result = await testspeed(m)
+    
     if isinstance(result, dict):
         download_speed = result.get('download', 0) / 1000000
         upload_speed = result.get('upload', 0) / 1000000
+        client_country = result.get('client', {}).get('country', '')
     else:
         download_speed = 0
         upload_speed = 0
-
+        client_country = ''
+    
     output = f"""**Speedtest Results**
 
 <u>**Speed:**</u>
@@ -37,8 +40,8 @@ async def speedtest_function(bot: Bot, message: Message):
 **__Upload Speed:__** {upload_speed:.2f} Mbps
     
 <u>**Client:**</u>
-**__ISP:__** {message.from_user.username}
-**__Country:__** {result.get('client', {}).get('country', '')}
+**__ISP:__** {message.chat.username}
+**__Country:__** {client_country}
 
 <u>**Server:**</u>
 **__Name:__** {result.get('server', {}).get('name', '')}
