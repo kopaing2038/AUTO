@@ -46,8 +46,6 @@ def GetExpiryDate(chat_id):
     return expires_at
 
 
-
-
 @Client.on_message(filters.command(["server"]))
 async def start(bot, update):
     bot_uptime = time.strftime("%Hh %Mm %Ss", time.gmtime(time.time() - bot_start_time))
@@ -120,7 +118,7 @@ async def speed(bot, update):
         await update.reply_photo(path, caption=string_speed, parse_mode="HTML")
 
     except Exception as e:
-        error_message = "An error occurred while running the speed test."
+        error_message = f"An error occurred while running the speed test: {str(e)}"
         await spg.edit_text(error_message)
 
 
