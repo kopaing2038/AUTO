@@ -388,23 +388,13 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 )
     else:
         if not settings["TEXT_LINK"]:
-            if settings["PHOTO_CAP"]:
-                ad = random.choice(settings["ADS"])
-                photo_url = ad["photo"]
-                caption = ad["caption"] + "\n\n" + cap2
-                await message.reply_photo(
-                    photo=photo_url,
-                    caption=caption,
-                    reply_markup=types.InlineKeyboardMarkup(btn),
-                    quote=True
-                )
-            else:
-                await message.reply_text(
-                    cap,
-                    reply_markup=types.InlineKeyboardMarkup(btn),
-                    quote=True,
-                    disable_web_page_preview=True,
-                )
+
+            await message.reply_text(
+                cap,
+                reply_markup=types.InlineKeyboardMarkup(btn),
+                quote=True,
+                disable_web_page_preview=True,
+            )
         else:
             ad = random.choice(settings["ADS"])
             photo_url = ad["photo"]
