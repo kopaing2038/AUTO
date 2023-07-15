@@ -28,8 +28,6 @@ CONFIGURABLE = {
     "CH_POST": {"help": "Enable / disable Ch Post", "name": "Ch POst"},
     "TEXT_LINK": {"help": "Enable / disable Text Link", "name": "Text Link"},
     "SONG": {"help": "Enable / disable SONG", "name": "SONG"},
-    "SPELLING": {"help": "Enable / disable SPELLING", "name": "SPELLING"},
-    "PHOTO_CAP": {"help": "Enable / disable PHOTO_CAP", "name": "PHOTO_CAP"},
 }
 
 
