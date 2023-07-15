@@ -6,9 +6,9 @@ import shutil
 import logging
 import sqlite3
 import pyrogram
+import speedtest
 from speedtest import Speedtest
 from bot.config.config import Config
-from helper_funcs.display_progress import humanbytes
 from pyrogram import Client, StopPropagation, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
