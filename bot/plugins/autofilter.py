@@ -207,11 +207,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
     else:
         return
 
-    m = await message.reply_sticker("CAACAgUAAxkBAAEEk9tkr8jbdwlGGEEtRGELR3Z3WYg8_gACpQADyJRkFHhDhV4BRbZGHgQ")
-    await asyncio.sleep(1)
-    await m.delete()
-
-    files = files_b or files_c  # Combine the files from all filters
+    files = files_b or files_c  
     total_results = total_results_b or total_results_c 
     btn_a = []
     btn_b = []
@@ -299,7 +295,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
             btn_c = [
                 [
                     types.InlineKeyboardButton(
-                        f"📥  {search}  📥", url=f"https://t.me/{bot.me.username}?start=filter{key}"
+                        f"📥  {search}  📥", url=f"https://t.me/{bot.me.username}?start=ch3filter{key}"
                     )
                 ]
             ]
@@ -346,6 +342,9 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                     caption=cap[:1024],
                     reply_markup=types.InlineKeyboardMarkup(btn),
                 )
+                m = await message.reply_sticker("CAACAgUAAxkBAAEEk9tkr8jbdwlGGEEtRGELR3Z3WYg8_gACpQADyJRkFHhDhV4BRbZGHgQ")
+                await asyncio.sleep(1)
+                await m.delete()
                 ad1 = random.choice(settings["ADS"])
                 photo_url = ad1["photo"]
                 caption = ad1["caption"] + "\n\n" + cap2
