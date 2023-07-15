@@ -99,7 +99,7 @@ async def speed(bot, update):
         test.upload()
         test.results.share()
         result = test.results.dict()
-        path = result["share"]
+        path = result["share"].replace("https://", "")
 
         string_speed = f"""
         <b>Server</b>
@@ -107,7 +107,7 @@ async def speed(bot, update):
         <b>Country:</b> <code>{result['server']['country']}, {result['server']['cc']}</code>
         <b>Sponsor:</b> <code>{result['server']['sponsor']}</code>
 
-        <a href="{path}"><b>SpeedTest Results</b></a>
+        <a href="https://{path}"><b>SpeedTest Results</b></a>
         <b>Upload:</b> <code>{speed_convert(result['upload'] / 8)}</code>
         <b>Download:</b>  <code>{speed_convert(result['download'] / 8)}</code>
         <b>Ping:</b> <code>{result['ping']} ms</code>
@@ -115,11 +115,12 @@ async def speed(bot, update):
         """
 
         await spg.delete()
-        await update.reply_photo(path, caption=string_speed, parse_mode="HTML")
+        await update.reply_photo(photo=path, caption=string_speed, parse_mode="HTML")
 
     except Exception as e:
-        error_message = f"An error occurred while running the speed test: {str(e)}"
+        error_message = "An error occurred while running the speed test."
         await spg.edit_text(error_message)
+
 
 
 def speed_convert(size):
