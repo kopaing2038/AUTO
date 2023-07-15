@@ -8,15 +8,15 @@ SUDOERS = filters.user()
 
 async def testspeed(m):
     try:
-        m = await m.edit("Running SpeedTest")
+        await m.edit("Running SpeedTest")
         speedtester = Speedtest()
         speedtester.get_best_server()
         speedtester.download()
         speedtester.upload()
-        result = speedtester.results.dict()
+        speed_result = speedtester.results.dict()
     except Exception as e:
         return await m.edit(str(e))
-    return result
+    return speed_result
 
 @Bot.on_message(filters.command(["speedtest"]) & ~filters.channel)
 async def speedtest_function(bot: Bot, message: Message):
