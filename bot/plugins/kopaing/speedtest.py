@@ -5,7 +5,8 @@ import shutil
 import logging
 import sqlite3
 import pyrogram
-from speedtest_cli import Speedtest
+#from speedtest_cli import Speedtest
+from speedtest_cli.speedtest import Speedtest
 from bot.config.config import Config
 from pyrogram import Client, StopPropagation, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
@@ -93,13 +94,14 @@ async def start(bot, update):
 async def speedtest(_, message):
     speed = await message.reply_text("<i>Initializing Speedtest...</i>")
     test = Speedtest()
-    test.get_servers()  # Fetches all available servers
-    test.select_server(server_id)  # Replace `server_id` with the ID of the server you want to use
+    test.get_best_server()
     test.download()
     test.upload()
     test.results.share()
     result = test.results.dict()
     path = result['share']
+
+
     string_speed = f'''
 ➲ <b><i>SPEEDTEST INFO</i></b>
 ┠ <b>Upload:</b> <code>{get_readable_file_size(result['upload'] / 8)}/s</code>
