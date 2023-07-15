@@ -195,7 +195,9 @@ REQUEST BY : {user_link}
     SONG = False
     SPELLING = True
     PHOTO_CAP = False
-
+    CH_BUTTON = False
+    FILECH_BUTTON = True
+  
     GROUP_CAPTIONS = {} 
     MUSIC_CHANNEL = int(get_config("MUSIC_CHANNEL" , "-1001897618013")) 
     USE_CAPTION_FILTER = get_config("USE_CAPTION_FILTER", True, True)  # type: ignore
