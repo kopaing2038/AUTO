@@ -70,6 +70,7 @@ async def start_handler(bot: Bot, msg: types.Message):
 
             sts = await msg.reply("Please Wait...", quote=True)
             btn = await format_buttons(files, settings["CHANNEL"])
+            cap = f"Here is what i found for your query {keyword}\n\n"
             if offset != "":
                 req = msg.from_user.id if msg.from_user else 0
                 btn.append(
@@ -79,7 +80,7 @@ async def start_handler(bot: Bot, msg: types.Message):
                             callback_data="pages",
                         ),
                         types.InlineKeyboardButton(
-                            text="NEXT ⏩", callback_data=f"ch2next_{req}_{key}_{offset}"
+                            text="NEXT ⏩", callback_data=f"next_{req}_{key}_{offset}"
                         ),
                     ]
                 )
@@ -88,14 +89,15 @@ async def start_handler(bot: Bot, msg: types.Message):
                     [types.InlineKeyboardButton(text="🗓 1/1", callback_data="pages")]
                 )
             if imdb:
-                cap = Config.TEMPLATE.format(  # type: ignore
+                cap += settings["TEMPLATE"].format(  # type: ignore
                     query=keyword,
                     **imdb,
                     **locals(),
                 )
 
             else:
-                cap = f"Here is what i found for your query {keyword}"
+                cap += f"{keyword}"
+
             if imdb and imdb.get("poster") and settings["PM_IMDB_POSTER"]:
                 try:
                     await msg.reply_photo(
@@ -150,7 +152,7 @@ async def start_ch2handler(bot: Bot, msg: types.Message):
         if cmd.startswith("ch2filter"):
             if not await check_fsub(bot, msg, cmd):
                 return
-            key = cmd.replace("filter", "").strip()
+            key = cmd.replace("ch3filter", "").strip()
             keyword = Cache.BUTTONS.get(key)
             filter_data = Cache.SEARCH_DATA.get(key)
             if not (keyword and filter_data):
@@ -164,6 +166,7 @@ async def start_ch2handler(bot: Bot, msg: types.Message):
 
             sts = await msg.reply("Please Wait...", quote=True)
             btn = await format_buttons2(files, settings["CHANNEL"])
+            cap = f"Here is what i found for your query {keyword}\n\n"
             if offset != "":
                 req = msg.from_user.id if msg.from_user else 0
                 btn.append(
@@ -173,7 +176,7 @@ async def start_ch2handler(bot: Bot, msg: types.Message):
                             callback_data="pages",
                         ),
                         types.InlineKeyboardButton(
-                            text="NEXT ⏩", callback_data=f"next_{req}_{key}_{offset}"
+                            text="NEXT ⏩", callback_data=f"ch3next_{req}_{key}_{offset}"
                         ),
                     ]
                 )
@@ -182,14 +185,14 @@ async def start_ch2handler(bot: Bot, msg: types.Message):
                     [types.InlineKeyboardButton(text="🗓 1/1", callback_data="pages")]
                 )
             if imdb:
-                cap = Config.TEMPLATE.format(  # type: ignore
+                cap += settings["TEMPLATE"].format(  # type: ignore
                     query=keyword,
                     **imdb,
                     **locals(),
                 )
 
             else:
-                cap = f"Here is what i found for your query {keyword}"
+                cap += f"{keyword}"
             if imdb and imdb.get("poster") and settings["PM_IMDB_POSTER"]:
                 try:
                     await msg.reply_photo(
