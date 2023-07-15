@@ -1,5 +1,4 @@
 import asyncio
-import speedtest_cli
 from pyrogram import filters, Client
 from bot import Bot
 from pyrogram.types import Message, InlineKeyboardButton
