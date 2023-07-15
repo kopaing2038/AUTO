@@ -186,7 +186,6 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 english_chars = re.findall("[a-zA-Z]+", message.text)
                 photo_search = "https://telegra.ph/file/19602f3dea66d7238ed69.jpg"
                 nosearch = f"Sᴏʀʀʏ. {message.from_user.mention}  {search}  ကိုရှာမတွေ့ပါ။!\nရှာမတွေရတဲ့ အကြောင်းရင်းမှာ 👇\n\n◉ 1. ဤ Group တွင် ကိုးရီးယားစီးရီးများနဲ့ တစ်ကားထဲအပြီး ဇာတ်ကားများကိုသာရရှိနိုင်ပါသည်။\n\n◉ 2. ကျွန်ုပ်တို့၏ Database တွင်မရှိတာ၊ မတင်ရသေးတာ၊ မြန်မာစာတန်းထိုးမရသေးတာတစ်ခုခုပါ။ 💾\n\n◉ 3. ဒါမှမဟုတ် သင့်ရဲ့ စာလုံးပေါင်း မှားနေတာ ဖြစ်နိုင်တယ် google မှာ စာလုံးပေါင်းစစ်ဆေးကြည့်ပါ။ 🔍."
-                settings = await config_db.get_settings(f"SETTINGS_{message.chat.id}")
                 if settings["SPELLING"]:
                     if english_chars:
                         search = " ".join(english_chars)
@@ -212,7 +211,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
     await m.delete()
 
     files = files_b or files_c  # Combine the files from all filters
-    total_results = total_results_b or total_results_c
+    total_results = total_results_b or total_results_c 
     btn_a = []
     btn_b = []
     btn_c = []
@@ -324,7 +323,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
         if not settings["TEXT_LINK"]:
             try:
                 await message.reply_photo(
-                    photo=imdb.get("poster"),  # type: ignore
+                    photo=imdb.get("poster"),
                     caption=cap[:1024],
                     reply_markup=types.InlineKeyboardMarkup(btn),
                     quote=True,
@@ -388,13 +387,23 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 )
     else:
         if not settings["TEXT_LINK"]:
-
-            await message.reply_text(
-                cap,
-                reply_markup=types.InlineKeyboardMarkup(btn),
-                quote=True,
-                disable_web_page_preview=True,
-            )
+            if settings["PHOTO_CAP"]:
+                ad = random.choice(settings["ADS"])
+                photo_url = ad["photo"]
+                caption = ad["caption"] + "\n\n" + cap2
+                await message.reply_photo(
+                    photo=photo_url,
+                    caption=caption,
+                    reply_markup=types.InlineKeyboardMarkup(btn),
+                    quote=True
+                )
+            else:
+                await message.reply_text(
+                    cap,
+                    reply_markup=types.InlineKeyboardMarkup(btn),
+                    quote=True,
+                    disable_web_page_preview=True,
+                )
         else:
             ad = random.choice(settings["ADS"])
             photo_url = ad["photo"]
@@ -416,6 +425,7 @@ async def ch1_give_filter(bot: Bot, message: types.Message):
                 ),
                 quote=True
             )
+
 
 @Bot.on_callback_query(filters.regex(r"^chnext2"))  # type: ignore
 async def chnext2_next_page(bot: Bot, query: types.CallbackQuery):
